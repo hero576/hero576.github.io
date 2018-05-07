@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>数据结构——基本线性数据结构 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Quick StartCreate a new post1$ hexo new &quot;My New Post&quot; More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$">
+  <meta name="description" content="数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分">
 <meta name="keywords" content="py通红">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构——基本线性数据结构">
 <meta property="og:url" content="http://yoursite.com/2018/05/07/hello-world/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="Quick StartCreate a new post1$ hexo new &quot;My New Post&quot; More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$">
+<meta property="og:description" content="数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-07T11:23:27.670Z">
+<meta property="og:updated_time" content="2018-05-07T11:36:10.683Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据结构——基本线性数据结构">
-<meta name="twitter:description" content="Quick StartCreate a new post1$ hexo new &quot;My New Post&quot; More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$">
+<meta name="twitter:description" content="数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
   
@@ -165,14 +165,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h6 id="数组的设计"><a href="#数组的设计" class="headerlink" title="数组的设计"></a>数组的设计</h6><p>数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：</p>
+<ol>
+<li>请求空间以后大小固定，不能再改变（数据溢出问题）；</li>
+<li>在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间；</li>
+<li>在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分的内存上）。</li>
+</ol>
+<p>因为简单数组强烈倚赖电脑硬件之内存，所以不适用于现代的程序设计。欲使用可变大小、硬件无关性的数据类型，Java等程序设计语言均提供了更高级的数据结构：ArrayList、Vector等动态数组。</p>
+<h2 id="堆栈"><a href="#堆栈" class="headerlink" title="堆栈"></a>堆栈</h2><h6 id="什么是堆栈"><a href="#什么是堆栈" class="headerlink" title="什么是堆栈"></a>什么是堆栈</h6><p>堆栈（英语：stack），也可直接称栈，在计算机科学中，是一种特殊的串列形式的数据结构，它的特殊之处在于只能允许在链接串列或阵列的一端（称为堆叠顶端指标，英语：top）进行加入资料（英语：push）和输出资料（英语：pop）的运算。另外堆叠也可以用一维阵列或连结串列的形式来完成。堆叠的另外一个相对的操作方式称为伫列。</p>
+<p>由于堆叠数据结构只允许在一端进行操作，因而按照后进先出（LIFO, Last In First Out）的原理运作。</p>
+<h6 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h6><ul>
+<li>先入后出，后入先出。</li>
+<li>除头尾节点之外，每个元素有一个前驱，一个后继。</li>
+</ul>
+<h6 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h6><p>从原理可知，对堆栈(栈)可以进行的操作有:</p>
+<ul>
+<li>top():获取堆栈顶端对象</li>
+<li>push():向栈里添加一个对象</li>
+<li>pop():从栈里推出一个对象</li>
+</ul>
 
       
 
