@@ -8,21 +8,21 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>数据结构——基本线性数据结构 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分">
+  <meta name="description" content="1、数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心">
 <meta name="keywords" content="数据结构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构——基本线性数据结构">
 <meta property="og:url" content="http://yoursite.com/2018/05/07/hello-world/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分">
+<meta property="og:description" content="1、数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/images/pasted-0.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-1.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-2.png">
-<meta property="og:updated_time" content="2018-05-07T12:20:48.043Z">
+<meta property="og:updated_time" content="2018-05-07T12:29:30.452Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据结构——基本线性数据结构">
-<meta name="twitter:description" content="数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分">
+<meta name="twitter:description" content="1、数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心">
 <meta name="twitter:image" content="http://yoursite.com/images/pasted-0.png">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
@@ -169,14 +169,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h6 id="数组的设计"><a href="#数组的设计" class="headerlink" title="数组的设计"></a>数组的设计</h6><p>数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：</p>
+        <h2 id="1、数组"><a href="#1、数组" class="headerlink" title="1、数组"></a>1、数组</h2><h6 id="数组的设计"><a href="#数组的设计" class="headerlink" title="数组的设计"></a>数组的设计</h6><p>数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：</p>
 <ol>
 <li>请求空间以后大小固定，不能再改变（数据溢出问题）；</li>
 <li>在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间；</li>
 <li>在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分的内存上）。</li>
 </ol>
 <p>因为简单数组强烈倚赖电脑硬件之内存，所以不适用于现代的程序设计。欲使用可变大小、硬件无关性的数据类型，Java等程序设计语言均提供了更高级的数据结构：ArrayList、Vector等动态数组。</p>
-<h2 id="堆栈"><a href="#堆栈" class="headerlink" title="堆栈"></a>堆栈</h2><h6 id="什么是堆栈"><a href="#什么是堆栈" class="headerlink" title="什么是堆栈"></a>什么是堆栈</h6><p>堆栈（英语：stack），也可直接称栈，在计算机科学中，是一种特殊的串列形式的数据结构，它的特殊之处在于只能允许在链接串列或阵列的一端（称为堆叠顶端指标，英语：top）进行加入资料（英语：push）和输出资料（英语：pop）的运算。另外堆叠也可以用一维阵列或连结串列的形式来完成。堆叠的另外一个相对的操作方式称为伫列。</p>
+<h2 id="2、堆栈"><a href="#2、堆栈" class="headerlink" title="2、堆栈"></a>2、堆栈</h2><h6 id="什么是堆栈"><a href="#什么是堆栈" class="headerlink" title="什么是堆栈"></a>什么是堆栈</h6><p>堆栈（英语：stack），也可直接称栈，在计算机科学中，是一种特殊的串列形式的数据结构，它的特殊之处在于只能允许在链接串列或阵列的一端（称为堆叠顶端指标，英语：top）进行加入资料（英语：push）和输出资料（英语：pop）的运算。另外堆叠也可以用一维阵列或连结串列的形式来完成。堆叠的另外一个相对的操作方式称为伫列。</p>
 <p>由于堆叠数据结构只允许在一端进行操作，因而按照后进先出（LIFO, Last In First Out）的原理运作。</p>
 <h6 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h6><ul>
 <li>先入后出，后入先出。</li>
@@ -188,13 +188,13 @@
 <li>push():向栈里添加一个对象</li>
 <li>pop():从栈里推出一个对象</li>
 </ul>
-<h2 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h2><h6 id="什么是队列"><a href="#什么是队列" class="headerlink" title="什么是队列"></a>什么是队列</h6><p>和堆栈类似，唯一的区别是队列只能在队头进行出队操作，所以队列是是先进先出（FIFO, First-In-First-Out）的线性表</p>
+<h2 id="3、队列"><a href="#3、队列" class="headerlink" title="3、队列"></a>3、队列</h2><h6 id="什么是队列"><a href="#什么是队列" class="headerlink" title="什么是队列"></a>什么是队列</h6><p>和堆栈类似，唯一的区别是队列只能在队头进行出队操作，所以队列是是先进先出（FIFO, First-In-First-Out）的线性表</p>
 <h6 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h6><p>先入先出,后入后出<br>除尾节点外,每个节点有一个后继<br>（可选）除头节点外,每个节点有一个前驱</p>
 <h6 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h6><p>push（）:入队<br>pop（）：出队</p>
-<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h6 id="什么是链表"><a href="#什么是链表" class="headerlink" title="什么是链表"></a>什么是链表</h6><p>链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)。由于不必须按顺序存储，链表在插入的时候可以达到O(1)的复杂度，比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要O(n)的时间，而顺序表相应的时间复杂度分别是O(logn)和O(1)。</p>
+<h2 id="4、链表"><a href="#4、链表" class="headerlink" title="4、链表"></a>4、链表</h2><h6 id="什么是链表"><a href="#什么是链表" class="headerlink" title="什么是链表"></a>什么是链表</h6><p>链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)。由于不必须按顺序存储，链表在插入的时候可以达到O(1)的复杂度，比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要O(n)的时间，而顺序表相应的时间复杂度分别是O(logn)和O(1)。</p>
 <h6 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h6><p>使用链表结构可以克服数组链表需要预先知道数据大小的缺点，链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。</p>
 <h6 id="操作-2"><a href="#操作-2" class="headerlink" title="操作"></a>操作</h6><p>init():初始化<br>insert(): 插入<br>trave(): 遍历<br>delete(): 删除<br>find(): 查找</p>
-<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><h6 id="什么是堆"><a href="#什么是堆" class="headerlink" title="什么是堆"></a>什么是堆</h6><p>一种特殊的队列，队列中元素出栈的顺序是按照元素的优先权大小，而不是元素入队的先后顺序。</p>
+<h2 id="5、堆"><a href="#5、堆" class="headerlink" title="5、堆"></a>5、堆</h2><h6 id="什么是堆"><a href="#什么是堆" class="headerlink" title="什么是堆"></a>什么是堆</h6><p>一种特殊的队列，队列中元素出栈的顺序是按照元素的优先权大小，而不是元素入队的先后顺序。</p>
 <p><img src="/images/pasted-0.png" alt="heap"></p>
 <h6 id="堆的特性："><a href="#堆的特性：" class="headerlink" title="堆的特性："></a>堆的特性：</h6><ul>
 <li>必须是完全二叉树</li>
@@ -206,8 +206,18 @@
 </li>
 </ul>
 <p><img src="/images/pasted-1.png" alt="最大堆"></p>
-<p><img src="/images/pasted-2.png" alt="最小堆"></p>
-
+<p><img src="/images/pasted-2.png" alt="最小堆"><br>可以看到，对于堆（Heap）这种数据结构，从根节点到任意结点路径上所有的结点都是有序的。</p>
+<h6 id="堆的基本操作"><a href="#堆的基本操作" class="headerlink" title="堆的基本操作"></a>堆的基本操作</h6><p>堆是一棵完全二叉树，高度为O（lg n），其基本操作至多与树的高度成正比。在介绍堆的基本操作之前，先介绍几个基本术语：</p>
+<pre><code>A：用于表示堆的数组，下标从1开始，一直到n
+PARENT(t)：节点t的父节点，即floor(t/2)
+RIGHT(t)：节点t的左孩子节点，即:2*t
+LEFT(t)：节点t的右孩子节点，即:2*t+1
+HEAP_SIZE(A)：堆A当前的元素数目
+</code></pre><p>保持堆的性质 Heapify(A,n,t)</p>
+<pre><code>该操作主要用于维持堆的基本性质。假定以RIGHT(t)和LEFT(t)为根的子树都已经是堆，然后调整以t为根的子树，使之成为堆。
+</code></pre><p>建堆 BuildHeap(A,n)</p>
+<pre><code>操作主要是将数组A转化成一个大顶堆。思想是，先找到堆的最后一个非叶子节点（即为第n/2个节点），然后从该节点开始，从后往前逐个调整每个子树，使之称为堆，最终整个数组便是一个堆。子数组A[(n/2)+1..n]中的元素都是树中的叶子，因此都可以看作是只含有一个元素的堆。
+</code></pre>
       
 
       
