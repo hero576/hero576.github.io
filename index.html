@@ -185,6 +185,25 @@
 <li>push():向栈里添加一个对象</li>
 <li>pop():从栈里推出一个对象</li>
 </ul>
+<h2 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h2><h6 id="什么是队列"><a href="#什么是队列" class="headerlink" title="什么是队列"></a>什么是队列</h6><p>和堆栈类似，唯一的区别是队列只能在队头进行出队操作，所以队列是是先进先出（FIFO, First-In-First-Out）的线性表</p>
+<h6 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h6><p>先入先出,后入后出<br>除尾节点外,每个节点有一个后继<br>（可选）除头节点外,每个节点有一个前驱</p>
+<h6 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h6><p>push（）:入队<br>pop（）：出队</p>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h6 id="什么是链表"><a href="#什么是链表" class="headerlink" title="什么是链表"></a>什么是链表</h6><p>链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)。由于不必须按顺序存储，链表在插入的时候可以达到O(1)的复杂度，比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要O(n)的时间，而顺序表相应的时间复杂度分别是O(logn)和O(1)。</p>
+<h6 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h6><p>使用链表结构可以克服数组链表需要预先知道数据大小的缺点，链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。</p>
+<h6 id="操作-2"><a href="#操作-2" class="headerlink" title="操作"></a>操作</h6><p>init():初始化<br>insert(): 插入<br>trave(): 遍历<br>delete(): 删除<br>find(): 查找</p>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><h6 id="什么是堆"><a href="#什么是堆" class="headerlink" title="什么是堆"></a>什么是堆</h6><p>一种特殊的队列，队列中元素出栈的顺序是按照元素的优先权大小，而不是元素入队的先后顺序。</p>
+<p><img src="\\images\pasted-0.png\" alt="upload successful"></p>
+<h6 id="堆的特性："><a href="#堆的特性：" class="headerlink" title="堆的特性："></a>堆的特性：</h6><ul>
+<li>必须是完全二叉树</li>
+<li>用数组实现</li>
+<li>任一结点的值是其子树所有结点的最大值或最小值<ul>
+<li>最大值时，称为“最大堆”，也称大顶堆；</li>
+<li>最小值时，称为“最小堆”，也称小顶堆。</li>
+</ul>
+</li>
+</ul>
+<p><img src="\\images\pasted-1.png\" alt="upload successful"></p>
+<p><img src="\\images\pasted-2.png\" alt="upload successful"></p>
 
       
 
