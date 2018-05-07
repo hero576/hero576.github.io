@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>数据结构——基本线性数据结构——数组及Python实现 | hero576的博客</title>
+  <title>数据结构——基本线性数据结构——数组 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="1、数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心">
 <meta name="keywords" content="数据结构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据结构——基本线性数据结构——数组及Python实现">
+<meta property="og:title" content="数据结构——基本线性数据结构——数组">
 <meta property="og:url" content="http://yoursite.com/2018/05/07/hello-world/index.html">
 <meta property="og:site_name" content="hero576的博客">
 <meta property="og:description" content="1、数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-07T12:33:12.125Z">
+<meta property="og:updated_time" content="2018-05-07T13:35:42.058Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数据结构——基本线性数据结构——数组及Python实现">
+<meta name="twitter:title" content="数据结构——基本线性数据结构——数组">
 <meta name="twitter:description" content="1、数组数组的设计数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：  请求空间以后大小固定，不能再改变（数据溢出问题）； 在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间； 在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
@@ -152,7 +152,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      数据结构——基本线性数据结构——数组及Python实现
+      数据结构——基本线性数据结构——数组
     </h1>
   
 
@@ -172,6 +172,9 @@
 <li>在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分的内存上）。</li>
 </ol>
 <p>因为简单数组强烈倚赖电脑硬件之内存，所以不适用于现代的程序设计。欲使用可变大小、硬件无关性的数据类型，Java等程序设计语言均提供了更高级的数据结构：ArrayList、Vector等动态数组。</p>
+<h6 id="python数组的实现"><a href="#python数组的实现" class="headerlink" title="python数组的实现"></a>python数组的实现</h6><p>首先来一个错误的实现方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list=[[]]*<span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[], [], []]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[<span class="number">3</span>], [<span class="number">3</span>], [<span class="number">3</span>]]</span><br></pre></td></tr></table></figure></p>
+<p>*号运算只是对原来数据的多次引用，也就是说实际上，我们用*号创建的二位数组其实只是将原来的一位数组复制了多次，我们并不能用其实现二维数组的功能。<br>官方推荐使用列表生成式：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list=[[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[<span class="number">3</span>], [], []]</span><br></pre></td></tr></table></figure></p>
+<p>所以，二维数组可以这样实现：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>array=[[<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>)] <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>array</span><br><span class="line">[[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]]</span><br></pre></td></tr></table></figure></p>
 
       
 
@@ -264,6 +267,20 @@
 </article>
 
   
+<nav id="article-nav">
+  
+    <a href="/2018/05/07/数据结构——基本线性数据结构——堆栈及Python实现/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          数据结构——基本线性数据结构——堆栈及Python实现
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
