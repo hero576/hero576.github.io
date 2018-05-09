@@ -146,34 +146,74 @@
           <div id="js-content" class="content-ll">
             
   
-  
+    <article id="post-MongoDB的基本使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/08/MongoDB的基本使用/" class="archive-article-date">
-  	<time datetime="2018-05-08T09:28:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/08/MongoDB的基本使用/">MongoDB的基本使用</a>
+      <a class="article-title" href="/2018/05/08/MongoDB的基本使用/">MongoDB的基本使用</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/05/08/MongoDB的基本使用/" class="archive-article-date">
+  	<time datetime="2018-05-08T09:28:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://docs.mongodb.com/manual/introduction/" target="_blank" rel="noopener">官方文档链接</a></p>
+<h2 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h2><h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><ol>
+<li><p>下载完安装包，并解压 tgz（以下演示的是 64 位 Linux上的安装）。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.6.tgz # 下载</span><br><span class="line">tar -zxvf mongodb-linux-x86_64-3.0.6.tgz # 解压</span><br><span class="line">mv  mongodb-linux-x86_64-3.0.6/ /usr/local/mongodb # 将解压包拷贝到指定目录</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MongoDB 的可执行文件位于 bin 目录下，所以可以将其添加到 PATH 路径中：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&lt;mongodb-install-directory&gt;/bin:$PATH</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>mongodb-install-directory 为 MongoDB 的安装路径。如本文的 /usr/local/mongodb 。  </p>
+<ol start="3">
+<li><p>创建数据库目录<br>MongoDB的数据存储在data目录的db目录下，但是这个目录在安装过程不会自动创建，所以你需要手动创建data目录，并在data目录中创建db目录。以下实例中我们将data目录创建于根目录下(/)。<br><strong>注意：</strong>/data/db 是 MongoDB 默认的启动的数据库路径(–dbpath)。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /data/db</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令行中运行 MongoDB 服务</p>
+<ul>
+<li><p>可以在 /usr/local/mongodb/bin/ 目录下使用命令：　　</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mongod</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 /usr/local/mongodb/ 下添加conf目录，并添加mongodb.conf配置文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./mongod -f /usr/local/mongodb/conf/mongodb.conf 　　或者</span><br><span class="line">./mongod --config /usr/local/mongodb/conf/mongodb.conf</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<p>mongodb.conf配置文件内容如下：</p>
+<pre><code class="shelldbpath=/data/db">bind_ip=127.0.0.1
+port=27017
+fork=true
+logappend=true
+shardsvr=true
+pidfilepath=/usr/local/mongodb/mongo.pid
+logpath=/usr/local/mongodb/log/mongodb.log
+</code></pre>
+<ol start="5">
+<li>设置开机启动mongo  <ul>
+<li>将/usr/local/mongodb/bin/mongod<br>–dbpath /data/db<br>–fork<br>–port 27017 –logpath=/usr/local/mongodb/log/mongodb.log<br>–logappend<br>添加到 /etc/rc.local 中。</li>
+</ul>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -185,7 +225,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -198,18 +238,39 @@
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/08/MongoDB的基本使用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
-  
 
-    
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
 
+
+
+
+  
+  
 
           </div>
         </div>
