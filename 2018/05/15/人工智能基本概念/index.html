@@ -8,23 +8,23 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>人工智能——决策树算法 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="决策树决策树以树状结构表示数据分类结果。包含  根节点 非叶子节点（决策点、测试条件） 叶子结点（分类后所得的分类标记） 分支（测试结果）上图就是一个决策树，  熵的概念几个重要的概念：  由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$   $H(X)$：事件X发生的不确定性。$P(X)$越小，$">
+  <meta name="description" content="决策树决策树以树状结构表示数据分类结果。包含  根节点 非叶子节点（决策点、测试条件） 叶子结点（分类后所得的分类标记） 分支（测试结果）  熵的概念几个重要的概念：  由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$   $H(X)$：事件X发生的不确定性。$P(X)$越小，$H(X)$越小，$P">
 <meta name="keywords" content="py通红">
 <meta property="og:type" content="article">
 <meta property="og:title" content="人工智能——决策树算法">
 <meta property="og:url" content="http://yoursite.com/2018/05/15/人工智能基本概念/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="决策树决策树以树状结构表示数据分类结果。包含  根节点 非叶子节点（决策点、测试条件） 叶子结点（分类后所得的分类标记） 分支（测试结果）上图就是一个决策树，  熵的概念几个重要的概念：  由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$   $H(X)$：事件X发生的不确定性。$P(X)$越小，$">
+<meta property="og:description" content="决策树决策树以树状结构表示数据分类结果。包含  根节点 非叶子节点（决策点、测试条件） 叶子结点（分类后所得的分类标记） 分支（测试结果）  熵的概念几个重要的概念：  由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$   $H(X)$：事件X发生的不确定性。$P(X)$越小，$H(X)$越小，$P">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/images/pasted-4.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-5.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-12.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-15.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-14.png">
-<meta property="og:updated_time" content="2018-05-15T13:50:50.507Z">
+<meta property="og:updated_time" content="2018-05-15T13:56:39.157Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="人工智能——决策树算法">
-<meta name="twitter:description" content="决策树决策树以树状结构表示数据分类结果。包含  根节点 非叶子节点（决策点、测试条件） 叶子结点（分类后所得的分类标记） 分支（测试结果）上图就是一个决策树，  熵的概念几个重要的概念：  由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$   $H(X)$：事件X发生的不确定性。$P(X)$越小，$">
+<meta name="twitter:description" content="决策树决策树以树状结构表示数据分类结果。包含  根节点 非叶子节点（决策点、测试条件） 叶子结点（分类后所得的分类标记） 分支（测试结果）  熵的概念几个重要的概念：  由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$   $H(X)$：事件X发生的不确定性。$P(X)$越小，$H(X)$越小，$P">
 <meta name="twitter:image" content="http://yoursite.com/images/pasted-4.png">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
@@ -176,7 +176,7 @@
 <li>根节点</li>
 <li>非叶子节点（决策点、测试条件）</li>
 <li>叶子结点（分类后所得的分类标记）</li>
-<li>分支（测试结果）<br><img src="/images/pasted-4.png" alt="upload successful"><br>上图就是一个决策树，</li>
+<li>分支（测试结果）<br><img src="/images/pasted-4.png" alt="upload successful"></li>
 </ul>
 <h3 id="熵的概念"><a href="#熵的概念" class="headerlink" title="熵的概念"></a>熵的概念</h3><p>几个重要的概念：</p>
 <ul>
@@ -215,7 +215,7 @@
 <h2 id="python实现"><a href="#python实现" class="headerlink" title="python实现"></a>python实现</h2><p>数据是这样的，根据年龄、收入、是否是学生、信用数据构建决策树：<br><img src="/images/pasted-15.png" alt="upload successful"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing,tree</span><br><span class="line"><span class="keyword">from</span> sklearn.externals.six <span class="keyword">import</span> StringIO</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd_data = pd.read_csv(<span class="string">'data/tree.csv'</span>)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line">f= open(<span class="string">'data/tree.csv'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf8'</span>)</span><br><span class="line">reader = csv.reader(f)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    labelList.append(row[len(row)<span class="number">-1</span>])</span><br><span class="line">    rowDict=&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(row)<span class="number">-1</span>):</span><br><span class="line">        rowDict[pd_data.columns[i]]=row[i]</span><br><span class="line">    featureList.append(rowDict)</span><br><span class="line">featureList.pop(<span class="number">0</span>)</span><br><span class="line">labelList.pop(<span class="number">0</span>)</span><br><span class="line">vec=DictVectorizer()</span><br><span class="line">dummyX=vec.fit_transform(featureList).toarray()</span><br><span class="line">lb=preprocessing.LabelBinarizer()</span><br><span class="line">dummyY=lb.fit_transform(labelList)</span><br><span class="line">clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART</span></span><br><span class="line">clf=clf.fit(dummyX,dummyY)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'data/tree.dot'</span>,<span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f=tree.export_graphviz(clf,feature_names=vec.get_feature_names(),out_file=f)</span><br></pre></td></tr></table></figure>
 <p>windows中，可以安装<a href="http://www.graphviz.org" target="_blank" rel="noopener">Graphviz</a>将dot文件转为pdf，可视化决策树。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dot - Tpdf tree.dot -o tree.pdf</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dot -Tpdf tree.dot -o tree.pdf</span><br></pre></td></tr></table></figure>
 <p><img src="/images/pasted-14.png" alt="upload successful"></p>
 <p>样本数据进行交叉验证：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">(training_inputs,</span><br><span class="line"> testing_inputs,</span><br><span class="line"> training_classes,</span><br><span class="line"> testing_classes) = train_test_split(dummyX, dummyY, train_size=<span class="number">0.75</span>, random_state=<span class="number">1</span>)</span><br><span class="line"> clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART，设置为ID3</span></span><br><span class="line">clf=clf.fit(training_inputs,training_classes)</span><br><span class="line">clf.score(testing_inputs, testing_classes)</span><br></pre></td></tr></table></figure></p>
 <p>可以看出，这个决策树的得分是0.5，是个很低的预测结果，原因可能是数据太少了，交叉验证后供决策树提供分支的数据不足。可以调整参数，尝试使用CART得分是0.75。</p>
@@ -457,11 +457,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">
