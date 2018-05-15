@@ -146,6 +146,115 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-人工智能基本概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/15/人工智能基本概念/">人工智能——决策树算法</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/15/人工智能基本概念/" class="archive-article-date">
+  	<time datetime="2018-05-15T06:19:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p>决策树以树状结构表示数据分类结果。包含</p>
+<ul>
+<li>根节点</li>
+<li>非叶子节点（决策点、测试条件）</li>
+<li>叶子结点（分类后所得的分类标记）</li>
+<li>分支（测试结果）<br><img src="/images/pasted-4.png" alt="upload successful"><br>上图就是一个决策树，</li>
+</ul>
+<h3 id="熵的概念"><a href="#熵的概念" class="headerlink" title="熵的概念"></a>熵的概念</h3><p>几个重要的概念：</p>
+<ul>
+<li>由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$  </li>
+<li>$H(X)$：事件X发生的不确定性。$P(X)$越小，$H(X)$越小，$P(X)$越大，$H(X)$越大。<br>信息量的大小和它的不确定性有直接的关系，要搞清楚意见非常不确定的事情，就需要大量的信息。<br>香农布朗就用比特（bit）来衡量信息量的多少<br>$$ H(X)=-\sum_{i} p_i \log_{2}p_i$$<br><strong>熵的计算公式</strong><br>熵：表征一个物体内部的混乱程度。<br>$$Entropy=-\sum_{i=1}^n p_i \ln_{p_i}$$<br>Gini系数：$$Gini(p)=\sum_{k=1}^K p_k(1-p_k)=1-\sum_{k=1}^K p_k^2$$<br>决策树划分节点的规则：节点熵迅速降低。熵降低的速度越快越好。将熵值最大的当做根节点，分类后，再继续判断下一层的熵值。</li>
+</ul>
+<h3 id="归纳算法"><a href="#归纳算法" class="headerlink" title="归纳算法"></a>归纳算法</h3><h4 id="ID3"><a href="#ID3" class="headerlink" title="ID3"></a>ID3</h4><p>度量方法：信息获取量（information Gain）纯度差，也称为信息增益。例如通过A作为节点分类获取了多少信息 ：<br>$$Gain(A)=Info(D)-Info_A(D)$$<br>Info(D)代表不纯度</p>
+<p><img src="/images/pasted-5.png" alt="upload successful"></p>
+<p>例如按照年龄区分时，得到信息获取量：</p>
+<p><img src="/images/pasted-12.png" alt="upload successful"></p>
+<p>然后按照收入、是否是学生、信用率求得对应的值，用信息量最大的参数当做当前节点划分的依据。不断重复这个步骤，直到满足停止条件停止。</p>
+<p>这个就是ID3算法的大致步骤。</p>
+<h4 id="C4-5"><a href="#C4-5" class="headerlink" title="C4.5"></a>C4.5</h4><p>度量方法：Gain Ration<br>由于ID3对于信息中类似索引的数值特别的敏感，这个属性会将决策树过分的划分出很多分支，造成模型效果性能较差。<br>C4.5是ID3算法的拓展，引入了增益率，比上自身的熵值。<br>C4.5能够处理连续型的属性。首先将连续型属性离散化，划分为不同的区间，</p>
+<h4 id="CART"><a href="#CART" class="headerlink" title="CART"></a>CART</h4><p>Classification and Regression Trees<br>度量方法：Gini系数</p>
+<h3 id="评价函数"><a href="#评价函数" class="headerlink" title="评价函数"></a>评价函数</h3><p>评价函数是评估所有叶子节点的纯度很大，所以定义评价函数C(T)。<br>$$C(T)=\sum_{t∈leaf}N_t·H(t)$$<br>$N_t$表示叶子结点的个数（相当于权重值），乘上熵值。评价决策树的优劣，C(T)的值越小越好。</p>
+<h3 id="停止条件"><a href="#停止条件" class="headerlink" title="停止条件"></a>停止条件</h3><p>决策树的构建过程是一个递归的过程，所以需要确定停止条件，否则过程将不会结束。</p>
+<ul>
+<li>一般一种最直观的方式是当每个子节点只有一种类型的记录时停止，但是这样往往会使得树的节点过多，导致过拟合问题（Overfitting）。</li>
+<li>另一种可行的方法是当前节点中的记录数低于一个最小的阀值，那么就停止分割，将max(P(i))对应的分类作为当前叶节点的分类。</li>
+</ul>
+<h3 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h3><p>策树高度过高，会导致模型的过拟合。这样如果存在错误样本，会导致模型性能下降。一般通过预剪枝、后剪枝优化决策树。</p>
+<ul>
+<li><strong>预剪枝：</strong>首先设定决策树最大深度，在决预剪枝在构建过程中，如果查过了最大深度则提前停止。</li>
+<li><strong>后剪枝：</strong>当构建完成决策树后，根据评价函数$C_{\alpha}(T)=C(T)+\alpha|T_{leaf}|$，不光看$C(T)$损失函数，还要看叶子结点的个数越多，也要进行剪枝。$\alpha$是可以指定的。</li>
+</ul>
+<h2 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h2><p>决策树由于容易产生过拟合，出现了随机森林，减小了过拟合现象。<br>随机森林是通过多个决策树进行组合生成的。</p>
+<h3 id="采样方式"><a href="#采样方式" class="headerlink" title="采样方式"></a>采样方式</h3><ul>
+<li><strong>Bootstraping：</strong>有放回的采样</li>
+<li><strong>Bagging：</strong>有放回采样n个样本一共建立分类器</li>
+</ul>
+<h3 id="构建方法"><a href="#构建方法" class="headerlink" title="构建方法"></a>构建方法</h3><p>构建多颗决策树，结果是所有的决策树共同决定的。对于分类任务可以取出现最多，回归操作可以取均值。</p>
+<h3 id="随机性的体现"><a href="#随机性的体现" class="headerlink" title="随机性的体现"></a>随机性的体现</h3><ol>
+<li>数据选择随机性：n个样本中，采集60%的样本个数的集合作为数据，去除异常样本影响。</li>
+<li>特征随机性：在d个特种中，随机选择其中一些特征。</li>
+</ol>
+<h2 id="python实现"><a href="#python实现" class="headerlink" title="python实现"></a>python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing,tree</span><br><span class="line"><span class="keyword">from</span> sklearn.externals.six <span class="keyword">import</span> StringIO</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd_data = pd.read_csv(<span class="string">'data/tree.csv'</span>)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line">f= open(<span class="string">'data/tree.csv'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf8'</span>)</span><br><span class="line">reader = csv.reader(f)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    labelList.append(row[len(row)<span class="number">-1</span>])</span><br><span class="line">    rowDict=&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(row)<span class="number">-1</span>):</span><br><span class="line">        rowDict[pd_data.columns[i]]=row[i]</span><br><span class="line">    featureList.append(rowDict)</span><br><span class="line">featureList.pop(<span class="number">0</span>)</span><br><span class="line">labelList.pop(<span class="number">0</span>)</span><br><span class="line">vec=DictVectorizer()</span><br><span class="line">dummyX=vec.fit_transform(featureList).toarray()</span><br><span class="line">lb=preprocessing.LabelBinarizer()</span><br><span class="line">dummyY=lb.fit_transform(labelList)</span><br><span class="line">clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART</span></span><br><span class="line">clf=clf.fit(dummyX,dummyY)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'data/tree.dot'</span>,<span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f=tree.export_graphviz(clf,feature_names=vec.get_feature_names(),out_file=f)</span><br></pre></td></tr></table></figure>
+<p>windows中，可以安装<a href="http://www.graphviz.org" target="_blank" rel="noopener">Graphviz</a>将dot文件转为pdf，可视化决策树。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dot - Tpdf tree.dot -o tree.pdf</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pasted-14.png" alt="upload successful"></p>
+<p>样本数据进行交叉验证：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">(training_inputs,</span><br><span class="line"> testing_inputs,</span><br><span class="line"> training_classes,</span><br><span class="line"> testing_classes) = train_test_split(dummyX, dummyY, train_size=<span class="number">0.75</span>, random_state=<span class="number">1</span>)</span><br><span class="line"> clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART，设置为ID3</span></span><br><span class="line">clf=clf.fit(training_inputs,training_classes)</span><br><span class="line">clf.score(testing_inputs, testing_classes)</span><br></pre></td></tr></table></figure></p>
+<p>可以看出，这个决策树的得分是0.5，是个很低的预测结果(T＿T)。可以调整参数，尝试使用CART得分是0.75。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/15/人工智能基本概念/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-算法题——833-Replace-in-String" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -485,7 +594,7 @@
 <p>Jesen不等式非常重要，几乎是所有不等式的基础。</p>
 <h2 id="Taylor展开式"><a href="#Taylor展开式" class="headerlink" title="Taylor展开式"></a>Taylor展开式</h2><p>$$f(x)=f(x_0)+f’(x_0)(x-x_0)+\frac{f’’(x_0)}{2!}(x-x_0)^2+…+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+R_n(x)$$<br>在$x=0$对$f(x)$进行Taylor展开就是Maclaurin公式<br>$$f(x)=f(0)+f’(0)x+\frac{f’’(0)}{2!}x^2+…+\frac{f^{(n)}(x)}{n!}x^n+o(x^{n})$$</p>
 <h3 id="计算函数值"><a href="#计算函数值" class="headerlink" title="计算函数值"></a>计算函数值</h3><p>Taylor公式的应用首先可以计算初等函数值，一般在远点展开<br>$$\sin x=x-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!}+\frac{x^9}{9!}-…+(-1)^{m-1}\frac{x^{2m-1}}{(2m-1)!}+R_{2m}$$<br>$$e^x=1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+…+\frac{x^n}{n!}+R_n$$<br>通过泰勒展开，可以对函数值最近似求解。例如下题<br><img src="http://p8cigu7up.bkt.clouddn.com/1526176929364zt7rzxq6.png?imageslim" alt="paste image"><br>k是整数，$2^k$比较好求，$e^r$就可以通过Taylor展开近似的求解</p>
-<h3 id="Gini系数公式"><a href="#Gini系数公式" class="headerlink" title="Gini系数公式"></a>Gini系数公式</h3><p>Gini系数、熵、匪类误差率有下图显示的关系：<br><img src="http://p8cigu7up.bkt.clouddn.com/15261766665534b21yx3j.png?imageslim" alt="paste image"><br>熵的定义为：$H(x)=-\sum_{k=1}^K p_k·\ln p_k$<br>Gini系数利用了$f(x)=-\ln x$在$x=1$处的一阶展开，忽略高阶无穷小，近似得到$f(x)\approx 1-x$，熵就可以近似求解为：$H(x)\approx \sum_{k=1}^K p_k·(1-p_k)$</p>
+<h3 id="Gini系数公式"><a href="#Gini系数公式" class="headerlink" title="Gini系数公式"></a>Gini系数公式</h3><p>Gini系数、熵、分类误差率有下图显示的关系：<br><img src="http://p8cigu7up.bkt.clouddn.com/15261766665534b21yx3j.png?imageslim" alt="paste image"><br>熵的定义为：$H(x)=-\sum_{k=1}^K p_k·\ln p_k$<br>Gini系数利用了$f(x)=-\ln x$在$x=1$处的一阶展开，忽略高阶无穷小，近似得到$f(x)\approx 1-x$，熵就可以近似求解为：$H(x)\approx \sum_{k=1}^K p_k·(1-p_k)$</p>
 <h3 id="平方根公式"><a href="#平方根公式" class="headerlink" title="平方根公式"></a>平方根公式</h3><p>Taylor公式的另一个应用，可以求解平方根，例如一个数a的平方根的值，$a=x^2$，令$f(x)=x^2-a$，即$f(x)=0$<br>$$ f(x)=f(x_0)+f’(x_0)(x-x_0)+o(x)$$<br>在任意点$x_0$做Taylor展开可得：$f(x)=0\approx f(x_0)+f’(x_0)(x-x_0)$—-&gt;$x-x_0=\frac{f(x_0)}{f’(x_0)}$—-&gt;$x=x_0+\frac{f(x_0)}{f’(x_0)}$  </p>
 <p>由于$f(x_0)=x_0^2-a$，$f’(x_0)=2x_0$，所以可得$x=\frac{1}{2}(x_0+\frac{a}{x_0})$，$f(x_0)≠0$，给定任意一个x0，求解x1，然后将x1再带入公式求解x2，直到xn-xn+1足够小的时候，作为平方根的解，一般5至6次就可以得到很好的解了。</p>
 <h2 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h2><h3 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h3><p>如果要估计θ，而且已经建立了目标函数J(θ)，例如最小二乘法建立的目标函数（损失函数）：$$J(\theta)=\frac{1}{2}\sum_{i=1}^m(h_{\theta}(x^{(i)})-y^{(i)})^2$$，想计算一个$θ^*$，可以使得$J(θ)$最小。计算方法：随机或者先验的给定$θ$初值，然后沿着负梯度方向迭代，更新$θ$使得$J(θ)$减小，$\theta_j=\theta_j-\alpha·\frac{\partial J(\theta)}{\partial \theta}$，$\alpha$是学习率。  </p>
@@ -1243,267 +1352,6 @@ logpath=/usr/local/mongodb/log/mongodb.log
 
 
   
-    <article id="post-time和datetime模块" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/08/time和datetime模块/">time和datetime模块</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/08/time和datetime模块/" class="archive-article-date">
-  	<time datetime="2018-05-08T09:05:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="时间模块"><a href="#时间模块" class="headerlink" title="时间模块"></a>时间模块</h2><p>python 中时间表示方法有：时间戳，即从1975年1月1日00:00:00到现在的秒数；格式化后的时间字符串；时间struct_time 元组。</p>
-<p>struct_time元组中元素主要包括：</p>
-<ul>
-<li>tm_year（年）、tm_mon（月）、tm_mday（日）、tm_hour（时）、tm_min（分）、tm_sec（秒）、tm_wday（weekday0 - 6（0表示周日））、tm_yday（一年中的第几天1 - 366）、tm_isdst（是否是夏令时）</li>
-</ul>
-<h2 id="time"><a href="#time" class="headerlink" title="time"></a>time</h2><h3 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h3><ul>
-<li>time.time()返回当前时间戳</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.time()</span><br><span class="line"><span class="number">1465370844.096474</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.ctime() 返回这种格式的时间字符’Wed Jun 8 15:27:48 2016’，显示当前时间.同时也可以转换时间戳</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.ctime()</span><br><span class="line"><span class="string">'Wed Jun  8 15:27:48 2016'</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.ctime(time.time()<span class="number">-86400</span>)</span><br><span class="line"><span class="string">'Tue Jun  7 15:29:36 2016'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.gmtime 将时间戳转换成struct_time格式，此显示的是格林威治0时区的时间</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.gmtime()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">7</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.gmtime(time.time() - <span class="number">86400</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">7</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">41</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.localtime 将当前系统时间戳转化为struct_time格式 </li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.localtime()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">35</span>, tm_sec=<span class="number">33</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.localtime(time.time() - <span class="number">86400</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">37</span>, tm_sec=<span class="number">10</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.mktime 将struct_time格式转回成时间戳</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>now = time.localtime()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>now</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">38</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.mktime(now)</span><br><span class="line"><span class="number">1465371508.0</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.strftime 将struct_time格式转成指定的字符串格式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>now = time.localtime()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>now</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">38</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = time.localtime(time.time() - <span class="number">86400</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">40</span>, tm_sec=<span class="number">23</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,last)</span><br><span class="line"><span class="string">'2016-06-07 15:40:23'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,now)</span><br><span class="line"><span class="string">'2016-06-08 15:38:28'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.strptime 将自定义时间格式的字符串转换为struct_time格式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strptime(<span class="string">"2016-06-08"</span>,<span class="string">"%Y-%m-%d"</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">0</span>, tm_min=<span class="number">0</span>, tm_sec=<span class="number">0</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strptime(<span class="string">"2016-06-08 15:50:44"</span>,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">50</span>, tm_sec=<span class="number">44</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.sleep 暂停时间，类似于shell的sleep()</li>
-<li>其他<ul>
-<li>时间格式：</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>格式</th>
-<th style="text-align:center">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>%a</td>
-<td style="text-align:center">显示简化星期名称</td>
-</tr>
-<tr>
-<td>%A</td>
-<td style="text-align:center">显示完整星期名称</td>
-</tr>
-<tr>
-<td>%b</td>
-<td style="text-align:center">显示简化月份名称</td>
-</tr>
-<tr>
-<td>%B</td>
-<td style="text-align:center">显示完整月份名称</td>
-</tr>
-<tr>
-<td>%c</td>
-<td style="text-align:center">本地相应的日期和时间表示</td>
-</tr>
-<tr>
-<td>%d</td>
-<td style="text-align:center">显示当月第几天</td>
-</tr>
-<tr>
-<td>%H</td>
-<td style="text-align:center">按24小时制显示小时</td>
-</tr>
-<tr>
-<td>%I</td>
-<td style="text-align:center">按12小时制显示小时</td>
-</tr>
-<tr>
-<td>%j</td>
-<td style="text-align:center">显示当年第几天</td>
-</tr>
-<tr>
-<td>%m</td>
-<td style="text-align:center">显示月份</td>
-</tr>
-<tr>
-<td>%M</td>
-<td style="text-align:center">显示分钟数）</td>
-</tr>
-<tr>
-<td>%p</td>
-<td style="text-align:center">本地am或者pm的相应符</td>
-</tr>
-<tr>
-<td>%S</td>
-<td style="text-align:center">显示秒数）</td>
-</tr>
-<tr>
-<td>%U</td>
-<td style="text-align:center">一年中的星期数</td>
-</tr>
-<tr>
-<td>%w</td>
-<td style="text-align:center">显示在星期中的第几天，默认从0开始表示周一</td>
-</tr>
-<tr>
-<td>%W</td>
-<td style="text-align:center">和%U基本相同</td>
-</tr>
-<tr>
-<td>%x</td>
-<td style="text-align:center">本地相应日期</td>
-</tr>
-<tr>
-<td>%X</td>
-<td style="text-align:center">本地相应时间</td>
-</tr>
-<tr>
-<td>%y</td>
-<td style="text-align:center">去掉世纪的年份（00 - 99）</td>
-</tr>
-<tr>
-<td>%Y</td>
-<td style="text-align:center">完整的年份</td>
-</tr>
-<tr>
-<td>%Z</td>
-<td style="text-align:center">时区的名字（如果不存在为空字符）</td>
-</tr>
-<tr>
-<td>%%</td>
-<td style="text-align:center">‘%’字符</td>
-</tr>
-<tr>
-<td>o</td>
-<td style="text-align:center">时间函数之间转换关系</td>
-</tr>
-</tbody>
-</table>
-<p> ￼</p>
-<h2 id="datetime"><a href="#datetime" class="headerlink" title="datetime"></a>datetime</h2><p>datime是time的升级版，可以对date(日期)、time(时间)、datetime（日期时间）等三种单独管理。主要是由下面四个类组成</p>
-<ul>
-<li><p>datetime.datetime常用函数（datetime.date datetime.time通用）</p>
-</li>
-<li><p>datetime.datetime.today() 默认返回当前日期和时间的对象，也可以自定义日期和时间</p>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    &gt;&gt;&gt; today = datetime.datetime.today()</span><br><span class="line">    &gt;&gt;&gt; print(today)</span><br><span class="line">    <span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br><span class="line">    &gt;&gt;&gt; last = datetime.datetime(<span class="number">2016</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)  ＃注意此处表示日期只能是实际月份，不能带<span class="number">0</span></span><br><span class="line">    &gt;&gt;&gt; print(last)</span><br><span class="line">    <span class="number">2016</span><span class="number">-05</span><span class="number">-08</span> <span class="number">11</span>:<span class="number">23</span>:<span class="number">55</span></span><br><span class="line">    </span><br><span class="line">    &gt;&gt;&gt;last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">    last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">                                   ^</span><br><span class="line">SyntaxError: invalid token</span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.datetime.now() 返回当前时间</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>datetime.datetime.now()</span><br><span class="line">datetime.datetime(<span class="number">2016</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">44</span>, <span class="number">29</span>, <span class="number">694398</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.strftime(format)  ＃自定义格式化时间</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>today.strftime(<span class="string">"%I:%M:%S %p %d/%m/%Y"</span>)</span><br><span class="line"> <span class="string">'04:34:08 PM 08/06/2016'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.datetime.timple() 将时间转换为struct_time 格式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;today.timetuple()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">16</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">8</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.replace（）返回一个替换后的date对象</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;last = today.replace(<span class="number">1949</span>,<span class="number">10</span>,<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">1949</span><span class="number">-10</span><span class="number">-01</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = today.replace(year=<span class="number">1919</span>,month=<span class="number">3</span>,day=<span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">1919</span><span class="number">-03</span><span class="number">-02</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.datetime.strptime  将字符串转换为日志格式对象</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">"2016-06-08 17:18:19"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = datetime.datetime.strptime(a,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">17</span>:<span class="number">18</span>:<span class="number">19</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(b)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">17</span>:<span class="number">18</span>:<span class="number">19</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(type(a))</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">print</span><span class="params">(type<span class="params">(b)</span>)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">datetime</span>.<span class="title">datetime</span>'&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.timedelta 时间运算<ul>
-<li>可用参数：days seconds microseconds milliseconds minutes hours weeks</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">today = datetime.datetime.now()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(today)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">16</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>yesterday = today - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(yesterday)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-07</span> <span class="number">16</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last_hour = today - datetime.timedelta(hours=<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last_hour)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">15</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python基础//" class="article-tag-list-link color4">python基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/08/time和datetime模块/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1606,19 +1454,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1626,11 +1466,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
             
             <div class="clearfix"></div>

@@ -36,7 +36,7 @@
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526182698594tz1oorv4.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526188781608ucrz546h.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526195691472ao96bwj9.png?imageslim">
-<meta property="og:updated_time" content="2018-05-13T08:56:57.281Z">
+<meta property="og:updated_time" content="2018-05-15T08:41:29.561Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="人工智能数学基础1">
 <meta name="twitter:description" content="微积分夹逼定理：$g(x)&amp;lt;=f(x)&amp;lt;=h(x)$成立，且$\lim_{x\to0}g(x)=A$$\lim_{x\to0}h(x)=A$,则$\lim_{x\to0}f(x)=A$极限的定义：$\lim_{x\to0}sinx/x=1$,分步积分应用：例如：求$f(x)最小值$  梯度方向导数： φ为x轴到方向L的转角 梯度：梯度方向是函数在该点变化最快的方向。 Jensen不等式">
@@ -195,7 +195,7 @@
 <p>Jesen不等式非常重要，几乎是所有不等式的基础。</p>
 <h2 id="Taylor展开式"><a href="#Taylor展开式" class="headerlink" title="Taylor展开式"></a>Taylor展开式</h2><p>$$f(x)=f(x_0)+f’(x_0)(x-x_0)+\frac{f’’(x_0)}{2!}(x-x_0)^2+…+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+R_n(x)$$<br>在$x=0$对$f(x)$进行Taylor展开就是Maclaurin公式<br>$$f(x)=f(0)+f’(0)x+\frac{f’’(0)}{2!}x^2+…+\frac{f^{(n)}(x)}{n!}x^n+o(x^{n})$$</p>
 <h3 id="计算函数值"><a href="#计算函数值" class="headerlink" title="计算函数值"></a>计算函数值</h3><p>Taylor公式的应用首先可以计算初等函数值，一般在远点展开<br>$$\sin x=x-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!}+\frac{x^9}{9!}-…+(-1)^{m-1}\frac{x^{2m-1}}{(2m-1)!}+R_{2m}$$<br>$$e^x=1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+…+\frac{x^n}{n!}+R_n$$<br>通过泰勒展开，可以对函数值最近似求解。例如下题<br><img src="http://p8cigu7up.bkt.clouddn.com/1526176929364zt7rzxq6.png?imageslim" alt="paste image"><br>k是整数，$2^k$比较好求，$e^r$就可以通过Taylor展开近似的求解</p>
-<h3 id="Gini系数公式"><a href="#Gini系数公式" class="headerlink" title="Gini系数公式"></a>Gini系数公式</h3><p>Gini系数、熵、匪类误差率有下图显示的关系：<br><img src="http://p8cigu7up.bkt.clouddn.com/15261766665534b21yx3j.png?imageslim" alt="paste image"><br>熵的定义为：$H(x)=-\sum_{k=1}^K p_k·\ln p_k$<br>Gini系数利用了$f(x)=-\ln x$在$x=1$处的一阶展开，忽略高阶无穷小，近似得到$f(x)\approx 1-x$，熵就可以近似求解为：$H(x)\approx \sum_{k=1}^K p_k·(1-p_k)$</p>
+<h3 id="Gini系数公式"><a href="#Gini系数公式" class="headerlink" title="Gini系数公式"></a>Gini系数公式</h3><p>Gini系数、熵、分类误差率有下图显示的关系：<br><img src="http://p8cigu7up.bkt.clouddn.com/15261766665534b21yx3j.png?imageslim" alt="paste image"><br>熵的定义为：$H(x)=-\sum_{k=1}^K p_k·\ln p_k$<br>Gini系数利用了$f(x)=-\ln x$在$x=1$处的一阶展开，忽略高阶无穷小，近似得到$f(x)\approx 1-x$，熵就可以近似求解为：$H(x)\approx \sum_{k=1}^K p_k·(1-p_k)$</p>
 <h3 id="平方根公式"><a href="#平方根公式" class="headerlink" title="平方根公式"></a>平方根公式</h3><p>Taylor公式的另一个应用，可以求解平方根，例如一个数a的平方根的值，$a=x^2$，令$f(x)=x^2-a$，即$f(x)=0$<br>$$ f(x)=f(x_0)+f’(x_0)(x-x_0)+o(x)$$<br>在任意点$x_0$做Taylor展开可得：$f(x)=0\approx f(x_0)+f’(x_0)(x-x_0)$—-&gt;$x-x_0=\frac{f(x_0)}{f’(x_0)}$—-&gt;$x=x_0+\frac{f(x_0)}{f’(x_0)}$  </p>
 <p>由于$f(x_0)=x_0^2-a$，$f’(x_0)=2x_0$，所以可得$x=\frac{1}{2}(x_0+\frac{a}{x_0})$，$f(x_0)≠0$，给定任意一个x0，求解x1，然后将x1再带入公式求解x2，直到xn-xn+1足够小的时候，作为平方根的解，一般5至6次就可以得到很好的解了。</p>
 <h2 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h2><h3 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h3><p>如果要估计θ，而且已经建立了目标函数J(θ)，例如最小二乘法建立的目标函数（损失函数）：$$J(\theta)=\frac{1}{2}\sum_{i=1}^m(h_{\theta}(x^{(i)})-y^{(i)})^2$$，想计算一个$θ^*$，可以使得$J(θ)$最小。计算方法：随机或者先验的给定$θ$初值，然后沿着负梯度方向迭代，更新$θ$使得$J(θ)$减小，$\theta_j=\theta_j-\alpha·\frac{\partial J(\theta)}{\partial \theta}$，$\alpha$是学习率。  </p>
@@ -472,19 +472,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -492,11 +484,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
             
             <div class="clearfix"></div>
