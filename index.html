@@ -146,6 +146,250 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-python的垃圾回收" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/16/python的垃圾回收/">python的垃圾回收</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/16/python的垃圾回收/" class="archive-article-date">
+  	<time datetime="2018-05-16T12:48:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>现在的高级语言如java，c#等，都采用了垃圾收集机制，而不再是c，c++里用户自己管理维护内存的方式。自己管理内存极其自由，可以任意申请内存，但如同一把双刃剑，为大量内存泄露，悬空指针等bug埋下隐患。</p>
+<p>python里每一个东西都是对象，它们的核心就是一个结构体：PyObject<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef struct_object &#123;</span><br><span class="line">int ob_refcnt;</span><br><span class="line">struct_typeobject *ob_type;</span><br><span class="line">&#125;PyObject;</span><br></pre></td></tr></table></figure></p>
+<h2 id="引用计数机制"><a href="#引用计数机制" class="headerlink" title="引用计数机制"></a>引用计数机制</h2><p>PyObject是每个对象必有的内容，其中ob_refcnt就是做为引用计数。当一个对象有新的引用时，它的ob_refcnt就会增加，当引用它的对象被删除，它的ob_refcnt就会减少</p>
+<p>引用计数为0时，该对象生命就结束了。</p>
+<p>引用计数机制的优点：</p>
+<ol>
+<li>简单</li>
+<li>实时性：一旦没有引用，内存就直接释放了。不用像其他机制等到特定时机。实时性还带来一个好处：处理回收内存的时间分摊到了平时。        </li>
+</ol>
+<p>引用计数机制的缺点： </p>
+<ol>
+<li>维护引用计数消耗资源 </li>
+<li>如果出现循环引用的话，引用计数机制就不在起有效作用了。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list1 = []</span><br><span class="line">list2 = []</span><br><span class="line">list1.append(list2)</span><br><span class="line">list2.append(list1)</span><br></pre></td></tr></table></figure>
+<p>list1与list2相互引用，如果不存在其他对象对它们的引用，list1与list2的引用计数也仍然为1，所占用的内存永远无法被回收，这将是致命的。</p>
+<p>对于如今的强大硬件，缺点1尚可接受，但是循环引用导致内存泄露，注定python还将引入新的回收机制。</p>
+<h2 id="标记-清除机制"><a href="#标记-清除机制" class="headerlink" title="标记-清除机制"></a>标记-清除机制</h2><p>如果两个对象的引用计数都为1，但是仅仅存在她们之间的循环引用，那么这两个对象都是需要被回收的，也就是说他们的引用计数虽然表现为非0，但实际有效的引用计数为0。所以现将循环引用摘掉，就会得出对象的有用计数。</p>
+<p>缺点：该机制所带来的额外操作和需要回收的内存块成正比。</p>
+<h2 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h2><p>从“标记-清除”的垃圾回收机制来看，当需要回收的内存块较多时，垃圾检测带来的额外操作会增多，而垃圾回收带来的额外操作就越少。反之，内存块较多时，垃圾检测就比垃圾回收带来更少的额外操作。</p>
+<h3 id="内存池"><a href="#内存池" class="headerlink" title="内存池"></a>内存池</h3><ol>
+<li>Python的内存机制呈现金字塔形状，-1，-2层主要有操作系统进行操作；</li>
+<li>第0层是C中的malloc,free等内存分配和释放函数进行操作；</li>
+<li>第1层和第2层是内存池，有Python的接口函数PyMem_Malloc函数实现，当对象小于256K时有该层直接分配内存；</li>
+<li>第3层是最上层，也就是我们对Python对象的直接操作；</li>
+</ol>
+<p>Python在运行期间会大量地执行malloc和free的操作，频繁地在用户态和核心态之间进行切换，这将严重影响Python的执行效率。为了加速Python的执行效率，Python引入了一个内存池机制，用于管理对小块内存的申请和释放。</p>
+<p>Python内部默认的小块内存与大块内存的分界点定在256个字节，当申请的内存小于256字节时，PyObject_Malloc会在内存池中申请内存；当申请的内存大于256字节时，PyObject_Malloc的行为将蜕化为malloc的行为。</p>
+<p>当然，通过修改Python源代码，我们可以改变这个默认值，从而改变Python的默认内存管理行为。有时间可以仔细看看<a href="https://www.jianshu.com/p/1e375fb40506" target="_blank" rel="noopener">一篇垃圾回收讲解比较详细文章</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/16/python的垃圾回收/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-python的命名空间" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/16/python的命名空间/">python的命名空间</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/16/python的命名空间/" class="archive-article-date">
+  	<time datetime="2018-05-16T11:51:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="命名空间的概念"><a href="#命名空间的概念" class="headerlink" title="命名空间的概念"></a>命名空间的概念</h2><p>C++会用到<code>std::cout</code>这样的用法，定义cout的命名空间，使用<code>using namespace std;</code>可以简化std::cout的写法，命名空间的使用可以避免不同的作用域之间函数重名的冲突问题。</p>
+<h2 id="python的命名空间"><a href="#python的命名空间" class="headerlink" title="python的命名空间"></a>python的命名空间</h2><p>python中也有命名空间，是用来记录变量轨迹的。命名空间是一个 字典，它的键就是变量名，它的值就是那些变量的值。<br>在一个 Python 程序中的任何一个地方，都存在几个可用的命名空间。这四类命名空间可以简记为 LEGB:  </p>
+<ol>
+<li><strong>局部命名空间（local）：</strong>指的是一个函数或者一个类所定义的名称空间；包括函数的参数、局部变量、类的属性等。</li>
+<li><strong>闭包命名空间（enclosing function）：</strong>闭包函数 的名称空间（Python 3 引入）。</li>
+<li><strong>全局命名空间（global）：</strong>读入一个模块（也即一个.py文档）后产生的名称空间。</li>
+<li><strong>内建命名空间（builtin）：</strong>Python 解释器启动时自动载入<strong>built</strong>模块后所形成的名称空间；诸如 str/list/dict…等内置对象的名称就处于这里。</li>
+</ol>
+<h2 id="命名空间查找顺序"><a href="#命名空间查找顺序" class="headerlink" title="命名空间查找顺序"></a>命名空间查找顺序</h2><p>同样的标识符在各层命名空间中可以被重复使用而不会发生冲突，但 Python 寻找一个标识符的过程总是从当前层开始逐层往上找，直到首次找到这个标识符为止：</p>
+<ol>
+<li>局部命名空间：特指当前函数或类的方法。如果函数定义了一个局部变量 x，或一个参数 x，Python 将使用它，然后停止搜索。</li>
+<li>全局命名空间：特指当前的模块。如果模块定义了一个名为 x 的变量，函数或类，Python 将使用它然后停止搜索。</li>
+<li>内置命名空间：对每个模块都是全局的。作为最后的尝试，Python 将假设 x 是内置函数或变量。</li>
+<li>如果 Python 在这些名字空间找不到 x，它将放弃查找并引发一个 NameError 异常，如，NameError: name ‘aa’ is not defined。</li>
+</ol>
+<h2 id="命名空间的生命周期"><a href="#命名空间的生命周期" class="headerlink" title="命名空间的生命周期"></a>命名空间的生命周期</h2><p>不同的命名空间在不同的时刻创建，有不同的生存期。</p>
+<ol>
+<li>内置命名空间在 Python 解释器启动时创建，会一直保留，不被删除。</li>
+<li>模块的全局命名空间在模块定义被读入时创建，通常模块命名空间也会一直保存到解释器退出。</li>
+<li>当函数被调用时创建一个局部命名空间，当函数返回结果 或 抛出异常时，被删除。每一个递归调用的函数都拥有自己的命名空间。</li>
+</ol>
+<h2 id="global-和-nonlocal-语句"><a href="#global-和-nonlocal-语句" class="headerlink" title="global 和 nonlocal 语句"></a>global 和 nonlocal 语句</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#e.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv <span class="comment">#UnboundLocalError:local variable 'gv' referenced before assignment</span></span><br><span class="line">    lv = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv = lv + [v]  <span class="comment">#UnboundLocalError:local variable 'lv' referenced before assignment</span></span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure>
+<p><strong>为什么使用global</strong>  </p>
+<pre><code>Python 在执行函数前，会首先生成各层命名空间和作用域，因此 Python 在执行赋值前会将func 内的 &apos;gv&apos; &apos;lv&apos; 写入局部命名空间和闭包命名空间，当 Python 执行赋值时会在局部作用域、闭包作用域内发现局部命名空间和闭包命名空间内已经具有&apos;gv&apos; 和 &apos;lv&apos; 标识符，但这两个非全局标识符在该赋值语句执行之前并没有被赋值，也即没有对象与标识符关联，因此无法参与四则运算，从而引发错误；
+</code></pre><p>局部空间无法获得，Python 便引入了 global、nonlocal 语句就来说明所修饰的 gv、lv 分别来自全局命名空间和局部命名空间，声明之后，就可以在 func 和 inn_func 内直接改写上层命名空间内 gv 和 lv 的值：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#f.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> gv</span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> lv</span><br><span class="line">        lv = lv + [v]</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
+<h2 id="借壳"><a href="#借壳" class="headerlink" title="借壳"></a>借壳</h2><p>那么是不是不使用 global 和 nonlocal 就不能达到上面的目的呢？来看看这段程序：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#g.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv.insert(<span class="number">0</span>, <span class="string">'gv'</span>)</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv.append(v)</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
+<p>我们改写的不是 gv 和 lv ,而是 gv 和 lv 的元素 gv[0:0] 和 lv[:] 。因此，不需要 global 和 nonlocal 修饰就可以直接改写，这就是“借壳”。修改 gv 和 lv实际上是在父函数作用域内，子函数调用只能读取而不能直接改写 gv 和 lv。<br>在 nonlocal 尚未引入 Python 中，比如 Python 2.x 若要在子函数中改写父函数变量的值就得通过这种方法。</p>
+<h2 id="命名空间的访问"><a href="#命名空间的访问" class="headerlink" title="命名空间的访问"></a>命名空间的访问</h2><ul>
+<li>局部命名空间可以 locals()  BIF来访问。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'1233'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, str )</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span> , <span class="string">"first"</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'str'</span>: <span class="string">'first'</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>全局 (模块级别)命名空间可以通过 globals() BIF来访问。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gstr = <span class="string">"global string"</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span>,<span class="string">'first'</span>)</span><br><span class="line">print(globals())</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br><span class="line">&#123;<span class="string">'__name__'</span>: <span class="string">'__main__'</span>, ....<span class="string">'func1'</span>: &lt;function func1 at <span class="number">0x000002A7BF382D90</span>&gt;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>locals 与 globals 之间的一个重要的区别<br>locals 是只读的，globals 可以改写<br><code>`</code>python<br>def func1(i, info):<br>  x = 12345<br>  print(locals())<br>  locals()[“x”]= 6789<br>  print(“x=”,x)</li>
+</ul>
+<p>y=54321<br>func1(1 , “first”)<br>globals()[“y”]= 9876<br>print( “y=”,y)</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>{‘i’: 1, ‘x’: 12345, ‘info’: ‘first’}<br>x= 12345<br>y= 9876<br><code>`</code>  </p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>locals 实际上没有返回局部名字空间，它返回的是一个拷贝。所以对它进行改变对局部名字空间中的变量值并无影响。<br>globals 返回实际的全局名字空间，而不是一个拷贝。所以对 globals 所返回的 dictionary 的任何的改动都会直接影响到全局变量。（<a href="http://www.cnblogs.com/windlaughing/archive/2013/05/26/3100362.html" target="_blank" rel="noopener">原文解释连接</a>）</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/16/python的命名空间/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-人工智能基本概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -159,7 +403,7 @@
 
         
         <a href="/2018/05/15/人工智能基本概念/" class="archive-article-date">
-  	<time datetime="2018-05-15T06:19:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
+  	<time datetime="2018-05-15T06:19:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
 </a>
         
       </header>
@@ -230,7 +474,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">人工智能</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/人工智能//" class="article-tag-list-link color5">人工智能</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -277,7 +543,7 @@
 
         
         <a href="/2018/05/13/算法题——833-Replace-in-String/" class="archive-article-date">
-  	<time datetime="2018-05-13T10:52:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+  	<time datetime="2018-05-13T10:52:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
 </a>
         
       </header>
@@ -300,7 +566,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -347,7 +635,7 @@
 
         
         <a href="/2018/05/13/算法题——832-Flipping-an-Image/" class="archive-article-date">
-  	<time datetime="2018-05-13T09:15:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+  	<time datetime="2018-05-13T09:15:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
 </a>
         
       </header>
@@ -368,7 +656,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -415,7 +725,7 @@
 
         
         <a href="/2018/05/13/数据结构——树/" class="archive-article-date">
-  	<time datetime="2018-05-13T08:57:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+  	<time datetime="2018-05-13T08:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
 </a>
         
       </header>
@@ -445,6 +755,7 @@
 <p>递归和非递归的方法时间复杂度都是O(N)，N为二叉树节点数，额外空间复杂度为O(L)，L为二叉树的层数。</p>
 <p>实现二叉树的层序遍历：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack=[root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur=stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem,end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue_enter</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现换行</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    last = root  <span class="comment"># 表示正在打印的当前行的最右节点</span></span><br><span class="line">    nlast = <span class="keyword">None</span>  <span class="comment"># 表示下一行的最右节点</span></span><br><span class="line">    stack = [last]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">            nlast = cur.left</span><br><span class="line">        <span class="keyword">if</span> nlast.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line">            nlast = cur.right</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> last == cur:</span><br><span class="line">            print()</span><br><span class="line">            last = nlast</span><br></pre></td></tr></table></figure>
+<h4 id="根据遍历顺序还原二叉树"><a href="#根据遍历顺序还原二叉树" class="headerlink" title="根据遍历顺序还原二叉树"></a>根据遍历顺序还原二叉树</h4><p>例如给定前序和中序的打印顺序，求后续遍历。<br>前序遍历有个特点，第一个肯定为根。然后根据根，在中序遍历可以区分出来左子树和右子树。递归的查找，就可以还原了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">permid_post</span><span class="params">(perstr, midstr)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> perstr <span class="keyword">or</span> <span class="keyword">not</span> midstr:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    val = perstr[<span class="number">0</span>]</span><br><span class="line">    node = Node(val)</span><br><span class="line">    index = midstr.find(val)</span><br><span class="line">    permid_post(perstr[<span class="number">1</span>:index+<span class="number">1</span>],midstr[:index])</span><br><span class="line">    permid_post(perstr[index+<span class="number">1</span>:],midstr[index+<span class="number">1</span>:])</span><br><span class="line">    print(node.elem,end=<span class="string">' '</span>)</span><br><span class="line">perstr = <span class="string">'GDAFEMHZ'</span></span><br><span class="line">midstr = <span class="string">'ADEFGHMZ'</span></span><br><span class="line">permid_post(perstr,midstr)</span><br></pre></td></tr></table></figure></p>
 <h3 id="二叉树序列化和反序列化"><a href="#二叉树序列化和反序列化" class="headerlink" title="二叉树序列化和反序列化"></a>二叉树序列化和反序列化</h3><p>有时我们需要用文件的形式将二叉树记录下来，下次要重构二叉树的时候只需将按照文件重新建立二叉树即可。这个过程叫做序列化过程，也叫持久化过程。<br>序列化方式：</p>
 <ul>
 <li>先序遍历序列化</li>
@@ -476,6 +787,9 @@
 <li>判断LH和RH是否相等。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_balanced2</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:<span class="comment">#空树是平衡二叉树</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span>,<span class="number">0</span></span><br><span class="line">    left_info=self.is_balanced(root.left)</span><br><span class="line">    right_info=self.is_balanced(root.right)</span><br><span class="line">    <span class="keyword">if</span> left_info[<span class="number">0</span>] <span class="keyword">and</span> right_info[<span class="number">0</span>]:</span><br><span class="line">        diff=left_info[<span class="number">1</span>]-right_info[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="number">-1</span>&lt;=diff&lt;=<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">False</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+<p><strong>不平衡二叉树旋转</strong><br>首先旋转的二叉树是二叉查找树，讨论的是其平衡问题。这样很好的解决了二叉查找树退化成链表的问题。使得插入、查找删除的最好最坏时间复杂度都为O(logN)。<br>左左或者右右，可以使用单旋转：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456177997sm3ap9gg.png?imageslim" alt="paste image"></p>
+<p>左右或者右左，可以使用双旋转<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456468138w779bb24.png?imageslim" alt="paste image"></p>
+<p><strong>平衡二叉树查找</strong><br><strong>平衡二叉树插入</strong><br><strong>平衡二叉树删除</strong> </p>
 <h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>是满足以下条件的二叉树：</p>
 <ul>
 <li>左子树上所有节点值均小于根节点值</li>
@@ -488,6 +802,8 @@
 <li>若当前节点cur的值不小于p的值，查找cur的右子树</li>
 <li>递归上述过程，直到cur==p或者cur为空</li>
 </ul>
+<p><strong>二叉查找树的插入</strong></p>
+<p><strong>二叉查找树的删除</strong></p>
 <h4 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h4><p>除了最后一层的节点无任何子节点外，剩下的每一层节点都有两个子节点。</p>
 <pre><code>满二叉树层数为L，节点数为N，则$N=2^L-1$，$L=\log_2^{(N+1)}$
 </code></pre><h4 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h4><p>除了最后一层外，其他的每一层节点都是满的。最后一层慢了那就是满二叉树。最后一层不满，缺少的节点也全部集中在右边，那也是完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452010331fujrxunj.png?imageslim" alt="paste image"><img src="http://p8cigu7up.bkt.clouddn.com/1526452023806sp4w4qbd.png?imageslim" alt="paste image"><br>上面两个图均为完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452115869iru3yarm.png?imageslim" alt="paste image"><br>这就不是一个完全二叉树。</p>
@@ -506,7 +822,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -553,7 +891,7 @@
 
         
         <a href="/2018/05/12/算法题——NO39 组合总和/" class="archive-article-date">
-  	<time datetime="2018-05-12T13:26:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-12</time>
+  	<time datetime="2018-05-12T13:26:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-12</time>
 </a>
         
       </header>
@@ -578,7 +916,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -673,7 +1033,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
         		</li>
       		
 		</ul>
@@ -932,449 +1292,6 @@
 
 
   
-    <article id="post-由于目标计算机积极拒绝" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/11/由于目标计算机积极拒绝/">由于目标计算机积极拒绝，无法连接</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/11/由于目标计算机积极拒绝/" class="archive-article-date">
-  	<time datetime="2018-05-11T06:11:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>爬虫的时候经常会碰到这个错误，列一个我解决的方法，要再遇到在补充。  </p>
-<p><img src="/images/pasted-8.png" alt="upload successful">  </p>
-<p>关闭代理</p>
-<p><img src="/images/pasted-9.png" alt="upload successful"></p>
-<p>如果仍不能连接</p>
-<p><img src="/images/pasted-6.png" alt="upload successful"><br>这样就可以了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">爬虫</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/爬虫//" class="article-tag-list-link color3">爬虫</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/11/由于目标计算机积极拒绝/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Chrome ERR UNSAFE PORT" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/11/Chrome ERR UNSAFE PORT/">Chrome浏览器ERR_UNSAFE_PORT</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/11/Chrome ERR UNSAFE PORT/" class="archive-article-date">
-  	<time datetime="2018-05-11T05:26:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在开启flask项目时候使用了6000端口，谷歌就一直不能访问，出现下面的问题：</p>
-<p><img src="/images/pasted-7.png" alt="upload successful"></p>
-<p>下面是Google Chrome 默认非安全端口列表，建议尽量避免以下端口：</p>
-<table>
-<thead>
-<tr>
-<th>端口号</th>
-<th style="text-align:left">功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td style="text-align:left">tcpmux</td>
-</tr>
-<tr>
-<td>7</td>
-<td style="text-align:left">echo</td>
-</tr>
-<tr>
-<td>9</td>
-<td style="text-align:left">discard</td>
-</tr>
-<tr>
-<td>11</td>
-<td style="text-align:left">systat</td>
-</tr>
-<tr>
-<td>13</td>
-<td style="text-align:left">daytime</td>
-</tr>
-<tr>
-<td>15</td>
-<td style="text-align:left">netstat</td>
-</tr>
-<tr>
-<td>17</td>
-<td style="text-align:left">qotd</td>
-</tr>
-<tr>
-<td>19</td>
-<td style="text-align:left">chargen</td>
-</tr>
-<tr>
-<td>20</td>
-<td style="text-align:left">ftp data</td>
-</tr>
-<tr>
-<td>21</td>
-<td style="text-align:left">ftp access</td>
-</tr>
-<tr>
-<td>22</td>
-<td style="text-align:left">ssh</td>
-</tr>
-<tr>
-<td>23</td>
-<td style="text-align:left">telnet</td>
-</tr>
-<tr>
-<td>25</td>
-<td style="text-align:left">smtp</td>
-</tr>
-<tr>
-<td>37</td>
-<td style="text-align:left">time</td>
-</tr>
-<tr>
-<td>42</td>
-<td style="text-align:left">name</td>
-</tr>
-<tr>
-<td>43</td>
-<td style="text-align:left">nicname</td>
-</tr>
-<tr>
-<td>53</td>
-<td style="text-align:left">domain</td>
-</tr>
-<tr>
-<td>77</td>
-<td style="text-align:left">priv-rjs</td>
-</tr>
-<tr>
-<td>79</td>
-<td style="text-align:left">finger</td>
-</tr>
-<tr>
-<td>87</td>
-<td style="text-align:left">ttylink</td>
-</tr>
-<tr>
-<td>95</td>
-<td style="text-align:left">supdup</td>
-</tr>
-<tr>
-<td>101</td>
-<td style="text-align:left">hostriame</td>
-</tr>
-<tr>
-<td>102</td>
-<td style="text-align:left">iso-tsap</td>
-</tr>
-<tr>
-<td>103</td>
-<td style="text-align:left">gppitnp</td>
-</tr>
-<tr>
-<td>104</td>
-<td style="text-align:left">acr-nema</td>
-</tr>
-<tr>
-<td>109</td>
-<td style="text-align:left">pop2</td>
-</tr>
-<tr>
-<td>110</td>
-<td style="text-align:left">pop3</td>
-</tr>
-<tr>
-<td>111</td>
-<td style="text-align:left">sunrpc</td>
-</tr>
-<tr>
-<td>113</td>
-<td style="text-align:left">auth</td>
-</tr>
-<tr>
-<td>115</td>
-<td style="text-align:left">sftp</td>
-</tr>
-<tr>
-<td>117</td>
-<td style="text-align:left">uucp-path</td>
-</tr>
-<tr>
-<td>119</td>
-<td style="text-align:left">nntp</td>
-</tr>
-<tr>
-<td>123</td>
-<td style="text-align:left">NTP</td>
-</tr>
-<tr>
-<td>135</td>
-<td style="text-align:left">loc-srv /epmap</td>
-</tr>
-<tr>
-<td>139</td>
-<td style="text-align:left">netbios</td>
-</tr>
-<tr>
-<td>143</td>
-<td style="text-align:left">imap2</td>
-</tr>
-<tr>
-<td>179</td>
-<td style="text-align:left">BGP</td>
-</tr>
-<tr>
-<td>389</td>
-<td style="text-align:left">ldap</td>
-</tr>
-<tr>
-<td>465</td>
-<td style="text-align:left">smtp+ssl</td>
-</tr>
-<tr>
-<td>512</td>
-<td style="text-align:left">print / exec</td>
-</tr>
-<tr>
-<td>513</td>
-<td style="text-align:left">login</td>
-</tr>
-<tr>
-<td>514</td>
-<td style="text-align:left">shell</td>
-</tr>
-<tr>
-<td>515</td>
-<td style="text-align:left">printer</td>
-</tr>
-<tr>
-<td>526</td>
-<td style="text-align:left">tempo</td>
-</tr>
-<tr>
-<td>530</td>
-<td style="text-align:left">courier</td>
-</tr>
-<tr>
-<td>531</td>
-<td style="text-align:left">chat</td>
-</tr>
-<tr>
-<td>532</td>
-<td style="text-align:left">netnews</td>
-</tr>
-<tr>
-<td>540</td>
-<td style="text-align:left">uucp</td>
-</tr>
-<tr>
-<td>556</td>
-<td style="text-align:left">remotefs</td>
-</tr>
-<tr>
-<td>563</td>
-<td style="text-align:left">nntp+ssl</td>
-</tr>
-<tr>
-<td>587</td>
-<td style="text-align:left">stmp?</td>
-</tr>
-<tr>
-<td>601</td>
-<td style="text-align:left">??</td>
-</tr>
-<tr>
-<td>636</td>
-<td style="text-align:left">ldap+ssl</td>
-</tr>
-<tr>
-<td>993</td>
-<td style="text-align:left">ldap+ssl</td>
-</tr>
-<tr>
-<td>995</td>
-<td style="text-align:left">pop3+ssl</td>
-</tr>
-<tr>
-<td>2049</td>
-<td style="text-align:left">nfs</td>
-</tr>
-<tr>
-<td>3659</td>
-<td style="text-align:left">apple-sasl / PasswordServer</td>
-</tr>
-<tr>
-<td>4045</td>
-<td style="text-align:left">lockd</td>
-</tr>
-<tr>
-<td>6000</td>
-<td style="text-align:left">X11</td>
-</tr>
-<tr>
-<td>6665</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6666</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6667</td>
-<td style="text-align:left">Standard IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6668</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6669</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-</tbody>
-</table>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">web服务器</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/web服务器//" class="article-tag-list-link color2">web服务器</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/11/Chrome ERR UNSAFE PORT/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1477,6 +1394,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
@@ -1489,6 +1410,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
@@ -1497,11 +1422,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
               </li>
             
             <div class="clearfix"></div>

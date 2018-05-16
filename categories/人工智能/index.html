@@ -146,6 +146,146 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-人工智能基本概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/15/人工智能基本概念/">人工智能——决策树算法</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/15/人工智能基本概念/" class="archive-article-date">
+  	<time datetime="2018-05-15T06:19:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p>决策树（decision tree）是什么?要想解决这个问题，首先要弄明白的就是计算机中的树是什么。树，我们在计算机中很常见了，有二叉树，哈夫曼树等等，总结一下共同点的时候就是，对一个当前节点而言，下一个个节点有多个节点可以选择的结构。简单的说就是有分叉的结构就是树（可能这样说也不严谨）。而决策树就是利用了这种分叉来判断的树。<br>决策树以树状结构表示数据分类结果。包含</p>
+<ul>
+<li>一个根节点</li>
+<li>若干个非叶子节点（决策点、测试条件）</li>
+<li>若干个叶子结点（分类后所得的分类标记）</li>
+<li>分支（测试结果）<br><img src="/images/pasted-4.png" alt="upload successful"></li>
+</ul>
+<h3 id="熵的概念"><a href="#熵的概念" class="headerlink" title="熵的概念"></a>熵的概念</h3><p>几个重要的概念：</p>
+<ul>
+<li>由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$  </li>
+<li>$H(X)$：事件X发生的不确定性。$P(X)$越小，$H(X)$越小，$P(X)$越大，$H(X)$越大。<br>信息量的大小和它的不确定性有直接的关系，要搞清楚意见非常不确定的事情，就需要大量的信息。<br>香农布朗就用比特（bit）来衡量信息量的多少<br>$$ H(X)=-\sum_{i} p_i \log_{2}p_i$$<br><strong>熵的计算公式</strong><br>熵：表征一个物体内部的混乱程度。<br>$$Entropy=-\sum_{i=1}^n p_i \ln_{p_i}$$<br>Gini系数：$$Gini(p)=\sum_{k=1}^K p_k(1-p_k)=1-\sum_{k=1}^K p_k^2$$<br>决策树划分节点的规则：节点熵迅速降低。熵降低的速度越快越好。将熵值最大的当做根节点，分类后，再继续判断下一层的熵值。</li>
+</ul>
+<h3 id="归纳算法"><a href="#归纳算法" class="headerlink" title="归纳算法"></a>归纳算法</h3><h4 id="ID3"><a href="#ID3" class="headerlink" title="ID3"></a>ID3</h4><p>度量方法：信息获取量（information Gain）纯度差，也称为信息增益。例如通过A作为节点分类获取了多少信息 ：<br>$$Gain(D,a)=Ent(D)-\sum_{v=1}^V \frac{|D^v|}{D}Ent(D^v)$$<br>Ent(D)代表不纯度</p>
+<p><img src="/images/pasted-5.png" alt="upload successful"></p>
+<p>例如按照年龄区分时，得到信息获取量：</p>
+<p><img src="/images/pasted-12.png" alt="upload successful"></p>
+<p>然后按照收入、是否是学生、信用率求得对应的值，用信息量最大的参数当做当前节点划分的依据。不断重复这个步骤，直到满足停止条件停止。</p>
+<p>这个就是ID3算法的大致步骤。</p>
+<h4 id="C4-5"><a href="#C4-5" class="headerlink" title="C4.5"></a>C4.5</h4><p>度量方法：Gain Ration<br>现在有一个极端的例子，给每个样本进行编号，然后按照编号弄一个决策树可不可以呢？答案当然是不可以。因为每个编号都是一类，这样无疑是最准确的，但是有一个问题就是泛化能力远远不够啊。这样做了是毫无意义的。由于ID3对于信息中类似索引的数值特别的敏感，这个属性会将决策树过分的划分出很多分支，造成模型效果性能较差。<br>C4.5是ID3算法的拓展，引入了增益率，比上自身的熵值。 因此我们用增益率来防止这个事情的发生。<br>$$Gain-ratio(D,a)=\frac{Gain(D,a)}{IV(a)}其中IV(a)=-\sum_{v=1}^V \frac{|D^v|}{|D|}\log_{2}\frac{|D^v|}{|D|}$$<br>属性A的可能取值数目越多，则IV(A)的值通常会较大。增益率会对取值数目较少的属性有所偏好，C4.5算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
+<h4 id="CART"><a href="#CART" class="headerlink" title="CART"></a>CART</h4><p>Classification and Regression Trees<br>度量方法：Gini系数<br>$$Gain-index(D,a)=\sum_{v=1}^V \frac{|D^v|}{|D|}Gini(D^v)$$</p>
+<h3 id="评价函数"><a href="#评价函数" class="headerlink" title="评价函数"></a>评价函数</h3><p>评价函数是评估所有叶子节点的纯度很大，所以定义评价函数C(T)。<br>$$C(T)=\sum_{t∈leaf}N_t·H(t)$$<br>$N_t$表示叶子结点的个数（相当于权重值），乘上熵值。评价决策树的优劣，C(T)的值越小越好。</p>
+<h3 id="停止条件"><a href="#停止条件" class="headerlink" title="停止条件"></a>停止条件</h3><p>决策树的构建过程是一个递归的过程，所以需要确定停止条件，否则过程将不会结束。</p>
+<ul>
+<li>一般一种最直观的方式是当每个子节点只有一种类型的记录时停止，但是这样往往会使得树的节点过多，导致过拟合问题（Overfitting）。</li>
+<li>另一种可行的方法是当前节点中的记录数低于一个最小的阀值，那么就停止分割，将max(P(i))对应的分类作为当前叶节点的分类。</li>
+</ul>
+<h3 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h3><p>策树高度过高，会导致模型的过拟合。这样如果存在错误样本，会导致模型性能下降。一般通过预剪枝、后剪枝优化决策树。</p>
+<ul>
+<li><strong>预剪枝：</strong>首先设定决策树最大深度，在决预剪枝在构建过程中，如果查过了最大深度则提前停止。</li>
+<li><strong>后剪枝：</strong>当构建完成决策树后，根据<strong>评价函数</strong>$$C_{\alpha}(T)=C(T)+\alpha|T_{leaf}|$$不光看$C(T)$损失函数，还要看叶子结点的个数越多，也要进行剪枝。$\alpha$是可以指定的。<br>参数α≥0控制两者之间的影响，较大的α促使选择较简单的模型，较小的α促使选择较复杂的模型。剪枝就是当α确定时，选择损失函数最小的模型，子树越大，往往与训练数据的拟合越好，但是模型的复杂度就越高；相反，子树越小，模型的复杂度就越低，但是往往与训练数据的拟合不好，损失函数正好表示了对两者的平衡。</li>
+</ul>
+<h3 id="连续与缺失值"><a href="#连续与缺失值" class="headerlink" title="连续与缺失值"></a>连续与缺失值</h3><p><strong>连续值处理</strong><br>由于连续属性的可取值数目不再有限，因此不能直接根据连续属性的可取值来对接点进行划分，此时，连续属性离散化技术可派上用场，最简单的策略是采用二分法对连续属性进行处理。给定样本集D和连续属性A，假定A在D上出现了n个不同的取值，将这些值从小到大进行排序，记为${a_1,a_2…a_n}$，对相邻属性取值来说，在区间$[a_i,a_{i+1})$中取任意值所产生的划分结果相同，因此对连续属性A，可以考察包含n-1个元素的候选划分点集合。</p>
+<pre><code>需要注意，与离散属性不同，划分节点时，若当前节点划分属性为连续属性，该属性还可以作为其后代节点的划分属性。
+</code></pre><p><strong>缺失值处理</strong><br>有时候会遇到不完整样本，某些属性值缺失，如果简单放弃不完整样本，显然是对数据的浪费。使用则需要解决两个问题：(1) 如何在属性值缺失的情况下进行划分属性选择？(2) 给定划分属性，若样本在该属性上的值缺失，如何对样本进行划分？<br>对问题一：令$\tilde{D}$表示在a上没有缺失值的样本子集。假定a有V个可能取值。 $\tilde{D}^v$表示a取$a^v$的样本子集。假定每个样本x赋予一个权重$w_x$，并定义:<br>$$\rho=\frac{\sum_{x∈\tilde{D}}w_x}{\sum_{x∈D}w_x}$$</p>
+<p>$$\tilde{p_k}=\frac{\sum_{x∈\tilde{D}_k}w_x}{\sum_{x∈\tilde{D}}w_x}(1≤k≤|\upsilon|)$$</p>
+<p>$$\tilde{r_v}=\frac{\sum_{x∈\tilde{D}^v}w_x}{\sum_{x∈\tilde{D}}w_x} (1≤v≤V)$$<br>a、ρ表示无缺失样本值所占比例。 表示第k类所占比例，$\tilde{r_v}$表示无缺失样本在属性a上取值$a^v$所占比例。固将增益计算式推广为：<br>$$Gain(D,a)=\rho \times Gain(\tilde{D},a)=\rho*\Bigl(Ent(\tilde{D})-\sum_{v=1}^V \tilde{r_v}Ent(\tilde{D^v})\Bigr)$$</p>
+<p>对问题二：简单说就是让没有取值的x划入所有子节点，属性值调整为$\tilde{r_v}·w_x$ </p>
+<h2 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h2><p>决策树由于容易产生过拟合，出现了随机森林，减小了过拟合现象。<br>随机森林是通过多个决策树进行组合生成的。</p>
+<h3 id="采样方式"><a href="#采样方式" class="headerlink" title="采样方式"></a>采样方式</h3><ul>
+<li><strong>Bootstraping：</strong>有放回的采样</li>
+<li><strong>Bagging：</strong>有放回采样n个样本一共建立分类器</li>
+</ul>
+<h3 id="构建方法"><a href="#构建方法" class="headerlink" title="构建方法"></a>构建方法</h3><p>构建多颗决策树，结果是所有的决策树共同决定的。对于分类任务可以取出现最多，回归操作可以取均值。</p>
+<h3 id="随机性的体现"><a href="#随机性的体现" class="headerlink" title="随机性的体现"></a>随机性的体现</h3><ol>
+<li>数据选择随机性：n个样本中，采集60%的样本个数的集合作为数据，去除异常样本影响。</li>
+<li>特征随机性：在d个特种中，随机选择其中一些特征。</li>
+</ol>
+<h2 id="python实现"><a href="#python实现" class="headerlink" title="python实现"></a>python实现</h2><p>数据是这样的，根据年龄、收入、是否是学生、信用数据构建决策树：<br><img src="/images/pasted-15.png" alt="upload successful"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing,tree</span><br><span class="line"><span class="keyword">from</span> sklearn.externals.six <span class="keyword">import</span> StringIO</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd_data = pd.read_csv(<span class="string">'data/tree.csv'</span>)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line">f= open(<span class="string">'data/tree.csv'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf8'</span>)</span><br><span class="line">reader = csv.reader(f)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    labelList.append(row[len(row)<span class="number">-1</span>])</span><br><span class="line">    rowDict=&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(row)<span class="number">-1</span>):</span><br><span class="line">        rowDict[pd_data.columns[i]]=row[i]</span><br><span class="line">    featureList.append(rowDict)</span><br><span class="line">featureList.pop(<span class="number">0</span>)</span><br><span class="line">labelList.pop(<span class="number">0</span>)</span><br><span class="line">vec=DictVectorizer()</span><br><span class="line">dummyX=vec.fit_transform(featureList).toarray()</span><br><span class="line">lb=preprocessing.LabelBinarizer()</span><br><span class="line">dummyY=lb.fit_transform(labelList)</span><br><span class="line">clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART</span></span><br><span class="line">clf=clf.fit(dummyX,dummyY)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'data/tree.dot'</span>,<span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f=tree.export_graphviz(clf,feature_names=vec.get_feature_names(),out_file=f)</span><br></pre></td></tr></table></figure>
+<p>windows中，可以安装<a href="http://www.graphviz.org" target="_blank" rel="noopener">Graphviz</a>将dot文件转为pdf，可视化决策树。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dot -Tpdf tree.dot -o tree.pdf</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pasted-14.png" alt="upload successful"></p>
+<p>样本数据进行交叉验证：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">(training_inputs,</span><br><span class="line"> testing_inputs,</span><br><span class="line"> training_classes,</span><br><span class="line"> testing_classes) = train_test_split(dummyX, dummyY, train_size=<span class="number">0.75</span>, random_state=<span class="number">1</span>)</span><br><span class="line"> clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART，设置为ID3</span></span><br><span class="line">clf=clf.fit(training_inputs,training_classes)</span><br><span class="line">clf.score(testing_inputs, testing_classes)</span><br></pre></td></tr></table></figure></p>
+<p>可以看出，这个决策树的得分是0.5，是个很低的预测结果，原因可能是数据太少了，交叉验证后供决策树提供训练的数据不足。可以调整参数，尝试使用Gini系数得分也一样。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor </span><br><span class="line">rf=RandomForestRegressor()  </span><br><span class="line">rf.fit(training_inputs,training_classes)</span><br><span class="line">rf.score(testing_inputs, testing_classes)</span><br></pre></td></tr></table></figure>
+<p>随机森林由于随机性，每次得出的结果不一定相同。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">人工智能</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/人工智能//" class="article-tag-list-link color5">人工智能</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/15/人工智能基本概念/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-人工智能数学基础-1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -348,6 +488,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
@@ -360,6 +504,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
@@ -368,11 +516,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
               </li>
             
             <div class="clearfix"></div>

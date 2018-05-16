@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="hero576的博客">
 <meta property="og:description" content="时间模块python 中时间表示方法有：时间戳，即从1975年1月1日00:00:00到现在的秒数；格式化后的时间字符串；时间struct_time 元组。 struct_time元组中元素主要包括：  tm_year（年）、tm_mon（月）、tm_mday（日）、tm_hour（时）、tm_min（分）、tm_sec（秒）、tm_wday（weekday0 - 6（0表示周日））、tm_yda">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-12T13:32:49.331Z">
+<meta property="og:updated_time" content="2018-05-16T11:49:32.668Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="time和datetime模块">
 <meta name="twitter:description" content="时间模块python 中时间表示方法有：时间戳，即从1975年1月1日00:00:00到现在的秒数；格式化后的时间字符串；时间struct_time 元组。 struct_time元组中元素主要包括：  tm_year（年）、tm_mon（月）、tm_mday（日）、tm_hour（时）、tm_min（分）、tm_sec（秒）、tm_wday（weekday0 - 6（0表示周日））、tm_yda">
@@ -199,8 +199,10 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strptime(<span class="string">"2016-06-08"</span>,<span class="string">"%Y-%m-%d"</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">0</span>, tm_min=<span class="number">0</span>, tm_sec=<span class="number">0</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strptime(<span class="string">"2016-06-08 15:50:44"</span>,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">50</span>, tm_sec=<span class="number">44</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
 <ul>
-<li>time.sleep 暂停时间，类似于shell的sleep()</li>
-<li>其他<ul>
+<li><p>time.sleep 暂停时间，类似于shell的sleep()</p>
+</li>
+<li><p>其他</p>
+<ul>
 <li>时间格式：</li>
 </ul>
 </li>
@@ -315,7 +317,7 @@
 <li><p>datetime.datetime.today() 默认返回当前日期和时间的对象，也可以自定义日期和时间</p>
 </li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    &gt;&gt;&gt; today = datetime.datetime.today()</span><br><span class="line">    &gt;&gt;&gt; print(today)</span><br><span class="line">    <span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br><span class="line">    &gt;&gt;&gt; last = datetime.datetime(<span class="number">2016</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)  ＃注意此处表示日期只能是实际月份，不能带<span class="number">0</span></span><br><span class="line">    &gt;&gt;&gt; print(last)</span><br><span class="line">    <span class="number">2016</span><span class="number">-05</span><span class="number">-08</span> <span class="number">11</span>:<span class="number">23</span>:<span class="number">55</span></span><br><span class="line">    </span><br><span class="line">    &gt;&gt;&gt;last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">    last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">                                   ^</span><br><span class="line">SyntaxError: invalid token</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>today = datetime.datetime.today()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(today)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = datetime.datetime(<span class="number">2016</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)  ＃注意此处表示日期只能是实际月份，不能带<span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">2016</span><span class="number">-05</span><span class="number">-08</span> <span class="number">11</span>:<span class="number">23</span>:<span class="number">55</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">                    ^</span><br><span class="line">SyntaxError: invalid token</span><br></pre></td></tr></table></figure>
 <ul>
 <li>datetime.datetime.now() 返回当前时间</li>
 </ul>
@@ -607,6 +609,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
@@ -619,6 +625,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
@@ -627,11 +637,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
               </li>
             
             <div class="clearfix"></div>

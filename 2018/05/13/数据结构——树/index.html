@@ -9,7 +9,7 @@
   <title>数据结构——树 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="二叉树树是一种重要的非线性数据结构，主要的用途是用来提高查找效率，对于要重复查找的情况效果更佳，如二叉排序树、FP-树。另外可以用来提高编码效率，如哈弗曼树。一切具有层次关系的问题都可用树来描述。树结构的特点是：  它的每一个结点都可以有不止一个直接后继 除根结点外的所有结点都有且只有一个直接前驱。树的递归定义如下：   至少有一个结点（称为根） 其它是互不相交的子树  二叉树结构 节点值 左孩子">
-<meta name="keywords" content="py通红">
+<meta name="keywords" content="数据结构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构——树">
 <meta property="og:url" content="http://yoursite.com/2018/05/13/数据结构——树/index.html">
@@ -20,11 +20,13 @@
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526449053269984bqugc.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/15264502137521q7nmg1y.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526449320079uu0a5qv0.png?imageslim">
+<meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526456177997sm3ap9gg.png?imageslim">
+<meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526456468138w779bb24.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526202114625uqdqohku.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526452010331fujrxunj.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526452023806sp4w4qbd.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526452115869iru3yarm.png?imageslim">
-<meta property="og:updated_time" content="2018-05-16T06:34:38.095Z">
+<meta property="og:updated_time" content="2018-05-16T12:47:02.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据结构——树">
 <meta name="twitter:description" content="二叉树树是一种重要的非线性数据结构，主要的用途是用来提高查找效率，对于要重复查找的情况效果更佳，如二叉排序树、FP-树。另外可以用来提高编码效率，如哈弗曼树。一切具有层次关系的问题都可用树来描述。树结构的特点是：  它的每一个结点都可以有不止一个直接后继 除根结点外的所有结点都有且只有一个直接前驱。树的递归定义如下：   至少有一个结点（称为根） 其它是互不相交的子树  二叉树结构 节点值 左孩子">
@@ -167,7 +169,7 @@
 
         
         <a href="/2018/05/13/数据结构——树/" class="archive-article-date">
-  	<time datetime="2018-05-13T08:57:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+  	<time datetime="2018-05-13T08:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
 </a>
         
       </header>
@@ -197,6 +199,7 @@
 <p>递归和非递归的方法时间复杂度都是O(N)，N为二叉树节点数，额外空间复杂度为O(L)，L为二叉树的层数。</p>
 <p>实现二叉树的层序遍历：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack=[root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur=stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem,end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue_enter</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现换行</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    last = root  <span class="comment"># 表示正在打印的当前行的最右节点</span></span><br><span class="line">    nlast = <span class="keyword">None</span>  <span class="comment"># 表示下一行的最右节点</span></span><br><span class="line">    stack = [last]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">            nlast = cur.left</span><br><span class="line">        <span class="keyword">if</span> nlast.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line">            nlast = cur.right</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> last == cur:</span><br><span class="line">            print()</span><br><span class="line">            last = nlast</span><br></pre></td></tr></table></figure>
+<h4 id="根据遍历顺序还原二叉树"><a href="#根据遍历顺序还原二叉树" class="headerlink" title="根据遍历顺序还原二叉树"></a>根据遍历顺序还原二叉树</h4><p>例如给定前序和中序的打印顺序，求后续遍历。<br>前序遍历有个特点，第一个肯定为根。然后根据根，在中序遍历可以区分出来左子树和右子树。递归的查找，就可以还原了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">permid_post</span><span class="params">(perstr, midstr)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> perstr <span class="keyword">or</span> <span class="keyword">not</span> midstr:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    val = perstr[<span class="number">0</span>]</span><br><span class="line">    node = Node(val)</span><br><span class="line">    index = midstr.find(val)</span><br><span class="line">    permid_post(perstr[<span class="number">1</span>:index+<span class="number">1</span>],midstr[:index])</span><br><span class="line">    permid_post(perstr[index+<span class="number">1</span>:],midstr[index+<span class="number">1</span>:])</span><br><span class="line">    print(node.elem,end=<span class="string">' '</span>)</span><br><span class="line">perstr = <span class="string">'GDAFEMHZ'</span></span><br><span class="line">midstr = <span class="string">'ADEFGHMZ'</span></span><br><span class="line">permid_post(perstr,midstr)</span><br></pre></td></tr></table></figure></p>
 <h3 id="二叉树序列化和反序列化"><a href="#二叉树序列化和反序列化" class="headerlink" title="二叉树序列化和反序列化"></a>二叉树序列化和反序列化</h3><p>有时我们需要用文件的形式将二叉树记录下来，下次要重构二叉树的时候只需将按照文件重新建立二叉树即可。这个过程叫做序列化过程，也叫持久化过程。<br>序列化方式：</p>
 <ul>
 <li>先序遍历序列化</li>
@@ -228,6 +231,9 @@
 <li>判断LH和RH是否相等。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_balanced2</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:<span class="comment">#空树是平衡二叉树</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span>,<span class="number">0</span></span><br><span class="line">    left_info=self.is_balanced(root.left)</span><br><span class="line">    right_info=self.is_balanced(root.right)</span><br><span class="line">    <span class="keyword">if</span> left_info[<span class="number">0</span>] <span class="keyword">and</span> right_info[<span class="number">0</span>]:</span><br><span class="line">        diff=left_info[<span class="number">1</span>]-right_info[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="number">-1</span>&lt;=diff&lt;=<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">False</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+<p><strong>不平衡二叉树旋转</strong><br>首先旋转的二叉树是二叉查找树，讨论的是其平衡问题。这样很好的解决了二叉查找树退化成链表的问题。使得插入、查找删除的最好最坏时间复杂度都为O(logN)。<br>左左或者右右，可以使用单旋转：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456177997sm3ap9gg.png?imageslim" alt="paste image"></p>
+<p>左右或者右左，可以使用双旋转<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456468138w779bb24.png?imageslim" alt="paste image"></p>
+<p><strong>平衡二叉树查找</strong><br><strong>平衡二叉树插入</strong><br><strong>平衡二叉树删除</strong> </p>
 <h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>是满足以下条件的二叉树：</p>
 <ul>
 <li>左子树上所有节点值均小于根节点值</li>
@@ -240,6 +246,8 @@
 <li>若当前节点cur的值不小于p的值，查找cur的右子树</li>
 <li>递归上述过程，直到cur==p或者cur为空</li>
 </ul>
+<p><strong>二叉查找树的插入</strong></p>
+<p><strong>二叉查找树的删除</strong></p>
 <h4 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h4><p>除了最后一层的节点无任何子节点外，剩下的每一层节点都有两个子节点。</p>
 <pre><code>满二叉树层数为L，节点数为N，则$N=2^L-1$，$L=\log_2^{(N+1)}$
 </code></pre><h4 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h4><p>除了最后一层外，其他的每一层节点都是满的。最后一层慢了那就是满二叉树。最后一层不满，缺少的节点也全部集中在右边，那也是完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452010331fujrxunj.png?imageslim" alt="paste image"><img src="http://p8cigu7up.bkt.clouddn.com/1526452023806sp4w4qbd.png?imageslim" alt="paste image"><br>上面两个图均为完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452115869iru3yarm.png?imageslim" alt="paste image"><br>这就不是一个完全二叉树。</p>
@@ -258,7 +266,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -360,7 +390,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树"><span class="toc-number">1.</span> <span class="toc-text">二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树结构"><span class="toc-number">1.1.</span> <span class="toc-text">二叉树结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树遍历"><span class="toc-number">1.2.</span> <span class="toc-text">二叉树遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树序列化和反序列化"><span class="toc-number">1.3.</span> <span class="toc-text">二叉树序列化和反序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树的一些概念"><span class="toc-number">1.4.</span> <span class="toc-text">二叉树的一些概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#二叉的子树"><span class="toc-number">1.4.1.</span> <span class="toc-text">二叉的子树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#平衡二叉树（AVL树）"><span class="toc-number">1.4.2.</span> <span class="toc-text">平衡二叉树（AVL树）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二叉查找树"><span class="toc-number">1.4.3.</span> <span class="toc-text">二叉查找树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#满二叉树"><span class="toc-number">1.4.4.</span> <span class="toc-text">满二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#完全二叉树"><span class="toc-number">1.4.5.</span> <span class="toc-text">完全二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#后继与前驱"><span class="toc-number">1.4.6.</span> <span class="toc-text">后继与前驱</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树"><span class="toc-number">1.</span> <span class="toc-text">二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树结构"><span class="toc-number">1.1.</span> <span class="toc-text">二叉树结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树遍历"><span class="toc-number">1.2.</span> <span class="toc-text">二叉树遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#根据遍历顺序还原二叉树"><span class="toc-number">1.2.1.</span> <span class="toc-text">根据遍历顺序还原二叉树</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树序列化和反序列化"><span class="toc-number">1.3.</span> <span class="toc-text">二叉树序列化和反序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树的一些概念"><span class="toc-number">1.4.</span> <span class="toc-text">二叉树的一些概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#二叉的子树"><span class="toc-number">1.4.1.</span> <span class="toc-text">二叉的子树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#平衡二叉树（AVL树）"><span class="toc-number">1.4.2.</span> <span class="toc-text">平衡二叉树（AVL树）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二叉查找树"><span class="toc-number">1.4.3.</span> <span class="toc-text">二叉查找树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#满二叉树"><span class="toc-number">1.4.4.</span> <span class="toc-text">满二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#完全二叉树"><span class="toc-number">1.4.5.</span> <span class="toc-text">完全二叉树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#后继与前驱"><span class="toc-number">1.4.6.</span> <span class="toc-text">后继与前驱</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -493,6 +523,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
@@ -505,6 +539,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
@@ -513,11 +551,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
               </li>
             
             <div class="clearfix"></div>

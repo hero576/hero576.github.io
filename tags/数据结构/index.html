@@ -146,6 +146,172 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-数据结构——树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/13/数据结构——树/">数据结构——树</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/13/数据结构——树/" class="archive-article-date">
+  	<time datetime="2018-05-13T08:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><p>树是一种重要的非线性数据结构，主要的用途是用来提高查找效率，对于要重复查找的情况效果更佳，如二叉排序树、FP-树。另外可以用来提高编码效率，如哈弗曼树。一切具有层次关系的问题都可用树来描述。<br>树结构的特点是：</p>
+<ul>
+<li>它的每一个结点都可以有不止一个直接后继</li>
+<li>除根结点外的所有结点都有且只有一个直接前驱。<br>树的递归定义如下：</li>
+</ul>
+<ol>
+<li>至少有一个结点（称为根）</li>
+<li>其它是互不相交的子树</li>
+</ol>
+<h3 id="二叉树结构"><a href="#二叉树结构" class="headerlink" title="二叉树结构"></a>二叉树结构</h3><ul>
+<li>节点值</li>
+<li>左孩子</li>
+<li>右孩子<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span>:</span></span><br><span class="line">    <span class="comment"># 创建节点类，包含左右两个指针，一个节点</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,elem=None)</span>:</span></span><br><span class="line">        self.elem=elem</span><br><span class="line">        self.right=<span class="keyword">None</span></span><br><span class="line">        self.left=<span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="二叉树遍历"><a href="#二叉树遍历" class="headerlink" title="二叉树遍历"></a>二叉树遍历</h3><p><img src="http://p8cigu7up.bkt.clouddn.com/1526286772063isf9jqp4.png?imageslim" alt="paste image"><br><strong>先序遍历：</strong>1,2,4,5,3,6,7<br><strong>中序遍历：</strong>4,2,5,1,6,3,7<br><strong>后序遍历：</strong>4,5,2,6,7,3,1<br>还有：中右左、右中左、右左中三中不常见的遍历<br><strong>层序遍历：</strong>1,2,3,4,5,6,7<br>按层遍历二叉树实际上是宽度优先搜索的应用。</p>
+<p>使用递归实现二叉树的遍历：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">printTree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.root = Node()</span><br><span class="line">        self.myQueue = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, elem)</span>:</span>  <span class="comment"># 采用一个堆栈实现</span></span><br><span class="line">        node = Node(elem)</span><br><span class="line">        <span class="keyword">if</span> self.root.elem == <span class="keyword">None</span>:</span><br><span class="line">            self.root = node</span><br><span class="line">            self.myQueue.append(self.root)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cur = self.myQueue[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">if</span> cur.left == <span class="keyword">None</span>:</span><br><span class="line">                cur.left = node</span><br><span class="line">                self.myQueue.append(cur.left)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur.right = node</span><br><span class="line">                self.myQueue.append(cur.right)</span><br><span class="line">                self.myQueue.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pre_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#前序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br><span class="line">        self.pre_order(root.left)</span><br><span class="line">        self.pre_order(root.right)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mid_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#中序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.mid_order(root.left)</span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br><span class="line">        self.mid_order(root.right)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#后序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.post_order(root.left)</span><br><span class="line">        self.post_order(root.right)</span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
+<p>非递归实现二叉树的遍历：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pre_stack</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        node = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(node.elem, end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> node.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, node.right)</span><br><span class="line">        <span class="keyword">if</span> node.left:</span><br><span class="line">            stack.insert(<span class="number">0</span>, node.left)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mid_stack</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = []</span><br><span class="line">    cur = root</span><br><span class="line">    <span class="keyword">while</span> stack <span class="keyword">or</span> cur:</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            stack.insert(<span class="number">0</span>, cur)</span><br><span class="line">            cur = cur.left</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line">        cur = cur.right</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_stack</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现方法一</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack1 = [root]</span><br><span class="line">    stack2 = []</span><br><span class="line">    <span class="keyword">while</span> stack1:</span><br><span class="line">        cur = stack1.pop()</span><br><span class="line">        stack2.insert(<span class="number">0</span>, cur)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack1.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack1.append(cur.right)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> stack2:</span><br><span class="line">        print(i.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_stack2</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现方法二</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    h = root  <span class="comment"># 最近一次弹出并打印的节点</span></span><br><span class="line">    c = <span class="keyword">None</span>  <span class="comment"># 当前stack的栈顶节点</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        c = stack[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> c.left <span class="keyword">and</span> h != c.left <span class="keyword">and</span> h != c.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, c.left)</span><br><span class="line">        <span class="keyword">elif</span> c.right <span class="keyword">and</span> h != c.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, c.right)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            h = stack.pop(<span class="number">0</span>)</span><br><span class="line">            print(h.elem, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
+<p>递归和非递归的方法时间复杂度都是O(N)，N为二叉树节点数，额外空间复杂度为O(L)，L为二叉树的层数。</p>
+<p>实现二叉树的层序遍历：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack=[root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur=stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem,end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue_enter</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现换行</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    last = root  <span class="comment"># 表示正在打印的当前行的最右节点</span></span><br><span class="line">    nlast = <span class="keyword">None</span>  <span class="comment"># 表示下一行的最右节点</span></span><br><span class="line">    stack = [last]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">            nlast = cur.left</span><br><span class="line">        <span class="keyword">if</span> nlast.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line">            nlast = cur.right</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> last == cur:</span><br><span class="line">            print()</span><br><span class="line">            last = nlast</span><br></pre></td></tr></table></figure>
+<h4 id="根据遍历顺序还原二叉树"><a href="#根据遍历顺序还原二叉树" class="headerlink" title="根据遍历顺序还原二叉树"></a>根据遍历顺序还原二叉树</h4><p>例如给定前序和中序的打印顺序，求后续遍历。<br>前序遍历有个特点，第一个肯定为根。然后根据根，在中序遍历可以区分出来左子树和右子树。递归的查找，就可以还原了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">permid_post</span><span class="params">(perstr, midstr)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> perstr <span class="keyword">or</span> <span class="keyword">not</span> midstr:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    val = perstr[<span class="number">0</span>]</span><br><span class="line">    node = Node(val)</span><br><span class="line">    index = midstr.find(val)</span><br><span class="line">    permid_post(perstr[<span class="number">1</span>:index+<span class="number">1</span>],midstr[:index])</span><br><span class="line">    permid_post(perstr[index+<span class="number">1</span>:],midstr[index+<span class="number">1</span>:])</span><br><span class="line">    print(node.elem,end=<span class="string">' '</span>)</span><br><span class="line">perstr = <span class="string">'GDAFEMHZ'</span></span><br><span class="line">midstr = <span class="string">'ADEFGHMZ'</span></span><br><span class="line">permid_post(perstr,midstr)</span><br></pre></td></tr></table></figure></p>
+<h3 id="二叉树序列化和反序列化"><a href="#二叉树序列化和反序列化" class="headerlink" title="二叉树序列化和反序列化"></a>二叉树序列化和反序列化</h3><p>有时我们需要用文件的形式将二叉树记录下来，下次要重构二叉树的时候只需将按照文件重新建立二叉树即可。这个过程叫做序列化过程，也叫持久化过程。<br>序列化方式：</p>
+<ul>
+<li>先序遍历序列化</li>
+<li>中序遍历序列化</li>
+<li>后序遍历序列化</li>
+<li>按层序列化</li>
+</ul>
+<p>先序遍历二叉树过程与中序后序相同，步骤如下：</p>
+<ul>
+<li>假设序列化结果为str，初始时str为空字符串</li>
+<li>先序遍历二叉树时如果遇到空节点，在str末尾加上“#！”</li>
+<li>如果遇到不为空的节点，假设节点值为3，就在str末尾增加‘3！’<br>先序遍历反序列化过程：</li>
+<li>按照！分割字符串</li>
+<li>按照先序遍历的顺序构建二叉树，遇到#设置为空节点</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Serialize</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 把对象转换为字节序列的过程称为对象的序列化</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Per_order</span><span class="params">(root)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            result.append(<span class="string">'#!'</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        result.append(str(root.elem) + <span class="string">'!'</span>)</span><br><span class="line">        Per_order(root.left)</span><br><span class="line">        Per_order(root.right)</span><br><span class="line"></span><br><span class="line">    result = []</span><br><span class="line">    Per_order(root)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(result)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Deserialize2</span><span class="params">(self, s)</span>:</span>  <span class="comment"># 把字节序列恢复为对象的过程称为对象的反序列化</span></span><br><span class="line">    s = s.split(<span class="string">"!"</span>)</span><br><span class="line">    self.myroot=<span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(index)</span>:</span></span><br><span class="line">        index[<span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> index[<span class="number">0</span>] &gt;= len(s):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> s[index[<span class="number">0</span>]] == <span class="string">'#'</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        node = Node()</span><br><span class="line">        node.elem = s[index[<span class="number">0</span>]]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.myroot:</span><br><span class="line">            self.myroot = node</span><br><span class="line">        node.left = change(index)</span><br><span class="line">        node.right = change(index)</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">    index = [<span class="number">-1</span>]</span><br><span class="line">    change(index)</span><br><span class="line">    <span class="keyword">return</span> self.myroot</span><br></pre></td></tr></table></figure>
+<p>当然，用什么方法序列化，要用同样的方法反序列化才行。</p>
+<h3 id="二叉树的一些概念"><a href="#二叉树的一些概念" class="headerlink" title="二叉树的一些概念"></a>二叉树的一些概念</h3><h4 id="二叉的子树"><a href="#二叉的子树" class="headerlink" title="二叉的子树"></a>二叉的子树</h4><p>在二叉树中以任何一个节点为头部的整棵树称为二叉树的子树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526449053269984bqugc.png?imageslim" alt="paste image"><br>上图不是子树，因为不是整棵树。只是一个联通的子结构</p>
+<h4 id="平衡二叉树（AVL树）"><a href="#平衡二叉树（AVL树）" class="headerlink" title="平衡二叉树（AVL树）"></a>平衡二叉树（AVL树）</h4><ul>
+<li>空树是平衡二叉树</li>
+<li>一棵树不为空，并且其中所有子树都满足各自的左子树与有字数的高度差都不超过1。<br><img src="http://p8cigu7up.bkt.clouddn.com/15264502137521q7nmg1y.png?imageslim" alt="paste image"><br>这不是一颗平衡二叉树，以②为节点划分，左子树高度为2，右子树高度为0，高度差超过了1。</li>
+</ul>
+<p>判断一个树是否是平衡二叉树，采用递归的后续遍历：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526449320079uu0a5qv0.png?imageslim" alt="paste image"></p>
+<ol>
+<li>首先判断左子树是否为平衡二叉树返回false，则结束。</li>
+<li>计算左子树最深到哪一层，LH</li>
+<li>判断右子树是否为平衡二叉树返回false，则结束。</li>
+<li>计算右子树最深到哪一层，RH</li>
+<li>判断LH和RH是否相等。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_balanced2</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:<span class="comment">#空树是平衡二叉树</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span>,<span class="number">0</span></span><br><span class="line">    left_info=self.is_balanced(root.left)</span><br><span class="line">    right_info=self.is_balanced(root.right)</span><br><span class="line">    <span class="keyword">if</span> left_info[<span class="number">0</span>] <span class="keyword">and</span> right_info[<span class="number">0</span>]:</span><br><span class="line">        diff=left_info[<span class="number">1</span>]-right_info[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="number">-1</span>&lt;=diff&lt;=<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">False</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>不平衡二叉树旋转</strong><br>首先旋转的二叉树是二叉查找树，讨论的是其平衡问题。这样很好的解决了二叉查找树退化成链表的问题。使得插入、查找删除的最好最坏时间复杂度都为O(logN)。<br>左左或者右右，可以使用单旋转：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456177997sm3ap9gg.png?imageslim" alt="paste image"></p>
+<p>左右或者右左，可以使用双旋转<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456468138w779bb24.png?imageslim" alt="paste image"></p>
+<p><strong>平衡二叉树查找</strong><br><strong>平衡二叉树插入</strong><br><strong>平衡二叉树删除</strong> </p>
+<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>是满足以下条件的二叉树：</p>
+<ul>
+<li>左子树上所有节点值均小于根节点值</li>
+<li>右子树上所有节点值均不小于根节点值 </li>
+<li>左右子树也满足上述两个条件<br><img src="http://p8cigu7up.bkt.clouddn.com/1526202114625uqdqohku.png?imageslim" alt="paste image"></li>
+</ul>
+<p><strong>二叉查找树的查找过程</strong></p>
+<ul>
+<li>若当前节点cur的值小于p的值，查找cur的左子树</li>
+<li>若当前节点cur的值不小于p的值，查找cur的右子树</li>
+<li>递归上述过程，直到cur==p或者cur为空</li>
+</ul>
+<p><strong>二叉查找树的插入</strong></p>
+<p><strong>二叉查找树的删除</strong></p>
+<h4 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h4><p>除了最后一层的节点无任何子节点外，剩下的每一层节点都有两个子节点。</p>
+<pre><code>满二叉树层数为L，节点数为N，则$N=2^L-1$，$L=\log_2^{(N+1)}$
+</code></pre><h4 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h4><p>除了最后一层外，其他的每一层节点都是满的。最后一层慢了那就是满二叉树。最后一层不满，缺少的节点也全部集中在右边，那也是完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452010331fujrxunj.png?imageslim" alt="paste image"><img src="http://p8cigu7up.bkt.clouddn.com/1526452023806sp4w4qbd.png?imageslim" alt="paste image"><br>上面两个图均为完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452115869iru3yarm.png?imageslim" alt="paste image"><br>这就不是一个完全二叉树。</p>
+<p><strong>判断是否完全二叉树</strong></p>
+<ul>
+<li>采用按层遍历二叉树的方式，从每层左边向右边一次遍历所有节点。</li>
+<li>如果当前节点有右孩子，但没有左海子，直接返回False.</li>
+<li>如果当前节点不是左右孩子全有，那之后节点必须都为叶节点，否则返回False。</li>
+<li>遍历过程中如果不返回False，遍历结束后返回True。<h4 id="后继与前驱"><a href="#后继与前驱" class="headerlink" title="后继与前驱"></a>后继与前驱</h4><strong>后继节点：</strong>这个节点在中序遍历序列中的下一个节点。<br><strong>前驱结点：</strong>这个节点在中序遍历序列中的前一个节点。 </li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/13/数据结构——树/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-数据结构——哈希" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -207,7 +373,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
         		</li>
       		
 		</ul>
@@ -468,93 +634,6 @@ HEAP_SIZE(A)：堆A当前的元素数目
 
 
   
-    <article id="post-数据结构——基本线性数据结构——链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/07/数据结构——基本线性数据结构——链表/">数据结构——基本线性数据结构——链表</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/07/数据结构——基本线性数据结构——链表/" class="archive-article-date">
-  	<time datetime="2018-05-07T12:34:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="4、链表"><a href="#4、链表" class="headerlink" title="4、链表"></a>4、链表</h2><h6 id="什么是链表"><a href="#什么是链表" class="headerlink" title="什么是链表"></a>什么是链表</h6><p>链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)。由于不必须按顺序存储，链表在插入的时候可以达到O(1)的复杂度，比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要O(n)的时间，而顺序表相应的时间复杂度分别是O(logn)和O(1)。</p>
-<h6 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h6><p>使用链表结构可以克服数组链表需要预先知道数据大小的缺点，链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。</p>
-<h6 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h6><p>init():初始化<br>insert(): 插入<br>trave(): 遍历<br>delete(): 删除<br>find(): 查找</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/07/数据结构——基本线性数据结构——链表/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-数据结构——基本线性数据结构——队列" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -613,6 +692,126 @@ HEAP_SIZE(A)：堆A当前的元素数目
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/05/07/数据结构——基本线性数据结构——队列/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-数据结构——链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/07/数据结构——链表/">数据结构——链表</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/07/数据结构——链表/" class="archive-article-date">
+  	<time datetime="2018-05-07T12:34:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h3 id="什么是链表"><a href="#什么是链表" class="headerlink" title="什么是链表"></a>什么是链表</h3><p>链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)。由于不必须按顺序存储，链表在插入的时候可以达到O(1)的复杂度，比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要O(n)的时间，而顺序表相应的时间复杂度分别是O(logn)和O(1)。<br>链表的分类：</p>
+<ul>
+<li>按照连接方向分类<ul>
+<li>单链表</li>
+<li>双链表</li>
+</ul>
+</li>
+<li>按照有环和无环<ul>
+<li>普通链表</li>
+<li>循环链表</li>
+</ul>
+</li>
+</ul>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>使用链表结构可以克服数组链表需要预先知道数据大小的缺点，链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。</p>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><ul>
+<li>init():初始化</li>
+<li>insert(): 插入</li>
+<li>trave(): 遍历</li>
+<li>delete(): 删除</li>
+<li>find(): 查找</li>
+</ul>
+<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">link</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,val)</span>:</span></span><br><span class="line">        self.elem=val</span><br><span class="line">        self.next=<span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+<h2 id="常见操作"><a href="#常见操作" class="headerlink" title="常见操作"></a>常见操作</h2><ol>
+<li>给定一个整数num，如何在节点值有序的环形链表中插入一个节点值为num的节点，并且保证这个环形单链表依然有序。</li>
+<li>给定一个链表中的节点node，但是不给定整个链表的头结点。如何在链表中删除node。要求时间复杂度为O(1)。</li>
+<li>给定一个链表的头节点head，在给定一个数num，把链表调整成节点值小于num的节点都在链表的左边，等于num的放在中间，大于num放在右边。</li>
+<li>给定两个有序链表头结点head1和head2，打印公共部分。</li>
+<li>给定一个单链表的头节点head，实现一个吊证单链表的函数，使得每k个节点之间逆序，如果最后不够k个节点一组，则不调整最后几个节点。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526460109134k2s3tag1.png?imageslim" alt="paste image"></li>
+<li>给定单链表的头节点head，链表中每个节点保存一个整数，再给定一个值val，把所有等于val的节点删掉。</li>
+<li>判断链表是否是回文的。</li>
+<li>一个链表结构中，每个节点不仅含有一条指向下一个节点的next指针，同时含有一条rand指针，指向任意一个节点。复制这种含有rand指针节点的链表。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526460604747l3tqxivj.png?imageslim" alt="paste image"></li>
+<li>判断单链表是否有环。有环返回进入的第一个节点。无环返回空。保证时间复杂度为O(N)，空间复杂度为O(1)。<br><img src="http://p8cigu7up.bkt.clouddn.com/15264607548471fkwegu1.png?imageslim" alt="paste image"></li>
+<li>判断无环单链表是否相交。相交返回第一个相交节点，否则返回空。保证时间复杂度为O(N+M)，空间复杂度为O(1)。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526460879877rdkos969.png?imageslim" alt="paste image"></li>
+<li>判断有环单链表是否相交。相交返回第一个相交节点，否则返回空。保证时间复杂度为O(N+M)，空间复杂度为O(1)。</li>
+<li>给定两个单链表头节点head1和head2，判断两个链表是否相交。相交返回第一个相交节点。否则返回空。</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/07/数据结构——链表/">展开全文 >></a>
         </p>
       
 
@@ -930,6 +1129,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
@@ -942,6 +1145,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
@@ -950,11 +1157,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
               </li>
             
             <div class="clearfix"></div>
