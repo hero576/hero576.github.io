@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="hero576的博客">
 <meta property="og:description" content="设置Scrapy设置允许您自定义所有Scrapy组件的行为，包括核心，扩展，管道和爬虫本身。设置的基础结构提供了键值映射的全局命名空间，代码可以使用它从中提取配置值。可以通过不同的机制来填充设置，这将在下面描述。这些设置也是选择当前活动Scrapy项目的机制（如果您有很多）。有关可用内置设置的列表，请参阅：内置设置参考。 指定设置当你使用Scrapy，你必须告诉它你使用哪些设置。您可以通过使用环境">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-16T13:30:07.367Z">
+<meta property="og:updated_time" content="2018-05-19T03:29:56.035Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scrapy设置项介绍">
 <meta name="twitter:description" content="设置Scrapy设置允许您自定义所有Scrapy组件的行为，包括核心，扩展，管道和爬虫本身。设置的基础结构提供了键值映射的全局命名空间，代码可以使用它从中提取配置值。可以通过不同的机制来填充设置，这将在下面描述。这些设置也是选择当前活动Scrapy项目的机制（如果您有很多）。有关可用内置设置的列表，请参阅：内置设置参考。 指定设置当你使用Scrapy，你必须告诉它你使用哪些设置。您可以通过使用环境">
@@ -226,9 +226,9 @@ LOG_FILE=scrapy.log
 <li><p>DEFAULT_ITEM_CLASS<br>默认： ‘scrapy.item.Item’<br>将用于在Scrapy shell中实例化项的默认类。    </p>
 </li>
 <li><p>DEFAULT_REQUEST_HEADERS<br>默认：      </p>
-<pre><code class="python">{  
-  <span class="string">'Accept'</span>: <span class="string">'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'</span>,  
-  <span class="string">'Accept-Language'</span>: <span class="string">'en'</span>,  
+<pre><code class="shell">{  
+&#39;Accept&#39;: &#39;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#39;,  
+&#39;Accept-Language&#39;: &#39;en&#39;,  
 }  
 </code></pre>
 <p>用于Scrapy HTTP请求的默认标头。他们居住在 DefaultHeadersMiddleware。    </p>
@@ -258,21 +258,21 @@ LOG_FILE=scrapy.log
 <li><p>DOWNLOADER_MIDDLEWARES<br>默认：： {}<br>包含在您的项目中启用的下载器中间件及其顺序的字典。有关更多信息，请参阅激活下载器中间件。    </p>
 </li>
 <li><p>DOWNLOADER_MIDDLEWARES_BASE<br>默认：  </p>
-<pre><code class="python">{  
-  <span class="string">'scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware'</span>: <span class="number">100</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware'</span>: <span class="number">300</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware'</span>: <span class="number">350</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware'</span>: <span class="number">400</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware'</span>: <span class="number">500</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.retry.RetryMiddleware'</span>: <span class="number">550</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware'</span>: <span class="number">560</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware'</span>: <span class="number">580</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware'</span>: <span class="number">590</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.redirect.RedirectMiddleware'</span>: <span class="number">600</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.cookies.CookiesMiddleware'</span>: <span class="number">700</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware'</span>: <span class="number">750</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.stats.DownloaderStats'</span>: <span class="number">850</span>,  
-  <span class="string">'scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware'</span>: <span class="number">900</span>,  
+<pre><code class="shell">{  
+&#39;scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware&#39;: 100,  
+&#39;scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware&#39;: 300,  
+&#39;scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware&#39;: 350,  
+&#39;scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware&#39;: 400,  
+&#39;scrapy.downloadermiddlewares.useragent.UserAgentMiddleware&#39;: 500,  
+&#39;scrapy.downloadermiddlewares.retry.RetryMiddleware&#39;: 550,  
+&#39;scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware&#39;: 560,  
+&#39;scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware&#39;: 580,  
+&#39;scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware&#39;: 590,  
+&#39;scrapy.downloadermiddlewares.redirect.RedirectMiddleware&#39;: 600,  
+&#39;scrapy.downloadermiddlewares.cookies.CookiesMiddleware&#39;: 700,  
+&#39;scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware&#39;: 750,  
+&#39;scrapy.downloadermiddlewares.stats.DownloaderStats&#39;: 850,  
+&#39;scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware&#39;: 900,  
 }  
 </code></pre>
 <p>包含Scrapy中默认启用的下载器中间件的字典。低订单更靠近发动机，高订单更接近下载器。您不应该在项目中修改此设置，DOWNLOADER_MIDDLEWARES而应修改 。有关更多信息，请参阅 激活下载器中间件。    </p>
@@ -284,17 +284,17 @@ LOG_FILE=scrapy.log
 <li><p>DOWNLOAD_HANDLERS<br>默认： {}<br>包含在您的项目中启用的请求下载器处理程序的dict。参见DOWNLOAD_HANDLERS_BASE示例格式。    </p>
 </li>
 <li><p>DOWNLOAD_HANDLERS_BASE<br>默认：    </p>
-<pre><code class="python">{   
-  <span class="string">'file'</span> ： <span class="string">'scrapy.core.downloader.handlers.file.FileDownloadHandler'</span> ，  
-  <span class="string">'http'</span> ： <span class="string">'scrapy.core.downloader.handlers.http.HTTPDownloadHandler'</span> ，  
-  <span class="string">'https'</span> ： <span class="string">'scrapy.core.downloader.handlers。 http.HTTPDownloadHandler'</span> ，  
-  <span class="string">'s3'</span> ： <span class="string">'scrapy.core.downloader.handlers.s3.S3DownloadHandler'</span> ，  
-  <span class="string">'ftp'</span> ： <span class="string">'scrapy.core.downloader.handlers.ftp.FTPDownloadHandler'</span> ，  
+<pre><code class="shell">{   
+&#39;file&#39; ： &#39;scrapy.core.downloader.handlers.file.FileDownloadHandler&#39; ，  
+&#39;http&#39; ： &#39;scrapy.core.downloader.handlers.http.HTTPDownloadHandler&#39; ，  
+&#39;https&#39; ： &#39;scrapy.core.downloader.handlers。 http.HTTPDownloadHandler&#39; ，  
+&#39;s3&#39; ： &#39;scrapy.core.downloader.handlers.s3.S3DownloadHandler&#39; ，  
+&#39;ftp&#39; ： &#39;scrapy.core.downloader.handlers.ftp.FTPDownloadHandler&#39; ，  
 }  
 </code></pre>
 <p>包含Scrapy中默认启用的请求下载处理程序的字典。您不应该在项目中修改此设置，DOWNLOAD_HANDLERS而应修改 。<br>您可以通过在其中None分配URI方案来禁用这些下载处理程序DOWNLOAD_HANDLERS。例如，要禁用内置的FTP处理程序（无替换），请将其放置在settings.py：  </p>
-<pre><code class="python">DOWNLOAD_HANDLERS = {  
-  <span class="string">'ftp'</span>: <span class="keyword">None</span>,  
+<pre><code class="shell">DOWNLOAD_HANDLERS = {  
+&#39;ftp&#39;: None,  
 }  
 </code></pre>
 </li>
@@ -313,16 +313,16 @@ LOG_FILE=scrapy.log
 <li><p>EXTENSIONS<br>默认：： {}<br>包含项目中启用的扩展名及其顺序的字典。    </p>
 </li>
 <li><p>EXTENSIONS_BASE<br>默认：    </p>
-<pre><code class="python">{  
-  <span class="string">'scrapy.extensions.corestats.CoreStats'</span>: <span class="number">0</span>,  
-  <span class="string">'scrapy.extensions.telnet.TelnetConsole'</span>: <span class="number">0</span>,  
-  <span class="string">'scrapy.extensions.memusage.MemoryUsage'</span>: <span class="number">0</span>,  
-  <span class="string">'scrapy.extensions.memdebug.MemoryDebugger'</span>: <span class="number">0</span>,  
-  <span class="string">'scrapy.extensions.closespider.CloseSpider'</span>: <span class="number">0</span>,  
-  <span class="string">'scrapy.extensions.feedexport.FeedExporter'</span>: <span class="number">0</span>,  
-  <span class="string">'scrapy.extensions.logstats.LogStats'</span>: <span class="number">0</span>,  
-  <span class="string">'scrapy.extensions.spiderstate.SpiderState'</span>: <span class="number">0</span>,  
-  <span class="string">'scrapy.extensions.throttle.AutoThrottle'</span>: <span class="number">0</span>,  
+<pre><code class="shell">{  
+&#39;scrapy.extensions.corestats.CoreStats&#39;: 0,  
+&#39;scrapy.extensions.telnet.TelnetConsole&#39;: 0,  
+&#39;scrapy.extensions.memusage.MemoryUsage&#39;: 0,  
+&#39;scrapy.extensions.memdebug.MemoryDebugger&#39;: 0,  
+&#39;scrapy.extensions.closespider.CloseSpider&#39;: 0,  
+&#39;scrapy.extensions.feedexport.FeedExporter&#39;: 0,  
+&#39;scrapy.extensions.logstats.LogStats&#39;: 0,  
+&#39;scrapy.extensions.spiderstate.SpiderState&#39;: 0,  
+&#39;scrapy.extensions.throttle.AutoThrottle&#39;: 0,  
 }  
 </code></pre>
 <p>包含默认情况下在Scrapy中可用的扩展名及其顺序的字典。此设置包含所有稳定的内置扩展。请记住，其中一些需要通过设置启用。<br>有关详细信息，请参阅扩展程序用户指南 和可用扩展列表。    </p>
@@ -330,9 +330,9 @@ LOG_FILE=scrapy.log
 <li><p>FEED_TEMPDIR<br>Feed Temd dir允许您在使用FTP源存储和 Amazon S3上传之前设置自定义文件夹以保存搜寻器临时文件。    </p>
 </li>
 <li><p>ITEM_PIPELINES<br>默认： {}<br>包含要使用的项目管道及其顺序的字典。顺序值是任意的，但通常将它们定义在0-1000范围内。较低订单处理较高订单前。<br>例：  </p>
-<pre><code class="python">ITEM_PIPELINES = {  
-  <span class="string">'mybot.pipelines.validate.ValidateMyItem'</span>: <span class="number">300</span>,  
-  <span class="string">'mybot.pipelines.validate.StoreMyItem'</span>: <span class="number">800</span>,  
+<pre><code class="shell">ITEM_PIPELINES = {  
+&#39;mybot.pipelines.validate.ValidateMyItem&#39;: 300,  
+&#39;mybot.pipelines.validate.StoreMyItem&#39;: 800,  
 }  
 </code></pre>
 </li>
@@ -357,7 +357,7 @@ LOG_FILE=scrapy.log
 <li><p>MEMDEBUG_ENABLED<br>默认： False<br>是否启用内存调试。    </p>
 </li>
 <li><p>MEMDEBUG_NOTIFY<br>默认： []<br>当启用内存调试时，如果此设置不为空，则会将内存报告发送到指定的地址，否则报告将写入日志。<br>例：  </p>
-<pre><code class="python">MEMDEBUG_NOTIFY = [<span class="string">'user@example.com'</span>]  
+<pre><code class="shell">MEMDEBUG_NOTIFY = [&#39;user@example.com&#39;]  
 </code></pre>
 </li>
 <li><p>MEMUSAGE_ENABLED<br>默认： False<br>范围： scrapy.extensions.memusage<br>是否启用内存使用扩展，当超过内存限制时关闭Scrapy进程，并在发生这种情况时通过电子邮件通知。<br>请参阅内存使用扩展。    </p>
@@ -367,7 +367,7 @@ LOG_FILE=scrapy.log
 <li><p>MEMUSAGE_CHECK_INTERVAL_SECONDS<br>新版本1.1。<br>默认： 60.0<br>范围： scrapy.extensions.memusage<br>该内存使用扩展 检查当前内存使用情况，相对于限制由设置 MEMUSAGE_LIMIT_MB和MEMUSAGE_WARNING_MB在固定的时间间隔。<br>这将设置这些间隔的长度（以秒为单位）。<br>请参阅内存使用扩展。    </p>
 </li>
 <li><p>MEMUSAGE_NOTIFY_MAIL<br>默认： False<br>范围： scrapy.extensions.memusage<br>要达到内存限制时通知的电子邮件列表。<br>例：  </p>
-<pre><code class="python">MEMUSAGE_NOTIFY_MAIL = [<span class="string">'user@example.com'</span>]  
+<pre><code class="shell">MEMUSAGE_NOTIFY_MAIL = [&#39;user@example.com&#39;]  
 </code></pre>
 <p>请参阅内存使用扩展。    </p>
 </li>
@@ -376,7 +376,7 @@ LOG_FILE=scrapy.log
 <li><p>MEMUSAGE_WARNING_MB<br>默认： 0<br>范围： scrapy.extensions.memusage<br>在发送警告电子邮件通知之前，要允许的最大内存量（以兆字节为单位）。如果为零，则不会产生警告。    </p>
 </li>
 <li><p>NEWSPIDER_MODULE<br>默认： ‘’<br>模块在哪里使用genspider命令创建新的爬虫。<br>例：  </p>
-<pre><code class="python">NEWSPIDER_MODULE = <span class="string">'mybot.spiders_dev'</span>  
+<pre><code class="shell">NEWSPIDER_MODULE = &#39;mybot.spiders_dev&#39;  
 </code></pre>
 </li>
 <li><p>RANDOMIZE_DOWNLOAD_DELAY<br>默认： True<br>如果启用，Scrapy会在从同一网站获取请求时等待随机时间（介于0.5 <em> DOWNLOAD_DELAY和1.5 </em>之间DOWNLOAD_DELAY）。<br>该随机化降低了由分析请求的站点检测（并随后阻塞）爬行器的机会，所述站点在它们的请求之间的时间内寻找统计上显着的相似性。<br>随机化策略与wget –random-wait选项使用的策略相同。<br>如果DOWNLOAD_DELAY为零（默认），此选项不起作用。    </p>
@@ -393,10 +393,14 @@ LOG_FILE=scrapy.log
 </li>
 <li><p>SCHEDULER<br>默认： ‘scrapy.core.scheduler.Scheduler’<br>用于爬网的调度程序。    </p>
 </li>
-<li><p>SCHEDULER_DEBUG<br>默认： False<br>设置True将记录有关请求调度程序的调试信息。如果请求无法序列化到磁盘，则当前日志（仅一次）。Stats counter（scheduler/unserializable）跟踪发生的次数。<br>日志中的示例条目：<br><code>`</code>python<br>1956-01-31 00:00:00+0800 [scrapy.core.scheduler] ERROR: Unable to serialize request:<br>&lt;GET <a href="http://example.com&gt;" target="_blank" rel="noopener">http://example.com&gt;</a> </p>
-</li>
-<li>reason: cannot serialize <request at="" 0x9a7c7ec=""><br>(type Request)&gt; </request></li>
-<li><p>no more unserializable requests will be logged<br>(see ‘scheduler/unserializable’ stats counter)<br><code>`</code>    </p>
+<li><p>SCHEDULER_DEBUG<br>默认： False<br>设置True将记录有关请求调度程序的调试信息。如果请求无法序列化到磁盘，则当前日志（仅一次）。Stats counter（scheduler/unserializable）跟踪发生的次数。<br>日志中的示例条目：  </p>
+<pre><code class="shell">1956-01-31 00:00:00+0800 [scrapy.core.scheduler] ERROR: Unable to serialize request:  
+&lt;GET http://example.com&gt; 
+- reason: cannot serialize &lt;Request at 0x9a7c7ec&gt;  
+(type Request)&gt; 
+- no more unserializable requests will be logged  
+(see 'scheduler/unserializable' stats counter)  
+</code></pre>
 </li>
 <li><p>SCHEDULER_DISK_QUEUE<br>默认： ‘scrapy.squeues.PickleLifoDiskQueue’<br>将由调度程序使用的磁盘队列的类型。其它可用的类型有 scrapy.squeues.PickleFifoDiskQueue，scrapy.squeues.MarshalFifoDiskQueue， scrapy.squeues.MarshalLifoDiskQueue。    </p>
 </li>
@@ -407,15 +411,15 @@ LOG_FILE=scrapy.log
 <li><p>SPIDER_CONTRACTS<br>默认：： {}<br>包含在项目中启用的爬虫契约的dict，用于测试爬虫。有关更多信息，请参阅爬虫合同。    </p>
 </li>
 <li><p>SPIDER_CONTRACTS_BASE<br>默认：  </p>
-<pre><code class="python">{  
-  <span class="string">'scrapy.contracts.default.UrlContract'</span> : <span class="number">1</span>,  
-  <span class="string">'scrapy.contracts.default.ReturnsContract'</span>: <span class="number">2</span>,  
-  <span class="string">'scrapy.contracts.default.ScrapesContract'</span>: <span class="number">3</span>,  
+<pre><code class="shell">{  
+  &#39;scrapy.contracts.default.UrlContract&#39; : 1,  
+  &#39;scrapy.contracts.default.ReturnsContract&#39;: 2,  
+  &#39;scrapy.contracts.default.ScrapesContract&#39;: 3,  
 }  
 </code></pre>
 <p>包含Scrapy中默认启用的scrapy合约的dict。您不应该在项目中修改此设置，SPIDER_CONTRACTS 而应修改。有关更多信息，请参阅爬虫合同。<br>您可以通过None将其中的类路径指定为禁用任何这些合同SPIDER_CONTRACTS。例如，要禁用内置 ScrapesContract，将此放在您的settings.py：  </p>
-<pre><code class="python">SPIDER_CONTRACTS = {  
-  <span class="string">'scrapy.contracts.default.ScrapesContract'</span>: <span class="keyword">None</span>,  
+<pre><code class="shell">SPIDER_CONTRACTS = {  
+  &#39;scrapy.contracts.default.ScrapesContract&#39;: None,  
 }  
 </code></pre>
 </li>
@@ -426,12 +430,12 @@ LOG_FILE=scrapy.log
 <li><p>SPIDER_MIDDLEWARES<br>默认：： {}<br>包含在您的项目中启用的爬虫中间件的字典及其顺序。有关更多信息，请参阅激活爬虫中间件。    </p>
 </li>
 <li><p>SPIDER_MIDDLEWARES_BASE<br>默认：  </p>
-<pre><code class="python">{  
-  <span class="string">'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware'</span>: <span class="number">50</span>,  
-  <span class="string">'scrapy.spidermiddlewares.offsite.OffsiteMiddleware'</span>: <span class="number">500</span>,  
-  <span class="string">'scrapy.spidermiddlewares.referer.RefererMiddleware'</span>: <span class="number">700</span>,  
-  <span class="string">'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware'</span>: <span class="number">800</span>,  
-  <span class="string">'scrapy.spidermiddlewares.depth.DepthMiddleware'</span>: <span class="number">900</span>,  
+<pre><code class="shell">{  
+&#39;scrapy.spidermiddlewares.httperror.HttpErrorMiddleware&#39;: 50,  
+&#39;scrapy.spidermiddlewares.offsite.OffsiteMiddleware&#39;: 500,  
+&#39;scrapy.spidermiddlewares.referer.RefererMiddleware&#39;: 700,  
+&#39;scrapy.spidermiddlewares.urllength.UrlLengthMiddleware&#39;: 800,  
+&#39;scrapy.spidermiddlewares.depth.DepthMiddleware&#39;: 900,  
 }  
 </code></pre>
 <p>包含在Scrapy中默认启用的爬虫中间件的字典及其顺序。低订单更靠近发动机，高订单更接近爬虫。有关更多信息，请参阅激活爬虫中间件。    </p>
@@ -449,7 +453,7 @@ LOG_FILE=scrapy.log
 <li><p>URLLENGTH_LIMIT<br>默认： 2083<br>范围： spidermiddlewares.urllength<br>允许抓取网址的最大网址长度。有关此设置的默认值的详细信息，请参阅<a href="http://www.boutell.com/newfaq/misc/urllength.html" target="_blank" rel="noopener">http://www.boutell.com/newfaq/misc/urllength.html</a>    </p>
 </li>
 <li><p>USER_AGENT<br>默认： “Scrapy/VERSION (+<a href="http://scrapy.org)&quot;" target="_blank" rel="noopener">http://scrapy.org)&quot;</a><br>检索时使用的默认用户代理，除非被覆盖。<br>其他地方记录的设置：<br>以下设置在其他地方记录，请检查每个具体案例，了解如何启用和使用它们。  </p>
-<pre><code class="python">AJAXCRAWL_ENABLED
+<pre><code class="shell">AJAXCRAWL_ENABLED
 AUTOTHROTTLE_DEBUG
 AUTOTHROTTLE_ENABLED
 AUTOTHROTTLE_MAX_DELAY  
@@ -786,15 +790,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -803,6 +799,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -815,6 +815,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
             
             <div class="clearfix"></div>
