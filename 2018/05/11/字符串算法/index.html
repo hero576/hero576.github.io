@@ -8,14 +8,15 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>字符串算法 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="字符串字符串循环左移例如‘abcdef’，左移两个字符串，变成‘cdefab’。123456str=&apos;abcdef&apos;k=100   # 任意指定x=k%len(str)str1=str[0:x]str2=str[x:]str3=str2+str1 字符串全排列S=[0….N-1]，枚举S的全排列1234567891011121314151617181920str=&apos;1234&apos;def swap(a,">
+  <meta name="description" content="字符串字符串循环左移例如‘abcdef’，左移两个字符串，变成‘cdefab’。123456str=&apos;abcdef&apos;k=100   # 任意指定x=k%len(str)str1=str[0:x]str2=str[x:]str3=str2+str1 如果有对空间的限制，这道题就需要通过逆序的方法了。过程如下： 字符串全排列S=[0….N-1]，枚举S的全排列123456789101112131415">
 <meta name="keywords" content="数据结构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字符串算法">
 <meta property="og:url" content="http://yoursite.com/2018/05/11/字符串算法/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="字符串字符串循环左移例如‘abcdef’，左移两个字符串，变成‘cdefab’。123456str=&apos;abcdef&apos;k=100   # 任意指定x=k%len(str)str1=str[0:x]str2=str[x:]str3=str2+str1 字符串全排列S=[0….N-1]，枚举S的全排列1234567891011121314151617181920str=&apos;1234&apos;def swap(a,">
+<meta property="og:description" content="字符串字符串循环左移例如‘abcdef’，左移两个字符串，变成‘cdefab’。123456str=&apos;abcdef&apos;k=100   # 任意指定x=k%len(str)str1=str[0:x]str2=str[x:]str3=str2+str1 如果有对空间的限制，这道题就需要通过逆序的方法了。过程如下： 字符串全排列S=[0….N-1]，枚举S的全排列123456789101112131415">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/images/pasted-26.png">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526032977782d9b8gt3o.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526033744135rjttlw64.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526032977782d9b8gt3o.png?imageslim">
@@ -25,11 +26,11 @@
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526042933581cjh9tqgn.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/15260429479493wv8ybrc.png?imageslim">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526042956122emfn81n7.png?imageslim">
-<meta property="og:updated_time" content="2018-05-12T13:33:43.253Z">
+<meta property="og:updated_time" content="2018-05-20T07:46:42.870Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="字符串算法">
-<meta name="twitter:description" content="字符串字符串循环左移例如‘abcdef’，左移两个字符串，变成‘cdefab’。123456str=&apos;abcdef&apos;k=100   # 任意指定x=k%len(str)str1=str[0:x]str2=str[x:]str3=str2+str1 字符串全排列S=[0….N-1]，枚举S的全排列1234567891011121314151617181920str=&apos;1234&apos;def swap(a,">
-<meta name="twitter:image" content="http://p8cigu7up.bkt.clouddn.com/1526032977782d9b8gt3o.png?imageslim">
+<meta name="twitter:description" content="字符串字符串循环左移例如‘abcdef’，左移两个字符串，变成‘cdefab’。123456str=&apos;abcdef&apos;k=100   # 任意指定x=k%len(str)str1=str[0:x]str2=str[x:]str3=str2+str1 如果有对空间的限制，这道题就需要通过逆序的方法了。过程如下： 字符串全排列S=[0….N-1]，枚举S的全排列123456789101112131415">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-26.png">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
   
@@ -176,6 +177,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="字符串循环左移"><a href="#字符串循环左移" class="headerlink" title="字符串循环左移"></a>字符串循环左移</h3><p>例如‘abcdef’，左移两个字符串，变成‘cdefab’。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'abcdef'</span></span><br><span class="line">k=<span class="number">100</span>   <span class="comment"># 任意指定</span></span><br><span class="line">x=k%len(str)</span><br><span class="line">str1=str[<span class="number">0</span>:x]</span><br><span class="line">str2=str[x:]</span><br><span class="line">str3=str2+str1</span><br></pre></td></tr></table></figure></p>
+<p>如果有对空间的限制，这道题就需要通过逆序的方法了。过程如下：<br><img src="/images/pasted-26.png" alt="upload successful"></p>
 <h3 id="字符串全排列"><a href="#字符串全排列" class="headerlink" title="字符串全排列"></a>字符串全排列</h3><p>S=[0….N-1]，枚举S的全排列<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'1234'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">swap</span><span class="params">(a,i,foo)</span>:</span></span><br><span class="line">    tmp=a[<span class="number">0</span>:i]+a[foo]</span><br><span class="line">    <span class="keyword">if</span> i!=len(a):</span><br><span class="line">        tmp+=a[i+<span class="number">1</span>:]</span><br><span class="line">    str=tmp[<span class="number">0</span>:foo]+a[i]</span><br><span class="line">    <span class="keyword">if</span> foo!=len(a):</span><br><span class="line">        str+=tmp[foo+<span class="number">1</span>:]</span><br><span class="line">    <span class="keyword">return</span> str</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Permutation</span><span class="params">(str,foo,to)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> foo==to:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,to):</span><br><span class="line">            print(str[i],end=<span class="string">''</span>)</span><br><span class="line">        print()</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(foo,to):</span><br><span class="line">        x = swap(str,i,foo)</span><br><span class="line">        Permutation(x,foo+<span class="number">1</span>,to)</span><br><span class="line">Permutation(str,<span class="number">0</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure></p>
 <h3 id="KMP"><a href="#KMP" class="headerlink" title="KMP"></a><a href="https://news.cnblogs.com/n/176771/" target="_blank" rel="noopener">KMP</a></h3><p>给定文本串text和模式串pattern，从文本串中找出模式串第一次出现的位置。<br>例如  甲：abbaabbaaba，乙：abbaaba。查找乙在甲什么位置。<br>假定文本串长度是N，模式串长度为M，普通模式<a href="http://www.cnblogs.com/dolphin0520/archive/2011/08/24/2151846.html" target="_blank" rel="noopener">匹配算法（BF）</a>时间复杂度：O(M*N)，空间复杂度O(1)。而KMP算法可以用闲心时间算法求解匹配字符串问题的方法，时间复杂度：O(M+N)，空间复杂度O(M)。<br>BF方法从两个字符串头开始，若遇到不匹配的字符，模式串回溯到开始位置，文本串回溯到头结点+1。然后继续匹配，如果模式串中字符两两不相等，那么这样会造成很多没必要的匹配过程。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">'abbaabbaaba'</span></span><br><span class="line">str2 = <span class="string">'abbaaba'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BF</span><span class="params">(str1,str2)</span>:</span></span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i &lt;len(str1):</span><br><span class="line">        j=<span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> j &lt;len(str2) <span class="keyword">and</span> str1[i]==str2[j]:</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">            j+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> j==len(str2):</span><br><span class="line">            print(<span class="string">'success'</span>)</span><br><span class="line">            <span class="keyword">return</span> i-len(str2)</span><br><span class="line">        i=i-j+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure></p>
 <p><img src="http://p8cigu7up.bkt.clouddn.com/1526032977782d9b8gt3o.png?imageslim" alt="paste image"><br>KMP方法的思路是，尽量减少指针回溯，当出现不匹配字符时，前六个字符已经知道了，如果模式串不回溯到开始位置，而是移动到后面的匹配的位置，这样就提高了效率。<br>怎么做到这一点呢？可以针对搜索词，算出一张《部分匹配表》（Partial Match Table）。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526033744135rjttlw64.png?imageslim" alt="paste image"></p>
@@ -304,7 +306,7 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          人工智能数学基础1
+          数学基础
         
       </div>
     </a>
@@ -471,15 +473,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -487,7 +489,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -496,10 +506,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
             
             <div class="clearfix"></div>

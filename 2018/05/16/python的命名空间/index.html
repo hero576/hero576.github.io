@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="hero576的博客">
 <meta property="og:description" content="命名空间的概念C++会用到std::cout这样的用法，定义cout的命名空间，使用using namespace std;可以简化std::cout的写法，命名空间的使用可以避免不同的作用域之间函数重名的冲突问题。 python的命名空间python中也有命名空间，是用来记录变量轨迹的。命名空间是一个 字典，它的键就是变量名，它的值就是那些变量的值。在一个 Python 程序中的任何一个地方，都">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-16T12:45:10.192Z">
+<meta property="og:updated_time" content="2018-05-20T03:04:30.560Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python的命名空间">
 <meta name="twitter:description" content="命名空间的概念C++会用到std::cout这样的用法，定义cout的命名空间，使用using namespace std;可以简化std::cout的写法，命名空间的使用可以避免不同的作用域之间函数重名的冲突问题。 python的命名空间python中也有命名空间，是用来记录变量轨迹的。命名空间是一个 字典，它的键就是变量名，它的值就是那些变量的值。在一个 Python 程序中的任何一个地方，都">
@@ -201,16 +201,22 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gstr = <span class="string">"global string"</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span>,<span class="string">'first'</span>)</span><br><span class="line">print(globals())</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br><span class="line">&#123;<span class="string">'__name__'</span>: <span class="string">'__main__'</span>, ....<span class="string">'func1'</span>: &lt;function func1 at <span class="number">0x000002A7BF382D90</span>&gt;&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>locals 与 globals 之间的一个重要的区别<br>locals 是只读的，globals 可以改写<br><code>`</code>python<br>def func1(i, info):<br>  x = 12345<br>  print(locals())<br>  locals()[“x”]= 6789<br>  print(“x=”,x)</li>
+<li>locals 与 globals 之间的一个重要的区别<br>locals 是只读的，globals 可以改写</li>
 </ul>
-<p>y=54321<br>func1(1 , “first”)<br>globals()[“y”]= 9876<br>print( “y=”,y)</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>{‘i’: 1, ‘x’: 12345, ‘info’: ‘first’}<br>x= 12345<br>y= 9876<br><code>`</code>  </p>
-</blockquote>
-</blockquote>
-</blockquote>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span>
+    x = <span class="number">12345</span>
+    print(locals())
+    locals()[<span class="string">"x"</span>]= <span class="number">6789</span>
+    print(<span class="string">"x="</span>,x)
+
+y=<span class="number">54321</span>
+func1(<span class="number">1</span> , <span class="string">"first"</span>)
+globals()[<span class="string">"y"</span>]= <span class="number">9876</span>
+print( <span class="string">"y="</span>,y)
+&gt;&gt;&gt;{<span class="string">'i'</span>: <span class="number">1</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>}
+x= <span class="number">12345</span>
+y= <span class="number">9876</span>
+</code></pre>
 <p>locals 实际上没有返回局部名字空间，它返回的是一个拷贝。所以对它进行改变对局部名字空间中的变量值并无影响。<br>globals 返回实际的全局名字空间，而不是一个拷贝。所以对 globals 所返回的 dictionary 的任何的改动都会直接影响到全局变量。（<a href="http://www.cnblogs.com/windlaughing/archive/2013/05/26/3100362.html" target="_blank" rel="noopener">原文解释连接</a>）</p>
 
       
@@ -477,15 +483,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -493,7 +499,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -502,10 +516,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
             
             <div class="clearfix"></div>

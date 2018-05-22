@@ -446,11 +446,13 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h3><p>开辟一个足够大的空间H，数组的元素值作为自变量，通过某一个函数f，将元素值映射到hash空间的index索引处，这样通过f计算出索引，可以快速定位到元素的值，时间复杂度O(1)。基本思想就是用空间换时间。</p>
-<h3 id="Hash函数"><a href="#Hash函数" class="headerlink" title="Hash函数"></a>Hash函数</h3><p>Hash函数非常重要，一个好的Hash函数，能够将数据映射到‘杂乱’的位置。</p>
+<h3 id="Hash函数"><a href="#Hash函数" class="headerlink" title="Hash函数"></a>Hash函数</h3><p>哈希函数又叫散列函数，输入域可以是非常大的（无限）范围，但输出域是固定范围（所以不同输入可能返回相同输出）。Hash函数非常重要，一个好的Hash函数，能够将数据映射到“杂乱”的位置。</p>
 <ul>
 <li>dbj2</li>
 <li>sdbm</li>
-<li>MurmurHash<h4 id="dbj2"><a href="#dbj2" class="headerlink" title="dbj2"></a>dbj2</h4>这个算法是Dan Bernstein在comp.lang.c提出的，这个算法的另一个版本是使用异或的方式：<br>$hash(i)=hash(i-1)*33^str[i]$<br>魔数33本身是个合数，但是它的表现比其他很多素数效果都好。这里表现好意思就是经过映射后，数组更为散列。<br>输入是字符串，输出时整数值。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(str)</span>:</span></span><br><span class="line">    hash=<span class="number">5381</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">        hash=hash*<span class="number">33</span>+ord(i)</span><br><span class="line">    <span class="keyword">return</span> hash</span><br></pre></td></tr></table></figure>
+<li>MurmurHash</li>
+<li>MD5</li>
+<li>SHA1<h4 id="dbj2"><a href="#dbj2" class="headerlink" title="dbj2"></a>dbj2</h4>这个算法是Dan Bernstein在comp.lang.c提出的，这个算法的另一个版本是使用异或的方式：<br>$hash(i)=hash(i-1)*33^str[i]$<br>魔数33本身是个合数，但是它的表现比其他很多素数效果都好。这里表现好意思就是经过映射后，数组更为散列。<br>输入是字符串，输出时整数值。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(str)</span>:</span></span><br><span class="line">    hash=<span class="number">5381</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">        hash=hash*<span class="number">33</span>+ord(i)</span><br><span class="line">    <span class="keyword">return</span> hash</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h4 id="sdbm"><a href="#sdbm" class="headerlink" title="sdbm"></a>sdbm</h4><p>dbj2使用的是魔数33，我们也可以用65599，这样就是sdbm算法了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(str)</span>:</span></span><br><span class="line">    hash=<span class="number">0</span>  <span class="comment"># 随机给的初值种子</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">        hash=hash*<span class="number">65599</span>+ord(i)</span><br><span class="line">    <span class="keyword">return</span> hash</span><br></pre></td></tr></table></figure></p>
@@ -546,6 +548,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="字符串循环左移"><a href="#字符串循环左移" class="headerlink" title="字符串循环左移"></a>字符串循环左移</h3><p>例如‘abcdef’，左移两个字符串，变成‘cdefab’。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'abcdef'</span></span><br><span class="line">k=<span class="number">100</span>   <span class="comment"># 任意指定</span></span><br><span class="line">x=k%len(str)</span><br><span class="line">str1=str[<span class="number">0</span>:x]</span><br><span class="line">str2=str[x:]</span><br><span class="line">str3=str2+str1</span><br></pre></td></tr></table></figure></p>
+<p>如果有对空间的限制，这道题就需要通过逆序的方法了。过程如下：<br><img src="/images/pasted-26.png" alt="upload successful"></p>
 <h3 id="字符串全排列"><a href="#字符串全排列" class="headerlink" title="字符串全排列"></a>字符串全排列</h3><p>S=[0….N-1]，枚举S的全排列<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'1234'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">swap</span><span class="params">(a,i,foo)</span>:</span></span><br><span class="line">    tmp=a[<span class="number">0</span>:i]+a[foo]</span><br><span class="line">    <span class="keyword">if</span> i!=len(a):</span><br><span class="line">        tmp+=a[i+<span class="number">1</span>:]</span><br><span class="line">    str=tmp[<span class="number">0</span>:foo]+a[i]</span><br><span class="line">    <span class="keyword">if</span> foo!=len(a):</span><br><span class="line">        str+=tmp[foo+<span class="number">1</span>:]</span><br><span class="line">    <span class="keyword">return</span> str</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Permutation</span><span class="params">(str,foo,to)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> foo==to:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,to):</span><br><span class="line">            print(str[i],end=<span class="string">''</span>)</span><br><span class="line">        print()</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(foo,to):</span><br><span class="line">        x = swap(str,i,foo)</span><br><span class="line">        Permutation(x,foo+<span class="number">1</span>,to)</span><br><span class="line">Permutation(str,<span class="number">0</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure></p>
 <h3 id="KMP"><a href="#KMP" class="headerlink" title="KMP"></a><a href="https://news.cnblogs.com/n/176771/" target="_blank" rel="noopener">KMP</a></h3><p>给定文本串text和模式串pattern，从文本串中找出模式串第一次出现的位置。<br>例如  甲：abbaabbaaba，乙：abbaaba。查找乙在甲什么位置。<br>假定文本串长度是N，模式串长度为M，普通模式<a href="http://www.cnblogs.com/dolphin0520/archive/2011/08/24/2151846.html" target="_blank" rel="noopener">匹配算法（BF）</a>时间复杂度：O(M*N)，空间复杂度O(1)。而KMP算法可以用闲心时间算法求解匹配字符串问题的方法，时间复杂度：O(M+N)，空间复杂度O(M)。<br>BF方法从两个字符串头开始，若遇到不匹配的字符，模式串回溯到开始位置，文本串回溯到头结点+1。然后继续匹配，如果模式串中字符两两不相等，那么这样会造成很多没必要的匹配过程。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">'abbaabbaaba'</span></span><br><span class="line">str2 = <span class="string">'abbaaba'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BF</span><span class="params">(str1,str2)</span>:</span></span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i &lt;len(str1):</span><br><span class="line">        j=<span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> j &lt;len(str2) <span class="keyword">and</span> str1[i]==str2[j]:</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">            j+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> j==len(str2):</span><br><span class="line">            print(<span class="string">'success'</span>)</span><br><span class="line">            <span class="keyword">return</span> i-len(str2)</span><br><span class="line">        i=i-j+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure></p>
 <p><img src="http://p8cigu7up.bkt.clouddn.com/1526032977782d9b8gt3o.png?imageslim" alt="paste image"><br>KMP方法的思路是，尽量减少指针回溯，当出现不匹配字符时，前六个字符已经知道了，如果模式串不回溯到开始位置，而是移动到后面的匹配的位置，这样就提高了效率。<br>怎么做到这一点呢？可以针对搜索词，算出一张《部分匹配表》（Partial Match Table）。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526033744135rjttlw64.png?imageslim" alt="paste image"></p>
@@ -880,7 +883,7 @@ HEAP_SIZE(A)：堆A当前的元素数目
 <li>给定一个整数num，如何在节点值有序的环形链表中插入一个节点值为num的节点，并且保证这个环形单链表依然有序。</li>
 <li>给定一个链表中的节点node，但是不给定整个链表的头结点。如何在链表中删除node。要求时间复杂度为O(1)。</li>
 <li>给定一个链表的头节点head，在给定一个数num，把链表调整成节点值小于num的节点都在链表的左边，等于num的放在中间，大于num放在右边。</li>
-<li>给定两个有序链表头结点head1和head2，打印公共部分。</li>
+<li>给定两个有序链表头结点head1和head2，打印公共部分。<br><img src="/images/pasted-25.png" alt="upload successful"></li>
 <li>给定一个单链表的头节点head，实现一个吊证单链表的函数，使得每k个节点之间逆序，如果最后不够k个节点一组，则不调整最后几个节点。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526460109134k2s3tag1.png?imageslim" alt="paste image"></li>
 <li>给定单链表的头节点head，链表中每个节点保存一个整数，再给定一个值val，把所有等于val的节点删掉。</li>
 <li>判断链表是否是回文的。</li>
@@ -1152,15 +1155,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1168,7 +1171,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1177,10 +1188,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
             
             <div class="clearfix"></div>

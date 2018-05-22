@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>数据结构——哈希 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="简单介绍开辟一个足够大的空间H，数组的元素值作为自变量，通过某一个函数f，将元素值映射到hash空间的index索引处，这样通过f计算出索引，可以快速定位到元素的值，时间复杂度O(1)。基本思想就是用空间换时间。 Hash函数Hash函数非常重要，一个好的Hash函数，能够将数据映射到‘杂乱’的位置。  dbj2 sdbm MurmurHashdbj2这个算法是Dan Bernstein在comp">
+  <meta name="description" content="简单介绍开辟一个足够大的空间H，数组的元素值作为自变量，通过某一个函数f，将元素值映射到hash空间的index索引处，这样通过f计算出索引，可以快速定位到元素的值，时间复杂度O(1)。基本思想就是用空间换时间。 Hash函数哈希函数又叫散列函数，输入域可以是非常大的（无限）范围，但输出域是固定范围（所以不同输入可能返回相同输出）。Hash函数非常重要，一个好的Hash函数，能够将数据映射到“杂乱">
 <meta name="keywords" content="数据结构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构——哈希">
 <meta property="og:url" content="http://yoursite.com/2018/05/12/数据结构——哈希/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="简单介绍开辟一个足够大的空间H，数组的元素值作为自变量，通过某一个函数f，将元素值映射到hash空间的index索引处，这样通过f计算出索引，可以快速定位到元素的值，时间复杂度O(1)。基本思想就是用空间换时间。 Hash函数Hash函数非常重要，一个好的Hash函数，能够将数据映射到‘杂乱’的位置。  dbj2 sdbm MurmurHashdbj2这个算法是Dan Bernstein在comp">
+<meta property="og:description" content="简单介绍开辟一个足够大的空间H，数组的元素值作为自变量，通过某一个函数f，将元素值映射到hash空间的index索引处，这样通过f计算出索引，可以快速定位到元素的值，时间复杂度O(1)。基本思想就是用空间换时间。 Hash函数哈希函数又叫散列函数，输入域可以是非常大的（无限）范围，但输出域是固定范围（所以不同输入可能返回相同输出）。Hash函数非常重要，一个好的Hash函数，能够将数据映射到“杂乱">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-16T12:47:38.118Z">
+<meta property="og:updated_time" content="2018-05-21T07:34:57.442Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据结构——哈希">
-<meta name="twitter:description" content="简单介绍开辟一个足够大的空间H，数组的元素值作为自变量，通过某一个函数f，将元素值映射到hash空间的index索引处，这样通过f计算出索引，可以快速定位到元素的值，时间复杂度O(1)。基本思想就是用空间换时间。 Hash函数Hash函数非常重要，一个好的Hash函数，能够将数据映射到‘杂乱’的位置。  dbj2 sdbm MurmurHashdbj2这个算法是Dan Bernstein在comp">
+<meta name="twitter:description" content="简单介绍开辟一个足够大的空间H，数组的元素值作为自变量，通过某一个函数f，将元素值映射到hash空间的index索引处，这样通过f计算出索引，可以快速定位到元素的值，时间复杂度O(1)。基本思想就是用空间换时间。 Hash函数哈希函数又叫散列函数，输入域可以是非常大的（无限）范围，但输出域是固定范围（所以不同输入可能返回相同输出）。Hash函数非常重要，一个好的Hash函数，能够将数据映射到“杂乱">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
   
@@ -166,11 +166,13 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h3><p>开辟一个足够大的空间H，数组的元素值作为自变量，通过某一个函数f，将元素值映射到hash空间的index索引处，这样通过f计算出索引，可以快速定位到元素的值，时间复杂度O(1)。基本思想就是用空间换时间。</p>
-<h3 id="Hash函数"><a href="#Hash函数" class="headerlink" title="Hash函数"></a>Hash函数</h3><p>Hash函数非常重要，一个好的Hash函数，能够将数据映射到‘杂乱’的位置。</p>
+<h3 id="Hash函数"><a href="#Hash函数" class="headerlink" title="Hash函数"></a>Hash函数</h3><p>哈希函数又叫散列函数，输入域可以是非常大的（无限）范围，但输出域是固定范围（所以不同输入可能返回相同输出）。Hash函数非常重要，一个好的Hash函数，能够将数据映射到“杂乱”的位置。</p>
 <ul>
 <li>dbj2</li>
 <li>sdbm</li>
-<li>MurmurHash<h4 id="dbj2"><a href="#dbj2" class="headerlink" title="dbj2"></a>dbj2</h4>这个算法是Dan Bernstein在comp.lang.c提出的，这个算法的另一个版本是使用异或的方式：<br>$hash(i)=hash(i-1)*33^str[i]$<br>魔数33本身是个合数，但是它的表现比其他很多素数效果都好。这里表现好意思就是经过映射后，数组更为散列。<br>输入是字符串，输出时整数值。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(str)</span>:</span></span><br><span class="line">    hash=<span class="number">5381</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">        hash=hash*<span class="number">33</span>+ord(i)</span><br><span class="line">    <span class="keyword">return</span> hash</span><br></pre></td></tr></table></figure>
+<li>MurmurHash</li>
+<li>MD5</li>
+<li>SHA1<h4 id="dbj2"><a href="#dbj2" class="headerlink" title="dbj2"></a>dbj2</h4>这个算法是Dan Bernstein在comp.lang.c提出的，这个算法的另一个版本是使用异或的方式：<br>$hash(i)=hash(i-1)*33^str[i]$<br>魔数33本身是个合数，但是它的表现比其他很多素数效果都好。这里表现好意思就是经过映射后，数组更为散列。<br>输入是字符串，输出时整数值。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(str)</span>:</span></span><br><span class="line">    hash=<span class="number">5381</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">        hash=hash*<span class="number">33</span>+ord(i)</span><br><span class="line">    <span class="keyword">return</span> hash</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h4 id="sdbm"><a href="#sdbm" class="headerlink" title="sdbm"></a>sdbm</h4><p>dbj2使用的是魔数33，我们也可以用65599，这样就是sdbm算法了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(str)</span>:</span></span><br><span class="line">    hash=<span class="number">0</span>  <span class="comment"># 随机给的初值种子</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">        hash=hash*<span class="number">65599</span>+ord(i)</span><br><span class="line">    <span class="keyword">return</span> hash</span><br></pre></td></tr></table></figure></p>
@@ -286,7 +288,7 @@
   
   
     <a href="/2018/05/11/人工智能数学基础-1/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">人工智能数学基础1</div>
+      <div class="article-nav-title">数学基础</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -446,15 +448,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -462,7 +464,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -471,10 +481,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
             
             <div class="clearfix"></div>

@@ -146,6 +146,114 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-KNN" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/19/KNN/">KNN</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/19/KNN/" class="archive-article-date">
+  	<time datetime="2018-05-19T10:14:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="K邻近学习"><a href="#K邻近学习" class="headerlink" title="K邻近学习"></a>K邻近学习</h2><p>k近邻学习是一种监督学习算法，lazy-learning算法。训练复杂度为0。在给定的训练样本集中，基于某种距离度量，找出与训练集最靠近的k个训练样本，然后基于这k个邻居信息来进行预测。<br><strong>投票法：</strong>通常在分类任务中使用，判别方法是选择这k个样本中出现最多的雷冰标记作为预测结果。（所以k值取值一般为奇数，以便可以得到有偏向的投票结果）<br><strong>平均法：</strong>通常在回归任务中使用，判别方法是将这k个样本的实值输出标记的平均值最为预测结果。<br><strong>加权平均或加权投票：</strong>根据距离远近来决定权重，距离越近，权重越大。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526725719271s4cfc85r.png?imageslim" alt="paste image"><br>增加权重后，就可以避免由于密集的样本造成的影响。</p>
+<h3 id="KNN算法主要过程"><a href="#KNN算法主要过程" class="headerlink" title="KNN算法主要过程"></a>KNN算法主要过程</h3><ol>
+<li>计算训练样本和测试样本中每个样本点的距离（常见的距离度量有欧式距离，马氏距离等）；</li>
+<li>对上面所有的距离值进行排序；</li>
+<li>选前k个最小距离的样本；</li>
+<li>根据这k个样本的标签进行投票，得到最后的分类类别；</li>
+</ol>
+<p>如何选择一个最佳的K值，这取决于数据。一般情况下，在分类时较大的K值能够减小噪声的影响。但会使类别之间的界限变得模糊。一个较好的K值可通过各种启发式技术来获取，比如，交叉验证。另外噪声和非相关性特征向量的存在会使K近邻算法的准确性减小。<br>近邻算法具有较强的一致性结果。随着数据趋于无限，算法保证错误率不会超过贝叶斯算法错误率的两倍。对于一些好的K值，K近邻保证错误率不会超过贝叶斯理论误差率。</p>
+<h3 id="距离衡量方法"><a href="#距离衡量方法" class="headerlink" title="距离衡量方法"></a>距离衡量方法</h3><h4 id="Euclidean-Distance"><a href="#Euclidean-Distance" class="headerlink" title="Euclidean Distance"></a>Euclidean Distance</h4><p>$D=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}$</p>
+<h4 id="余弦（cos）"><a href="#余弦（cos）" class="headerlink" title="余弦（cos）"></a>余弦（cos）</h4><h4 id="相关度-correlation"><a href="#相关度-correlation" class="headerlink" title="相关度(correlation)"></a>相关度(correlation)</h4><h4 id="曼哈顿距离-Manhattan-distance"><a href="#曼哈顿距离-Manhattan-distance" class="headerlink" title="曼哈顿距离(Manhattan distance)"></a>曼哈顿距离(Manhattan distance)</h4><p>走过的街区数。</p>
+<h3 id="KNN算法的优缺点"><a href="#KNN算法的优缺点" class="headerlink" title="KNN算法的优缺点"></a>KNN算法的优缺点</h3><p><strong>优点：</strong>  </p>
+<ol>
+<li>思想简单，理论成熟，既可以用来做分类也可以用来做回归；</li>
+<li>可用于非线性分类；</li>
+<li>训练时间复杂度为O(n)；</li>
+<li>准确度高，对数据没有假设，对outlier不敏感；</li>
+</ol>
+<p><strong>缺点：</strong>  </p>
+<ol>
+<li>计算量大；</li>
+<li>样本不平衡问题（即有些类别的样本数量很多，而其它样本的数量很少）；</li>
+<li>需要大量的内存；</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> neighbors,datasets</span><br><span class="line">knn=neighbors.KNeighborsClassifier()</span><br><span class="line">iris=datasets.load_iris()</span><br><span class="line">knn.fit(iris.data,iris.target)</span><br><span class="line">predictedLabel=knn.predict([[<span class="number">0.1</span>,<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.4</span>]])</span><br><span class="line">print(predictedLabel)</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/19/KNN/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-排序和查找" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -428,16 +536,22 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gstr = <span class="string">"global string"</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span>,<span class="string">'first'</span>)</span><br><span class="line">print(globals())</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br><span class="line">&#123;<span class="string">'__name__'</span>: <span class="string">'__main__'</span>, ....<span class="string">'func1'</span>: &lt;function func1 at <span class="number">0x000002A7BF382D90</span>&gt;&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>locals 与 globals 之间的一个重要的区别<br>locals 是只读的，globals 可以改写<br><code>`</code>python<br>def func1(i, info):<br>  x = 12345<br>  print(locals())<br>  locals()[“x”]= 6789<br>  print(“x=”,x)</li>
+<li>locals 与 globals 之间的一个重要的区别<br>locals 是只读的，globals 可以改写</li>
 </ul>
-<p>y=54321<br>func1(1 , “first”)<br>globals()[“y”]= 9876<br>print( “y=”,y)</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>{‘i’: 1, ‘x’: 12345, ‘info’: ‘first’}<br>x= 12345<br>y= 9876<br><code>`</code>  </p>
-</blockquote>
-</blockquote>
-</blockquote>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span>
+    x = <span class="number">12345</span>
+    print(locals())
+    locals()[<span class="string">"x"</span>]= <span class="number">6789</span>
+    print(<span class="string">"x="</span>,x)
+
+y=<span class="number">54321</span>
+func1(<span class="number">1</span> , <span class="string">"first"</span>)
+globals()[<span class="string">"y"</span>]= <span class="number">9876</span>
+print( <span class="string">"y="</span>,y)
+&gt;&gt;&gt;{<span class="string">'i'</span>: <span class="number">1</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>}
+x= <span class="number">12345</span>
+y= <span class="number">9876</span>
+</code></pre>
 <p>locals 实际上没有返回局部名字空间，它返回的是一个拷贝。所以对它进行改变对局部名字空间中的变量值并无影响。<br>globals 返回实际的全局名字空间，而不是一个拷贝。所以对 globals 所返回的 dictionary 的任何的改动都会直接影响到全局变量。（<a href="http://www.cnblogs.com/windlaughing/archive/2013/05/26/3100362.html" target="_blank" rel="noopener">原文解释连接</a>）</p>
 
       
@@ -991,100 +1105,6 @@
 
 
   
-    <article id="post-算法题——NO39 组合总和" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/12/算法题——NO39 组合总和/">算法题——NO39 组合总和</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/12/算法题——NO39 组合总和/" class="archive-article-date">
-  	<time datetime="2018-05-12T13:26:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="NO39-组合总和"><a href="#NO39-组合总和" class="headerlink" title="NO39 组合总和"></a>NO39 组合总和</h3><p><strong>题目描述</strong></p>
-<p>给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。<br>candidates 中的数字可以无限制重复被选取。<br>说明：</p>
-<ul>
-<li>所有数字（包括 target）都是正整数。</li>
-<li>解集不能包含重复的组合。   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">示例 1:</span><br><span class="line">输入: candidates = [2,3,6,7], target = 7,</span><br><span class="line">所求解集为:</span><br><span class="line">[</span><br><span class="line">  [7],</span><br><span class="line">  [2,2,3]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">示例 2:</span><br><span class="line">输入: candidates = [2,3,5], target = 8,</span><br><span class="line">所求解集为:</span><br><span class="line">[</span><br><span class="line">  [2,2,2,2],</span><br><span class="line">  [2,3,3],</span><br><span class="line">  [3,5]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>这道题很容易联想到递归，我的代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> copy <span class="keyword">import</span> deepcopy</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">combinationSum</span><span class="params">(self, candidates, target)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> candidates:</span><br><span class="line">            <span class="keyword">return</span> []  </span><br><span class="line">        result=[]</span><br><span class="line">        candidates.sort()</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">combinate</span><span class="params">(src,obj,target)</span>:</span></span><br><span class="line">            src_tmp=deepcopy(src)</span><br><span class="line">            <span class="keyword">if</span> min(src)&gt;target:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> src:</span><br><span class="line">                <span class="keyword">if</span> src_tmp.index(i)==<span class="number">1</span>:</span><br><span class="line">                    src_tmp.pop(<span class="number">0</span>)</span><br><span class="line">                <span class="keyword">if</span> i==target:</span><br><span class="line">                    obj.append(i)</span><br><span class="line">                    result.append(obj)</span><br><span class="line">                <span class="keyword">elif</span> i&lt;target:</span><br><span class="line">                    obj.append(i)</span><br><span class="line">                    combinate(src_tmp,deepcopy(obj),target-i)</span><br><span class="line">                    obj.pop()</span><br><span class="line">        combinate(candidates, [],target) </span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure></p>
-<p>排名第一的算法是这样的：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">combinationSum</span><span class="params">(self, candidates, target)</span>:</span>      </span><br><span class="line">        candidates.sort()</span><br><span class="line">        res = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">combination</span><span class="params">(candidates, result, target)</span>:</span></span><br><span class="line">            <span class="keyword">for</span> idx, i <span class="keyword">in</span> enumerate(candidates):</span><br><span class="line">                <span class="keyword">if</span> i == target:</span><br><span class="line">                    res.append(result + [i])</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">                <span class="keyword">if</span> i &lt; target:</span><br><span class="line">                    combination(candidates[idx:], result + [i], target - i)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">return</span> </span><br><span class="line">        combination(candidates, [], target)      </span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/12/算法题——NO39 组合总和/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/archives/2018/page/2/">2</a><a class="page-number" href="/archives/2018/page/3/">3</a><a class="extend next" rel="next" href="/archives/2018/page/2/">Next &raquo;</a>
@@ -1186,15 +1206,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1202,7 +1222,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1211,10 +1239,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
             
             <div class="clearfix"></div>
