@@ -146,6 +146,515 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-集成学习" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/26/集成学习/">集成学习</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/26/集成学习/" class="archive-article-date">
+  	<time datetime="2018-05-26T07:33:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="个体与集成"><a href="#个体与集成" class="headerlink" title="个体与集成"></a>个体与集成</h2><p>“同质”：由类型相同的学习器组合而成的集成学习器，每个学习器可称为基学习器<br>“异质”：由类型不相同的学习器组合而成的集成学习器，每个学习器可称为“组件学习器”<br>集成学习通过将多个学习器进行结合，常常可以获得比单一学习器具有显著优越的泛化性能。这个对于弱学习器尤为明显。<br>如何获得一个好的集成学习器呢？每个个体学习器具有一定的准确性（每个学习器不能太坏）和多样性（每个学习器之间存在差异）<br>集成学习方法可以分为两大类：一是个体学习器间存在强依赖关系、必须串行生成序列化方法，代表有Boosting算法，二是个体学习器之间不存在强依赖关系、可同时生成的并行化方法，代表有Bagging和随机森林（Random Forest）</p>
+<h2 id="Bagging与随机森林"><a href="#Bagging与随机森林" class="headerlink" title="Bagging与随机森林"></a>Bagging与随机森林</h2><h3 id="Bagging算法"><a href="#Bagging算法" class="headerlink" title="Bagging算法"></a>Bagging算法</h3><p>Bagging算法基本流程：采用自助采样法，可以采用出 个含 个训练样本的采样集，然后基于每个采样集训练出一个基学习器，再将这些基学习器进行结合。 </p>
+<h3 id="随机森林（Random-Forest）"><a href="#随机森林（Random-Forest）" class="headerlink" title="随机森林（Random Forest）"></a>随机森林（Random Forest）</h3><p>随机森林是Bagging的一个扩展变体，随机森林是在以决策树为基学习器构建Bagging集成的基础上，进一步在决策树的训练过程中引入了随机属性选择。具体的说，传统决策树在选择划分属性时是在当前结点的属性集合（假定有 个属性）中选择一个最优属性；而在随机森林（RF）中，对基决策树的每个结点，先从该结点的属性集合中随机选择一个包含 个属性的子集，然后再从这个子集中选择一个最优属性用于划分。<br>可以参阅：<a href="http://www.cnblogs.com/hrlnw/p/3850459.html" target="_blank" rel="noopener">http://www.cnblogs.com/hrlnw/p/3850459.html</a></p>
+<h4 id="采样方式"><a href="#采样方式" class="headerlink" title="采样方式"></a>采样方式</h4><ul>
+<li>随机森林的集成学习方法是Bagging， Bagging的采样方式为：<ul>
+<li><strong>Bootstraping：</strong>有放回的采样</li>
+</ul>
+</li>
+<li>随机森林即随机采样样本，也随机选择特征，因此防止过拟合能力更强，降低方差。</li>
+</ul>
+<h4 id="构建方法"><a href="#构建方法" class="headerlink" title="构建方法"></a>构建方法</h4><p>构建多颗决策树，结果是所有的决策树共同决定的。对于分类任务可以取出现最多，回归操作可以取均值。</p>
+<h3 id="随机性的体现"><a href="#随机性的体现" class="headerlink" title="随机性的体现"></a>随机性的体现</h3><ol>
+<li>数据选择随机性：n个样本中，采集60%的样本个数的集合作为数据，去除异常样本影响。</li>
+<li>特征随机性：在d个特种中，随机选择其中一些特征。</li>
+</ol>
+<h3 id="随机森林的推广-Extra-Trees"><a href="#随机森林的推广-Extra-Trees" class="headerlink" title="随机森林的推广(Extra Trees)"></a><a href="http://www.cnblogs.com/sarahp/p/6900572.html" target="_blank" rel="noopener">随机森林的推广(Extra Trees)</a></h3><p>extra trees是RF的一个变种, 原理几乎和RF一模一样，仅有区别有：</p>
+<p>1） 对于每个决策树的训练集，RF采用的是随机采样bootstrap来选择采样集作为每个决策树的训练集，而extra trees一般不采用随机采样，即每个决策树采用原始训练集。</p>
+<p>2） 在选定了划分特征后，RF的决策树会基于信息增益，基尼系数，均方差之类的原则，选择一个最优的特征值划分点，这和传统的决策树相同。但是extra trees比较的激进，他会随机的选择一个特征值来划分决策树。</p>
+<p>从第二点可以看出，由于随机选择了特征值的划分点位，而不是最优点位，这样会导致生成的决策树的规模一般会大于RF所生成的决策树。也就是说，模型的方差相对于RF进一步减少，但是bias相对于RF进一步增大。在某些时候，extra trees的泛化能力比RF更好</p>
+<h3 id="GBDT-Gradient-Boosting-Decision-Tree"><a href="#GBDT-Gradient-Boosting-Decision-Tree" class="headerlink" title="GBDT (Gradient Boosting Decision Tree)"></a>GBDT (Gradient Boosting Decision Tree)</h3><p>gbdt的基本原理是boost 里面的 boosting tree（提升树），并使用 gradient boost。<br>GBDT中的树都是回归树，不是分类树 ，因为gradient boost 需要按照损失函数的梯度近似的拟合残差，这样拟合的是连续数值，因此只有回归树。</p>
+<p>　GB算法中最典型的基学习器是决策树，尤其是CART，正如名字的含义，GBDT是GB和DT的结合。要注意的是这里的决策树是回归树，GBDT中的决策树是个弱模型，深度较小一般不会超过5，叶子节点的数量也不会超过10，对于生成的每棵决策树乘上比较小的缩减系数（学习率&lt;0.1），有些GBDT的实现加入了随机抽样$（subsample 0.5&lt;=f &lt;=0.8）$提高模型的泛化能力。通过交叉验证的方法选择最优的参数。因此GBDT实际的核心问题变成怎么基于${(x_i, r_{im})}_{i=1}^n$使用CART回归树生成$! h_m(x)？$</p>
+<p>CART分类树在很多书籍和资料中介绍比较多，但是再次强调GDBT中使用的是回归树。作为对比，先说分类树，我们知道CART是二叉树，CART分类树在每次分枝时，是穷举每一个feature的每一个阈值，根据GINI系数找到使不纯性降低最大的的feature以及其阀值，然后按照feature&lt;=阈值，和feature&gt;阈值分成的两个分枝，每个分支包含符合分支条件的样本。用同样方法继续分枝直到该分支下的所有样本都属于统一类别，或达到预设的终止条件，若最终叶子节点中的类别不唯一，则以多数人的类别作为该叶子节点的性别。回归树总体流程也是类似，不过在每个节点（不一定是叶子节点）都会得一个预测值，以年龄为例，该预测值等于属于这个节点的所有人年龄的平均值。分枝时穷举每一个feature的每个阈值找最好的分割点，但衡量最好的标准不再是GINI系数，而是最小化均方差–即（每个人的年龄-预测年龄）^2 的总和 / N，或者说是每个人的预测误差平方和 除以 N。这很好理解，被预测出错的人数越多，错的越离谱，均方差就越大，通过最小化均方差能够找到最靠谱的分枝依据。分枝直到每个叶子节点上人的年龄都唯一（这太难了）或者达到预设的终止条件（如叶子个数上限），若最终叶子节点上人的年龄不唯一，则以该节点上所有人的平均年龄做为该叶子节点的预测年龄。</p>
+<h3 id="xgboost"><a href="#xgboost" class="headerlink" title="xgboost"></a>xgboost</h3><p>XGBoost比GBDT好的地方：<br>二阶泰勒展开<br>节点分数惩罚正则<br>增益计算不同，GBDT是gini，xgb是优化推导公式<br><a href="http://www.cnblogs.com/wxquare/p/5541414.html" target="_blank" rel="noopener">一步一步理解GB、GBDT、xgboost</a><br><img src="/images/pasted-86.png" alt="upload successful"><br><img src="/images/pasted-87.png" alt="upload successful"><br><img src="/images/pasted-88.png" alt="upload successful"><br><img src="/images/pasted-89.png" alt="upload successful"></p>
+<h2 id="Boosting"><a href="#Boosting" class="headerlink" title="Boosting"></a>Boosting</h2><p>Boosting算法是一族可以将弱学习器提升为强学习器的算法。<br>Boosting工作原理：先从初始训练集中训练出一个基学习器，再根据基学习器的表现对训练样本分布进行调整，使得先前基学习器做错的的训练样本在后续受到更多的关注，然后基于调整后的样本分布训练下一个基学习器，如此重复进行，知道基学习器数目达到事先指定的值 ，最终将这 个基学习器进行加权结合。这种算法最具有代表的是AdaBoost算法。<br>AdaBoost算法可以理解是基于“加性模型”，即基学习器的线性组合。 </p>
+<h3 id="Adaboost"><a href="#Adaboost" class="headerlink" title="Adaboost"></a>Adaboost</h3><p>（Adaptive Boosting自适应增强）适应性在于：前一个基本分类器的赝本会得到加强，加权后全体样本再次被用来训练下一个基本分类器。同时，在每一轮中加入一个新的弱分类器，直到达到每个预定的足够小的错误率或者达到预先设定的最大迭代次数。<br><img src="/images/pasted-85.png" alt="upload successful"><br>从图中可以看到，在训练过程中我们需要训练出多个弱分类器（图中为3个），每个弱分类器是由不同权重的样本（图中为5个训练样本）训练得到（其中第一个弱分类器对应输入样本的权值是一样的），而每个弱分类器对最终分类结果的作用也不同，是通过加权平均输出的，权值见上图中三角形里面的数值。那么这些弱分类器和其对应的权值是怎样训练出来的呢？<br>下面通过一个例子来简单说明。<br>书中（machine learning in action）假设的是5个训练样本，每个训练样本的维度为2，在训练第一个分类器时5个样本的权重各为0.2. 注意这里样本的权值和最终训练的弱分类器组对应的权值α是不同的，样本的权重只在训练过程中用到，而α在训练过程和测试过程都有用到。<br>现在假设弱分类器是带一个节点的简单决策树，该决策树会选择2个属性（假设只有2个属性）的一个，然后计算出这个属性中的最佳值用来分类。损失函数中正则化项为$Ω(f_t)=γT+\frac{λ}{2}\sum_{j=1}^Tω_i^2$，叶子的个数+w的L2模平方<br>Adaboost的简单版本训练过程如下：</p>
+<ol>
+<li>训练第一个分类器，样本的权值D为相同的均值。通过一个弱分类器，得到这5个样本（请对应书中的例子来看，依旧是machine learning in action）的分类预测标签。与给出的样本真实标签对比，就可能出现误差(即错误)。如果某个样本预测错误，则它对应的错误值为该样本的权重，如果分类正确，则错误值为0. 最后累加5个样本的错误率之和，记为ε。</li>
+<li>通过ε来计算该弱分类器的权重α，公式如下：<br>$α=\frac{1}{2}ln(\frac{1-ε}{ε})$</li>
+<li>通过α来计算训练下一个弱分类器样本的权重D，如果对应样本分类正确，则减小该样本的权重，公式为：<br>$D_i^{t+1}=\frac{D_i^{(t)}e^{-α}}{Sum(D)}$<br>如果样本分类错误，则增加该样本的权重，公式为：<br>$D_i^{t+1}=\frac{D_i^{(t)}e^α}{Sum(D)}$</li>
+<li>循环步骤1,2,3来继续训练多个分类器，只是其D值不同而已。<br>测试过程如下：<br>输入一个样本到训练好的每个弱分类中，则每个弱分类都对应一个输出标签，然后该标签乘以对应的α，最后求和得到值的符号即为预测标签值。</li>
+</ol>
+<h3 id="结合策略"><a href="#结合策略" class="headerlink" title="结合策略"></a>结合策略</h3><p>集成算法，介绍完后，那么如何使结合后的集成算法明显的优势呢？也就是说如何将训练出来的多个基学习器如何很好的结合在一起呢形成新的集成算法呢？本书提出平均法、投票法、学习法三种结合策略。</p>
+<h3 id="多样性"><a href="#多样性" class="headerlink" title="多样性"></a>多样性</h3><p>多样性，在前面已经提到过，一个好集成算法，需要训练出来的基学习器具有很强的多样性。 </p>
+<ul>
+<li>误差-分歧分解</li>
+<li>多样性度量</li>
+<li>多样性增强</li>
+</ul>
+<p>在集成学习中需要有效地生成多样性大的个体学习器。如果增强多样性呢？一般思路是在学习过程中引入随机性，常见的做法是对数据样本、输入属性、输出表示、算法参数进行扰动。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>低泛化误差；</li>
+<li>容易实现，分类准确率较高，没有太多参数可以调；</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>对outlier（离群值）比较敏感。</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/26/集成学习/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-贝叶斯" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/26/贝叶斯/">贝叶斯分类器</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/26/贝叶斯/" class="archive-article-date">
+  	<time datetime="2018-05-26T06:16:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li><strong>条件概率的概念：</strong>A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=(P(AB))/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)$。</li>
+<li><strong>贝叶斯公式：</strong>$P(B│A)=(P(B)P(A|B))/(P(A))$。当$B1、B2、B3……∈B，A⊂∑B_i$时，$P(B_i│A)=(P(B_i)P(A|B_i))/(∑P(B_j)P(A|B_j))$。<ul>
+<li>$P(B_i)$先验概率</li>
+<li>$P(B_i│A)$为后验概率。</li>
+</ul>
+</li>
+</ul>
+<p>贝叶斯分类器是利用概率的知识完成数据的分类任务，在机器学习中使用贝叶斯决策论实施决策的基本方法也是在概率的框架下进行的，它是考虑如何基于这些概率和误判损失来选择最优的类别标记。</p>
+<h2 id="贝叶斯决策论"><a href="#贝叶斯决策论" class="headerlink" title="贝叶斯决策论"></a>贝叶斯决策论</h2><p>假设有N种可能的类别标记$y=(c_1,c_2….c_N)$，$λ_{ij}$是将一个真实标记为$c_j$的样本误分类为$c_i$所产生的损失。基于后验概率$P(c_i|x)$可获得奖样本x分类为$c_i$所产生的期望损失，即在样本x上的“条件风险”。<br>$$R(c_i|x=\sum_{j=1}^Nλ_{ij}P(c_j|x))$$<br>机器学习的过程就是要寻找一个判定准则：$h:x–&gt;y$以最小化总体风险。<br>为最小化总体风险，只需要在每个样本上选择哪个能使条件分析最小的类别标记。<br>$$h^<em>(x)=arg min R(c|x)$$<br>此时，$h^</em>$称为贝叶斯最优分类器，与之对应的总体风险$R(h^<em>)$称为贝叶斯风险。则$1-R(h^</em>)$反映了分类器所能达到的最好性能。 </p>
+<ul>
+<li>生成式模型： 先对联合概率分布P(x,c)建模，然后由此获得P(c|x)，如：贝叶斯分类器。</li>
+<li>判别式模型： 给定x，通过直接建模P(c|x)，预测c。如：决策树、BP神经网络、支持向量机</li>
+</ul>
+<h2 id="极大拟然估计"><a href="#极大拟然估计" class="headerlink" title="极大拟然估计"></a>极大拟然估计</h2><p>概率模型的训练过程就是参数估计过程，采用极大拟然估计就是试图在所有的可能的取值中，找到一个能使数据出现的“可能性”的最大值。  </p>
+<ul>
+<li>频率主义学派（Frequentist）：参数虽然未知，但是客观存在固定值，所以可以通过优化似然函数等准则确定参数值。极大似然估计（Maximum Likelihood Estimation，MLE）是根据数据采样来估计概率分布的。  </li>
+<li>贝叶斯学派（Bayesian）：参数是未观察到的随机变量，其本身也可有分布，因此，可假定参数服从一个先验分布，然后基于观测到的数据来计算参数的后验分布。</li>
+</ul>
+<h2 id="朴素贝叶斯分类器"><a href="#朴素贝叶斯分类器" class="headerlink" title="朴素贝叶斯分类器"></a>朴素贝叶斯分类器</h2><p>朴素贝叶斯分类器（Naïve Bayes classifier）：基于贝叶斯公式来估计后验概率 的主要困难在于求类条件概率 是所有属性上的联合概率，难以从有限的训练样本直接估计得到。为了解决这个问题，提出朴素贝叶斯分类器 它采用了“属性条件独立假设”对已知类别，假设所有属性相互独立，换言之，假设每个属性独立地对分类结果发生影响。<br><img src="/images/pasted-79.png" alt="upload successful"><br><img src="/images/pasted-80.png" alt="upload successful"></p>
+<h2 id="半朴素贝叶斯分类器"><a href="#半朴素贝叶斯分类器" class="headerlink" title="半朴素贝叶斯分类器"></a>半朴素贝叶斯分类器</h2><p>为了降低贝叶斯公式中估计后验概率$P(c|x)$的困难，提出使用朴素贝叶斯分类器采用属性条件独立性假设，然而在现实任务中这个假设很难成立，因此就提出半朴素贝叶斯分类器（Sem-naïve Bayes classifiers），它的基本思想是适当考虑一部分属性间的相互依赖信息，从而既不需要完全联合概率计算，又不至于彻底忽略了比较强的属性依赖关系。<br>独依赖估计（One-Dependent Estimator，ODE）每个属性在类别之外最多仅依赖于一个其他属性。最直接的做法，假设所有属性都依赖于同一属性，称为为超父（super-parent ODE）。TAN（Tree Augmented naïve Bayes）使用最大生成树算法，将属性间依赖关系生成最大带权生成树，保留了强相关属性之间的依赖性。AODE（Average的 One-Dependent Estimator）基于集成学习机制，尝试将每个属性作为超父来构建SPODE，最终返回具有足够支撑的SPODE集成作为最终结果。<br><img src="/images/pasted-81.png" alt="upload successful"></p>
+<h2 id="贝叶斯网"><a href="#贝叶斯网" class="headerlink" title="贝叶斯网"></a>贝叶斯网</h2><p>贝叶斯网是借助有向无环图（DAG）来刻画属性之间的依赖关系，并使用条件概率表（CPT）来描述属性的联合概率分布<br>结构<br>学习<br>推断<br><img src="/images/pasted-82.png" alt="upload successful"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/26/贝叶斯/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-聚类算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/24/聚类算法/">聚类算法</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/24/聚类算法/" class="archive-article-date">
+  	<time datetime="2018-05-24T11:41:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>聚类可以说是一种无监督的学习，也就是说在训练样本中对应的标记信息是没有的，目标是通过对无标记训练样本的学习来揭示数据内在性质和规律，为进一步的数据分析提供基础。</p>
+<h3 id="聚类的任务"><a href="#聚类的任务" class="headerlink" title="聚类的任务"></a>聚类的任务</h3><p>聚类试图将数据集中的样本划分为若干个通常是不相交的子集，每个子集称为一个“簇”。</p>
+<h3 id="性能度量"><a href="#性能度量" class="headerlink" title="性能度量"></a>性能度量</h3><p>簇内相似度高，簇间相似度低。 </p>
+<ul>
+<li>外部指标：是将聚类结果与某个“参考模型”进行比较 </li>
+<li>内部指标：直接考察聚类结果而不利用任何参考模型。</li>
+</ul>
+<h3 id="距离计算"><a href="#距离计算" class="headerlink" title="距离计算"></a>距离计算</h3><p>距离度量满足的基本性质：非负性、同一性、对称性、直递性 </p>
+<ul>
+<li>闵可夫斯基距离：$distmk=(n∑u=1|xiu−xju|p)1p$<ul>
+<li>如果p=2时，则表示欧氏距离 </li>
+<li>如果p=1时，则表示曼哈顿距离</li>
+</ul>
+</li>
+<li>有序属性： </li>
+<li>无序属性：闵可夫斯基可以用于无序属性。对于无序属性可以采用VDM</li>
+</ul>
+<h2 id="原型聚类"><a href="#原型聚类" class="headerlink" title="原型聚类"></a>原型聚类</h2><p>原型聚类亦称“基于原型的聚类”，常用的原型聚类算法如下 </p>
+<ul>
+<li>K均值聚类(Kmeans)</li>
+<li>学习向量量化</li>
+<li><a href="http://www.cnblogs.com/mmziscoming/p/5750849.html" target="_blank" rel="noopener">高斯混合聚类(GMM)</a><br><img src="/images/pasted-83.png" alt="upload successful">定义很好理解，高斯混合模型是一种混合模型，混合的基本分布是高斯分布而已。<br><img src="/images/pasted-84.png" alt="upload successful"><br>这图显示了拥有三个高斯分量的一个维度的GMM是如何由其高斯分量叠加而成。<br><strong>GMM的各个高斯分量的系数之和必须为1</strong>  <pre><code>GMM的定义本质上是一个概率密度函数。而概率密度函数在其作用域内的积分之和必然为1。GMM整体的概率密度函数是由若干个高斯分量的概率密度函数线性叠加而成的，而每一个高斯分量的概率密度函数的积分必然也是1，所以，要想GMM整体的概率密度积分为1，就必须对每一个高斯分量赋予一个其值不大于1的权重，并且权重之和为1。  
+</code></pre><strong>求解GMM的EM算法隐变量的理解：</strong><pre><code>使用EM算法必须明确隐变量。求解GMM的时候设想观测数据x是这样产生的：首选依赖GMM的某个高斯分量的系数概率（因为系数取值在0~1之间，因此可以看做是一个概率取值）选择到这个高斯分量，然后根据这个被选择的高斯分量生成观测数据。然后隐变量就是某个高斯分量是否被选中：选中就为1，否则为0。
+按照这样的设想：隐变量是一个向量，并且这个向量中只有一个元素取值为1，其它的都是0。因为假设只有一个高斯分量被选中并产生观测数据。然而我们的GMM的一个观测数据在直观上应该是每个高斯分量都有产生，而不是由一个高斯分量单独生成，只是重要性不同（由系数控制）。
+接着，现在我们不知道GMM具体的参数值，想要根据观测数据去求解其参数。而GMM的参数是由各个高斯分量的参数再加上权值系数组成的。那么我们就先假定，如果这个观测值只是由其中一个高斯分量产生，去求解其中一个高斯分量的参数。我们假设不同的观测值都有一个产生自己的唯一归宿，就像K-means算法一样。然后在后面的迭代过程中，根据数据整体似然函数的优化过程，逐渐找到一个最优的分配方案。然而，不同于K-means算法的是，我们最终给出的只是某一个观测是由某一个高斯分量唯一生成的概率值，而不是确定下来的属于某一类。每个高斯分量其实都可以产生这个观测数据只是输出不同而已，即产生观测数据的概率不同。最后，根据每个高斯分量产生观测数据的可能性不同，结合其权值汇总出整个GMM产生这个观测数据的概率值。
+</code></pre></li>
+<li>EM算法<br>如果训练样本的属性“不完整”，因此在这种存在“未观测”变量（隐变量）的情形下，如何进行模型参数估计呢？EM算法就是常用的估计参数隐变量的利器。<br>X表示已观测变量集，Z表示隐变量集，θ表示模型参数，对θ求极大似然估计，最大化对数似然为：$LL(Θ|X,Z)=lnP(X,Z|Θ)$。由于Z是隐变量，无法直接求解，此时需求通过Z计算期望，来最大化以观测数据的对数边际似然（marginal likelihood） $LL(Θ|X)=lnP(X|Θ)=ln\sum_{Z}P(X,Z|Θ)$<br>EM 算法 简单来说，使用两个步骤交替计算。不取Z的期望，而是基于$Θ^t$计算隐变量Z的概率分布$P(Z|X,Θ^t)$：期望（E）步，利用当前估计的参数值来计算对数似然的期望值；二是最大化（M）步，寻找能使E步产生的似然期望最大化的参数值。然后，新得到的参数值重新被用于 步，……直至收敛到局部最优解。</li>
+</ul>
+<ol>
+<li>定义隐变量<br>我们引入隐变量γjk，它的取值只能是1或者0。<br>取值为1：第j个观测变量来自第k个高斯分量<br>取值为0：第j个观测变量不是来自第k个高斯分量<br>那么对于每一个观测数据yj都会对应于一个向量变量Γj={γj1,…,γjK}，那么有：<br>∑k=1Kγjk=1<br>p(Γj)=∏k=1Kαkγjk<br>其中，K为GMM高斯分量的个数，αk为第k个高斯分量的权值。因为观测数据来自GMM的各个高斯分量相互独立，而αk刚好可以看做是观测数据来自第k个高斯分量的概率，因此可以直接通过连乘得到整个隐变量Γj的先验分布概率。</li>
+<li>得到完全数据的似然函数<br>对于观测数据yj,当已知其是哪个高斯分量生成的之后，其服从的概率分布为：<br>p(yj|γjk=1;Θ)=N(yj|μk,Σk)<br>由于观测数据从哪个高斯分量生成这个事件之间的相互独立的，因此可以写为：<br>p(yj|Γj;Θ)=∏k=1KN(yj|μk,Σk)γjk<br>这样我们就得到了已知Γj的情况下单个观测数据的后验概率分布。结合之前得到的Γj的先验分布，则我们可以写出单个完全观测数据的似然函数为：<br>p(yj,Γj;Θ)=∏k=1KαkγjkN(yj|μk,Σk)γjk<br>最终得到所有观测数据的完全数据似然函数为：<br>p(y,Γj;Θ)=∏j=1N∏k=1KαkγjkN(yj|μk,Σk)γjk<br>取对数，得到对数似然函数为：<br>lnp(y,Γj;Θ)=∑j=1N∑k=1K(γjklnαk+γjklnN(yj|μk,Σk))</li>
+<li>得到各个高斯分量的参数计算公式<br>首先，我们将上式中的lnN(yj|μk,Σk)根据单高斯的向量形式的概率密度函数的表达形式展开：<br>lnN(yj|μk,Σk)=−D2ln(2π)−12ln|Σk|−12(yj−μk)TΣ−1k(yj−μk)<br>假设我们已经知道隐变量γjk的取值，对上面得到的似然函数分别对αk和Σk求偏导并且偏导结果为零，可以得到：<br>μk=∑Nj=1∑Kk=1γjkyj∑Nj=1∑Kk=1γjk<br>Σk=∑Nj=1∑Kk=1γjk(yj−μk)(yj−μk)T∑Nj=1∑Kk=1γjk<br>由于在上面两式的第二个求和符号是对k=1…K求和，而在求和过程中γjk只有以此取到1，其它都是0，因此上面两式可以简化为：<br>μk=∑Nj=1γjkyj∑Nj=1γjk<br>Σk=∑Nj=1γjk(yj−μk)(yj−μk)T∑Nj=1γjk<br>现在参数空间中剩下一个αk还没有求。这是一个约束满足问题，因为必须满足约束ΣKk=1αk=1。我们使用拉格朗日乘子法结合似然函数和约束条件对αk求偏导，可以得到：<br>αk=∑Nj=1γjk−λ<br>将上式的左右两边分别对k=1…K求和，可以得到：<br>λ=−N<br>将λ代入，最终得到：<br>αk=∑Nj=1γjkN<br>至此，我们在隐变量已知的情况下得到了GMM的三种类型参数的求解公式。</li>
+<li>得到隐变量的估计公式<br>根据EM算法，现在我们需要通过当前参数的取值得到隐变量的估计公式也就是说隐变量的期望的表达形式。即如何求解E{γjk|y,Θ}。<br>E{γjk|y,Θ}=P(γjk=1|y,Θ)<br>=P(γjk=1,yj|Θ)∑Kk=1P(γjk=1,yj|Θ)<br>=P(yj|γjk=1,Θ)P(γjk=1|Θ)∑Kk=1P(yj|γjk=1,Θ)P(γjk=1|Θ)<br>=αkN(yj|μk,Σk)∑Kk=1αkN(yj|μk,Σk)</li>
+<li>使用EM算法迭代进行参数求解<br>熟悉EM算法的朋友应该已经可以从上面的推导中找到EM算法的E步和M步。</li>
+</ol>
+<h2 id="密度聚类"><a href="#密度聚类" class="headerlink" title="密度聚类"></a>密度聚类</h2><p>基于密度的聚类算法主要的目标是寻找被低密度区域分离的高密度区域。与基于距离的聚类算法不同的是，基于距离的聚类算法的聚类结果是球状的簇，而基于密度的聚类算法可以发现任意形状的聚类，这对于带有噪音点的数据起着重要的作用。 </p>
+<h2 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h2><p>层次聚类也叫连通聚类方法，有两个基本方法：自顶而下和自底而上。自顶而将所有样本看做是同一簇，然后进行分裂。自底而上将初所有样本看做不同的簇，然后进行凝聚。这种聚类的中心思想是：离观测点较近的点相比离观测点较远的点更可能是一类。<br>过程如下：</p>
+<ol>
+<li>把每个样本归为一类，计算两个类之间的距离；</li>
+<li>寻找各类之间最近的两个类归为一类；</li>
+<li>重新计算新生成的这个类与旧类之间的相似度；</li>
+<li>重复2到3，直到所有样本归为一类停止。</li>
+</ol>
+<p>实际上聚类过程就是建立了一棵树：<br><img src="/images/pasted-76.png" alt="upload successful"><br>可以在中间过程设置阈值，当两个类距离大于阈值，则迭代终止。</p>
+<p>第三步相似度的度量有很多方法，例如：</p>
+<ul>
+<li>两个类之间距离最近的两个样本的距离</li>
+<li>两个类之间距离最远的两个样本的距离</li>
+<li>两个类的样本平均距离</li>
+<li>两个类的样本中位数的距离</li>
+</ul>
+<h2 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h2><h3 id="ART网络"><a href="#ART网络" class="headerlink" title="ART网络"></a>ART网络</h3><p>ART（Adaptive Resonance Theory，自适应谐振理论）竞争学习的代表，是一种常用的无监督学习策略。该策略网络输出神经元相互竞争，每一时刻仅有一个竞争获胜的神经元被激活。其他神经元被抑制。包含比较层、识别层、识别阈值和重置模块。</p>
+<h3 id="SOM网络"><a href="#SOM网络" class="headerlink" title="SOM网络"></a>SOM网络</h3><p><img src="/images/pasted-77.png" alt="upload successful"><br>SOM（Self-Organizing Map，自组织映射）网络是最常用的聚类方法之一： </p>
+<ul>
+<li>竞争型的无监督神经网络</li>
+<li>将高维数据映射到低维空间，并保持输入数据在高维空间的拓扑结构。即将高维空间中相似的样本点映射到网络输出层中邻近神经元</li>
+<li>每个神经元拥有一个权向量</li>
+<li>目标：为每个输出层神经元找到合适的权向量以保持拓扑结构</li>
+</ul>
+<p>训练</p>
+<ul>
+<li>网络接收输入样本后，将会确定输出层的“获胜”神经元（“胜者通吃”）</li>
+<li>获胜神经元的权向量将向当前输入样本移动</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kmeans</span><span class="params">(x,k,maxIt)</span>:</span></span><br><span class="line">    numPoints,numDim=x.shape</span><br><span class="line">    dataSet=np.zeros((numPoints,numDim+<span class="number">1</span>))</span><br><span class="line">    dataSet[:,:<span class="number">-1</span>]=x</span><br><span class="line">    centroids=dataSet[np.random.randint(numPoints,size=k),:]</span><br><span class="line"><span class="comment">#     centroids=dataSet[0:2,:]</span></span><br><span class="line">    centroids[:,<span class="number">-1</span>]=range(<span class="number">1</span>,k+<span class="number">1</span>)</span><br><span class="line">    iterations=<span class="number">0</span></span><br><span class="line">    oldCentroids=<span class="keyword">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> shouldstop(oldCentroids,centroids,iterations,maxIt):</span><br><span class="line">        print(iterations,dataSet,centroids)</span><br><span class="line">        oldCentroids=np.copy(centroids)</span><br><span class="line">        iterations+=<span class="number">1</span></span><br><span class="line">        updateLabels(dataSet,centroids)</span><br><span class="line">        centroids=getCentroids(dataSet,k)</span><br><span class="line">    <span class="keyword">return</span> dataSet</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shouldstop</span><span class="params">(oldCentroids,centroids,iterations,maxIt)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> iterations&gt;maxIt:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">    <span class="keyword">return</span> np.array_equal(oldCentroids,centroids)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">updateLabels</span><span class="params">(dataSet,centroids)</span>:</span></span><br><span class="line">    numPoints,numDim=dataSet.shape</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numPoints):</span><br><span class="line">        dataSet[i,<span class="number">-1</span>]=getLabelFromClosestCentroid(dataSet[i,:<span class="number">-1</span>],centroids)        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getLabelFromClosestCentroid</span><span class="params">(dataSetRow,centroids)</span>:</span></span><br><span class="line">    label=centroids[<span class="number">0</span>,<span class="number">-1</span>]</span><br><span class="line">    minDist=np.linalg.norm(dataSetRow-centroids[<span class="number">0</span>,:<span class="number">-1</span>])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,centroids.shape[<span class="number">0</span>]):</span><br><span class="line">        dist=np.linalg.norm(dataSetRow-centroids[i,:<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">if</span> dist&lt;minDist:</span><br><span class="line">            minDist=dist</span><br><span class="line">            label=centroids[i,<span class="number">-1</span>]</span><br><span class="line">    print(minDist)</span><br><span class="line">    <span class="keyword">return</span> label        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getCentroids</span><span class="params">(dataSet,k)</span>:</span></span><br><span class="line">    result=np.zeros((k,dataSet.shape[<span class="number">1</span>]))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,k+<span class="number">1</span>):</span><br><span class="line">        oneCluster=dataSet[dataSet[:,<span class="number">-1</span>]==i,:<span class="number">-1</span>]</span><br><span class="line">        result[i<span class="number">-1</span>,:<span class="number">-1</span>]=np.mean(oneCluster,axis=<span class="number">0</span>)</span><br><span class="line">        result[i<span class="number">-1</span>,<span class="number">-1</span>]=i</span><br><span class="line">    <span class="keyword">return</span> result        </span><br><span class="line">x1=np.array([<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">x2=np.array([<span class="number">2</span>,<span class="number">1</span>])</span><br><span class="line">x3=np.array([<span class="number">4</span>,<span class="number">3</span>])</span><br><span class="line">x4=np.array([<span class="number">5</span>,<span class="number">4</span>])</span><br><span class="line">testX=np.vstack((x1,x2,x3,x4))</span><br><span class="line"></span><br><span class="line">result=kmeans(testX,<span class="number">2</span>,<span class="number">10</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<p>层次聚类的实现<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image,ImageDraw</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cluster_node</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,vec,left=None,right=None,distance=<span class="number">0.0</span>,id=None,count=<span class="number">1</span>)</span>:</span></span><br><span class="line">        self.vec=vec</span><br><span class="line">        self.left=left</span><br><span class="line">        self.right=right</span><br><span class="line">        self.distance=distance</span><br><span class="line">        self.id=id</span><br><span class="line">        self.count=count</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L2dist</span><span class="params">(v1,v2)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> np.linalg.norm(v1-v2,ord=<span class="number">2</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hcluster</span><span class="params">(features,distance=L2dist)</span>:</span></span><br><span class="line">    distances=&#123;&#125;</span><br><span class="line">    currentclustid=<span class="number">-1</span></span><br><span class="line">    clust=[Cluster_node(array(features[i]),id=i) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(features))]</span><br><span class="line">    <span class="keyword">while</span> len(clust)&gt;<span class="number">1</span>:</span><br><span class="line">        lowestpair=(<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">        closest=distance(clust[<span class="number">0</span>].vec,clust[<span class="number">1</span>].vec)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(clust)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(i+<span class="number">1</span>,len(clust)):</span><br><span class="line">                <span class="keyword">if</span> (clust[i].id,clust[j].id) <span class="keyword">not</span> <span class="keyword">in</span> distances:</span><br><span class="line">                    distances[(clust[i].id,clust[j].id)]=distance(clust[i].vec,clust[j].vec)</span><br><span class="line">                d=distances[(clust[i].id,clust[j].id)]</span><br><span class="line">                <span class="keyword">if</span> d&lt;closest:</span><br><span class="line">                    closest=d</span><br><span class="line">                    lowestpair=(i,j)</span><br><span class="line">        mergevec=[(clust[lowestpair[<span class="number">0</span>]].vec[i]+clust[lowestpair[<span class="number">1</span>]].vec[i])/<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(len(clust[<span class="number">0</span>].vec))]</span><br><span class="line">        newcluster=Cluster_node(array(mergevec),left=clust[lowestpair[<span class="number">0</span>]],right=clust[lowestpair[<span class="number">1</span>]],distance=closest,id=currentclustid)</span><br><span class="line">        currentclustid-=<span class="number">1</span></span><br><span class="line">        <span class="keyword">del</span> clust[lowestpair[<span class="number">1</span>]]</span><br><span class="line">        <span class="keyword">del</span> clust[lowestpair[<span class="number">0</span>]]</span><br><span class="line">        clust.append(newcluster)</span><br><span class="line">    <span class="keyword">return</span> clust[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extract_clusters</span><span class="params">(clust,dist)</span>:</span></span><br><span class="line">    clusters=&#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> clust.distance&lt;dist:</span><br><span class="line">        <span class="keyword">return</span> [clust]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cl=[]</span><br><span class="line">        cr=[]</span><br><span class="line">        <span class="keyword">if</span> clust.left!=<span class="keyword">None</span>:</span><br><span class="line">            c1=extract_clusters(clust.left,dist=dist)</span><br><span class="line">        <span class="keyword">if</span> clust.right!=<span class="keyword">None</span>:</span><br><span class="line">            cr=extract_clusters(clust.right,dist=dist)</span><br><span class="line">        <span class="keyword">return</span> cl+cr</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_cluster_elements</span><span class="params">(clust)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> clust.id&gt;=<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> [clust.id]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cl=[]</span><br><span class="line">        cr=[]</span><br><span class="line">        <span class="keyword">if</span> clust.left!=<span class="keyword">None</span>:</span><br><span class="line">            c1=get_cluster_elements(clust.left)</span><br><span class="line">        <span class="keyword">if</span> clust.right!=<span class="keyword">None</span>:</span><br><span class="line">            cr=get_cluster_elements(clust.right)</span><br><span class="line">        <span class="keyword">return</span> cl+cr</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printclust</span><span class="params">(clust,labels=None,n=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        print(<span class="string">' '</span>,end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">if</span> clust.id&lt;<span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'-'</span>,end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> labels==<span class="keyword">None</span>:</span><br><span class="line">            print(clust.id,end=<span class="string">''</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(labels[clust.id],end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">if</span> clust.left!=<span class="keyword">None</span>:</span><br><span class="line">        printclust(clust.left,labels=labels,n=n+<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> clust.right!=<span class="keyword">None</span>:</span><br><span class="line">        printclust(clust.right,labels=labels,n=n+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getheight</span><span class="params">(clust)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> clust.left==<span class="keyword">None</span> <span class="keyword">and</span> clust.right==<span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> getheight(clust.left)+getheight(clust.right)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getdepth</span><span class="params">(clust)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> clust.left==<span class="keyword">None</span> <span class="keyword">and</span> clust.right==<span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> max(getheight(clust.left),getheight(clust.right))+clust.distance</span><br></pre></td></tr></table></figure></p>
+<p>下面是几个城市的GDP等信息，根据这些信息，写一个SOM网络，使之对下面城市进行聚类。并且，将结果画在一个二维平面上。</p>
+<p>//表1中，X。为人均GDP(元)；X2为工业总产值(亿元)；X。为社会消费品零售总额(亿元)；x。为批发零售贸易总额(亿元)；x。为地区货运总量(万吨)，表1中数据来自2002年城市统计年鉴。</p>
+<p>//城市 X1 X2 X3 Xa X5<br>北京 27527 2738.30 1494.83 3055.63 30500<br>青岛 29682 1212.02 182.80 598.06 29068<br>天津 22073 2663.56 782.33 1465.65 28151<br>烟台 21017 298.73 92.71 227.39 8178<br>石家庄 25584 467.42 156.02 763.46 12415<br>郑州 17330 261.80 215.63 402.98 7373<br>唐山 19387 338.67 95.73 199.69 14522<br>武汉 17882 1020.84 685.82 1452 16244<br>太原 13919 304.13 141.94 155.22 15170<br>长沙 26327 241.76 269.93 369.83 7550<br>呼和浩特 13738 82.23 69.27 108.12 2415<br>衡阳 12386 61.53 63.95 72.65 3004<br>沈阳 21736 729.04 590.26 1752.4 15156<br>广州 42828 2446.97 1166.10 3214.19 24500<br>大连 34659 1003.56 431.83 728.08 19736<br>深圳 152099 3079.63 609.26 801.06 5167<br>长春 24799 900.26 309.75 173.99 10346<br>油头 19414 192.93 112.96 280.84 1443<br>哈尔滨 20737 402.73 360.38 762.94 8814<br>湛江 15290 228.45 99.08 149.16 5524<br>上海 40788 6935.57 1531.89 3921.2 49499<br>南宁 17715 109.39 142.08 264.32 3371<br>南京 26697 1579.21 401.20 1253.73 14120<br>柳州 17598 256.76 68.93 159.44 3397<br>徐州 19727 295.73 108.17 187.39 7124<br>海口 24782 100.13 81.03 142.54 2018<br>连云港 17869 112.18 47.94 134.89 4096<br>成都 22956 412.23 400.56 754.07 23724<br>杭州 31784 1615.63 373.28 1788.29 15841<br>重庆 9778 870.82 389.60 823.72 29470<br>宁波 46471 751.58 167.70 529.68 11182<br>贵阳 13176 207.95 108.93 285.27 4885<br>温州 29781 381.93 233.44 272.84 6292<br>昆明 24554 303.78 227.44 428.64 12084<br>合肥 19770 330.14 140.14 328.98 2903<br>西安 16002 449.14 323.37 558.27 7728<br>福州 33570 379.51 209.72 613.24 7280<br>兰州 16629 354.30 163.97 374.9 5401<br>厦门 42039 803.29 186.55 620.47 2547<br>西宁 7261 38.00 48.95 91.14 1837<br>南昌 19923 238.82 14.09 348.21 3246<br>银川 12779 77.74 41.22 53.16 1573<br>济南 25642 616.97 323.08 462.39 13057<br>乌鲁木齐 19793 251.19 129.05 277.8 9283</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">result = pd.read_csv(<span class="string">'./data/diqu.csv'</span>,sep=<span class="string">'\s+'</span>,encoding=<span class="string">'gbk'</span>)</span><br><span class="line">result_norm = (result.iloc[:,<span class="number">1</span>:] - result.iloc[:,<span class="number">1</span>:].min()) / (result.iloc[:,<span class="number">1</span>:].max() - result.iloc[:,<span class="number">1</span>:].min())</span><br><span class="line">result_norm.head()</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line">kmeans_model=KMeans(n_clusters=<span class="number">4</span>,random_state=<span class="number">1</span>)</span><br><span class="line">senator_distances=kmeans_model.fit_transform(result_norm.iloc[:,<span class="number">1</span>:])</span><br><span class="line">labels=kmeans_model.labels_</span><br><span class="line">print(pd.crosstab(labels,result[<span class="string">'城市'</span>]))</span><br><span class="line"><span class="comment"># democratic_outliers=votes[(labels==1)&amp;(result['party']!='D')]</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.scatter(x=senator_distances[:,<span class="number">0</span>],y=senator_distances[:,<span class="number">1</span>],c=labels)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pasted-78.png" alt="upload successful"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/24/聚类算法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-线性回归" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/24/线性回归/">线性模型</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/24/线性回归/" class="archive-article-date">
+  	<time datetime="2018-05-24T01:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>线性模型是机器学习里面最基础的一个模型，也是比较简单的，主要用于属于线性关系的模型，像y=wx+b，就是只有一个属性x表示的y值的变化规律，也称做单属性线性回归。</p>
+<h2 id="基本形式"><a href="#基本形式" class="headerlink" title="基本形式"></a>基本形式</h2><p>当给定d个属性示例$x=[x_1;x_2….x_d]$，线性模型视图学得一个属性的线性组合来进行预测：$f(x)=w_1x_1+w_2x_2+w_3x_4+…w_dx_d+b=w^T+b$，w和b确认后，模型即可确认。<br>线性模型形式简单、易于建模，却蕴涵着机器学习中的一些重要的基本思想。许多功能更为强大的非线性模型（nonlinear model）可以在线性模型的基础上通过引入层级结构或者高维映射而得。</p>
+<h2 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h2><h3 id="度量指标"><a href="#度量指标" class="headerlink" title="度量指标"></a>度量指标</h3><ul>
+<li><p>集中趋势的衡量</p>
+<ul>
+<li>均值：$\overline {x}=\frac{\sum{i=1}^nx_i}{n}$；</li>
+<li>中位数：大小排序后，中间位置的数；</li>
+<li>众数：出现最多的数；</li>
+</ul>
+</li>
+<li><p>离散程度的衡量</p>
+<ul>
+<li>方差：$s^2=\frac{\sum{i=1}^n(x_i-\overlinex)^2} {n-1}$</li>
+<li>标准差：s</li>
+</ul>
+</li>
+</ul>
+<h3 id="单属性线性回归"><a href="#单属性线性回归" class="headerlink" title="单属性线性回归"></a>单属性线性回归</h3><p>先研究单属性线性回归问题，也即： </p>
+<ol>
+<li>训练集只有一个属性 </li>
+<li>给定数据集$D={(x_i,y_i)}m_i=1$ </li>
+<li>线性预测表示为：$f(x_i=wx_i+b)$</li>
+<li>通过训练集得到w和b的值，使得$f(x_i)≈y_i$</li>
+</ol>
+<p>均方差是常用的性能度量指标：<br><img src="/images/pasted-67.png" alt="upload successful"><br>只需针对w和b分别求偏导即可得到最优解（闭式close-form解）w和b。<br>基于均方误差最小化来进行模型求解的方法也称为最小二乘法。在线性回归中，最小二乘法可以找到一条这样的直线，使得所有样本到直线上的欧氏距离之和最小。<br>$$w=\frac{\sum (x_i-\overline x)(y_i-\overline y)}{\sum (x_i-\overline x)^2}$$<br>$$b=\overline y -w\overline x$$</p>
+<h3 id="多属性线性回归"><a href="#多属性线性回归" class="headerlink" title="多属性线性回归"></a>多属性线性回归</h3><p>多元线性回归也就是有d个属性，建立矩阵方程。</p>
+<h3 id="线性回归与最小二乘"><a href="#线性回归与最小二乘" class="headerlink" title="线性回归与最小二乘"></a>线性回归与最小二乘</h3><p>$$y=w^Tx+ε$$<br>假设ε满足独立同分布，服从均值0方差$θ^2$的高斯分布。所以ε表示为：$p(ε)=\frac{1}{\sqrt{2π}}e^{(-\frac{ε^2}{2σ^2})}$<br>由于$ε=y-w^Tx$，带入到上式：$$p(y|x;w)=\frac{1}{\sqrt{2π}}e^{(-\frac{(y-w^Tx)^2}{2σ^2})}$$<br>其中$p(y|x;w)$表示w能够最大y的概率的取值，可以用似然函数求解。<br>$$L(θ)=\prod_{i=1}{m}p(y|x;w)$$<br>通过取对数，化简得到目标函数：求取J(θ)的最小值<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>最小值可以通过凸函数的导数为零的解，由于X和θ是矩阵，求导要符合矩阵求导的公式。求导公式，可参照<a href="https://en.wikipedia.org/wiki/Matrix_calculus#Scalar-by-vector_identities" target="_blank" rel="noopener">wiki百科</a><br><img src="/images/pasted-71.png" alt="upload successful"></p>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="广义线性回归"><a href="#广义线性回归" class="headerlink" title="广义线性回归"></a>广义线性回归</h3><p>线性回归模型$y=w^Tx+b$，如果将y表示为在指数尺度上的变化，则：$\ln y=w^Tx+b$称为对数线性回归。$y=e^{w^Tx+b}$，实质上是在求输入空间到输出空间的非线性函数的映射（欧拉公式）。<br><img src="/images/pasted-68.png" alt="upload successful"><br>对更一般的单调可微函数g(x)，$y=g^{-1}(w^Tx+b)$这样的模型成为广义线性模型。g(x)称为联系函数（link function）</p>
+<h3 id="对数几率函数（逻辑回归）"><a href="#对数几率函数（逻辑回归）" class="headerlink" title="对数几率函数（逻辑回归）"></a>对数几率函数（逻辑回归）</h3><p>之前讨论的是使用线性模型进行回归学习，如果要应用到分类中，思路就是利用广义线性模型，找一单调可微函数将分类任务的真实标记y与线性回归模型的预测值对应起来即可。<br>设$z=w^Tx+b$，单位阶跃函数（unit-step function）表示为：<br>$y=\begin{cases}<br>0,z&lt;0;<br>0.5,z=0;<br>1z&gt;0<br>\end{cases}$<br>可以表征二分类任务，z大于零为正例，小于零为负例，临界值可任意。但是单位阶跃不连续，固需利用类似的替代函数（surrogate function）：对数几率函数（logistic function）$y=\frac{1}{1+\exp{-z}}$</p>
+<p>目前使用比较广泛的是对数几率函数logistic function，它是Sigmoid函数的一种。它的好处在于： </p>
+<ol>
+<li>单调可微 </li>
+<li>在0处变化陡峭，最接近阶跃函数，适合二分类。</li>
+</ol>
+<p>$y=\frac{1}{1+\exp{-(w^Tx+b)}}$，$\ln \frac{y}{1-y}=w^Tx+b$，$\frac{y}{1-y}$含义就是比率，为正例的可能性与为反例的可能性比值。<br>从本质上讲，对数几率回归模型logistic regression就是在用线性回归模型的预测结果去逼近真实标记的对数几率。</p>
+<p>确定模型之后，接下来自然要做的就是确定w和b。这里要使用到的方法是极大似然法（maximum likelihood method）。<br>给定数据集{$(x_i,y_i)$}i=1~m，对率回归模型最大化就是要把所有样本概率预测之和最大化，也就是$l(w,b)=\sum{i=1}^m \ln p(y_i|x_i;w,b)$。为方便讨论，令β=(w;b),x̂ =(x;1),wT+x=βTx̂ ，再令$l(β)=\sum{i=1}^m -y_iβ^Tx_i\ln (1+\exp{β^Tx_i})$这样，最大化原概率和公式等价于最小化。上式为关于β的高阶可导连续凸函数，根据凸优化理论，利用经典的数值优化算法如梯度下降法、牛顿法都可求得最优解。</p>
+<h3 id="logistic回归求解"><a href="#logistic回归求解" class="headerlink" title="logistic回归求解"></a>logistic回归求解</h3><p>回归的方程表达式为：<br>$$h_θ(x)=g(θ^Tx)=\frac{1}{1+e^(-θ^Tx)}$$<br>$h_θ(x)$可以进行概率表示：<br>$$P(y=1|x;θ)=h_θ(x)$$<br>$$P(y=0|x;θ)=1-h_θ(x)$$<br>结合到一起可以写为：<br>$$P(y|x;θ)=(h_θ(x))^y(1-h_θ(x))^{1-y}$$<br>是不是很巧妙。<br>然后找到最大似然估计：<br>$$log L(θ)=\sum_{i=1}^my\log h(x)+(1-y)\log(1-h(x))$$<br>$$J(θ)=-\frac{1}{2m}log L(θ)$$<br>由于是非线性方程找不到驻点，所以只能用梯度下降法，求导方向下降最大的点移动。<br><img src="/images/pasted-72.png" alt="upload successful"></p>
+<h2 id="线性判别分析"><a href="#线性判别分析" class="headerlink" title="线性判别分析"></a>线性判别分析</h2><p>线性判别分析Linear Discriminant Analysis是一种经典的线性学习方法，应用于分类任务中。<br>LDA的思想非常简单，将训练集的样本投影到一条直线上，同一类的尽量互相靠近，而不同类之间尽可能相隔的远。使用数学语言，投影即是向量乘积， 同一类尽量靠近，就是协方差要小，不同类相隔远，就是类中心距离远，也就是均值投影的差要大。<br><img src="/images/pasted-69.png" alt="upload successful"></p>
+<ol>
+<li>从贝叶斯决策理论的角度可以证明LDA在两类数据同先验、满足高斯分布且协方差相等时，LDA可达到最优分类。 </li>
+<li>LDA核心是投影，这样往往实现了降维，因而LDA也常被视为一种经典的监督降维技术。<br><img src="/images/pasted-70.png" alt="upload successful"></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model</span><br><span class="line">train_data=pd.read_csv(<span class="string">'./data/linear3.csv'</span>,index_col=<span class="number">0</span>)</span><br><span class="line">x=train_data.iloc[:,<span class="number">0</span>:<span class="number">5</span>]</span><br><span class="line">y=train_data.iloc[:,<span class="number">5</span>]</span><br><span class="line">clf = linear_model.LinearRegression()</span><br><span class="line">clf.fit(x,y)</span><br><span class="line">print(clf.coef_) <span class="comment"># 斜率</span></span><br><span class="line">print(clf.intercept_) <span class="comment"># 截距</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最小二乘法</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinearRegression</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.w=<span class="keyword">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self,x,y)</span>:</span></span><br><span class="line">        x=np.insert(x,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>)</span><br><span class="line">        x_=np.linalg.inv(x.T.dot(x))</span><br><span class="line">        self.w=x_.dot(x.T).dot(y)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        x=np.insert(x,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>) <span class="comment"># 插入了b</span></span><br><span class="line">        y_pred=x.dot(self.w)</span><br><span class="line">        <span class="keyword">return</span> y_pred</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_squared_error</span><span class="params">(y_true,y_pred)</span>:</span></span><br><span class="line">    mse=np.mean(np.power(y_true-y_pred,<span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> mse</span><br><span class="line">diabetes=datasets.load_diabetes()</span><br><span class="line">x=diabetes.data[:,np.newaxis,<span class="number">2</span>]</span><br><span class="line">print(x.shape)</span><br><span class="line">x_train,x_test=x[:<span class="number">-20</span>],x[<span class="number">-20</span>:]</span><br><span class="line">y_train,y_test=diabetes.target[:<span class="number">-20</span>],diabetes.target[<span class="number">-20</span>:]</span><br><span class="line">clf=LinearRegression()</span><br><span class="line">clf.fit(x_train,y_train)</span><br><span class="line">y_pred=clf.predict(x_test)</span><br><span class="line">print(<span class="string">'MSE'</span>,mean_squared_error(y_test,y_pred))</span><br><span class="line">plt.scatter(x_test[:,<span class="number">0</span>],y_test,color=<span class="string">'black'</span>)</span><br><span class="line">plt.plot(x_test[:,<span class="number">0</span>],y_pred,color=<span class="string">'blue'</span>,linewidth=<span class="number">3</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradientDescent</span><span class="params">(x,y,theta,alpha,m,numIterations)</span>:</span></span><br><span class="line">    xTrans=x.transpose()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numIterations):</span><br><span class="line">        hypothesis=np.dot(x,theta)</span><br><span class="line">        loss=hypothesis-y</span><br><span class="line">        cost=np.sum(loss**<span class="number">2</span>)/(<span class="number">2</span>*m)</span><br><span class="line">        gradient=np.dot(xTrans,loss)/m</span><br><span class="line">        theta=theta-alpha*gradient</span><br><span class="line">    <span class="keyword">return</span> theta</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">genData</span><span class="params">(numPoints,bias,variance)</span>:</span></span><br><span class="line">    x=np.zeros(shape=(numPoints,<span class="number">2</span>))</span><br><span class="line">    y=np.zeros(shape=numPoints)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numPoints):</span><br><span class="line">        x[i][<span class="number">0</span>]=<span class="number">1</span></span><br><span class="line">        x[i][<span class="number">1</span>]=i</span><br><span class="line">        y[i]=(i+bias)+random.uniform(<span class="number">0</span>,<span class="number">1</span>)*variance</span><br><span class="line">    <span class="keyword">return</span> x,y</span><br><span class="line">x,y=genData(<span class="number">100</span>,<span class="number">25</span>,<span class="number">10</span>)</span><br><span class="line"><span class="comment"># print(x,y)</span></span><br><span class="line">m,n=np.shape(x)  <span class="comment"># m代表多少个实例</span></span><br><span class="line">numIterations=<span class="number">100000</span>  <span class="comment"># 循环次数</span></span><br><span class="line">alpha=<span class="number">0.0005</span>  <span class="comment">#学习率</span></span><br><span class="line">theta=np.ones(n)  <span class="comment"># 要求得的参数值</span></span><br><span class="line">theta=gradientDescent(x,y,theta,alpha,m,numIterations)</span><br><span class="line">print(theta)</span><br></pre></td></tr></table></figure>
+<h3 id="回归中的相关度和R平方值"><a href="#回归中的相关度和R平方值" class="headerlink" title="回归中的相关度和R平方值"></a>回归中的相关度和R平方值</h3><ul>
+<li><p>相关度<br><img src="/images/pasted-73.png" alt="upload successful"><br>相关系数：-1负相关，0不相关，1正相关。</p>
+</li>
+<li><p>R平方值<br>决定系数，反应因变量的全部变异能通过回归关系被自变量解释的比例。</p>
+<ul>
+<li>简单线性回归：$R^2=r^2$相关度</li>
+<li>多远线性回归：$r^2=\frac{SSR}{SSt}=\frac{\sum {(\widehat y_i-\overline y)^2}}{(y_i-\oveline y)^2}$<br><img src="/images/pasted-74.png" alt="upload successful"><br>R随着自变量数量增加而增大，R平方跟样本量是有关系的。因此做了一下修正：<br><img src="/images/pasted-75.png" alt="upload successful"></li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/24/线性回归/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-SVM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/21/SVM/">SVM</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/21/SVM/" class="archive-article-date">
+  	<time datetime="2018-05-21T07:50:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h2><h3 id="间隔与支持间隔"><a href="#间隔与支持间隔" class="headerlink" title="间隔与支持间隔"></a>间隔与支持间隔</h3><p>分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。<br>能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。<br>在样本空间中，划分超平面可通过以下线性方程来描述<br>$$ω^Tx+b=0$$<br>样本空间中任意点 x 到超平面 (w,b) 的距离可以写成<br>$$r=\frac{|w^Tx+b|}{||w||}$$<br>假设超平面能够正确分类样本，则可以通过对 ω 缩放可以使得下式成立<br>\begin{cases}<br>|w^Tx+b|&gt;=1,y_i=+1<br>|w^Tx+b|&lt;=-1,y_i=-1<br>\end{cases}<br>距离超平面最近的几个样本点使得上式等号成立，称作“支持向量”。两个异类支持向量到超平面的距离之和称为“间隔”，$γ=\frac{2}{||w||}$。所有位于最大边界上的点称作支持向量。撑起了边界的宽度，其中$||w||$是向量的范数（norm）：<br>$$\if W = {w_1,w_2,….w_n}then\sqrt{W·W}=\sqrt{w_1^2,w_2^2,….w_n^2}$$<br><img src="/images/pasted-27.png" alt="upload successful"><br>距离是x和x’在w上的投影：<br><img src="/images/pasted-28.png" alt="upload successful"><br>欲最大化间隔，等价于最小化$||w||^2$ , 这就是支持向量机的基本型。<br>$$\min{w,b} \frac{1}{2} ||w||^2$$<br>$$s.t. y_i(w^Tx_i+b)≥1，i=1,2,…,m$$<br><img src="/images/pasted-29.png" alt="upload successful"></p>
+<h2 id="对偶问题"><a href="#对偶问题" class="headerlink" title="对偶问题"></a>对偶问题</h2><p>上述问题是一个凸二次规划问题，能直接用现成的优化计算包求解。但是通过拉格朗日乘子法变换到对偶变量的优化问题之后，可以找到一种更加有效的方法来进行求解。<br>原问题的拉格朗日函数为<br>$$L(w,b,α)=\frac{1}{2}||w||^2+\sum{i=1}^m α_i(1-y_i(w^Tx_i+b))$$<br>求偏导为零可以得到<br>$$w=\sum{i=1}^m α_iy_ix_i$$<br>$$0=\sum{i=1}^mα_iy_i$$<br>对偶问题，将最大最小互换：<br>$$\min{w,b}\max{α}L(w,b,α)-&gt;\max{α}\min{w,b}L(w,b,α)$$<br>$$\max{α} \sum{i=1}{m}α_i-\frac{1}{2}\sum{i=1}^m\sum{j=1}^mα_iα_jy_iy_jx_i^Tx_j{}$$<br>$$s.t. \sum{i=1}^mα_iy_i=0,α_i≥0，i=1,2,…,m$$<br>于是可以得到模型为<br>$$f(x)=w^Tx+b=\sum{i=1}^mα_iy_ix_i^Tx+b$$<br>上述过程需要满足KKT(Karush-Kuhn-Tucker)条件，即<br>\begin{cases}<br>α_i≥0<br>y_if(x_i)-1≥0<br>α_i(y_if(x_i)-1)=0<br>\end{cases}<br>对任意训练样本 $(x_i,y_i)$ ，总有 $α_i=0$ 或 $y_if(x_i)=1$ 。因此训练完成后，大部分的样本都不需要保留，最终模型仅与支持向量有关。<br>如果用二次规划算法求解对偶问题，则问题的规模正比于训练样本数，这会在实际任务中造成很大开销，为此提出SMO(Sequential Minimal Optimization)算法。</p>
+<h4 id="SMO算法"><a href="#SMO算法" class="headerlink" title="SMO算法"></a>SMO算法</h4><p>SMO将比较大的问题拆解为比较小的问题，多个变量不好求，先求两个。<br>步骤：不断执行以下两个步骤直到收敛<br>1、选取一对需要更新的变量 αi 和 αj<br>2、固定 αi 和 αj 以外的参数，求解对偶问题更新后的 αi 和 αj<br>只要选取的 αi 和 αj 中有一个不满足KKT条件， 目标函数就会在迭代后减小。KKT条件违背的程度越大，变量更新后可能导致的目标函数值减幅越大。<br>使选取的两变量所对应样本之间的间隔最大（两个变量有很大的差别，对它们进行更新会带给目标函数值更大的变化）。</p>
+<h3 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h3><p>原始样本空间线性不可分：将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分。如果原始空间是有限维，那么一定存在一个高维特征空间使样本可分。<br>模型变成：$ω^Tϕ(x)+b=0 $<br>$$\min{w,b}\frac{1}{2}||w||^2$$<br>$$s.t. y_i(w^Tϕ(x_i)+b)≥1，i=1,2,…m$$<br>对偶问题为：<br>$$\max{α} \sum{i=1}{m}α_i-\frac{1}{2}\sum{i=1}^m\sum{j=1}^mα_iα_jy_iy_jx_i^Tx_j{}$$<br>$$s.t. \sum{i=1}^mα_iy_i=0,α_i≥0，i=1,2,…,m$$<br>由于特征空间维数可能很高，直接计算 $ϕ(x_i)^Tϕ(x_j)$通常是困难的。设想函数$k(x_i,x_j)=ϕ(x_i)Tϕ(x_j)$,$x_ixi$与$x_jxj$在特征空间的内积<strong>等于</strong>它们在原始样本空间中通过核函数计算的结果。<br>核函数选择成为支持向量机的最大变数，若核函数选择不合适，则意味着将样本映射到了一个不合适的特征空间，很可能导致性能不佳。比如图像分类，一般使用高斯径向基核函数，因为需要超平面要非常的平滑。<br>常用核函数：<br><img src="/images/pasted-30.png" alt="upload successful"></p>
+<h2 id="软间隔与正则化"><a href="#软间隔与正则化" class="headerlink" title="软间隔与正则化"></a>软间隔与正则化</h2><p>现实任务中往往很难确定合适的核函数使得训练样本在特征空间中线性可分，即便线性可分，也很难判定这个结果不是由于过拟合造成的。<br>缓解这个问题的一个方法是允许支持向量机在一些样本上出错，引入“软间隔”概念。允许某些样本不满足约束 $y_i(ω^Txi+b)≥1 $<br>优化目标可写成<br>$$\min{w,b}\frac{1}{2}||w||^2+C\sum{i=1}^mξ_i$$<br>其中 l0/1 是“0/1损失函数”<br> <img src="/images/pasted-11.png" alt="upload successful"><br>l0/1 非凸、非连续、数学性质不好，使得上式难以求解，因此人们用其他一些函数来代替它，称为“代替函数”。<br>常用的代替函数：<br><img src="/images/pasted-21.png" alt="upload successful"><br>常用的软间隔支持向量机：<br><img src="/images/pasted-31.png" alt="upload successful"><br>与硬间隔支持向量机相似，软间隔支持向量机也是一个二次规划问题，可以通过拉格朗日乘子法得到拉格朗日函数：<br><img src="/images/pasted-32.png" alt="upload successful"><br>求偏导为零可以得到<br><img src="/images/pasted-33.png" alt="upload successful"><br>对偶问题为<br><img src="/images/pasted-34.png" alt="upload successful"><br>上述过程需要满足KKT(Karush-Kuhn-Tucker)条件，即<br><img src="/images/pasted-35.png" alt="upload successful"><br>实际上支持向量机和对率回归的优化目标相近，通常情况下他们的性能相当。对率回归的优势主要对于其输出具有自然的概率意义，即在给出预测标记的同时也给了概率，而支持向量机的输出不具有概率意义，欲得到概率需要进行特殊处理；此外，对率回归能够直接用于多分类任务，支持向量机为此需要进行推广。另一方面，可以看出hinge损失函数有一块平摊的零区域，这使得支持向量机的解具有稀疏性，而对率损失是光滑的而单调递减函数，不能导出类似支持向量的概念。因此对率回归的解依赖于更多的训练样本，其预测开销大。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pylab <span class="keyword">as</span> pl</span><br><span class="line">np.random.seed(<span class="number">0</span>)</span><br><span class="line">X=np.r_[np.random.randn(<span class="number">20</span>,<span class="number">2</span>)-[<span class="number">2</span>,<span class="number">2</span>],np.random.randn(<span class="number">20</span>,<span class="number">2</span>)+[<span class="number">2</span>,<span class="number">2</span>]]</span><br><span class="line">Y=[<span class="number">0</span>]*<span class="number">20</span>+[<span class="number">1</span>]*<span class="number">20</span></span><br><span class="line">clf=svm.SVC(kernel=<span class="string">'linear'</span>)</span><br><span class="line">clf.fit(X,Y)</span><br><span class="line">w=clf.coef_[<span class="number">0</span>]</span><br><span class="line">a=-w[<span class="number">0</span>]/w[<span class="number">1</span>]</span><br><span class="line">xx=np.linspace(<span class="number">-5</span>,<span class="number">5</span>)</span><br><span class="line">yy=a*xx-(clf.intercept_[<span class="number">0</span>])/w[<span class="number">1</span>]</span><br><span class="line">b=clf.support_vectors_[<span class="number">0</span>]</span><br><span class="line">yy_down=a*xx+b[<span class="number">1</span>]-a*b[<span class="number">0</span>]</span><br><span class="line">b=clf.support_vectors_[<span class="number">-1</span>]</span><br><span class="line">yy_up=a*xx+b[<span class="number">1</span>]-a*b[<span class="number">0</span>]</span><br><span class="line">pl.plot(xx,yy,<span class="string">'k-'</span>)</span><br><span class="line">pl.plot(xx,yy_down,<span class="string">'k--'</span>)</span><br><span class="line">pl.plot(xx,yy_up,<span class="string">'k--'</span>)</span><br><span class="line">pl.scatter(clf.support_vectors_[:,<span class="number">0</span>],clf.support_vectors_[:,<span class="number">1</span>])</span><br><span class="line">pl.scatter(X[:,<span class="number">0</span>],X[:,<span class="number">1</span>],c=Y,cmap=pl.cm.Paired)</span><br><span class="line">pl.show()</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/21/SVM/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-KNN" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -480,634 +989,9 @@
 
 
   
-    <article id="post-python的命名空间" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/16/python的命名空间/">python的命名空间</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/16/python的命名空间/" class="archive-article-date">
-  	<time datetime="2018-05-16T11:51:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="命名空间的概念"><a href="#命名空间的概念" class="headerlink" title="命名空间的概念"></a>命名空间的概念</h2><p>C++会用到<code>std::cout</code>这样的用法，定义cout的命名空间，使用<code>using namespace std;</code>可以简化std::cout的写法，命名空间的使用可以避免不同的作用域之间函数重名的冲突问题。</p>
-<h2 id="python的命名空间"><a href="#python的命名空间" class="headerlink" title="python的命名空间"></a>python的命名空间</h2><p>python中也有命名空间，是用来记录变量轨迹的。命名空间是一个 字典，它的键就是变量名，它的值就是那些变量的值。<br>在一个 Python 程序中的任何一个地方，都存在几个可用的命名空间。这四类命名空间可以简记为 LEGB:  </p>
-<ol>
-<li><strong>局部命名空间（local）：</strong>指的是一个函数或者一个类所定义的名称空间；包括函数的参数、局部变量、类的属性等。</li>
-<li><strong>闭包命名空间（enclosing function）：</strong>闭包函数 的名称空间（Python 3 引入）。</li>
-<li><strong>全局命名空间（global）：</strong>读入一个模块（也即一个.py文档）后产生的名称空间。</li>
-<li><strong>内建命名空间（builtin）：</strong>Python 解释器启动时自动载入<strong>built</strong>模块后所形成的名称空间；诸如 str/list/dict…等内置对象的名称就处于这里。</li>
-</ol>
-<h2 id="命名空间查找顺序"><a href="#命名空间查找顺序" class="headerlink" title="命名空间查找顺序"></a>命名空间查找顺序</h2><p>同样的标识符在各层命名空间中可以被重复使用而不会发生冲突，但 Python 寻找一个标识符的过程总是从当前层开始逐层往上找，直到首次找到这个标识符为止：</p>
-<ol>
-<li>局部命名空间：特指当前函数或类的方法。如果函数定义了一个局部变量 x，或一个参数 x，Python 将使用它，然后停止搜索。</li>
-<li>全局命名空间：特指当前的模块。如果模块定义了一个名为 x 的变量，函数或类，Python 将使用它然后停止搜索。</li>
-<li>内置命名空间：对每个模块都是全局的。作为最后的尝试，Python 将假设 x 是内置函数或变量。</li>
-<li>如果 Python 在这些名字空间找不到 x，它将放弃查找并引发一个 NameError 异常，如，NameError: name ‘aa’ is not defined。</li>
-</ol>
-<h2 id="命名空间的生命周期"><a href="#命名空间的生命周期" class="headerlink" title="命名空间的生命周期"></a>命名空间的生命周期</h2><p>不同的命名空间在不同的时刻创建，有不同的生存期。</p>
-<ol>
-<li>内置命名空间在 Python 解释器启动时创建，会一直保留，不被删除。</li>
-<li>模块的全局命名空间在模块定义被读入时创建，通常模块命名空间也会一直保存到解释器退出。</li>
-<li>当函数被调用时创建一个局部命名空间，当函数返回结果 或 抛出异常时，被删除。每一个递归调用的函数都拥有自己的命名空间。</li>
-</ol>
-<h2 id="global-和-nonlocal-语句"><a href="#global-和-nonlocal-语句" class="headerlink" title="global 和 nonlocal 语句"></a>global 和 nonlocal 语句</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#e.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv <span class="comment">#UnboundLocalError:local variable 'gv' referenced before assignment</span></span><br><span class="line">    lv = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv = lv + [v]  <span class="comment">#UnboundLocalError:local variable 'lv' referenced before assignment</span></span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure>
-<p><strong>为什么使用global</strong>  </p>
-<pre><code>Python 在执行函数前，会首先生成各层命名空间和作用域，因此 Python 在执行赋值前会将func 内的 &apos;gv&apos; &apos;lv&apos; 写入局部命名空间和闭包命名空间，当 Python 执行赋值时会在局部作用域、闭包作用域内发现局部命名空间和闭包命名空间内已经具有&apos;gv&apos; 和 &apos;lv&apos; 标识符，但这两个非全局标识符在该赋值语句执行之前并没有被赋值，也即没有对象与标识符关联，因此无法参与四则运算，从而引发错误；
-</code></pre><p>局部空间无法获得，Python 便引入了 global、nonlocal 语句就来说明所修饰的 gv、lv 分别来自全局命名空间和局部命名空间，声明之后，就可以在 func 和 inn_func 内直接改写上层命名空间内 gv 和 lv 的值：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#f.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> gv</span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> lv</span><br><span class="line">        lv = lv + [v]</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
-<h2 id="借壳"><a href="#借壳" class="headerlink" title="借壳"></a>借壳</h2><p>那么是不是不使用 global 和 nonlocal 就不能达到上面的目的呢？来看看这段程序：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#g.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv.insert(<span class="number">0</span>, <span class="string">'gv'</span>)</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv.append(v)</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
-<p>我们改写的不是 gv 和 lv ,而是 gv 和 lv 的元素 gv[0:0] 和 lv[:] 。因此，不需要 global 和 nonlocal 修饰就可以直接改写，这就是“借壳”。修改 gv 和 lv实际上是在父函数作用域内，子函数调用只能读取而不能直接改写 gv 和 lv。<br>在 nonlocal 尚未引入 Python 中，比如 Python 2.x 若要在子函数中改写父函数变量的值就得通过这种方法。</p>
-<h2 id="命名空间的访问"><a href="#命名空间的访问" class="headerlink" title="命名空间的访问"></a>命名空间的访问</h2><ul>
-<li>局部命名空间可以 locals()  BIF来访问。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'1233'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, str )</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span> , <span class="string">"first"</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'str'</span>: <span class="string">'first'</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>全局 (模块级别)命名空间可以通过 globals() BIF来访问。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gstr = <span class="string">"global string"</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span>,<span class="string">'first'</span>)</span><br><span class="line">print(globals())</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br><span class="line">&#123;<span class="string">'__name__'</span>: <span class="string">'__main__'</span>, ....<span class="string">'func1'</span>: &lt;function func1 at <span class="number">0x000002A7BF382D90</span>&gt;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>locals 与 globals 之间的一个重要的区别<br>locals 是只读的，globals 可以改写</li>
-</ul>
-<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span>
-    x = <span class="number">12345</span>
-    print(locals())
-    locals()[<span class="string">"x"</span>]= <span class="number">6789</span>
-    print(<span class="string">"x="</span>,x)
-
-y=<span class="number">54321</span>
-func1(<span class="number">1</span> , <span class="string">"first"</span>)
-globals()[<span class="string">"y"</span>]= <span class="number">9876</span>
-print( <span class="string">"y="</span>,y)
-&gt;&gt;&gt;{<span class="string">'i'</span>: <span class="number">1</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>}
-x= <span class="number">12345</span>
-y= <span class="number">9876</span>
-</code></pre>
-<p>locals 实际上没有返回局部名字空间，它返回的是一个拷贝。所以对它进行改变对局部名字空间中的变量值并无影响。<br>globals 返回实际的全局名字空间，而不是一个拷贝。所以对 globals 所返回的 dictionary 的任何的改动都会直接影响到全局变量。（<a href="http://www.cnblogs.com/windlaughing/archive/2013/05/26/3100362.html" target="_blank" rel="noopener">原文解释连接</a>）</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/16/python的命名空间/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-人工智能基本概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/15/人工智能基本概念/">人工智能——决策树算法</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/15/人工智能基本概念/" class="archive-article-date">
-  	<time datetime="2018-05-15T06:19:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p>决策树（decision tree）是什么?要想解决这个问题，首先要弄明白的就是计算机中的树是什么。树，我们在计算机中很常见了，有二叉树，哈夫曼树等等，总结一下共同点的时候就是，对一个当前节点而言，下一个个节点有多个节点可以选择的结构。简单的说就是有分叉的结构就是树（可能这样说也不严谨）。而决策树就是利用了这种分叉来判断的树。<br>决策树以树状结构表示数据分类结果。包含</p>
-<ul>
-<li>一个根节点</li>
-<li>若干个非叶子节点（决策点、测试条件）</li>
-<li>若干个叶子结点（分类后所得的分类标记）</li>
-<li>分支（测试结果）<br><img src="/images/pasted-4.png" alt="upload successful"></li>
-</ul>
-<h3 id="熵的概念"><a href="#熵的概念" class="headerlink" title="熵的概念"></a>熵的概念</h3><p>几个重要的概念：</p>
-<ul>
-<li>由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$  </li>
-<li>$H(X)$：事件X发生的不确定性。$P(X)$越小，$H(X)$越小，$P(X)$越大，$H(X)$越大。<br>信息量的大小和它的不确定性有直接的关系，要搞清楚意见非常不确定的事情，就需要大量的信息。<br>香农布朗就用比特（bit）来衡量信息量的多少<br>$$ H(X)=-\sum_{i} p_i \log_{2}p_i$$<br><strong>熵的计算公式</strong><br>熵：表征一个物体内部的混乱程度。<br>$$Entropy=-\sum_{i=1}^n p_i \ln_{p_i}$$<br>Gini系数：$$Gini(p)=\sum_{k=1}^K p_k(1-p_k)=1-\sum_{k=1}^K p_k^2$$<br>决策树划分节点的规则：节点熵迅速降低。熵降低的速度越快越好。将熵值最大的当做根节点，分类后，再继续判断下一层的熵值。</li>
-</ul>
-<h3 id="归纳算法"><a href="#归纳算法" class="headerlink" title="归纳算法"></a>归纳算法</h3><h4 id="ID3"><a href="#ID3" class="headerlink" title="ID3"></a>ID3</h4><p>度量方法：信息获取量（information Gain）纯度差，也称为信息增益。例如通过A作为节点分类获取了多少信息 ：<br>$$Gain(D,a)=Ent(D)-\sum_{v=1}^V \frac{|D^v|}{D}Ent(D^v)$$<br>Ent(D)代表不纯度</p>
-<p><img src="/images/pasted-5.png" alt="upload successful"></p>
-<p>例如按照年龄区分时，得到信息获取量：</p>
-<p><img src="/images/pasted-12.png" alt="upload successful"></p>
-<p>然后按照收入、是否是学生、信用率求得对应的值，用信息量最大的参数当做当前节点划分的依据。不断重复这个步骤，直到满足停止条件停止。</p>
-<p>这个就是ID3算法的大致步骤。</p>
-<h4 id="C4-5"><a href="#C4-5" class="headerlink" title="C4.5"></a>C4.5</h4><p>度量方法：Gain Ration<br>现在有一个极端的例子，给每个样本进行编号，然后按照编号弄一个决策树可不可以呢？答案当然是不可以。因为每个编号都是一类，这样无疑是最准确的，但是有一个问题就是泛化能力远远不够啊。这样做了是毫无意义的。由于ID3对于信息中类似索引的数值特别的敏感，这个属性会将决策树过分的划分出很多分支，造成模型效果性能较差。<br>C4.5是ID3算法的拓展，引入了增益率，比上自身的熵值。 因此我们用增益率来防止这个事情的发生。<br>$$Gain-ratio(D,a)=\frac{Gain(D,a)}{IV(a)}其中IV(a)=-\sum_{v=1}^V \frac{|D^v|}{|D|}\log_{2}\frac{|D^v|}{|D|}$$<br>属性A的可能取值数目越多，则IV(A)的值通常会较大。增益率会对取值数目较少的属性有所偏好，C4.5算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
-<h4 id="CART"><a href="#CART" class="headerlink" title="CART"></a>CART</h4><p>Classification and Regression Trees<br>度量方法：Gini系数<br>$$Gain-index(D,a)=\sum_{v=1}^V \frac{|D^v|}{|D|}Gini(D^v)$$</p>
-<h3 id="评价函数"><a href="#评价函数" class="headerlink" title="评价函数"></a>评价函数</h3><p>评价函数是评估所有叶子节点的纯度很大，所以定义评价函数C(T)。<br>$$C(T)=\sum_{t∈leaf}N_t·H(t)$$<br>$N_t$表示叶子结点的个数（相当于权重值），乘上熵值。评价决策树的优劣，C(T)的值越小越好。</p>
-<h3 id="停止条件"><a href="#停止条件" class="headerlink" title="停止条件"></a>停止条件</h3><p>决策树的构建过程是一个递归的过程，所以需要确定停止条件，否则过程将不会结束。</p>
-<ul>
-<li>一般一种最直观的方式是当每个子节点只有一种类型的记录时停止，但是这样往往会使得树的节点过多，导致过拟合问题（Overfitting）。</li>
-<li>另一种可行的方法是当前节点中的记录数低于一个最小的阀值，那么就停止分割，将max(P(i))对应的分类作为当前叶节点的分类。</li>
-</ul>
-<h3 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h3><p>策树高度过高，会导致模型的过拟合。这样如果存在错误样本，会导致模型性能下降。一般通过预剪枝、后剪枝优化决策树。</p>
-<ul>
-<li><strong>预剪枝：</strong>首先设定决策树最大深度，在决预剪枝在构建过程中，如果查过了最大深度则提前停止。</li>
-<li><strong>后剪枝：</strong>当构建完成决策树后，根据<strong>评价函数</strong>$$C_{\alpha}(T)=C(T)+\alpha|T_{leaf}|$$不光看$C(T)$损失函数，还要看叶子结点的个数越多，也要进行剪枝。$\alpha$是可以指定的。<br>参数α≥0控制两者之间的影响，较大的α促使选择较简单的模型，较小的α促使选择较复杂的模型。剪枝就是当α确定时，选择损失函数最小的模型，子树越大，往往与训练数据的拟合越好，但是模型的复杂度就越高；相反，子树越小，模型的复杂度就越低，但是往往与训练数据的拟合不好，损失函数正好表示了对两者的平衡。</li>
-</ul>
-<h3 id="连续与缺失值"><a href="#连续与缺失值" class="headerlink" title="连续与缺失值"></a>连续与缺失值</h3><p><strong>连续值处理</strong><br>由于连续属性的可取值数目不再有限，因此不能直接根据连续属性的可取值来对接点进行划分，此时，连续属性离散化技术可派上用场，最简单的策略是采用二分法对连续属性进行处理。给定样本集D和连续属性A，假定A在D上出现了n个不同的取值，将这些值从小到大进行排序，记为${a_1,a_2…a_n}$，对相邻属性取值来说，在区间$[a_i,a_{i+1})$中取任意值所产生的划分结果相同，因此对连续属性A，可以考察包含n-1个元素的候选划分点集合。</p>
-<pre><code>需要注意，与离散属性不同，划分节点时，若当前节点划分属性为连续属性，该属性还可以作为其后代节点的划分属性。
-</code></pre><p><strong>缺失值处理</strong><br>有时候会遇到不完整样本，某些属性值缺失，如果简单放弃不完整样本，显然是对数据的浪费。使用则需要解决两个问题：(1) 如何在属性值缺失的情况下进行划分属性选择？(2) 给定划分属性，若样本在该属性上的值缺失，如何对样本进行划分？<br>对问题一：令$\tilde{D}$表示在a上没有缺失值的样本子集。假定a有V个可能取值。 $\tilde{D}^v$表示a取$a^v$的样本子集。假定每个样本x赋予一个权重$w_x$，并定义:<br>$$\rho=\frac{\sum_{x∈\tilde{D}}w_x}{\sum_{x∈D}w_x}$$</p>
-<p>$$\tilde{p_k}=\frac{\sum_{x∈\tilde{D}_k}w_x}{\sum_{x∈\tilde{D}}w_x}(1≤k≤|\upsilon|)$$</p>
-<p>$$\tilde{r_v}=\frac{\sum_{x∈\tilde{D}^v}w_x}{\sum_{x∈\tilde{D}}w_x} (1≤v≤V)$$<br>a、ρ表示无缺失样本值所占比例。 表示第k类所占比例，$\tilde{r_v}$表示无缺失样本在属性a上取值$a^v$所占比例。固将增益计算式推广为：<br>$$Gain(D,a)=\rho \times Gain(\tilde{D},a)=\rho*\Bigl(Ent(\tilde{D})-\sum_{v=1}^V \tilde{r_v}Ent(\tilde{D^v})\Bigr)$$</p>
-<p>对问题二：简单说就是让没有取值的x划入所有子节点，属性值调整为$\tilde{r_v}·w_x$ </p>
-<h2 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h2><p>决策树由于容易产生过拟合，出现了随机森林，减小了过拟合现象。<br>随机森林是通过多个决策树进行组合生成的。</p>
-<h3 id="采样方式"><a href="#采样方式" class="headerlink" title="采样方式"></a>采样方式</h3><ul>
-<li><strong>Bootstraping：</strong>有放回的采样</li>
-<li><strong>Bagging：</strong>有放回采样n个样本一共建立分类器</li>
-</ul>
-<h3 id="构建方法"><a href="#构建方法" class="headerlink" title="构建方法"></a>构建方法</h3><p>构建多颗决策树，结果是所有的决策树共同决定的。对于分类任务可以取出现最多，回归操作可以取均值。</p>
-<h3 id="随机性的体现"><a href="#随机性的体现" class="headerlink" title="随机性的体现"></a>随机性的体现</h3><ol>
-<li>数据选择随机性：n个样本中，采集60%的样本个数的集合作为数据，去除异常样本影响。</li>
-<li>特征随机性：在d个特种中，随机选择其中一些特征。</li>
-</ol>
-<h2 id="python实现"><a href="#python实现" class="headerlink" title="python实现"></a>python实现</h2><p>数据是这样的，根据年龄、收入、是否是学生、信用数据构建决策树：<br><img src="/images/pasted-15.png" alt="upload successful"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing,tree</span><br><span class="line"><span class="keyword">from</span> sklearn.externals.six <span class="keyword">import</span> StringIO</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd_data = pd.read_csv(<span class="string">'data/tree.csv'</span>)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line">f= open(<span class="string">'data/tree.csv'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf8'</span>)</span><br><span class="line">reader = csv.reader(f)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    labelList.append(row[len(row)<span class="number">-1</span>])</span><br><span class="line">    rowDict=&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(row)<span class="number">-1</span>):</span><br><span class="line">        rowDict[pd_data.columns[i]]=row[i]</span><br><span class="line">    featureList.append(rowDict)</span><br><span class="line">featureList.pop(<span class="number">0</span>)</span><br><span class="line">labelList.pop(<span class="number">0</span>)</span><br><span class="line">vec=DictVectorizer()</span><br><span class="line">dummyX=vec.fit_transform(featureList).toarray()</span><br><span class="line">lb=preprocessing.LabelBinarizer()</span><br><span class="line">dummyY=lb.fit_transform(labelList)</span><br><span class="line">clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART</span></span><br><span class="line">clf=clf.fit(dummyX,dummyY)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'data/tree.dot'</span>,<span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f=tree.export_graphviz(clf,feature_names=vec.get_feature_names(),out_file=f)</span><br></pre></td></tr></table></figure>
-<p>windows中，可以安装<a href="http://www.graphviz.org" target="_blank" rel="noopener">Graphviz</a>将dot文件转为pdf，可视化决策树。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dot -Tpdf tree.dot -o tree.pdf</span><br></pre></td></tr></table></figure>
-<p><img src="/images/pasted-14.png" alt="upload successful"></p>
-<p>样本数据进行交叉验证：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">(training_inputs,</span><br><span class="line"> testing_inputs,</span><br><span class="line"> training_classes,</span><br><span class="line"> testing_classes) = train_test_split(dummyX, dummyY, train_size=<span class="number">0.75</span>, random_state=<span class="number">1</span>)</span><br><span class="line"> clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART，设置为ID3</span></span><br><span class="line">clf=clf.fit(training_inputs,training_classes)</span><br><span class="line">clf.score(testing_inputs, testing_classes)</span><br></pre></td></tr></table></figure></p>
-<p>可以看出，这个决策树的得分是0.5，是个很低的预测结果，原因可能是数据太少了，交叉验证后供决策树提供训练的数据不足。可以调整参数，尝试使用Gini系数得分也一样。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor </span><br><span class="line">rf=RandomForestRegressor()  </span><br><span class="line">rf.fit(training_inputs,training_classes)</span><br><span class="line">rf.score(testing_inputs, testing_classes)</span><br></pre></td></tr></table></figure>
-<p>随机森林由于随机性，每次得出的结果不一定相同。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">人工智能</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/人工智能//" class="article-tag-list-link color5">人工智能</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/15/人工智能基本概念/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-算法题——833-Replace-in-String" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/13/算法题——833-Replace-in-String/">算法题——833 Replace in String</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/13/算法题——833-Replace-in-String/" class="archive-article-date">
-  	<time datetime="2018-05-13T10:52:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><p>To some string S, we will perform some replacement operations that replace groups of letters with new ones (not necessarily the same size).</p>
-<p>Each replacement operation has 3 parameters: a starting index i, a source word x and a target word y.  The rule is that if x starts at position i in the original string S, then we will replace that occurrence of x with y.  If not, we do nothing.</p>
-<p>For example, if we have S = “abcd” and we have some replacement operation i = 2, x = “cd”, y = “ffff”, then because “cd” starts at position 2 in the original string S, we will replace it with “ffff”.</p>
-<p>Using another example on S = “abcd”, if we have both the replacement operation i = 0, x = “ab”, y = “eee”, as well as another replacement operation i = 2, x = “ec”, y = “ffff”, this second operation does nothing because in the original string S[2] = ‘c’, which doesn’t match x[0] = ‘e’.</p>
-<p>All these operations occur simultaneously.  It’s guaranteed that there won’t be any overlap in replacement: for example, S = “abc”, indexes = [0, 1], sources = [“ab”,”bc”] is not a valid test case.</p>
-<p><strong>Example 1:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: S = <span class="string">"abcd"</span>, indexes = [<span class="number">0</span>,<span class="number">2</span>], sources = [<span class="string">"a"</span>,<span class="string">"cd"</span>], targets = [<span class="string">"eee"</span>,<span class="string">"ffff"</span>]</span><br><span class="line">Output: <span class="string">"eeebffff"</span></span><br><span class="line">Explanation: <span class="string">"a"</span> starts at index <span class="number">0</span> <span class="keyword">in</span> S, so it<span class="string">'s replaced by "eee".</span></span><br><span class="line"><span class="string">"cd" starts at index 2 in S, so it'</span>s replaced by <span class="string">"ffff"</span>.</span><br></pre></td></tr></table></figure></p>
-<p><strong>Example 2:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: S = <span class="string">"abcd"</span>, indexes = [<span class="number">0</span>,<span class="number">2</span>], sources = [<span class="string">"ab"</span>,<span class="string">"ec"</span>], targets = [<span class="string">"eee"</span>,<span class="string">"ffff"</span>]</span><br><span class="line">Output: <span class="string">"eeecd"</span></span><br><span class="line">Explanation: <span class="string">"ab"</span> starts at index <span class="number">0</span> <span class="keyword">in</span> S, so it<span class="string">'s replaced by "eee". </span></span><br><span class="line"><span class="string">"ec" doesn'</span>t starts at index <span class="number">2</span> <span class="keyword">in</span> the original S, so we do nothing.</span><br></pre></td></tr></table></figure></p>
-<p>题目难度 Medium<br>主要是更新完,字符串长度就变化了，一开始用指针，根据上一次的变化求索引，但是indexex不是按照顺序的，一直不通过。后来借助了列表，把索引先存起来，每次替换的时候再查找新的索引值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findReplaceString</span><span class="params">(self, S, indexes, sources, targets)</span>:</span></span><br><span class="line">        change=<span class="number">0</span></span><br><span class="line">        id_r=<span class="number">0</span>  <span class="comment">#定义待输出字符串指针</span></span><br><span class="line">        result=S</span><br><span class="line">        id_list=[i <span class="keyword">for</span> i <span class="keyword">in</span> range(len(S))]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i,index <span class="keyword">in</span> enumerate(indexes):</span><br><span class="line">            id_r=id_list.index(index) <span class="comment">#初始化待输出字符串指针</span></span><br><span class="line">            s1=sources[i]</span><br><span class="line">            is_change=<span class="keyword">True</span></span><br><span class="line">            <span class="keyword">for</span> j,sor <span class="keyword">in</span> enumerate(s1):</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> sor==S[index+j]:</span><br><span class="line">                    is_change=<span class="keyword">False</span></span><br><span class="line">            <span class="keyword">if</span> is_change:</span><br><span class="line">                result=result[:id_r]+targets[i]+result[id_r+len(sources[i]):]</span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> range(len(sources[i])):</span><br><span class="line">                    id_list.pop(id_r)</span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> range(len(targets[i])):</span><br><span class="line">                    id_list.insert(id_r,<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/13/算法题——833-Replace-in-String/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-算法题——832-Flipping-an-Image" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/13/算法题——832-Flipping-an-Image/">算法题——832 Flipping an Image</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/13/算法题——832-Flipping-an-Image/" class="archive-article-date">
-  	<time datetime="2018-05-13T09:15:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><p>Given a binary matrix A, we want to flip the image horizontally, then invert it, and return the resulting image.</p>
-<p>To flip an image horizontally means that each row of the image is reversed.  For example, flipping [1, 1, 0] horizontally results in [0, 1, 1].</p>
-<p>To invert an image means that each 0 is replaced by 1, and each 1 is replaced by 0. For example, inverting [0, 1, 1] results in [1, 0, 0].<br><strong>Example 1:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line">Output: [[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]</span><br><span class="line">Explanation: First reverse each row: [[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]].</span><br><span class="line">Then, invert the image: [[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]</span><br></pre></td></tr></table></figure></p>
-<p><strong>Example 2:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]]</span><br><span class="line">Output: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]]</span><br><span class="line">Explanation: First reverse each row: [[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>]].</span><br><span class="line">Then invert the image: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]]</span><br></pre></td></tr></table></figure></p>
-<p>难度级别：简单</p>
-<p>这个题比较简单，用列表的方法就可以了。我的答案：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">flipAndInvertImage</span><span class="params">(self, A)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> A:</span><br><span class="line">            line.reverse()</span><br><span class="line">            <span class="keyword">for</span> i,val <span class="keyword">in</span> enumerate(line):</span><br><span class="line">                line[i]=<span class="number">0</span> <span class="keyword">if</span> val==<span class="number">1</span> <span class="keyword">else</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/13/算法题——832-Flipping-an-Image/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-数据结构——树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/13/数据结构——树/">数据结构——树</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/13/数据结构——树/" class="archive-article-date">
-  	<time datetime="2018-05-13T08:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><p>树是一种重要的非线性数据结构，主要的用途是用来提高查找效率，对于要重复查找的情况效果更佳，如二叉排序树、FP-树。另外可以用来提高编码效率，如哈弗曼树。一切具有层次关系的问题都可用树来描述。<br>树结构的特点是：</p>
-<ul>
-<li>它的每一个结点都可以有不止一个直接后继</li>
-<li>除根结点外的所有结点都有且只有一个直接前驱。<br>树的递归定义如下：</li>
-</ul>
-<ol>
-<li>至少有一个结点（称为根）</li>
-<li>其它是互不相交的子树</li>
-</ol>
-<h3 id="二叉树结构"><a href="#二叉树结构" class="headerlink" title="二叉树结构"></a>二叉树结构</h3><ul>
-<li>节点值</li>
-<li>左孩子</li>
-<li>右孩子<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span>:</span></span><br><span class="line">    <span class="comment"># 创建节点类，包含左右两个指针，一个节点</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,elem=None)</span>:</span></span><br><span class="line">        self.elem=elem</span><br><span class="line">        self.right=<span class="keyword">None</span></span><br><span class="line">        self.left=<span class="keyword">None</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="二叉树遍历"><a href="#二叉树遍历" class="headerlink" title="二叉树遍历"></a>二叉树遍历</h3><p><img src="http://p8cigu7up.bkt.clouddn.com/1526286772063isf9jqp4.png?imageslim" alt="paste image"><br><strong>先序遍历：</strong>1,2,4,5,3,6,7<br><strong>中序遍历：</strong>4,2,5,1,6,3,7<br><strong>后序遍历：</strong>4,5,2,6,7,3,1<br>还有：中右左、右中左、右左中三中不常见的遍历<br><strong>层序遍历：</strong>1,2,3,4,5,6,7<br>按层遍历二叉树实际上是宽度优先搜索的应用。</p>
-<p>使用递归实现二叉树的遍历：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">printTree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.root = Node()</span><br><span class="line">        self.myQueue = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, elem)</span>:</span>  <span class="comment"># 采用一个堆栈实现</span></span><br><span class="line">        node = Node(elem)</span><br><span class="line">        <span class="keyword">if</span> self.root.elem == <span class="keyword">None</span>:</span><br><span class="line">            self.root = node</span><br><span class="line">            self.myQueue.append(self.root)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cur = self.myQueue[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">if</span> cur.left == <span class="keyword">None</span>:</span><br><span class="line">                cur.left = node</span><br><span class="line">                self.myQueue.append(cur.left)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur.right = node</span><br><span class="line">                self.myQueue.append(cur.right)</span><br><span class="line">                self.myQueue.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pre_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#前序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br><span class="line">        self.pre_order(root.left)</span><br><span class="line">        self.pre_order(root.right)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mid_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#中序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.mid_order(root.left)</span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br><span class="line">        self.mid_order(root.right)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#后序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.post_order(root.left)</span><br><span class="line">        self.post_order(root.right)</span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
-<p>非递归实现二叉树的遍历：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pre_stack</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        node = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(node.elem, end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> node.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, node.right)</span><br><span class="line">        <span class="keyword">if</span> node.left:</span><br><span class="line">            stack.insert(<span class="number">0</span>, node.left)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mid_stack</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = []</span><br><span class="line">    cur = root</span><br><span class="line">    <span class="keyword">while</span> stack <span class="keyword">or</span> cur:</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            stack.insert(<span class="number">0</span>, cur)</span><br><span class="line">            cur = cur.left</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line">        cur = cur.right</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_stack</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现方法一</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack1 = [root]</span><br><span class="line">    stack2 = []</span><br><span class="line">    <span class="keyword">while</span> stack1:</span><br><span class="line">        cur = stack1.pop()</span><br><span class="line">        stack2.insert(<span class="number">0</span>, cur)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack1.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack1.append(cur.right)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> stack2:</span><br><span class="line">        print(i.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_stack2</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现方法二</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    h = root  <span class="comment"># 最近一次弹出并打印的节点</span></span><br><span class="line">    c = <span class="keyword">None</span>  <span class="comment"># 当前stack的栈顶节点</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        c = stack[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> c.left <span class="keyword">and</span> h != c.left <span class="keyword">and</span> h != c.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, c.left)</span><br><span class="line">        <span class="keyword">elif</span> c.right <span class="keyword">and</span> h != c.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, c.right)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            h = stack.pop(<span class="number">0</span>)</span><br><span class="line">            print(h.elem, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
-<p>递归和非递归的方法时间复杂度都是O(N)，N为二叉树节点数，额外空间复杂度为O(L)，L为二叉树的层数。</p>
-<p>实现二叉树的层序遍历：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack=[root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur=stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem,end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue_enter</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现换行</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    last = root  <span class="comment"># 表示正在打印的当前行的最右节点</span></span><br><span class="line">    nlast = <span class="keyword">None</span>  <span class="comment"># 表示下一行的最右节点</span></span><br><span class="line">    stack = [last]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">            nlast = cur.left</span><br><span class="line">        <span class="keyword">if</span> nlast.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line">            nlast = cur.right</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> last == cur:</span><br><span class="line">            print()</span><br><span class="line">            last = nlast</span><br></pre></td></tr></table></figure>
-<h4 id="根据遍历顺序还原二叉树"><a href="#根据遍历顺序还原二叉树" class="headerlink" title="根据遍历顺序还原二叉树"></a>根据遍历顺序还原二叉树</h4><p>例如给定前序和中序的打印顺序，求后续遍历。<br>前序遍历有个特点，第一个肯定为根。然后根据根，在中序遍历可以区分出来左子树和右子树。递归的查找，就可以还原了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">permid_post</span><span class="params">(perstr, midstr)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> perstr <span class="keyword">or</span> <span class="keyword">not</span> midstr:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    val = perstr[<span class="number">0</span>]</span><br><span class="line">    node = Node(val)</span><br><span class="line">    index = midstr.find(val)</span><br><span class="line">    permid_post(perstr[<span class="number">1</span>:index+<span class="number">1</span>],midstr[:index])</span><br><span class="line">    permid_post(perstr[index+<span class="number">1</span>:],midstr[index+<span class="number">1</span>:])</span><br><span class="line">    print(node.elem,end=<span class="string">' '</span>)</span><br><span class="line">perstr = <span class="string">'GDAFEMHZ'</span></span><br><span class="line">midstr = <span class="string">'ADEFGHMZ'</span></span><br><span class="line">permid_post(perstr,midstr)</span><br></pre></td></tr></table></figure></p>
-<h3 id="二叉树序列化和反序列化"><a href="#二叉树序列化和反序列化" class="headerlink" title="二叉树序列化和反序列化"></a>二叉树序列化和反序列化</h3><p>有时我们需要用文件的形式将二叉树记录下来，下次要重构二叉树的时候只需将按照文件重新建立二叉树即可。这个过程叫做序列化过程，也叫持久化过程。<br>序列化方式：</p>
-<ul>
-<li>先序遍历序列化</li>
-<li>中序遍历序列化</li>
-<li>后序遍历序列化</li>
-<li>按层序列化</li>
-</ul>
-<p>先序遍历二叉树过程与中序后序相同，步骤如下：</p>
-<ul>
-<li>假设序列化结果为str，初始时str为空字符串</li>
-<li>先序遍历二叉树时如果遇到空节点，在str末尾加上“#！”</li>
-<li>如果遇到不为空的节点，假设节点值为3，就在str末尾增加‘3！’<br>先序遍历反序列化过程：</li>
-<li>按照！分割字符串</li>
-<li>按照先序遍历的顺序构建二叉树，遇到#设置为空节点</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Serialize</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 把对象转换为字节序列的过程称为对象的序列化</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Per_order</span><span class="params">(root)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            result.append(<span class="string">'#!'</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        result.append(str(root.elem) + <span class="string">'!'</span>)</span><br><span class="line">        Per_order(root.left)</span><br><span class="line">        Per_order(root.right)</span><br><span class="line"></span><br><span class="line">    result = []</span><br><span class="line">    Per_order(root)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(result)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Deserialize2</span><span class="params">(self, s)</span>:</span>  <span class="comment"># 把字节序列恢复为对象的过程称为对象的反序列化</span></span><br><span class="line">    s = s.split(<span class="string">"!"</span>)</span><br><span class="line">    self.myroot=<span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(index)</span>:</span></span><br><span class="line">        index[<span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> index[<span class="number">0</span>] &gt;= len(s):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> s[index[<span class="number">0</span>]] == <span class="string">'#'</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        node = Node()</span><br><span class="line">        node.elem = s[index[<span class="number">0</span>]]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.myroot:</span><br><span class="line">            self.myroot = node</span><br><span class="line">        node.left = change(index)</span><br><span class="line">        node.right = change(index)</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">    index = [<span class="number">-1</span>]</span><br><span class="line">    change(index)</span><br><span class="line">    <span class="keyword">return</span> self.myroot</span><br></pre></td></tr></table></figure>
-<p>当然，用什么方法序列化，要用同样的方法反序列化才行。</p>
-<h3 id="二叉树的一些概念"><a href="#二叉树的一些概念" class="headerlink" title="二叉树的一些概念"></a>二叉树的一些概念</h3><h4 id="二叉的子树"><a href="#二叉的子树" class="headerlink" title="二叉的子树"></a>二叉的子树</h4><p>在二叉树中以任何一个节点为头部的整棵树称为二叉树的子树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526449053269984bqugc.png?imageslim" alt="paste image"><br>上图不是子树，因为不是整棵树。只是一个联通的子结构</p>
-<h4 id="平衡二叉树（AVL树）"><a href="#平衡二叉树（AVL树）" class="headerlink" title="平衡二叉树（AVL树）"></a>平衡二叉树（AVL树）</h4><ul>
-<li>空树是平衡二叉树</li>
-<li>一棵树不为空，并且其中所有子树都满足各自的左子树与有字数的高度差都不超过1。<br><img src="http://p8cigu7up.bkt.clouddn.com/15264502137521q7nmg1y.png?imageslim" alt="paste image"><br>这不是一颗平衡二叉树，以②为节点划分，左子树高度为2，右子树高度为0，高度差超过了1。</li>
-</ul>
-<p>判断一个树是否是平衡二叉树，采用递归的后续遍历：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526449320079uu0a5qv0.png?imageslim" alt="paste image"></p>
-<ol>
-<li>首先判断左子树是否为平衡二叉树返回false，则结束。</li>
-<li>计算左子树最深到哪一层，LH</li>
-<li>判断右子树是否为平衡二叉树返回false，则结束。</li>
-<li>计算右子树最深到哪一层，RH</li>
-<li>判断LH和RH是否相等。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_balanced2</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:<span class="comment">#空树是平衡二叉树</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span>,<span class="number">0</span></span><br><span class="line">    left_info=self.is_balanced(root.left)</span><br><span class="line">    right_info=self.is_balanced(root.right)</span><br><span class="line">    <span class="keyword">if</span> left_info[<span class="number">0</span>] <span class="keyword">and</span> right_info[<span class="number">0</span>]:</span><br><span class="line">        diff=left_info[<span class="number">1</span>]-right_info[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="number">-1</span>&lt;=diff&lt;=<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">False</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><strong>不平衡二叉树旋转</strong><br>首先旋转的二叉树是二叉查找树，讨论的是其平衡问题。这样很好的解决了二叉查找树退化成链表的问题。使得插入、查找删除的最好最坏时间复杂度都为O(logN)。<br>左左或者右右，可以使用单旋转：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456177997sm3ap9gg.png?imageslim" alt="paste image"></p>
-<p>左右或者右左，可以使用双旋转<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456468138w779bb24.png?imageslim" alt="paste image"></p>
-<p><strong>平衡二叉树查找</strong><br><strong>平衡二叉树插入</strong><br><strong>平衡二叉树删除</strong> </p>
-<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>是满足以下条件的二叉树：</p>
-<ul>
-<li>左子树上所有节点值均小于根节点值</li>
-<li>右子树上所有节点值均不小于根节点值 </li>
-<li>左右子树也满足上述两个条件<br><img src="http://p8cigu7up.bkt.clouddn.com/1526202114625uqdqohku.png?imageslim" alt="paste image"></li>
-</ul>
-<p><strong>二叉查找树的查找过程</strong></p>
-<ul>
-<li>若当前节点cur的值小于p的值，查找cur的左子树</li>
-<li>若当前节点cur的值不小于p的值，查找cur的右子树</li>
-<li>递归上述过程，直到cur==p或者cur为空</li>
-</ul>
-<p><strong>二叉查找树的插入</strong></p>
-<p><strong>二叉查找树的删除</strong></p>
-<h4 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h4><p>除了最后一层的节点无任何子节点外，剩下的每一层节点都有两个子节点。</p>
-<pre><code>满二叉树层数为L，节点数为N，则$N=2^L-1$，$L=\log_2^{(N+1)}$
-</code></pre><h4 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h4><p>除了最后一层外，其他的每一层节点都是满的。最后一层慢了那就是满二叉树。最后一层不满，缺少的节点也全部集中在右边，那也是完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452010331fujrxunj.png?imageslim" alt="paste image"><img src="http://p8cigu7up.bkt.clouddn.com/1526452023806sp4w4qbd.png?imageslim" alt="paste image"><br>上面两个图均为完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452115869iru3yarm.png?imageslim" alt="paste image"><br>这就不是一个完全二叉树。</p>
-<p><strong>判断是否完全二叉树</strong></p>
-<ul>
-<li>采用按层遍历二叉树的方式，从每层左边向右边一次遍历所有节点。</li>
-<li>如果当前节点有右孩子，但没有左海子，直接返回False.</li>
-<li>如果当前节点不是左右孩子全有，那之后节点必须都为叶节点，否则返回False。</li>
-<li>遍历过程中如果不返回False，遍历结束后返回True。<h4 id="后继与前驱"><a href="#后继与前驱" class="headerlink" title="后继与前驱"></a>后继与前驱</h4><strong>后继节点：</strong>这个节点在中序遍历序列中的下一个节点。<br><strong>前驱结点：</strong>这个节点在中序遍历序列中的前一个节点。 </li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/13/数据结构——树/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2018/05/page/2/">2</a><a class="page-number" href="/archives/2018/05/page/3/">3</a><a class="extend next" rel="next" href="/archives/2018/05/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/archives/2018/05/page/2/">2</a><a class="page-number" href="/archives/2018/05/page/3/">3</a><a class="page-number" href="/archives/2018/05/page/4/">4</a><a class="extend next" rel="next" href="/archives/2018/05/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1206,10 +1090,6 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
@@ -1239,6 +1119,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
             
             <div class="clearfix"></div>
