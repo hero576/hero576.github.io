@@ -17,7 +17,7 @@
 <meta property="og:description" content="K邻近学习k近邻学习是一种监督学习算法，lazy-learning算法。训练复杂度为0。在给定的训练样本集中，基于某种距离度量，找出与训练集最靠近的k个训练样本，然后基于这k个邻居信息来进行预测。投票法：通常在分类任务中使用，判别方法是选择这k个样本中出现最多的雷冰标记作为预测结果。（所以k值取值一般为奇数，以便可以得到有偏向的投票结果）平均法：通常在回归任务中使用，判别方法是将这k个样本的实值输">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://p8cigu7up.bkt.clouddn.com/1526725719271s4cfc85r.png?imageslim">
-<meta property="og:updated_time" content="2018-05-19T11:34:23.262Z">
+<meta property="og:updated_time" content="2018-05-27T02:59:11.027Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="KNN">
 <meta name="twitter:description" content="K邻近学习k近邻学习是一种监督学习算法，lazy-learning算法。训练复杂度为0。在给定的训练样本集中，基于某种距离度量，找出与训练集最靠近的k个训练样本，然后基于这k个邻居信息来进行预测。投票法：通常在分类任务中使用，判别方法是选择这k个样本中出现最多的雷冰标记作为预测结果。（所以k值取值一般为奇数，以便可以得到有偏向的投票结果）平均法：通常在回归任务中使用，判别方法是将这k个样本的实值输">
@@ -176,7 +176,8 @@
 </ol>
 <p>如何选择一个最佳的K值，这取决于数据。一般情况下，在分类时较大的K值能够减小噪声的影响。但会使类别之间的界限变得模糊。一个较好的K值可通过各种启发式技术来获取，比如，交叉验证。另外噪声和非相关性特征向量的存在会使K近邻算法的准确性减小。<br>近邻算法具有较强的一致性结果。随着数据趋于无限，算法保证错误率不会超过贝叶斯算法错误率的两倍。对于一些好的K值，K近邻保证错误率不会超过贝叶斯理论误差率。</p>
 <h3 id="距离衡量方法"><a href="#距离衡量方法" class="headerlink" title="距离衡量方法"></a>距离衡量方法</h3><h4 id="Euclidean-Distance"><a href="#Euclidean-Distance" class="headerlink" title="Euclidean Distance"></a>Euclidean Distance</h4><p>$D=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}$</p>
-<h4 id="余弦（cos）"><a href="#余弦（cos）" class="headerlink" title="余弦（cos）"></a>余弦（cos）</h4><h4 id="相关度-correlation"><a href="#相关度-correlation" class="headerlink" title="相关度(correlation)"></a>相关度(correlation)</h4><h4 id="曼哈顿距离-Manhattan-distance"><a href="#曼哈顿距离-Manhattan-distance" class="headerlink" title="曼哈顿距离(Manhattan distance)"></a>曼哈顿距离(Manhattan distance)</h4><p>走过的街区数。</p>
+<h4 id="余弦（cos）"><a href="#余弦（cos）" class="headerlink" title="余弦（cos）"></a>余弦（cos）</h4><h4 id="相关度-correlation"><a href="#相关度-correlation" class="headerlink" title="相关度(correlation)"></a>相关度(correlation)</h4><p>$$cos(θ)=\frac{A·B}{||A||×||B||}$$</p>
+<h4 id="曼哈顿距离-Manhattan-distance"><a href="#曼哈顿距离-Manhattan-distance" class="headerlink" title="曼哈顿距离(Manhattan distance)"></a>曼哈顿距离(Manhattan distance)</h4><p>走过的街区数。</p>
 <h3 id="KNN算法的优缺点"><a href="#KNN算法的优缺点" class="headerlink" title="KNN算法的优缺点"></a>KNN算法的优缺点</h3><p><strong>优点：</strong>  </p>
 <ol>
 <li>思想简单，理论成熟，既可以用来做分类也可以用来做回归；</li>
@@ -191,7 +192,6 @@
 <li>需要大量的内存；</li>
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> neighbors,datasets</span><br><span class="line">knn=neighbors.KNeighborsClassifier()</span><br><span class="line">iris=datasets.load_iris()</span><br><span class="line">knn.fit(iris.data,iris.target)</span><br><span class="line">predictedLabel=knn.predict([[<span class="number">0.1</span>,<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.4</span>]])</span><br><span class="line">print(predictedLabel)</span><br></pre></td></tr></table></figure>
-
       
 
       
@@ -456,11 +456,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -468,7 +464,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -476,7 +476,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -484,11 +484,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
               </li>
             
             <div class="clearfix"></div>

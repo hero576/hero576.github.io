@@ -21,7 +21,8 @@
 <meta property="og:image" content="http://yoursite.com/images/pasted-88.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-89.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-85.png">
-<meta property="og:updated_time" content="2018-05-26T09:36:39.871Z">
+<meta property="og:image" content="http://yoursite.com/images/pasted-90.png">
+<meta property="og:updated_time" content="2018-05-29T07:33:49.678Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="集成学习">
 <meta name="twitter:description" content="个体与集成“同质”：由类型相同的学习器组合而成的集成学习器，每个学习器可称为基学习器“异质”：由类型不相同的学习器组合而成的集成学习器，每个学习器可称为“组件学习器”集成学习通过将多个学习器进行结合，常常可以获得比单一学习器具有显著优越的泛化性能。这个对于弱学习器尤为明显。如何获得一个好的集成学习器呢？每个个体学习器具有一定的准确性（每个学习器不能太坏）和多样性（每个学习器之间存在差异）集成学习方">
@@ -202,7 +203,27 @@
 <li>通过α来计算训练下一个弱分类器样本的权重D，如果对应样本分类正确，则减小该样本的权重，公式为：<br>$D_i^{t+1}=\frac{D_i^{(t)}e^{-α}}{Sum(D)}$<br>如果样本分类错误，则增加该样本的权重，公式为：<br>$D_i^{t+1}=\frac{D_i^{(t)}e^α}{Sum(D)}$</li>
 <li>循环步骤1,2,3来继续训练多个分类器，只是其D值不同而已。<br>测试过程如下：<br>输入一个样本到训练好的每个弱分类中，则每个弱分类都对应一个输出标签，然后该标签乘以对应的α，最后求和得到值的符号即为预测标签值。</li>
 </ol>
-<h3 id="结合策略"><a href="#结合策略" class="headerlink" title="结合策略"></a>结合策略</h3><p>集成算法，介绍完后，那么如何使结合后的集成算法明显的优势呢？也就是说如何将训练出来的多个基学习器如何很好的结合在一起呢形成新的集成算法呢？本书提出平均法、投票法、学习法三种结合策略。</p>
+<h3 id="结合策略"><a href="#结合策略" class="headerlink" title="结合策略"></a>结合策略</h3><p>如何使结合后的集成算法明显的优势呢？也就是说如何将训练出来的多个基学习器如何很好的结合在一起呢形成新的集成算法呢？主要有平均法、投票法、学习法三种结合策略。</p>
+<h4 id="Voting"><a href="#Voting" class="headerlink" title="Voting"></a>Voting</h4><p>投票制即为，投票多者为最终的结果。例如一个分类问题，多个模型投票（当然可以设置权重）。最终投票数最多的类为最终被预测的类。</p>
+<h4 id="Averaging"><a href="#Averaging" class="headerlink" title="Averaging"></a>Averaging</h4><p>Averaging即所有预测器的结果平均。<br>回归问题，直接取平均值作为最终的预测值。（也可以使用加权平均）<br>分类问题，直接将模型的预测概率做平均。（or 加权）<br>加权平均，其公式如下：<br>$$\sum_{i=1}^n Weight_i∗P_i$$<br>其中nn表示模型的个数， $Weight_i$表示该模型权重，$P_i$表示模型i的预测概率值。<br>例如两个分类器，XGBoost（权重0.4）和LightGBM（权重0.6），其预测概率分别为：0.75、0.5，那么最终的预测概率，(0.4 <em> 0.75+0.6 </em> 0.5)/(0.4+0.6)=0.6<br>模型权重也可以通过机器学习模型学习得到</p>
+<h4 id="Ranking"><a href="#Ranking" class="headerlink" title="Ranking"></a>Ranking</h4><p>Rank的思想其实和Averaging一致，但Rank是把排名做平均，对于AUC指标比较有效。<br>个人认为其实就是Learning to rank的思想，可以来优化搜索排名。具体公式如下：<br>$$\sum_{i=1}^n \frac{Weight_i}{Rank_i}$$<br>其中nn表示模型的个数， WeightiWeighti表示该模型权重，所有权重相同表示平均融合。RankiRanki表示样本在第i个模型中的升序排名。它可以较快的利用排名融合多个模型之间的差异，而不需要加权融合概率。</p>
+<h4 id="Binning"><a href="#Binning" class="headerlink" title="Binning"></a>Binning</h4><p>将单个模型的输出放到一个桶中。参考<a href="http://cseweb.ucsd.edu/~elkan/254spring01/jdrishrep.pdf" target="_blank" rel="noopener">pdf paper</a></p>
+<h4 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h4><p>使用训练数据的不同随机子集来训练每个 Base Model，最后每个 Base Model 权重相同，分类问题进行投票，回归问题平均。<br>随机森林就用到了Bagging，并且具有天然的并行性。</p>
+<h4 id="Boosting-1"><a href="#Boosting-1" class="headerlink" title="Boosting"></a>Boosting</h4><p>Boosting是一种迭代的方法，每一次训练会更关心上一次被分错的样本，比如改变被错分的样本的权重的Adaboost方法。还有许多都是基于这种思想，比如Gradient Boosting等。</p>
+<h4 id="Stacking"><a href="#Stacking" class="headerlink" title="Stacking"></a>Stacking</h4><p><img src="/images/pasted-90.png" alt="upload successful"><br>从上图可以看出，类似交叉验证。</p>
+<ul>
+<li>将数据集分为K个部分，共有n个模型。</li>
+<li>for i in xrange(n):<br>for i in xrange(k):<br>用第i个部分作为预测，剩余的部分来训练模型，获得其预测的输出作为第i部分的新特征。<br>对于测试集，直接用这k个模型的预测值均值作为新的特征。</li>
+<li>这样k次下来，整个数据集都获得了这个模型构建的New Feature。n个模型训练下来，这个模型就有n个New Features。</li>
+<li>把New Features和label作为新的分类器的输入进行训练。然后输入测试集的New Features输入模型获得最终的预测结果。</li>
+</ul>
+<h4 id="Blending"><a href="#Blending" class="headerlink" title="Blending"></a>Blending</h4><p>Blending直接用不相交的数据集用于不同层的训练。</p>
+<p>以两层的Blending为例，训练集划分为两部分（d1，d2），测试集为test。</p>
+<ul>
+<li>第一层：用d1训练多个模型，讲其对d2和test的预测结果作为第二层的New Features。</li>
+<li>第二层：用d2的New Features和标签训练新的分类器，然后把test的New Features输入作为最终的预测值。</li>
+</ul>
+<h3 id="融合的条件"><a href="#融合的条件" class="headerlink" title="融合的条件"></a>融合的条件</h3><p>Base Model 之间的相关性要尽可能的小。这就是为什么非 Tree-based Model 往往表现不是最好但还是要将它们包括在 Ensemble 里面的原因。Ensemble 的 Diversity 越大，最终 Model 的 Bias 就越低。<br>Base Model 之间的性能表现不能差距太大。这其实是一个 Trade-off，在实际中很有可能表现相近的 Model 只有寥寥几个而且它们之间相关性还不低。但是实践告诉我们即使在这种情况下 Ensemble 还是能大幅提高成绩。</p>
 <h3 id="多样性"><a href="#多样性" class="headerlink" title="多样性"></a>多样性</h3><p>多样性，在前面已经提到过，一个好集成算法，需要训练出来的基学习器具有很强的多样性。 </p>
 <ul>
 <li>误差-分歧分解</li>
@@ -289,6 +310,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2018/05/26/降维与度量学习/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          降维与度量学习
+        
+      </div>
+    </a>
+  
   
     <a href="/2018/05/26/贝叶斯/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">贝叶斯分类器</div>
@@ -318,7 +348,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#个体与集成"><span class="toc-number">1.</span> <span class="toc-text">个体与集成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bagging与随机森林"><span class="toc-number">2.</span> <span class="toc-text">Bagging与随机森林</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Bagging算法"><span class="toc-number">2.1.</span> <span class="toc-text">Bagging算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#随机森林（Random-Forest）"><span class="toc-number">2.2.</span> <span class="toc-text">随机森林（Random Forest）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#采样方式"><span class="toc-number">2.2.1.</span> <span class="toc-text">采样方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#构建方法"><span class="toc-number">2.2.2.</span> <span class="toc-text">构建方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#随机性的体现"><span class="toc-number">2.3.</span> <span class="toc-text">随机性的体现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#随机森林的推广-Extra-Trees"><span class="toc-number">2.4.</span> <span class="toc-text">随机森林的推广(Extra Trees)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GBDT-Gradient-Boosting-Decision-Tree"><span class="toc-number">2.5.</span> <span class="toc-text">GBDT (Gradient Boosting Decision Tree)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xgboost"><span class="toc-number">2.6.</span> <span class="toc-text">xgboost</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Boosting"><span class="toc-number">3.</span> <span class="toc-text">Boosting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Adaboost"><span class="toc-number">3.1.</span> <span class="toc-text">Adaboost</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结合策略"><span class="toc-number">3.2.</span> <span class="toc-text">结合策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多样性"><span class="toc-number">3.3.</span> <span class="toc-text">多样性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-number">3.4.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-number">3.5.</span> <span class="toc-text">缺点</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#个体与集成"><span class="toc-number">1.</span> <span class="toc-text">个体与集成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bagging与随机森林"><span class="toc-number">2.</span> <span class="toc-text">Bagging与随机森林</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Bagging算法"><span class="toc-number">2.1.</span> <span class="toc-text">Bagging算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#随机森林（Random-Forest）"><span class="toc-number">2.2.</span> <span class="toc-text">随机森林（Random Forest）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#采样方式"><span class="toc-number">2.2.1.</span> <span class="toc-text">采样方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#构建方法"><span class="toc-number">2.2.2.</span> <span class="toc-text">构建方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#随机性的体现"><span class="toc-number">2.3.</span> <span class="toc-text">随机性的体现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#随机森林的推广-Extra-Trees"><span class="toc-number">2.4.</span> <span class="toc-text">随机森林的推广(Extra Trees)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GBDT-Gradient-Boosting-Decision-Tree"><span class="toc-number">2.5.</span> <span class="toc-text">GBDT (Gradient Boosting Decision Tree)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xgboost"><span class="toc-number">2.6.</span> <span class="toc-text">xgboost</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Boosting"><span class="toc-number">3.</span> <span class="toc-text">Boosting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Adaboost"><span class="toc-number">3.1.</span> <span class="toc-text">Adaboost</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结合策略"><span class="toc-number">3.2.</span> <span class="toc-text">结合策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Voting"><span class="toc-number">3.2.1.</span> <span class="toc-text">Voting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Averaging"><span class="toc-number">3.2.2.</span> <span class="toc-text">Averaging</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Ranking"><span class="toc-number">3.2.3.</span> <span class="toc-text">Ranking</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Binning"><span class="toc-number">3.2.4.</span> <span class="toc-text">Binning</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Bagging"><span class="toc-number">3.2.5.</span> <span class="toc-text">Bagging</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Boosting-1"><span class="toc-number">3.2.6.</span> <span class="toc-text">Boosting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Stacking"><span class="toc-number">3.2.7.</span> <span class="toc-text">Stacking</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Blending"><span class="toc-number">3.2.8.</span> <span class="toc-text">Blending</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#融合的条件"><span class="toc-number">3.3.</span> <span class="toc-text">融合的条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多样性"><span class="toc-number">3.4.</span> <span class="toc-text">多样性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-number">3.5.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-number">3.6.</span> <span class="toc-text">缺点</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -451,11 +481,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -463,7 +489,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -471,7 +501,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -479,11 +509,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
               </li>
             
             <div class="clearfix"></div>

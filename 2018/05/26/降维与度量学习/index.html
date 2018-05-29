@@ -6,32 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>SVM | hero576的博客</title>
+  <title>降维与度量学习 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="支持向量机间隔与支持间隔分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。在样本空间中，划分超平面可通过以下线性方程来描述$$ω^Tx+b=0$$样本空间中任意点 x 到超平面 (w,b) 的距离可以写成$$r=\frac{|w^Tx">
+  <meta name="description" content="降维在一些图像识别过程也经常被采用的一种分类算法，例如二维数据经过投影变为一维数据，从而更好的表征数据的特征，再进行识别。在前面章节中提到过LDA（线性判别分析）也可以当做一种简单降维处理。 低维嵌入 维数灾难: 缓解维数灾难方法：降维（维数约简），也就是通过某种数学变换将原始高维属性空间转变为一个低维“子空间”，在这个子空间中样本密度大幅提高，距离计算也变得更为容易。   在很多时候，人们观测或">
 <meta name="keywords" content="py通红">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SVM">
-<meta property="og:url" content="http://yoursite.com/2018/05/21/SVM/index.html">
+<meta property="og:title" content="降维与度量学习">
+<meta property="og:url" content="http://yoursite.com/2018/05/26/降维与度量学习/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="支持向量机间隔与支持间隔分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。在样本空间中，划分超平面可通过以下线性方程来描述$$ω^Tx+b=0$$样本空间中任意点 x 到超平面 (w,b) 的距离可以写成$$r=\frac{|w^Tx">
+<meta property="og:description" content="降维在一些图像识别过程也经常被采用的一种分类算法，例如二维数据经过投影变为一维数据，从而更好的表征数据的特征，再进行识别。在前面章节中提到过LDA（线性判别分析）也可以当做一种简单降维处理。 低维嵌入 维数灾难: 缓解维数灾难方法：降维（维数约简），也就是通过某种数学变换将原始高维属性空间转变为一个低维“子空间”，在这个子空间中样本密度大幅提高，距离计算也变得更为容易。   在很多时候，人们观测或">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/images/pasted-27.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-28.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-29.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-30.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-11.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-21.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-31.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-32.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-33.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-34.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-35.png">
-<meta property="og:updated_time" content="2018-05-23T02:38:39.493Z">
+<meta property="og:updated_time" content="2018-05-27T07:55:55.773Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SVM">
-<meta name="twitter:description" content="支持向量机间隔与支持间隔分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。在样本空间中，划分超平面可通过以下线性方程来描述$$ω^Tx+b=0$$样本空间中任意点 x 到超平面 (w,b) 的距离可以写成$$r=\frac{|w^Tx">
-<meta name="twitter:image" content="http://yoursite.com/images/pasted-27.png">
+<meta name="twitter:title" content="降维与度量学习">
+<meta name="twitter:description" content="降维在一些图像识别过程也经常被采用的一种分类算法，例如二维数据经过投影变为一维数据，从而更好的表征数据的特征，再进行识别。在前面章节中提到过LDA（线性判别分析）也可以当做一种简单降维处理。 低维嵌入 维数灾难: 缓解维数灾难方法：降维（维数约简），也就是通过某种数学变换将原始高维属性空间转变为一个低维“子空间”，在这个子空间中样本密度大幅提高，距离计算也变得更为容易。   在很多时候，人们观测或">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
   
@@ -157,32 +145,40 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-SVM" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-降维与度量学习" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      SVM
+      降维与度量学习
     </h1>
   
 
         
-        <a href="/2018/05/21/SVM/" class="archive-article-date">
-  	<time datetime="2018-05-21T07:50:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-21</time>
+        <a href="/2018/05/26/降维与度量学习/" class="archive-article-date">
+  	<time datetime="2018-05-26T10:15:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h2><h3 id="间隔与支持间隔"><a href="#间隔与支持间隔" class="headerlink" title="间隔与支持间隔"></a>间隔与支持间隔</h3><p>分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。<br>能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。<br>在样本空间中，划分超平面可通过以下线性方程来描述<br>$$ω^Tx+b=0$$<br>样本空间中任意点 x 到超平面 (w,b) 的距离可以写成<br>$$r=\frac{|w^Tx+b|}{||w||}$$<br>假设超平面能够正确分类样本，则可以通过对 ω 缩放可以使得下式成立<br>\begin{cases}<br>|w^Tx+b|&gt;=1,y_i=+1<br>|w^Tx+b|&lt;=-1,y_i=-1<br>\end{cases}<br>距离超平面最近的几个样本点使得上式等号成立，称作“支持向量”。两个异类支持向量到超平面的距离之和称为“间隔”，$γ=\frac{2}{||w||}$。所有位于最大边界上的点称作支持向量。撑起了边界的宽度，其中$||w||$是向量的范数（norm）：<br>$$\if W = {w_1,w_2,….w_n}then\sqrt{W·W}=\sqrt{w_1^2,w_2^2,….w_n^2}$$<br><img src="/images/pasted-27.png" alt="upload successful"><br>距离是x和x’在w上的投影：<br><img src="/images/pasted-28.png" alt="upload successful"><br>欲最大化间隔，等价于最小化$||w||^2$ , 这就是支持向量机的基本型。<br>$$\min{w,b} \frac{1}{2} ||w||^2$$<br>$$s.t. y_i(w^Tx_i+b)≥1，i=1,2,…,m$$<br><img src="/images/pasted-29.png" alt="upload successful"></p>
-<h2 id="对偶问题"><a href="#对偶问题" class="headerlink" title="对偶问题"></a>对偶问题</h2><p>上述问题是一个凸二次规划问题，能直接用现成的优化计算包求解。但是通过拉格朗日乘子法变换到对偶变量的优化问题之后，可以找到一种更加有效的方法来进行求解。<br>原问题的拉格朗日函数为<br>$$L(w,b,α)=\frac{1}{2}||w||^2+\sum{i=1}^m α_i(1-y_i(w^Tx_i+b))$$<br>求偏导为零可以得到<br>$$w=\sum{i=1}^m α_iy_ix_i$$<br>$$0=\sum{i=1}^mα_iy_i$$<br>对偶问题，将最大最小互换：<br>$$\min{w,b}\max{α}L(w,b,α)-&gt;\max{α}\min{w,b}L(w,b,α)$$<br>$$\max{α} \sum{i=1}{m}α_i-\frac{1}{2}\sum{i=1}^m\sum{j=1}^mα_iα_jy_iy_jx_i^Tx_j{}$$<br>$$s.t. \sum{i=1}^mα_iy_i=0,α_i≥0，i=1,2,…,m$$<br>于是可以得到模型为<br>$$f(x)=w^Tx+b=\sum{i=1}^mα_iy_ix_i^Tx+b$$<br>上述过程需要满足KKT(Karush-Kuhn-Tucker)条件，即<br>\begin{cases}<br>α_i≥0<br>y_if(x_i)-1≥0<br>α_i(y_if(x_i)-1)=0<br>\end{cases}<br>对任意训练样本 $(x_i,y_i)$ ，总有 $α_i=0$ 或 $y_if(x_i)=1$ 。因此训练完成后，大部分的样本都不需要保留，最终模型仅与支持向量有关。<br>如果用二次规划算法求解对偶问题，则问题的规模正比于训练样本数，这会在实际任务中造成很大开销，为此提出SMO(Sequential Minimal Optimization)算法。</p>
-<h4 id="SMO算法"><a href="#SMO算法" class="headerlink" title="SMO算法"></a>SMO算法</h4><p>SMO将比较大的问题拆解为比较小的问题，多个变量不好求，先求两个。<br>步骤：不断执行以下两个步骤直到收敛<br>1、选取一对需要更新的变量 αi 和 αj<br>2、固定 αi 和 αj 以外的参数，求解对偶问题更新后的 αi 和 αj<br>只要选取的 αi 和 αj 中有一个不满足KKT条件， 目标函数就会在迭代后减小。KKT条件违背的程度越大，变量更新后可能导致的目标函数值减幅越大。<br>使选取的两变量所对应样本之间的间隔最大（两个变量有很大的差别，对它们进行更新会带给目标函数值更大的变化）。</p>
-<h3 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h3><p>原始样本空间线性不可分：将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分。如果原始空间是有限维，那么一定存在一个高维特征空间使样本可分。<br>模型变成：$ω^Tϕ(x)+b=0 $<br>$$\min{w,b}\frac{1}{2}||w||^2$$<br>$$s.t. y_i(w^Tϕ(x_i)+b)≥1，i=1,2,…m$$<br>对偶问题为：<br>$$\max{α} \sum{i=1}{m}α_i-\frac{1}{2}\sum{i=1}^m\sum{j=1}^mα_iα_jy_iy_jx_i^Tx_j{}$$<br>$$s.t. \sum{i=1}^mα_iy_i=0,α_i≥0，i=1,2,…,m$$<br>由于特征空间维数可能很高，直接计算 $ϕ(x_i)^Tϕ(x_j)$通常是困难的。设想函数$k(x_i,x_j)=ϕ(x_i)Tϕ(x_j)$,$x_ixi$与$x_jxj$在特征空间的内积<strong>等于</strong>它们在原始样本空间中通过核函数计算的结果。<br>核函数选择成为支持向量机的最大变数，若核函数选择不合适，则意味着将样本映射到了一个不合适的特征空间，很可能导致性能不佳。比如图像分类，一般使用高斯径向基核函数，因为需要超平面要非常的平滑。<br>常用核函数：<br><img src="/images/pasted-30.png" alt="upload successful"></p>
-<h2 id="软间隔与正则化"><a href="#软间隔与正则化" class="headerlink" title="软间隔与正则化"></a>软间隔与正则化</h2><p>现实任务中往往很难确定合适的核函数使得训练样本在特征空间中线性可分，即便线性可分，也很难判定这个结果不是由于过拟合造成的。<br>缓解这个问题的一个方法是允许支持向量机在一些样本上出错，引入“软间隔”概念。允许某些样本不满足约束 $y_i(ω^Txi+b)≥1 $<br>优化目标可写成<br>$$\min{w,b}\frac{1}{2}||w||^2+C\sum{i=1}^mξ_i$$<br>其中 l0/1 是“0/1损失函数”<br> <img src="/images/pasted-11.png" alt="upload successful"><br>l0/1 非凸、非连续、数学性质不好，使得上式难以求解，因此人们用其他一些函数来代替它，称为“代替函数”。<br>常用的代替函数：<br><img src="/images/pasted-21.png" alt="upload successful"><br>常用的软间隔支持向量机：<br><img src="/images/pasted-31.png" alt="upload successful"><br>与硬间隔支持向量机相似，软间隔支持向量机也是一个二次规划问题，可以通过拉格朗日乘子法得到拉格朗日函数：<br><img src="/images/pasted-32.png" alt="upload successful"><br>求偏导为零可以得到<br><img src="/images/pasted-33.png" alt="upload successful"><br>对偶问题为<br><img src="/images/pasted-34.png" alt="upload successful"><br>上述过程需要满足KKT(Karush-Kuhn-Tucker)条件，即<br><img src="/images/pasted-35.png" alt="upload successful"><br>实际上支持向量机和对率回归的优化目标相近，通常情况下他们的性能相当。对率回归的优势主要对于其输出具有自然的概率意义，即在给出预测标记的同时也给了概率，而支持向量机的输出不具有概率意义，欲得到概率需要进行特殊处理；此外，对率回归能够直接用于多分类任务，支持向量机为此需要进行推广。另一方面，可以看出hinge损失函数有一块平摊的零区域，这使得支持向量机的解具有稀疏性，而对率损失是光滑的而单调递减函数，不能导出类似支持向量的概念。因此对率回归的解依赖于更多的训练样本，其预测开销大。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pylab <span class="keyword">as</span> pl</span><br><span class="line">np.random.seed(<span class="number">0</span>)</span><br><span class="line">X=np.r_[np.random.randn(<span class="number">20</span>,<span class="number">2</span>)-[<span class="number">2</span>,<span class="number">2</span>],np.random.randn(<span class="number">20</span>,<span class="number">2</span>)+[<span class="number">2</span>,<span class="number">2</span>]]</span><br><span class="line">Y=[<span class="number">0</span>]*<span class="number">20</span>+[<span class="number">1</span>]*<span class="number">20</span></span><br><span class="line">clf=svm.SVC(kernel=<span class="string">'linear'</span>)</span><br><span class="line">clf.fit(X,Y)</span><br><span class="line">w=clf.coef_[<span class="number">0</span>]</span><br><span class="line">a=-w[<span class="number">0</span>]/w[<span class="number">1</span>]</span><br><span class="line">xx=np.linspace(<span class="number">-5</span>,<span class="number">5</span>)</span><br><span class="line">yy=a*xx-(clf.intercept_[<span class="number">0</span>])/w[<span class="number">1</span>]</span><br><span class="line">b=clf.support_vectors_[<span class="number">0</span>]</span><br><span class="line">yy_down=a*xx+b[<span class="number">1</span>]-a*b[<span class="number">0</span>]</span><br><span class="line">b=clf.support_vectors_[<span class="number">-1</span>]</span><br><span class="line">yy_up=a*xx+b[<span class="number">1</span>]-a*b[<span class="number">0</span>]</span><br><span class="line">pl.plot(xx,yy,<span class="string">'k-'</span>)</span><br><span class="line">pl.plot(xx,yy_down,<span class="string">'k--'</span>)</span><br><span class="line">pl.plot(xx,yy_up,<span class="string">'k--'</span>)</span><br><span class="line">pl.scatter(clf.support_vectors_[:,<span class="number">0</span>],clf.support_vectors_[:,<span class="number">1</span>])</span><br><span class="line">pl.scatter(X[:,<span class="number">0</span>],X[:,<span class="number">1</span>],c=Y,cmap=pl.cm.Paired)</span><br><span class="line">pl.show()</span><br></pre></td></tr></table></figure></p>
-
+        <p>降维在一些图像识别过程也经常被采用的一种分类算法，例如二维数据经过投影变为一维数据，从而更好的表征数据的特征，再进行识别。在前面章节中提到过LDA（线性判别分析）也可以当做一种简单降维处理。</p>
+<h2 id="低维嵌入"><a href="#低维嵌入" class="headerlink" title="低维嵌入"></a>低维嵌入</h2><ul>
+<li>维数灾难:</li>
+<li>缓解维数灾难方法：降维（维数约简），也就是通过某种数学变换将原始高维属性空间转变为一个低维“子空间”，在这个子空间中样本密度大幅提高，距离计算也变得更为容易。 </li>
+</ul>
+<p>在很多时候，人们观测或收集到的数据样本虽然是高维的，但与学习任务密切相关的也许仅是某个低维分布，即高维空间中的一个低维嵌入。   </p>
+<ul>
+<li>线性降维方法：基于线性变换来进行降维的方法。</li>
+</ul>
+<h2 id="主成分分析（PCA）"><a href="#主成分分析（PCA）" class="headerlink" title="主成分分析（PCA）"></a>主成分分析（PCA）</h2><p> 以二维特征为例，两个特征之间可能存在线性关系的（例如这两个特征分别是运动的时速和秒速度），这样就造成了第二维信息是冗余的。PCA的目标是为了发现这种特征之间的线性关系，检测出这些线性关系，并且去除这线性关系。</p>
+<p>定义两个特征之间的协方差：<br>$$σ<em>{jk}=\frac{1}{n-1}\sum</em>{i=1}^n(x_{ij}-\overlinex_j)(x_{ik}-\overlinex_k)$$</p>
+<p>多个特征之间的协方差矩阵：<br>$$\sum = \frac{1}{n-1}((X-\overline{x})^T(X-\overline{x}))$$<br>where $\overline{x}=\frac{1}{n}\sum_{k=1}^n x_i$</p>
+<p>根据协方差矩阵，求出特征值、特征向量，找到对应特征值较大的k个特征向量组合成为<strong>变换矩阵</strong>，说明这k个特征值在整个特征空间是比较重要的。通过矩阵乘法，我们就把原样本空间压缩了。</p>
+<h2 id="SVD"><a href="#SVD" class="headerlink" title="SVD"></a>SVD</h2>
       
 
       
@@ -240,7 +236,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/05/21/SVM/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/05/26/降维与度量学习/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -254,18 +250,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/05/24/线性回归/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          线性模型
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/05/19/KNN/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">KNN</div>
+    <a href="/2018/05/26/集成学习/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">集成学习</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -292,7 +279,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#支持向量机"><span class="toc-number">1.</span> <span class="toc-text">支持向量机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#间隔与支持间隔"><span class="toc-number">1.1.</span> <span class="toc-text">间隔与支持间隔</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对偶问题"><span class="toc-number">2.</span> <span class="toc-text">对偶问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SMO算法"><span class="toc-number">2.0.1.</span> <span class="toc-text">SMO算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#核函数"><span class="toc-number">2.1.</span> <span class="toc-text">核函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#软间隔与正则化"><span class="toc-number">3.</span> <span class="toc-text">软间隔与正则化</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#低维嵌入"><span class="toc-number">1.</span> <span class="toc-text">低维嵌入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主成分分析（PCA）"><span class="toc-number">2.</span> <span class="toc-text">主成分分析（PCA）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SVD"><span class="toc-number">3.</span> <span class="toc-text">SVD</span></a></li></ol>
                     </div>
                 </span>
             </div>

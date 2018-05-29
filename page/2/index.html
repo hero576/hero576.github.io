@@ -146,6 +146,214 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-人工智能基本概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/15/人工智能基本概念/">人工智能——决策树算法</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/15/人工智能基本概念/" class="archive-article-date">
+  	<time datetime="2018-05-15T06:19:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p>决策树（decision tree）是什么?要想解决这个问题，首先要弄明白的就是计算机中的树是什么。树，我们在计算机中很常见了，有二叉树，哈夫曼树等等，总结一下共同点的时候就是，对一个当前节点而言，下一个个节点有多个节点可以选择的结构。简单的说就是有分叉的结构就是树（可能这样说也不严谨）。而决策树就是利用了这种分叉来判断的树。<br>决策树以树状结构表示数据分类结果。包含</p>
+<ul>
+<li>一个根节点</li>
+<li>若干个非叶子节点（决策点、测试条件）</li>
+<li>若干个叶子结点（分类后所得的分类标记）</li>
+<li>分支（测试结果）<br><img src="/images/pasted-4.png" alt="upload successful"></li>
+</ul>
+<h3 id="信息论"><a href="#信息论" class="headerlink" title="信息论"></a>信息论</h3><h4 id="熵的概念"><a href="#熵的概念" class="headerlink" title="熵的概念"></a>熵的概念</h4><p>几个重要的概念：</p>
+<ul>
+<li>由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$  </li>
+<li>$H(X)$：事件X发生的不确定性。$P(X)$越小，$H(X)$越小，$P(X)$越大，$H(X)$越大。<br>信息量的大小和它的不确定性有直接的关系，要搞清楚意见非常不确定的事情，就需要大量的信息。<br>香农布朗就用比特（bit）来衡量信息量的多少<br>$$ H(X)=-\sum_{i} p_i \log_{2}p_i$$<br><strong>熵的计算公式</strong><br>熵：表征一个物体内部的混乱程度。<br>$$Entropy=-\sum_{i=1}^n p_i \ln_{p_i}$$<br>Gini系数：$$Gini(p)=\sum_{k=1}^K p_k(1-p_k)=1-\sum_{k=1}^K p_k^2$$<br>决策树划分节点的规则：节点熵迅速降低。熵降低的速度越快越好。将熵值最大的当做根节点，分类后，再继续判断下一层的熵值。<h4 id="KL散度-相对熵"><a href="#KL散度-相对熵" class="headerlink" title="KL散度-相对熵"></a>KL散度-相对熵</h4>Kullback-Leibler(KL)divergence<br>$$D_{KL}(P||Q)=\Bbb{E}_{x~P}[\log \frac{P(x)}{Q(x)}]$$<br>KL散度性质：</li>
+<li>非负性：KL散度为0当且仅当P和Q同分布。</li>
+<li>非对称性：$D_{KL}(P||Q)\neq D_{KL}(Q||P)=$</li>
+</ul>
+<h4 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h4><p>cross-entropy<br>$$H(P,Q)=H(P)+D_{KL}(P||Q)$$</p>
+<h3 id="归纳算法"><a href="#归纳算法" class="headerlink" title="归纳算法"></a>归纳算法</h3><h4 id="ID3"><a href="#ID3" class="headerlink" title="ID3"></a>ID3</h4><p>度量方法：信息获取量（information Gain）纯度差，也称为信息增益。例如通过A作为节点分类获取了多少信息 ：<br>$$Gain(D,a)=Ent(D)-\sum_{v=1}^V \frac{|D^v|}{D}Ent(D^v)$$<br>Ent(D)代表不纯度</p>
+<p><img src="/images/pasted-5.png" alt="upload successful"></p>
+<p>例如按照年龄区分时，得到信息获取量：</p>
+<p><img src="/images/pasted-12.png" alt="upload successful"></p>
+<p>然后按照收入、是否是学生、信用率求得对应的值，用信息量最大的参数当做当前节点划分的依据。不断重复这个步骤，直到满足停止条件停止。</p>
+<p>这个就是ID3算法的大致步骤。</p>
+<h4 id="C4-5"><a href="#C4-5" class="headerlink" title="C4.5"></a>C4.5</h4><p>度量方法：Gain Ration<br>现在有一个极端的例子，给每个样本进行编号，然后按照编号弄一个决策树可不可以呢？答案当然是不可以。因为每个编号都是一类，这样无疑是最准确的，但是有一个问题就是泛化能力远远不够啊。这样做了是毫无意义的。由于ID3对于信息中类似索引的数值特别的敏感，这个属性会将决策树过分的划分出很多分支，造成模型效果性能较差。<br>C4.5是ID3算法的拓展，引入了增益率，比上自身的熵值。 因此我们用增益率来防止这个事情的发生。<br>$$Gain-ratio(D,a)=\frac{Gain(D,a)}{IV(a)}其中IV(a)=-\sum_{v=1}^V \frac{|D^v|}{|D|}\log_{2}\frac{|D^v|}{|D|}$$<br>属性A的可能取值数目越多，则IV(A)的值通常会较大。增益率会对取值数目较少的属性有所偏好，C4.5算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
+<h4 id="CART"><a href="#CART" class="headerlink" title="CART"></a>CART</h4><p>Classification and Regression Trees<br>度量方法：Gini系数<br>$$Gain-index(D,a)=\sum_{v=1}^V \frac{|D^v|}{|D|}Gini(D^v)$$</p>
+<h3 id="评价函数"><a href="#评价函数" class="headerlink" title="评价函数"></a>评价函数</h3><p>评价函数是评估所有叶子节点的纯度很大，所以定义评价函数C(T)。<br>$$C(T)=\sum_{t∈leaf}N_t·H(t)$$<br>$N_t$表示叶子结点的个数（相当于权重值），乘上熵值。评价决策树的优劣，C(T)的值越小越好。</p>
+<h3 id="停止条件"><a href="#停止条件" class="headerlink" title="停止条件"></a>停止条件</h3><p>决策树的构建过程是一个递归的过程，所以需要确定停止条件，否则过程将不会结束。</p>
+<ul>
+<li>一般一种最直观的方式是当每个子节点只有一种类型的记录时停止，但是这样往往会使得树的节点过多，导致过拟合问题（Overfitting）。</li>
+<li>另一种可行的方法是当前节点中的记录数低于一个最小的阀值，那么就停止分割，将max(P(i))对应的分类作为当前叶节点的分类。</li>
+</ul>
+<h3 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h3><p>策树高度过高，会导致模型的过拟合。这样如果存在错误样本，会导致模型性能下降。一般通过预剪枝、后剪枝优化决策树。</p>
+<ul>
+<li><strong>预剪枝：</strong>首先设定决策树最大深度，在决预剪枝在构建过程中，如果查过了最大深度则提前停止。</li>
+<li><strong>后剪枝：</strong>当构建完成决策树后，根据<strong>评价函数</strong>$$C_{\alpha}(T)=C(T)+\alpha|T_{leaf}|$$不光看$C(T)$损失函数，还要看叶子结点的个数越多，也要进行剪枝。$\alpha$是可以指定的。<br>参数α≥0控制两者之间的影响，较大的α促使选择较简单的模型，较小的α促使选择较复杂的模型。剪枝就是当α确定时，选择损失函数最小的模型，子树越大，往往与训练数据的拟合越好，但是模型的复杂度就越高；相反，子树越小，模型的复杂度就越低，但是往往与训练数据的拟合不好，损失函数正好表示了对两者的平衡。</li>
+</ul>
+<h3 id="连续与缺失值"><a href="#连续与缺失值" class="headerlink" title="连续与缺失值"></a>连续与缺失值</h3><p><strong>连续值处理</strong><br>由于连续属性的可取值数目不再有限，因此不能直接根据连续属性的可取值来对接点进行划分，此时，连续属性离散化技术可派上用场，最简单的策略是采用二分法对连续属性进行处理。给定样本集D和连续属性A，假定A在D上出现了n个不同的取值，将这些值从小到大进行排序，记为${a_1,a_2…a_n}$，对相邻属性取值来说，在区间$(a_i,a_{i+1})$中取任意值所产生的划分结果相同，因此对连续属性A，可以考察包含n-1个元素的候选划分点集合。</p>
+<pre><code>需要注意，与离散属性不同，划分节点时，若当前节点划分属性为连续属性，该属性还可以作为其后代节点的划分属性。
+</code></pre><p><strong>缺失值处理</strong><br>有时候会遇到不完整样本，某些属性值缺失，如果简单放弃不完整样本，显然是对数据的浪费。使用则需要解决两个问题：(1) 如何在属性值缺失的情况下进行划分属性选择？(2) 给定划分属性，若样本在该属性上的值缺失，如何对样本进行划分？<br>对问题一：令$\tilde{D}$表示在a上没有缺失值的样本子集。假定a有V个可能取值。 $\tilde{D}^v$表示a取$a^v$的样本子集。假定每个样本x赋予一个权重$w_x$，并定义:<br>$$\rho=\frac{\sum_{x∈\tilde{D}}w_x}{\sum_{x∈D}w_x}$$</p>
+<p>$$\tilde{p_k}=\frac{\sum_{x∈\tilde{D}_k}w_x}{\sum_{x∈\tilde{D}}w_x}(1≤k≤|\upsilon|)$$</p>
+<p>$$\tilde{r_v}=\frac{\sum_{x∈\tilde{D}^v}w_x}{\sum_{x∈\tilde{D}}w_x} (1≤v≤V)$$<br>a、ρ表示无缺失样本值所占比例。 表示第k类所占比例，$\tilde{r_v}$表示无缺失样本在属性a上取值$a^v$所占比例。固将增益计算式推广为：<br>$$Gain(D,a)=\rho \times Gain(\tilde{D},a)=\rho*\Bigl(Ent(\tilde{D})-\sum_{v=1}^V \tilde{r_v}Ent(\tilde{D^v})\Bigr)$$</p>
+<p>对问题二：简单说就是让没有取值的x划入所有子节点，属性值调整为$\tilde{r_v}·w_x$ </p>
+<h2 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h2><p>决策树由于容易产生过拟合，出现了随机森林，减小了过拟合现象。<br>随机森林是通过多个决策树进行组合生成的。</p>
+<h2 id="python实现"><a href="#python实现" class="headerlink" title="python实现"></a>python实现</h2><p>数据是这样的，根据年龄、收入、是否是学生、信用数据构建决策树：<br><img src="/images/pasted-15.png" alt="upload successful"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing,tree</span><br><span class="line"><span class="keyword">from</span> sklearn.externals.six <span class="keyword">import</span> StringIO</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd_data = pd.read_csv(<span class="string">'data/tree.csv'</span>)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line">f= open(<span class="string">'data/tree.csv'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf8'</span>)</span><br><span class="line">reader = csv.reader(f)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    labelList.append(row[len(row)<span class="number">-1</span>])</span><br><span class="line">    rowDict=&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(row)<span class="number">-1</span>):</span><br><span class="line">        rowDict[pd_data.columns[i]]=row[i]</span><br><span class="line">    featureList.append(rowDict)</span><br><span class="line">featureList.pop(<span class="number">0</span>)</span><br><span class="line">labelList.pop(<span class="number">0</span>)</span><br><span class="line">vec=DictVectorizer()</span><br><span class="line">dummyX=vec.fit_transform(featureList).toarray()</span><br><span class="line">lb=preprocessing.LabelBinarizer()</span><br><span class="line">dummyY=lb.fit_transform(labelList)</span><br><span class="line">clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART</span></span><br><span class="line">clf=clf.fit(dummyX,dummyY)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'data/tree.dot'</span>,<span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f=tree.export_graphviz(clf,feature_names=vec.get_feature_names(),out_file=f)</span><br></pre></td></tr></table></figure>
+<p>windows中，可以安装<a href="http://www.graphviz.org" target="_blank" rel="noopener">Graphviz</a>将dot文件转为pdf，可视化决策树。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dot -Tpdf tree.dot -o tree.pdf</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pasted-14.png" alt="upload successful"></p>
+<p>样本数据进行交叉验证：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">(training_inputs,</span><br><span class="line"> testing_inputs,</span><br><span class="line"> training_classes,</span><br><span class="line"> testing_classes) = train_test_split(dummyX, dummyY, train_size=<span class="number">0.75</span>, random_state=<span class="number">1</span>)</span><br><span class="line"> clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART，设置为ID3</span></span><br><span class="line">clf=clf.fit(training_inputs,training_classes)</span><br><span class="line">clf.score(testing_inputs, testing_classes)</span><br></pre></td></tr></table></figure></p>
+<p>可以看出，这个决策树的得分是0.5，是个很低的预测结果，原因可能是数据太少了，交叉验证后供决策树提供训练的数据不足。可以调整参数，尝试使用Gini系数得分也一样。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor </span><br><span class="line">rf=RandomForestRegressor()  </span><br><span class="line">rf.fit(training_inputs,training_classes)</span><br><span class="line">rf.score(testing_inputs, testing_classes)</span><br></pre></td></tr></table></figure>
+<p>随机森林由于随机性，每次得出的结果不一定相同。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">人工智能</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/人工智能//" class="article-tag-list-link color5">人工智能</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/15/人工智能基本概念/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-url去重" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/14/url去重/">url去重</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/14/url去重/" class="archive-article-date">
+  	<time datetime="2018-05-14T03:09:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://blog.csdn.net/a1368783069/article/details/52137417" target="_blank" rel="noopener">连接</a></p>
+<h2 id="加密后存储"><a href="#加密后存储" class="headerlink" title="加密后存储"></a>加密后存储</h2><p>hashlib.sha1</p>
+<h2 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h2><p>布隆过滤器的应用场景：</p>
+<ol>
+<li>网页黑名单系统</li>
+<li>垃圾邮件过滤系统</li>
+<li>爬虫网址的去重<br>对空间要求比严格，同时能够容忍一定程度的失误率。</li>
+</ol>
+<p>布隆过滤器可以精确的代表一个集合，可以精确的判断某一元素是否在此集合中。而精确程度取决于具体的设计，100%精确是不可能的，能够在0.01%错误率是可以接受的。</p>
+<p>布隆过滤器的优势是利用很少的空间就可以将正确率做到很高。</p>
+<p><img src="/images/pasted-24.png" alt="upload successful"><br>建立k个满足独立的hash函数，将所有的url的值对m取余，再将对应二进制数组位置涂黑。当一个新的url进行同样操作时，如果发现数组中有一个非黑的值即可认为是不在排除的名单中的。<br>误判的产生主要原因是，二进制数组比较小，基本都被涂黑了。一个新的url生成的哈希对应的二进制值都已经被涂黑，这样就会误判为已经访问的。</p>
+<h3 id="二进制数组大小的确定"><a href="#二进制数组大小的确定" class="headerlink" title="二进制数组大小的确定"></a>二进制数组大小的确定</h3><p>大小为m，样本数量为n，失误率为p。<br>$$m=-\frac{n×\ln p}{(\ln 2)^2}$$<br>$$k=\ln 2×\frac{m}{n}$$<br>真实的失误率是：<br>$$(1-\exp^{\frac-{nk}{m}})^k$$</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/14/url去重/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-算法题——833-Replace-in-String" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1009,803 +1217,6 @@
 
 
   
-    <article id="post-Chrome ERR UNSAFE PORT" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/11/Chrome ERR UNSAFE PORT/">Chrome浏览器ERR_UNSAFE_PORT</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/11/Chrome ERR UNSAFE PORT/" class="archive-article-date">
-  	<time datetime="2018-05-11T05:26:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在开启flask项目时候使用了6000端口，谷歌就一直不能访问，出现下面的问题：</p>
-<p><img src="/images/pasted-7.png" alt="upload successful"></p>
-<p>下面是Google Chrome 默认非安全端口列表，建议尽量避免以下端口：</p>
-<table>
-<thead>
-<tr>
-<th>端口号</th>
-<th style="text-align:left">功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td style="text-align:left">tcpmux</td>
-</tr>
-<tr>
-<td>7</td>
-<td style="text-align:left">echo</td>
-</tr>
-<tr>
-<td>9</td>
-<td style="text-align:left">discard</td>
-</tr>
-<tr>
-<td>11</td>
-<td style="text-align:left">systat</td>
-</tr>
-<tr>
-<td>13</td>
-<td style="text-align:left">daytime</td>
-</tr>
-<tr>
-<td>15</td>
-<td style="text-align:left">netstat</td>
-</tr>
-<tr>
-<td>17</td>
-<td style="text-align:left">qotd</td>
-</tr>
-<tr>
-<td>19</td>
-<td style="text-align:left">chargen</td>
-</tr>
-<tr>
-<td>20</td>
-<td style="text-align:left">ftp data</td>
-</tr>
-<tr>
-<td>21</td>
-<td style="text-align:left">ftp access</td>
-</tr>
-<tr>
-<td>22</td>
-<td style="text-align:left">ssh</td>
-</tr>
-<tr>
-<td>23</td>
-<td style="text-align:left">telnet</td>
-</tr>
-<tr>
-<td>25</td>
-<td style="text-align:left">smtp</td>
-</tr>
-<tr>
-<td>37</td>
-<td style="text-align:left">time</td>
-</tr>
-<tr>
-<td>42</td>
-<td style="text-align:left">name</td>
-</tr>
-<tr>
-<td>43</td>
-<td style="text-align:left">nicname</td>
-</tr>
-<tr>
-<td>53</td>
-<td style="text-align:left">domain</td>
-</tr>
-<tr>
-<td>77</td>
-<td style="text-align:left">priv-rjs</td>
-</tr>
-<tr>
-<td>79</td>
-<td style="text-align:left">finger</td>
-</tr>
-<tr>
-<td>87</td>
-<td style="text-align:left">ttylink</td>
-</tr>
-<tr>
-<td>95</td>
-<td style="text-align:left">supdup</td>
-</tr>
-<tr>
-<td>101</td>
-<td style="text-align:left">hostriame</td>
-</tr>
-<tr>
-<td>102</td>
-<td style="text-align:left">iso-tsap</td>
-</tr>
-<tr>
-<td>103</td>
-<td style="text-align:left">gppitnp</td>
-</tr>
-<tr>
-<td>104</td>
-<td style="text-align:left">acr-nema</td>
-</tr>
-<tr>
-<td>109</td>
-<td style="text-align:left">pop2</td>
-</tr>
-<tr>
-<td>110</td>
-<td style="text-align:left">pop3</td>
-</tr>
-<tr>
-<td>111</td>
-<td style="text-align:left">sunrpc</td>
-</tr>
-<tr>
-<td>113</td>
-<td style="text-align:left">auth</td>
-</tr>
-<tr>
-<td>115</td>
-<td style="text-align:left">sftp</td>
-</tr>
-<tr>
-<td>117</td>
-<td style="text-align:left">uucp-path</td>
-</tr>
-<tr>
-<td>119</td>
-<td style="text-align:left">nntp</td>
-</tr>
-<tr>
-<td>123</td>
-<td style="text-align:left">NTP</td>
-</tr>
-<tr>
-<td>135</td>
-<td style="text-align:left">loc-srv /epmap</td>
-</tr>
-<tr>
-<td>139</td>
-<td style="text-align:left">netbios</td>
-</tr>
-<tr>
-<td>143</td>
-<td style="text-align:left">imap2</td>
-</tr>
-<tr>
-<td>179</td>
-<td style="text-align:left">BGP</td>
-</tr>
-<tr>
-<td>389</td>
-<td style="text-align:left">ldap</td>
-</tr>
-<tr>
-<td>465</td>
-<td style="text-align:left">smtp+ssl</td>
-</tr>
-<tr>
-<td>512</td>
-<td style="text-align:left">print / exec</td>
-</tr>
-<tr>
-<td>513</td>
-<td style="text-align:left">login</td>
-</tr>
-<tr>
-<td>514</td>
-<td style="text-align:left">shell</td>
-</tr>
-<tr>
-<td>515</td>
-<td style="text-align:left">printer</td>
-</tr>
-<tr>
-<td>526</td>
-<td style="text-align:left">tempo</td>
-</tr>
-<tr>
-<td>530</td>
-<td style="text-align:left">courier</td>
-</tr>
-<tr>
-<td>531</td>
-<td style="text-align:left">chat</td>
-</tr>
-<tr>
-<td>532</td>
-<td style="text-align:left">netnews</td>
-</tr>
-<tr>
-<td>540</td>
-<td style="text-align:left">uucp</td>
-</tr>
-<tr>
-<td>556</td>
-<td style="text-align:left">remotefs</td>
-</tr>
-<tr>
-<td>563</td>
-<td style="text-align:left">nntp+ssl</td>
-</tr>
-<tr>
-<td>587</td>
-<td style="text-align:left">stmp?</td>
-</tr>
-<tr>
-<td>601</td>
-<td style="text-align:left">??</td>
-</tr>
-<tr>
-<td>636</td>
-<td style="text-align:left">ldap+ssl</td>
-</tr>
-<tr>
-<td>993</td>
-<td style="text-align:left">ldap+ssl</td>
-</tr>
-<tr>
-<td>995</td>
-<td style="text-align:left">pop3+ssl</td>
-</tr>
-<tr>
-<td>2049</td>
-<td style="text-align:left">nfs</td>
-</tr>
-<tr>
-<td>3659</td>
-<td style="text-align:left">apple-sasl / PasswordServer</td>
-</tr>
-<tr>
-<td>4045</td>
-<td style="text-align:left">lockd</td>
-</tr>
-<tr>
-<td>6000</td>
-<td style="text-align:left">X11</td>
-</tr>
-<tr>
-<td>6665</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6666</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6667</td>
-<td style="text-align:left">Standard IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6668</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6669</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-</tbody>
-</table>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">web服务器</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/web服务器//" class="article-tag-list-link color2">web服务器</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/11/Chrome ERR UNSAFE PORT/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Scrapy设置项介绍" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/09/Scrapy设置项介绍/">Scrapy设置项介绍</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/09/Scrapy设置项介绍/" class="archive-article-date">
-  	<time datetime="2018-05-09T07:26:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h2><p>Scrapy设置允许您自定义所有Scrapy组件的行为，包括核心，扩展，管道和爬虫本身。<br>设置的基础结构提供了键值映射的全局命名空间，代码可以使用它从中提取配置值。可以通过不同的机制来填充设置，这将在下面描述。<br>这些设置也是选择当前活动Scrapy项目的机制（如果您有很多）。<br>有关可用内置设置的列表，请参阅：<a href="https://link.jianshu.com/?t=https://doc.scrapy.org/en/1.3/topics/settings.html#topics-settings-ref" target="_blank" rel="noopener">内置设置参考</a>。</p>
-<h2 id="指定设置"><a href="#指定设置" class="headerlink" title="指定设置"></a>指定设置</h2><p>当你使用Scrapy，你必须告诉它你使用哪些设置。您可以通过使用环境变量来执行此操作SCRAPY_SETTINGS_MODULE。<br>值SCRAPY_SETTINGS_MODULE应该在Python路径语法中，例如 myproject.settings。请注意，设置模块应该在Python 导入搜索路径上。    </p>
-<h2 id="填充设置"><a href="#填充设置" class="headerlink" title="填充设置"></a>填充设置</h2><p>可以使用不同的机制来填充设置，每个机制具有不同的优先级。这里是按优先级降序排列的列表：    </p>
-<ol>
-<li>命令行选项（最高优先级）  </li>
-<li>每个爬虫的设置  </li>
-<li>项目设置模块  </li>
-<li>每命令的默认设置  </li>
-<li>默认全局设置（优先级较低）<br>这些设置源的数量在内部处理，但可以使用API调用进行手动处理。请参阅 设置API主题以供参考。<br>这些机制在下面更详细地描述。    </li>
-</ol>
-<h3 id="1-命令行选项"><a href="#1-命令行选项" class="headerlink" title="1.命令行选项"></a>1.命令行选项</h3><p>命令行提供的参数是最优先的参数，覆盖任何其他选项。您可以使用-s（或–set）命令行选项显式覆盖一个（或多个）设置。<br>例：    </p>
-<pre><code class="python">scrapy crawl myspider -s
-LOG_FILE=scrapy.log
-</code></pre>
-<h3 id="2-每个爬虫的设置"><a href="#2-每个爬虫的设置" class="headerlink" title="2.每个爬虫的设置"></a>2.每个爬虫的设置</h3><p>爬虫（请参阅爬虫章节以供参考）可以定义自己的设置，这些设置将优先并覆盖项目。他们可以通过设置custom_settings属性来实现：  </p>
-<pre><code>class MySpider(scrapy.Spider):  
-    name = &apos;myspider&apos;    
-    custom_settings = {  
-        &apos;SOME_SETTING&apos;: &apos;some value&apos;,  
-    }  
-</code></pre><h3 id="3-项目设置模块"><a href="#3-项目设置模块" class="headerlink" title="3.项目设置模块"></a>3.项目设置模块</h3><p>项目设置模块是Scrapy项目的标准配置文件，它将填充大多数自定义设置。对于标准的Scrapy项目，这意味着您将添加或更改settings.py为您的项目创建的文件中的设置。    </p>
-<h3 id="4-每命令的默认设置"><a href="#4-每命令的默认设置" class="headerlink" title="4.每命令的默认设置"></a>4.每命令的默认设置</h3><p>每个Scrapy工具命令都可以有自己的默认设置，覆盖全局默认设置。这些自定义命令设置default_settings在命令类的属性中指定。    </p>
-<h3 id="5-默认全局设置"><a href="#5-默认全局设置" class="headerlink" title="5.默认全局设置"></a>5.默认全局设置</h3><p>全局默认值位于scrapy.settings.default_settings 模块中，并记录在内置设置参考部分中。    </p>
-<h3 id="如何访问设置"><a href="#如何访问设置" class="headerlink" title="如何访问设置"></a>如何访问设置</h3><p>在爬虫中，设置可通过self.settings以下方式获得：  </p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">MySpider</span><span class="params">(scrapy.Spider)</span>:</span>  
-    name = <span class="string">'myspider'</span>  
-    start_urls = [<span class="string">'http://example.com'</span>]    
-    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span>  
-        print(<span class="string">"Existing settings: %s"</span> % self.settings.attributes.keys())  
-</code></pre>
-<p><strong>注意</strong><br>该settings爬虫初始化后的属性是在基类爬虫设置。如果你想在初始化之前使用设置（例如，在你的爬虫的<strong>init</strong>()方法），你需要覆盖该 from_crawler()方法。<br>可以scrapy.crawler.Crawler.settings 通过传递到from_crawler扩展，中间件和项目管道中的方法的爬网程序的属性访问设置：  </p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">MyExtension</span><span class="params">(object)</span>:</span>  
-    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, log_is_enabled=False)</span>:</span>  
-        <span class="keyword">if</span> log_is_enabled:  
-            print(<span class="string">"log is enabled!"</span>)    
-<span class="meta">    @classmethod  </span>
-    <span class="function"><span class="keyword">def</span> <span class="title">from_crawler</span><span class="params">(cls, crawler)</span>:</span>  
-        settings = crawler.settings  
-        <span class="keyword">return</span> cls(settings.getbool(<span class="string">'LOG_ENABLED'</span>))  
-</code></pre>
-<p>设置对象可以像dict（例如， settings[‘LOG_ENABLED’]）一样使用，但通常首选使用SettingsAPI 提供的方法之一，以您需要的格式提取设置，以避免类型错误。    </p>
-<h3 id="设置名称的原因"><a href="#设置名称的原因" class="headerlink" title="设置名称的原因"></a>设置名称的原因</h3><p>设置名称通常以它们配置的组件为前缀。例如，对于一个虚构的robots.txt分机正确的设置的名称将是<br>ROBOTSTXT_ENABLED，ROBOTSTXT_OBEY，ROBOTSTXT_CACHEDIR等。    </p>
-<h3 id="内置设置参考"><a href="#内置设置参考" class="headerlink" title="内置设置参考"></a>内置设置参考</h3><p>以下是所有可用Scrapy设置的列表，按字母顺序，以及其默认值和适用范围。<br>范围（如果可用）显示设置在哪里使用，如果它绑定到任何特定组件。在这种情况下，将显示该组件的模块，通常是扩展，中间件或管道。这也意味着必须启用组件才能使设置具有任何效果。</p>
-<ul>
-<li><p>AWS_ACCESS_KEY_ID<br>默认：None<br>由需要访问Amazon Web服务的代码使用的AWS访问密钥，例如S3源存储后端。    </p>
-</li>
-<li><p>AWS_SECRET_ACCESS_KEY<br>默认： None<br>由需要访问Amazon Web服务的代码使用的AWS密钥，例如S3源存储后端。    </p>
-</li>
-<li><p>BOT_NAME<br>默认： ‘scrapybot’<br>此Scrapy项目实施的bot的名称（也称为项目名称）。这将用于默认情况下构造User-Agent，也用于日志记录。<br>当您使用startproject命令创建项目时，它会自动填充您的项目名称。    </p>
-</li>
-<li><p>CONCURRENT_ITEMS<br>默认： 100<br>在项处理器（也称为项目管道）中并行处理的并发项目的最大数量（每个响应）。    </p>
-</li>
-<li><p>CONCURRENT_REQUESTS<br>默认： 16<br>将由Scrapy下载程序执行的并发（即同时）请求的最大数量。    </p>
-</li>
-<li><p>CONCURRENT_REQUESTS_PER_DOMAIN<br>默认： 8<br>将对任何单个域执行的并发（即同时）请求的最大数量。<br>参见：AutoThrottle扩展及其 AUTOTHROTTLE_TARGET_CONCURRENCY选项。    </p>
-</li>
-<li><p>CONCURRENT_REQUESTS_PER_IP<br>默认： 0<br>将对任何单个IP执行的并发（即同时）请求的最大数量。如果非零，CONCURRENT_REQUESTS_PER_DOMAIN则忽略该 设置，而改为使用此设置。换句话说，并发限制将应用于每个IP，而不是每个域。<br>此设置也会影响DOWNLOAD_DELAY和 AutoThrottle扩展：如果CONCURRENT_REQUESTS_PER_IP 非零，下载延迟是强制每IP，而不是每个域。    </p>
-</li>
-<li><p>DEFAULT_ITEM_CLASS<br>默认： ‘scrapy.item.Item’<br>将用于在Scrapy shell中实例化项的默认类。    </p>
-</li>
-<li><p>DEFAULT_REQUEST_HEADERS<br>默认：      </p>
-<pre><code class="shell">{  
-&#39;Accept&#39;: &#39;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#39;,  
-&#39;Accept-Language&#39;: &#39;en&#39;,  
-}  
-</code></pre>
-<p>用于Scrapy HTTP请求的默认标头。他们居住在 DefaultHeadersMiddleware。    </p>
-</li>
-<li><p>DEPTH_LIMIT<br>默认： 0<br>范围：  scrapy.spidermiddlewares.depth.DepthMiddleware<br>允许抓取任何网站的最大深度。如果为零，则不施加限制。    </p>
-</li>
-<li><p>DEPTH_PRIORITY<br>默认： 0<br>范围： scrapy.spidermiddlewares.depth.DepthMiddleware<br>用于根据深度调整请求优先级的整数：<br>如果为零（默认），则不从深度进行优先级调整<br>正值将降低优先级，即，较高深度请求将被稍后处理 ; 这通常用于做广度优先爬网（BFO）<br>负值将增加优先级，即，较高深度请求将被更快地处理（DFO）<br>参见：Scrapy是否以广度优先或深度优先顺序爬行？关于调整BFO或DFO的Scrapy。<br><strong>注意</strong><br>此设置以与其他优先级设置 和相反的方式调整优先级。REDIRECT_PRIORITY_ADJUSTRETRY_PRIORITY_ADJUST    </p>
-</li>
-<li><p>DEPTH_STATS<br>默认： True<br>范围： scrapy.spidermiddlewares.depth.DepthMiddleware<br>是否收集最大深度统计。    </p>
-</li>
-<li><p>DEPTH_STATS_VERBOSE<br>默认： False<br>范围： scrapy.spidermiddlewares.depth.DepthMiddleware<br>是否收集详细的深度统计信息。如果启用此选项，则在统计信息中收集每个深度的请求数。    </p>
-</li>
-<li><p>DNSCACHE_ENABLED<br>默认： True<br>是否启用DNS内存缓存。    </p>
-</li>
-<li><p>DNSCACHE_SIZE<br>默认： 10000<br>DNS内存缓存大小。    </p>
-</li>
-<li><p>DNS_TIMEOUT<br>默认： 60<br>以秒为单位处理DNS查询的超时。支持浮点。    </p>
-</li>
-<li><p>DOWNLOADER<br>默认： ‘scrapy.core.downloader.Downloader’<br>用于抓取的下载器。    </p>
-</li>
-<li><p>DOWNLOADER_HTTPCLIENTFACTORY<br>默认： ‘scrapy.core.downloader.webclient.ScrapyHTTPClientFactory’<br>定义protocol.ClientFactory 用于HTTP / 1.0连接（for HTTP10DownloadHandler）的Twisted 类。<br><strong>注意</strong><br>HTTP / 1.0现在很少使用，所以你可以安全地忽略这个设置，除非你使用Twisted &lt;11.1，或者如果你真的想使用HTTP / 1.0和覆盖DOWNLOAD_HANDLERS_BASE相应的http(s)方案，即到 ‘scrapy.core.downloader.handlers.http.HTTP10DownloadHandler’。    </p>
-</li>
-<li><p>DOWNLOADER_CLIENTCONTEXTFACTORY<br>默认： ‘scrapy.core.downloader.contextfactory.ScrapyClientContextFactory’<br>表示要使用的ContextFactory的类路径。<br>这里，“ContextFactory”是用于SSL / TLS上下文的Twisted术语，定义要使用的TLS / SSL协议版本，是否执行证书验证，或者甚至启用客户端验证（以及各种其他事情）。<br><strong>注意</strong><br>Scrapy默认上下文工厂不执行远程服务器证书验证。这通常对于网络刮削是很好的。<br>如果您需要启用远程服务器证书验证，Scrapy还有另一个上下文工厂类，您可以设置， ‘scrapy.core.downloader.contextfactory.BrowserLikeContextFactory’使用平台的证书来验证远程端点。 仅当使用Twisted&gt; = 14.0时，此选项才可用。<br>如果你使用一个自定义的ContextFactory，确保它接受一个method 参数在init（这是OpenSSL.SSL方法映射DOWNLOADER_CLIENT_TLS_METHOD）。    </p>
-</li>
-<li><p>DOWNLOADER_CLIENT_TLS_METHOD<br>默认： ‘TLS’<br>使用此设置可自定义默认HTTP / 1.1下载程序使用的TLS / SSL方法。<br>此设置必须是以下字符串值之一：<br>‘TLS’：映射到OpenSSL TLS_method()（aka SSLv23_method()），允许协议协商，从平台支持的最高开始; 默认，推荐<br>‘TLSv1.0’：此值强制HTTPS连接使用TLS版本1.0; 如果你想要Scrapy &lt;1.1的行为，设置这个<br>‘TLSv1.1’：强制TLS版本1.1<br>‘TLSv1.2’：强制TLS版本1.2<br>‘SSLv3’：强制SSL版本3（不推荐）<br><em>注意</em><br>我们建议您使用PyOpenSSL&gt; = 0.13和Twisted&gt; = 0.13或以上（如果可以，Twisted&gt; = 14.0）。    </p>
-</li>
-<li><p>DOWNLOADER_MIDDLEWARES<br>默认：： {}<br>包含在您的项目中启用的下载器中间件及其顺序的字典。有关更多信息，请参阅激活下载器中间件。    </p>
-</li>
-<li><p>DOWNLOADER_MIDDLEWARES_BASE<br>默认：  </p>
-<pre><code class="shell">{  
-&#39;scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware&#39;: 100,  
-&#39;scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware&#39;: 300,  
-&#39;scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware&#39;: 350,  
-&#39;scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware&#39;: 400,  
-&#39;scrapy.downloadermiddlewares.useragent.UserAgentMiddleware&#39;: 500,  
-&#39;scrapy.downloadermiddlewares.retry.RetryMiddleware&#39;: 550,  
-&#39;scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware&#39;: 560,  
-&#39;scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware&#39;: 580,  
-&#39;scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware&#39;: 590,  
-&#39;scrapy.downloadermiddlewares.redirect.RedirectMiddleware&#39;: 600,  
-&#39;scrapy.downloadermiddlewares.cookies.CookiesMiddleware&#39;: 700,  
-&#39;scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware&#39;: 750,  
-&#39;scrapy.downloadermiddlewares.stats.DownloaderStats&#39;: 850,  
-&#39;scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware&#39;: 900,  
-}  
-</code></pre>
-<p>包含Scrapy中默认启用的下载器中间件的字典。低订单更靠近发动机，高订单更接近下载器。您不应该在项目中修改此设置，DOWNLOADER_MIDDLEWARES而应修改 。有关更多信息，请参阅 激活下载器中间件。    </p>
-</li>
-<li><p>DOWNLOADER_STATS<br>默认： True<br>是否启用下载器统计信息收集。    </p>
-</li>
-<li><p>DOWNLOAD_DELAY<br>默认： 0<br>下载器在从同一网站下载连续页面之前应等待的时间（以秒为单位）。这可以用于限制爬行速度，以避免击中服务器太难。支持小数。例：<br>DOWNLOAD_DELAY = 0.25    # 250 ms of delay<br>此设置也受RANDOMIZE_DOWNLOAD_DELAY 设置（默认情况下启用）的影响。默认情况下，Scrapy不会在请求之间等待固定的时间量，而是使用0.5 <em> DOWNLOAD_DELAY和1.5 </em> 之间的随机间隔DOWNLOAD_DELAY。<br>当CONCURRENT_REQUESTS_PER_IP为非零时，每个IP地址而不是每个域强制执行延迟。<br>您还可以通过设置download_delay spider属性来更改每个爬虫的此设置。    </p>
-</li>
-<li><p>DOWNLOAD_HANDLERS<br>默认： {}<br>包含在您的项目中启用的请求下载器处理程序的dict。参见DOWNLOAD_HANDLERS_BASE示例格式。    </p>
-</li>
-<li><p>DOWNLOAD_HANDLERS_BASE<br>默认：    </p>
-<pre><code class="shell">{   
-&#39;file&#39; ： &#39;scrapy.core.downloader.handlers.file.FileDownloadHandler&#39; ，  
-&#39;http&#39; ： &#39;scrapy.core.downloader.handlers.http.HTTPDownloadHandler&#39; ，  
-&#39;https&#39; ： &#39;scrapy.core.downloader.handlers。 http.HTTPDownloadHandler&#39; ，  
-&#39;s3&#39; ： &#39;scrapy.core.downloader.handlers.s3.S3DownloadHandler&#39; ，  
-&#39;ftp&#39; ： &#39;scrapy.core.downloader.handlers.ftp.FTPDownloadHandler&#39; ，  
-}  
-</code></pre>
-<p>包含Scrapy中默认启用的请求下载处理程序的字典。您不应该在项目中修改此设置，DOWNLOAD_HANDLERS而应修改 。<br>您可以通过在其中None分配URI方案来禁用这些下载处理程序DOWNLOAD_HANDLERS。例如，要禁用内置的FTP处理程序（无替换），请将其放置在settings.py：  </p>
-<pre><code class="shell">DOWNLOAD_HANDLERS = {  
-&#39;ftp&#39;: None,  
-}  
-</code></pre>
-</li>
-<li><p>DOWNLOAD_TIMEOUT<br>默认： 180<br>下载器在超时前等待的时间量（以秒为单位）。<br><em>注意</em><br>可以使用download_timeout Spider属性和每个请求使用download_timeout Request.meta键为每个爬虫设置此超时。    </p>
-</li>
-<li><p>DOWNLOAD_MAXSIZE<br>默认值：1073741824（1024MB）<br>下载器将下载的最大响应大小（以字节为单位）。<br>如果要禁用它设置为0。<br><strong>注意</strong><br>可以使用download_maxsize Spider属性和每个请求使用download_maxsize Request.meta键为每个爬虫设置此大小。<br>此功能需要Twisted&gt; = 11.1。    </p>
-</li>
-<li><p>DOWNLOAD_WARNSIZE<br>默认值：33554432（32MB）<br>下载程序将开始警告的响应大小（以字节为单位）。<br>如果要禁用它设置为0。<br><strong>注意</strong><br>可以使用download_warnsize Spider属性和每个请求使用download_warnsize Request.meta键为每个爬虫设置此大小。<br>此功能需要Twisted&gt; = 11.1。    </p>
-</li>
-<li><p>DUPEFILTER_CLASS<br>默认： ‘scrapy.dupefilters.RFPDupeFilter’<br>用于检测和过滤重复请求的类。<br>默认（RFPDupeFilter）过滤器基于请求指纹使用该scrapy.utils.request.request_fingerprint函数。为了改变重复检查的方式，你可以子类化RFPDupeFilter并重载它的request_fingerprint方法。这个方法应该接受scrapy Request对象并返回其指纹（一个字符串）。    </p>
-</li>
-<li><p>DUPEFILTER_DEBUG<br>默认： False<br>默认情况下，RFPDupeFilter只记录第一个重复的请求。设置DUPEFILTER_DEBUG为True将使其记录所有重复的请求。    </p>
-</li>
-<li><p>EDITOR<br>默认值：取决于环境<br>用于使用edit命令编辑爬虫的编辑器。它默认为EDITOR环境变量，如果设置。否则，它默认为vi（在Unix系统上）或IDLE编辑器（在Windows上）。    </p>
-</li>
-<li><p>EXTENSIONS<br>默认：： {}<br>包含项目中启用的扩展名及其顺序的字典。    </p>
-</li>
-<li><p>EXTENSIONS_BASE<br>默认：    </p>
-<pre><code class="shell">{  
-&#39;scrapy.extensions.corestats.CoreStats&#39;: 0,  
-&#39;scrapy.extensions.telnet.TelnetConsole&#39;: 0,  
-&#39;scrapy.extensions.memusage.MemoryUsage&#39;: 0,  
-&#39;scrapy.extensions.memdebug.MemoryDebugger&#39;: 0,  
-&#39;scrapy.extensions.closespider.CloseSpider&#39;: 0,  
-&#39;scrapy.extensions.feedexport.FeedExporter&#39;: 0,  
-&#39;scrapy.extensions.logstats.LogStats&#39;: 0,  
-&#39;scrapy.extensions.spiderstate.SpiderState&#39;: 0,  
-&#39;scrapy.extensions.throttle.AutoThrottle&#39;: 0,  
-}  
-</code></pre>
-<p>包含默认情况下在Scrapy中可用的扩展名及其顺序的字典。此设置包含所有稳定的内置扩展。请记住，其中一些需要通过设置启用。<br>有关详细信息，请参阅扩展程序用户指南 和可用扩展列表。    </p>
-</li>
-<li><p>FEED_TEMPDIR<br>Feed Temd dir允许您在使用FTP源存储和 Amazon S3上传之前设置自定义文件夹以保存搜寻器临时文件。    </p>
-</li>
-<li><p>ITEM_PIPELINES<br>默认： {}<br>包含要使用的项目管道及其顺序的字典。顺序值是任意的，但通常将它们定义在0-1000范围内。较低订单处理较高订单前。<br>例：  </p>
-<pre><code class="shell">ITEM_PIPELINES = {  
-&#39;mybot.pipelines.validate.ValidateMyItem&#39;: 300,  
-&#39;mybot.pipelines.validate.StoreMyItem&#39;: 800,  
-}  
-</code></pre>
-</li>
-<li><p>ITEM_PIPELINES_BASE<br>默认： {}<br>包含Scrapy中默认启用的管道的字典。您不应该在项目中修改此设置，ITEM_PIPELINES而应修改。    </p>
-</li>
-<li><p>LOG_ENABLED<br>默认： True<br>是否启用日志记录。    </p>
-</li>
-<li><p>LOG_ENCODING<br>默认： ‘utf-8’<br>用于记录的编码。    </p>
-</li>
-<li><p>LOG_FILE<br>默认： None<br>用于记录输出的文件名。如果None，将使用标准误差。    </p>
-</li>
-<li><p>LOG_FORMAT<br>默认： ‘%(asctime)s [%(name)s] %(levelname)s: %(message)s’<br>用于格式化日志消息的字符串。有关可用占位符的完整列表，请参阅Python日志记录文档。    </p>
-</li>
-<li><p>LOG_DATEFORMAT<br>默认： ‘%Y-%m-%d %H:%M:%S’<br>用于格式化日期/时间的字符串，占位符的%(asctime)s扩展LOG_FORMAT。有关可用指令的完整列表，请参阅Python datetime文档。    </p>
-</li>
-<li><p>LOG_LEVEL<br>默认： ‘DEBUG’<br>记录的最低级别。可用级别为：CRITICAL，ERROR，WARNING，INFO，DEBUG。有关详细信息，请参阅日志。    </p>
-</li>
-<li><p>LOG_STDOUT<br>默认： False<br>如果True，您的进程的所有标准输出（和错误）将被重定向到日志。例如，如果它将出现在Scrapy日志中。print ‘hello’    </p>
-</li>
-<li><p>LOG_SHORT_NAMES<br>默认： False<br>如果True，日志将仅包含根路径。如果设置为，False 则它显示负责日志输出的组件    </p>
-</li>
-<li><p>MEMDEBUG_ENABLED<br>默认： False<br>是否启用内存调试。    </p>
-</li>
-<li><p>MEMDEBUG_NOTIFY<br>默认： []<br>当启用内存调试时，如果此设置不为空，则会将内存报告发送到指定的地址，否则报告将写入日志。<br>例：  </p>
-<pre><code class="shell">MEMDEBUG_NOTIFY = [&#39;user@example.com&#39;]  
-</code></pre>
-</li>
-<li><p>MEMUSAGE_ENABLED<br>默认： False<br>范围： scrapy.extensions.memusage<br>是否启用内存使用扩展，当超过内存限制时关闭Scrapy进程，并在发生这种情况时通过电子邮件通知。<br>请参阅内存使用扩展。    </p>
-</li>
-<li><p>MEMUSAGE_LIMIT_MB<br>默认： 0<br>范围： scrapy.extensions.memusage<br>在关闭Scrapy之前允许的最大内存量（以兆字节为单位）（如果MEMUSAGE_ENABLED为True）。如果为零，则不执行检查。<br>请参阅内存使用扩展。    </p>
-</li>
-<li><p>MEMUSAGE_CHECK_INTERVAL_SECONDS<br>新版本1.1。<br>默认： 60.0<br>范围： scrapy.extensions.memusage<br>该内存使用扩展 检查当前内存使用情况，相对于限制由设置 MEMUSAGE_LIMIT_MB和MEMUSAGE_WARNING_MB在固定的时间间隔。<br>这将设置这些间隔的长度（以秒为单位）。<br>请参阅内存使用扩展。    </p>
-</li>
-<li><p>MEMUSAGE_NOTIFY_MAIL<br>默认： False<br>范围： scrapy.extensions.memusage<br>要达到内存限制时通知的电子邮件列表。<br>例：  </p>
-<pre><code class="shell">MEMUSAGE_NOTIFY_MAIL = [&#39;user@example.com&#39;]  
-</code></pre>
-<p>请参阅内存使用扩展。    </p>
-</li>
-<li><p>MEMUSAGE_REPORT<br>默认： False<br>范围： scrapy.extensions.memusage<br>是否在每个爬虫关闭后发送内存使用报告。<br>请参阅内存使用扩展。    </p>
-</li>
-<li><p>MEMUSAGE_WARNING_MB<br>默认： 0<br>范围： scrapy.extensions.memusage<br>在发送警告电子邮件通知之前，要允许的最大内存量（以兆字节为单位）。如果为零，则不会产生警告。    </p>
-</li>
-<li><p>NEWSPIDER_MODULE<br>默认： ‘’<br>模块在哪里使用genspider命令创建新的爬虫。<br>例：  </p>
-<pre><code class="shell">NEWSPIDER_MODULE = &#39;mybot.spiders_dev&#39;  
-</code></pre>
-</li>
-<li><p>RANDOMIZE_DOWNLOAD_DELAY<br>默认： True<br>如果启用，Scrapy会在从同一网站获取请求时等待随机时间（介于0.5 <em> DOWNLOAD_DELAY和1.5 </em>之间DOWNLOAD_DELAY）。<br>该随机化降低了由分析请求的站点检测（并随后阻塞）爬行器的机会，所述站点在它们的请求之间的时间内寻找统计上显着的相似性。<br>随机化策略与wget –random-wait选项使用的策略相同。<br>如果DOWNLOAD_DELAY为零（默认），此选项不起作用。    </p>
-</li>
-<li><p>REACTOR_THREADPOOL_MAXSIZE<br>默认： 10<br>Twisted Reactor线程池大小的上限。这是各种Scrapy组件使用的常见多用途线程池。线程DNS解析器，BlockingFeedStorage，S3FilesStore仅举几个例子。如果您遇到阻塞IO不足的问题，请增加此值。    </p>
-</li>
-<li><p>REDIRECT_MAX_TIMES<br>默认： 20<br>定义请求可重定向的最长时间。在此最大值之后，请求的响应被原样返回。我们对同一个任务使用Firefox默认值。    </p>
-</li>
-<li><p>REDIRECT_PRIORITY_ADJUST<br>默认： +2<br>范围： scrapy.downloadermiddlewares.redirect.RedirectMiddleware<br>相对于原始请求调整重定向请求优先级：<br>正优先级调整（默认）意味着更高的优先级。<br>负优先级调整意味着较低优先级。  </p>
-</li>
-<li><p>RETRY_PRIORITY_ADJUST<br>默认： -1<br>范围： scrapy.downloadermiddlewares.retry.RetryMiddleware<br>调整相对于原始请求的重试请求优先级：<br>正优先级调整意味着更高的优先级。<br>负优先级调整（默认）表示较低优先级。  </p>
-</li>
-<li><p>ROBOTSTXT_OBEY<br>默认： False<br>范围： scrapy.downloadermiddlewares.robotstxt<br>如果启用，Scrapy会尊重robots.txt政策。有关详细信息，请参阅 RobotsTxtMiddleware。<br><strong>注意</strong><br>虽然默认值是False由于历史原因，默认情况下在settings.py文件中通过命令生成此选项。scrapy startproject    </p>
-</li>
-<li><p>SCHEDULER<br>默认： ‘scrapy.core.scheduler.Scheduler’<br>用于爬网的调度程序。    </p>
-</li>
-<li><p>SCHEDULER_DEBUG<br>默认： False<br>设置True将记录有关请求调度程序的调试信息。如果请求无法序列化到磁盘，则当前日志（仅一次）。Stats counter（scheduler/unserializable）跟踪发生的次数。<br>日志中的示例条目：  </p>
-<pre><code class="shell">1956-01-31 00:00:00+0800 [scrapy.core.scheduler] ERROR: Unable to serialize request:  
-&lt;GET http://example.com&gt; 
-- reason: cannot serialize &lt;Request at 0x9a7c7ec&gt;  
-(type Request)&gt; 
-- no more unserializable requests will be logged  
-(see 'scheduler/unserializable' stats counter)  
-</code></pre>
-</li>
-<li><p>SCHEDULER_DISK_QUEUE<br>默认： ‘scrapy.squeues.PickleLifoDiskQueue’<br>将由调度程序使用的磁盘队列的类型。其它可用的类型有 scrapy.squeues.PickleFifoDiskQueue，scrapy.squeues.MarshalFifoDiskQueue， scrapy.squeues.MarshalLifoDiskQueue。    </p>
-</li>
-<li><p>SCHEDULER_MEMORY_QUEUE<br>默认： ‘scrapy.squeues.LifoMemoryQueue’<br>调度程序使用的内存中队列的类型。其他可用类型是： scrapy.squeues.FifoMemoryQueue。    </p>
-</li>
-<li><p>SCHEDULER_PRIORITY_QUEUE<br>默认： ‘queuelib.PriorityQueue’<br>调度程序使用的优先级队列的类型。    </p>
-</li>
-<li><p>SPIDER_CONTRACTS<br>默认：： {}<br>包含在项目中启用的爬虫契约的dict，用于测试爬虫。有关更多信息，请参阅爬虫合同。    </p>
-</li>
-<li><p>SPIDER_CONTRACTS_BASE<br>默认：  </p>
-<pre><code class="shell">{  
-  &#39;scrapy.contracts.default.UrlContract&#39; : 1,  
-  &#39;scrapy.contracts.default.ReturnsContract&#39;: 2,  
-  &#39;scrapy.contracts.default.ScrapesContract&#39;: 3,  
-}  
-</code></pre>
-<p>包含Scrapy中默认启用的scrapy合约的dict。您不应该在项目中修改此设置，SPIDER_CONTRACTS 而应修改。有关更多信息，请参阅爬虫合同。<br>您可以通过None将其中的类路径指定为禁用任何这些合同SPIDER_CONTRACTS。例如，要禁用内置 ScrapesContract，将此放在您的settings.py：  </p>
-<pre><code class="shell">SPIDER_CONTRACTS = {  
-  &#39;scrapy.contracts.default.ScrapesContract&#39;: None,  
-}  
-</code></pre>
-</li>
-<li><p>SPIDER_LOADER_CLASS<br>默认： ‘scrapy.spiderloader.SpiderLoader’<br>将用于加载爬虫程序的类，它必须实现 SpiderLoader API。    </p>
-</li>
-<li><p>SPIDER_LOADER_WARN_ONLY<br>新版本1.3.3。<br>默认： False<br>默认情况下，当scrapy尝试从中导入爬虫类时SPIDER_MODULES，如果有任何ImportError异常，它将大声失败。但是你可以选择沉默此异常，并通过设置将其变成一个简单的警告。SPIDER_LOADER_WARN_ONLY = True<br><strong>注意</strong><br>有些scrapy命令使用此设置运行True 已经（即他们只会发出警告并不会失败），因为他们实际上并不需要加载爬虫类的工作: scrapy runspider, scrapy settings, scrapy startproject, scrapy version.    </p>
-</li>
-<li><p>SPIDER_MIDDLEWARES<br>默认：： {}<br>包含在您的项目中启用的爬虫中间件的字典及其顺序。有关更多信息，请参阅激活爬虫中间件。    </p>
-</li>
-<li><p>SPIDER_MIDDLEWARES_BASE<br>默认：  </p>
-<pre><code class="shell">{  
-&#39;scrapy.spidermiddlewares.httperror.HttpErrorMiddleware&#39;: 50,  
-&#39;scrapy.spidermiddlewares.offsite.OffsiteMiddleware&#39;: 500,  
-&#39;scrapy.spidermiddlewares.referer.RefererMiddleware&#39;: 700,  
-&#39;scrapy.spidermiddlewares.urllength.UrlLengthMiddleware&#39;: 800,  
-&#39;scrapy.spidermiddlewares.depth.DepthMiddleware&#39;: 900,  
-}  
-</code></pre>
-<p>包含在Scrapy中默认启用的爬虫中间件的字典及其顺序。低订单更靠近发动机，高订单更接近爬虫。有关更多信息，请参阅激活爬虫中间件。    </p>
-</li>
-<li><p>SPIDER_MODULES<br>默认： []<br>Scrapy将寻找爬虫的模块列表。<br>例：<br>SPIDER_MODULES = [‘mybot.spiders_prod’, ‘mybot.spiders_dev’]<br>STATS_CLASS<br>默认： ‘scrapy.statscollectors.MemoryStatsCollector’<br>用于收集统计信息的类，谁必须实现 Stats Collector API。<br>STATS_DUMP<br>默认： True<br>一旦爬虫完成，转储Scrapy统计（到Scrapy日志）。<br>更多信息请参阅：统计数据收集。    </p>
-</li>
-<li><p>STATSMAILER_RCPTS<br>默认:( []空列表）<br>爬虫完成刮擦后发送Scrapy stats。查看 StatsMailer更多信息。    </p>
-</li>
-<li><p>TELNETCONSOLE_ENABLED<br>默认： True<br>布尔值，指定是否 启用telnet控制台（如果其扩展名也启用）。    </p>
-</li>
-<li><p>TELNETCONSOLE_PORT<br>默认： [6023, 6073]<br>用于telnet控制台的端口范围。如果设置为None或0，则使用动态分配的端口。有关详细信息，请参阅 telnet控制台。    </p>
-</li>
-<li><p>TEMPLATES_DIR<br>默认值：templates dir里面的scrapy模块<br>使用startproject命令和新爬虫创建新项目时使用命令查找模板的目录 genspider 。<br>项目名称不得与子目录中的自定义文件或目录的名称冲突project。    </p>
-</li>
-<li><p>URLLENGTH_LIMIT<br>默认： 2083<br>范围： spidermiddlewares.urllength<br>允许抓取网址的最大网址长度。有关此设置的默认值的详细信息，请参阅<a href="http://www.boutell.com/newfaq/misc/urllength.html" target="_blank" rel="noopener">http://www.boutell.com/newfaq/misc/urllength.html</a>    </p>
-</li>
-<li><p>USER_AGENT<br>默认： “Scrapy/VERSION (+<a href="http://scrapy.org)&quot;" target="_blank" rel="noopener">http://scrapy.org)&quot;</a><br>检索时使用的默认用户代理，除非被覆盖。<br>其他地方记录的设置：<br>以下设置在其他地方记录，请检查每个具体案例，了解如何启用和使用它们。  </p>
-<pre><code class="shell">AJAXCRAWL_ENABLED
-AUTOTHROTTLE_DEBUG
-AUTOTHROTTLE_ENABLED
-AUTOTHROTTLE_MAX_DELAY  
-AUTOTHROTTLE_START_DELAY  
-AUTOTHROTTLE_TARGET_CONCURRENCY  
-CLOSESPIDER_ERRORCOUNT  
-CLOSESPIDER_ITEMCOUNT  
-CLOSESPIDER_PAGECOUNT  
-CLOSESPIDER_TIMEOUT  
-COMMANDS_MODULE  
-COMPRESSION_ENABLED  
-COOKIES_DEBUG  
-COOKIES_ENABLED  
-FEED_EXPORTERS  
-FEED_EXPORTERS_BASE  
-FEED_EXPORT_ENCODING  
-FEED_EXPORT_FIELDS  
-FEED_FORMAT  
-FEED_STORAGES  
-FEED_STORAGES_BASE  
-FEED_STORE_EMPTY  
-FEED_URI  
-FILES_EXPIRES  
-FILES_RESULT_FIELD  
-FILES_STORE  
-FILES_STORE_S3_ACL  
-FILES_URLS_FIELD  
-HTTPCACHE_ALWAYS_STORE  
-HTTPCACHE_DBM_MODULE  
-HTTPCACHE_DIR  
-HTTPCACHE_ENABLED  
-HTTPCACHE_EXPIRATION_SECS  
-HTTPCACHE_GZIP  
-HTTPCACHE_IGNORE_HTTP_CODES  
-HTTPCACHE_IGNORE_MISSING  
-HTTPCACHE_IGNORE_RESPONSE_CACHE_CONTROLS  
-HTTPCACHE_IGNORE_SCHEMES  
-HTTPCACHE_POLICY  
-HTTPCACHE_STORAGE  
-HTTPERROR_ALLOWED_CODES  
-HTTPERROR_ALLOW_ALL  
-HTTPPROXY_AUTH_ENCODING  
-IMAGES_EXPIRES  
-IMAGES_MIN_HEIGHT  
-IMAGES_MIN_WIDTH  
-IMAGES_RESULT_FIELD  
-IMAGES_STORE  
-IMAGES_STORE_S3_ACL  
-IMAGES_THUMBS  
-IMAGES_URLS_FIELD  
-MAIL_FROM  
-MAIL_HOST  
-MAIL_PASS  
-MAIL_PORT  
-MAIL_SSL  
-MAIL_TLS  
-MAIL_USER  
-METAREFRESH_ENABLED  
-METAREFRESH_MAXDELAY  
-REDIRECT_ENABLED  
-REDIRECT_MAX_TIMES  
-REFERER_ENABLED  
-RETRY_ENABLED  
-RETRY_HTTP_CODES  
-RETRY_TIMES  
-TELNETCONSOLE_HOST  
-TELNETCONSOLE_PORT  
-</code></pre>
-<p><a href="https://www.jianshu.com/p/df9c0d1e9087" target="_blank" rel="noopener">原文链接</a></p>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">爬虫</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/爬虫//" class="article-tag-list-link color3">爬虫</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/09/Scrapy设置项介绍/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1908,11 +1319,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1920,7 +1327,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1928,7 +1339,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1936,11 +1347,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
               </li>
             
             <div class="clearfix"></div>
