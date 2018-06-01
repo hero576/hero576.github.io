@@ -370,8 +370,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
-<li><strong>条件概率的概念：</strong>A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=(P(AB))/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)$。</li>
-<li><strong>贝叶斯公式：</strong>$P(B│A)=(P(B)P(A|B))/(P(A))$。当$B1、B2、B3……∈B，A⊂∑B_i$时，$P(B_i│A)=(P(B_i)P(A|B_i))/(∑P(B_j)P(A|B_j))$。<ul>
+<li><strong>条件概率的概念：</strong>A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=P(AB)/P(B)$。<br>事件独立：$P(AB)=P(A)P(B)$。<br>求和$P(A+B)=P(A)+P(B)-P(AB)$。<br>求差$P(A-B)=P(A)-P(AB)$。<br>乘积：$P(AB)=P(A)P(B|A)=P(B)P(A|B)$。<br>联合分布：$\sum_{A} P(A,B)=P(B)$<br>$P(B)=\sum_{B|A}P(A)$<br>联合分布条件概率：$P(S|W)=\frac {P(S,W)}{P(W)}$<br>$P(A,B|C)=P(A|B,C)P(B|C)$</li>
+<li><strong>贝叶斯公式：</strong><br>$P(B│A)=P(B)P(A|B)/(P(A))$。<br>当$B1、B2、B3……∈B，A⊂∑B_i$时，$P(B_i│A)=P(B_i)P(A|B_i)/(∑P(B_j)P(A|B_j))$。<ul>
 <li>$P(B_i)$先验概率</li>
 <li>$P(B_i│A)$为后验概率。</li>
 </ul>
@@ -391,6 +391,7 @@
 <h2 id="朴素贝叶斯分类器"><a href="#朴素贝叶斯分类器" class="headerlink" title="朴素贝叶斯分类器"></a>朴素贝叶斯分类器</h2><p>朴素贝叶斯分类器（Naïve Bayes classifier）：基于贝叶斯公式来估计后验概率 的主要困难在于求类条件概率 是所有属性上的联合概率，难以从有限的训练样本直接估计得到。为了解决这个问题，提出朴素贝叶斯分类器 它采用了“属性条件独立假设”对已知类别，假设所有属性相互独立，换言之，假设每个属性独立地对分类结果发生影响。<br><img src="/images/pasted-79.png" alt="upload successful"><br><img src="/images/pasted-80.png" alt="upload successful"></p>
 <h2 id="半朴素贝叶斯分类器"><a href="#半朴素贝叶斯分类器" class="headerlink" title="半朴素贝叶斯分类器"></a>半朴素贝叶斯分类器</h2><p>为了降低贝叶斯公式中估计后验概率$P(c|x)$的困难，提出使用朴素贝叶斯分类器采用属性条件独立性假设，然而在现实任务中这个假设很难成立，因此就提出半朴素贝叶斯分类器（Sem-naïve Bayes classifiers），它的基本思想是适当考虑一部分属性间的相互依赖信息，从而既不需要完全联合概率计算，又不至于彻底忽略了比较强的属性依赖关系。<br>独依赖估计（One-Dependent Estimator，ODE）每个属性在类别之外最多仅依赖于一个其他属性。最直接的做法，假设所有属性都依赖于同一属性，称为为超父（super-parent ODE）。TAN（Tree Augmented naïve Bayes）使用最大生成树算法，将属性间依赖关系生成最大带权生成树，保留了强相关属性之间的依赖性。AODE（Average的 One-Dependent Estimator）基于集成学习机制，尝试将每个属性作为超父来构建SPODE，最终返回具有足够支撑的SPODE集成作为最终结果。<br><img src="/images/pasted-81.png" alt="upload successful"></p>
 <h2 id="贝叶斯网"><a href="#贝叶斯网" class="headerlink" title="贝叶斯网"></a>贝叶斯网</h2><p>贝叶斯网是借助有向无环图（DAG）来刻画属性之间的依赖关系，并使用条件概率表（CPT）来描述属性的联合概率分布<br>结构<br>学习<br>推断<br><img src="/images/pasted-82.png" alt="upload successful"></p>
+<h2 id="经典贝叶斯问题"><a href="#经典贝叶斯问题" class="headerlink" title="经典贝叶斯问题"></a>经典贝叶斯问题</h2><p>A女士怀疑自己得了某种肝炎，希望在医院做一次检测。医生告诉A女士，她所属的人群得此种肝炎的概率仅有千分之一。但A女士不放心，还是坚持做了测试。然而很不幸，测试结果为阳性。现在已知测试仪器的正确率为95%，那么A女士确实得了肝炎而非误诊的概率为多少？</p>
 
       
 
@@ -474,20 +475,8 @@
 <ul>
 <li>K均值聚类(Kmeans)</li>
 <li>学习向量量化</li>
-<li><a href="http://www.cnblogs.com/mmziscoming/p/5750849.html" target="_blank" rel="noopener">高斯混合聚类(GMM)</a><br><img src="/images/pasted-83.png" alt="upload successful">定义很好理解，高斯混合模型是一种混合模型，混合的基本分布是高斯分布而已。<br><img src="/images/pasted-84.png" alt="upload successful"><br>这图显示了拥有三个高斯分量的一个维度的GMM是如何由其高斯分量叠加而成。<br><strong>GMM的各个高斯分量的系数之和必须为1</strong>  <pre><code>GMM的定义本质上是一个概率密度函数。而概率密度函数在其作用域内的积分之和必然为1。GMM整体的概率密度函数是由若干个高斯分量的概率密度函数线性叠加而成的，而每一个高斯分量的概率密度函数的积分必然也是1，所以，要想GMM整体的概率密度积分为1，就必须对每一个高斯分量赋予一个其值不大于1的权重，并且权重之和为1。  
-</code></pre><strong>求解GMM的EM算法隐变量的理解：</strong><pre><code>使用EM算法必须明确隐变量。求解GMM的时候设想观测数据x是这样产生的：首选依赖GMM的某个高斯分量的系数概率（因为系数取值在0~1之间，因此可以看做是一个概率取值）选择到这个高斯分量，然后根据这个被选择的高斯分量生成观测数据。然后隐变量就是某个高斯分量是否被选中：选中就为1，否则为0。
-按照这样的设想：隐变量是一个向量，并且这个向量中只有一个元素取值为1，其它的都是0。因为假设只有一个高斯分量被选中并产生观测数据。然而我们的GMM的一个观测数据在直观上应该是每个高斯分量都有产生，而不是由一个高斯分量单独生成，只是重要性不同（由系数控制）。
-接着，现在我们不知道GMM具体的参数值，想要根据观测数据去求解其参数。而GMM的参数是由各个高斯分量的参数再加上权值系数组成的。那么我们就先假定，如果这个观测值只是由其中一个高斯分量产生，去求解其中一个高斯分量的参数。我们假设不同的观测值都有一个产生自己的唯一归宿，就像K-means算法一样。然后在后面的迭代过程中，根据数据整体似然函数的优化过程，逐渐找到一个最优的分配方案。然而，不同于K-means算法的是，我们最终给出的只是某一个观测是由某一个高斯分量唯一生成的概率值，而不是确定下来的属于某一类。每个高斯分量其实都可以产生这个观测数据只是输出不同而已，即产生观测数据的概率不同。最后，根据每个高斯分量产生观测数据的可能性不同，结合其权值汇总出整个GMM产生这个观测数据的概率值。
-</code></pre></li>
-<li>EM算法<br>如果训练样本的属性“不完整”，因此在这种存在“未观测”变量（隐变量）的情形下，如何进行模型参数估计呢？EM算法就是常用的估计参数隐变量的利器。<br>X表示已观测变量集，Z表示隐变量集，θ表示模型参数，对θ求极大似然估计，最大化对数似然为：$LL(Θ|X,Z)=lnP(X,Z|Θ)$。由于Z是隐变量，无法直接求解，此时需求通过Z计算期望，来最大化以观测数据的对数边际似然（marginal likelihood） $LL(Θ|X)=lnP(X|Θ)=ln\sum_{Z}P(X,Z|Θ)$<br>EM 算法 简单来说，使用两个步骤交替计算。不取Z的期望，而是基于$Θ^t$计算隐变量Z的概率分布$P(Z|X,Θ^t)$：期望（E）步，利用当前估计的参数值来计算对数似然的期望值；二是最大化（M）步，寻找能使E步产生的似然期望最大化的参数值。然后，新得到的参数值重新被用于 步，……直至收敛到局部最优解。</li>
+<li><a href="http://www.cnblogs.com/mmziscoming/p/5750849.html" target="_blank" rel="noopener">高斯混合聚类(GMM)</a></li>
 </ul>
-<ol>
-<li>定义隐变量<br>我们引入隐变量γjk，它的取值只能是1或者0。<br>取值为1：第j个观测变量来自第k个高斯分量<br>取值为0：第j个观测变量不是来自第k个高斯分量<br>那么对于每一个观测数据yj都会对应于一个向量变量Γj={γj1,…,γjK}，那么有：<br>∑k=1Kγjk=1<br>p(Γj)=∏k=1Kαkγjk<br>其中，K为GMM高斯分量的个数，αk为第k个高斯分量的权值。因为观测数据来自GMM的各个高斯分量相互独立，而αk刚好可以看做是观测数据来自第k个高斯分量的概率，因此可以直接通过连乘得到整个隐变量Γj的先验分布概率。</li>
-<li>得到完全数据的似然函数<br>对于观测数据yj,当已知其是哪个高斯分量生成的之后，其服从的概率分布为：<br>p(yj|γjk=1;Θ)=N(yj|μk,Σk)<br>由于观测数据从哪个高斯分量生成这个事件之间的相互独立的，因此可以写为：<br>p(yj|Γj;Θ)=∏k=1KN(yj|μk,Σk)γjk<br>这样我们就得到了已知Γj的情况下单个观测数据的后验概率分布。结合之前得到的Γj的先验分布，则我们可以写出单个完全观测数据的似然函数为：<br>p(yj,Γj;Θ)=∏k=1KαkγjkN(yj|μk,Σk)γjk<br>最终得到所有观测数据的完全数据似然函数为：<br>p(y,Γj;Θ)=∏j=1N∏k=1KαkγjkN(yj|μk,Σk)γjk<br>取对数，得到对数似然函数为：<br>lnp(y,Γj;Θ)=∑j=1N∑k=1K(γjklnαk+γjklnN(yj|μk,Σk))</li>
-<li>得到各个高斯分量的参数计算公式<br>首先，我们将上式中的lnN(yj|μk,Σk)根据单高斯的向量形式的概率密度函数的表达形式展开：<br>lnN(yj|μk,Σk)=−D2ln(2π)−12ln|Σk|−12(yj−μk)TΣ−1k(yj−μk)<br>假设我们已经知道隐变量γjk的取值，对上面得到的似然函数分别对αk和Σk求偏导并且偏导结果为零，可以得到：<br>μk=∑Nj=1∑Kk=1γjkyj∑Nj=1∑Kk=1γjk<br>Σk=∑Nj=1∑Kk=1γjk(yj−μk)(yj−μk)T∑Nj=1∑Kk=1γjk<br>由于在上面两式的第二个求和符号是对k=1…K求和，而在求和过程中γjk只有以此取到1，其它都是0，因此上面两式可以简化为：<br>μk=∑Nj=1γjkyj∑Nj=1γjk<br>Σk=∑Nj=1γjk(yj−μk)(yj−μk)T∑Nj=1γjk<br>现在参数空间中剩下一个αk还没有求。这是一个约束满足问题，因为必须满足约束ΣKk=1αk=1。我们使用拉格朗日乘子法结合似然函数和约束条件对αk求偏导，可以得到：<br>αk=∑Nj=1γjk−λ<br>将上式的左右两边分别对k=1…K求和，可以得到：<br>λ=−N<br>将λ代入，最终得到：<br>αk=∑Nj=1γjkN<br>至此，我们在隐变量已知的情况下得到了GMM的三种类型参数的求解公式。</li>
-<li>得到隐变量的估计公式<br>根据EM算法，现在我们需要通过当前参数的取值得到隐变量的估计公式也就是说隐变量的期望的表达形式。即如何求解E{γjk|y,Θ}。<br>E{γjk|y,Θ}=P(γjk=1|y,Θ)<br>=P(γjk=1,yj|Θ)∑Kk=1P(γjk=1,yj|Θ)<br>=P(yj|γjk=1,Θ)P(γjk=1|Θ)∑Kk=1P(yj|γjk=1,Θ)P(γjk=1|Θ)<br>=αkN(yj|μk,Σk)∑Kk=1αkN(yj|μk,Σk)</li>
-<li>使用EM算法迭代进行参数求解<br>熟悉EM算法的朋友应该已经可以从上面的推导中找到EM算法的E步和M步。</li>
-</ol>
 <h2 id="密度聚类"><a href="#密度聚类" class="headerlink" title="密度聚类"></a>密度聚类</h2><p>基于密度的聚类算法主要的目标是寻找被低密度区域分离的高密度区域。与基于距离的聚类算法不同的是，基于距离的聚类算法的聚类结果是球状的簇，而基于密度的聚类算法可以发现任意形状的聚类，这对于带有噪音点的数据起着重要的作用。 </p>
 <h2 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h2><p>层次聚类也叫连通聚类方法，有两个基本方法：自顶而下和自底而上。自顶而将所有样本看做是同一簇，然后进行分裂。自底而上将初所有样本看做不同的簇，然后进行凝聚。这种聚类的中心思想是：离观测点较近的点相比离观测点较远的点更可能是一类。<br>过程如下：</p>
 <ol>
@@ -721,6 +710,116 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/05/21/SVM/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-图" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/20/图/">图</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/20/图/" class="archive-article-date">
+  	<time datetime="2018-05-20T07:22:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="图的表示"><a href="#图的表示" class="headerlink" title="图的表示"></a>图的表示</h2><h3 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h3><p>n*n的矩阵，有边是1，无边是0</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a, b, c, d, e, f, g, h = range(<span class="number">8</span>)</span><br><span class="line">N =[</span><br><span class="line">  [<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>关于邻接矩阵：</p>
+<ol>
+<li>主对角线为自己到自己，为0</li>
+<li>行和为出度</li>
+<li>列和为入度</li>
+</ol>
+<h3 id="邻接表"><a href="#邻接表" class="headerlink" title="邻接表"></a>邻接表</h3><p>为每个点建立一个链表（数组）存放与之连接点<br><img src="/images/pasted-91.png" alt="upload successful"><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">a, b, c, d, e, f, g, h = range(<span class="number">8</span>)</span><br><span class="line">N = [</span><br><span class="line">  &#123;b, c, d, e, f&#125;,</span><br><span class="line">  &#123;c, e&#125;,</span><br><span class="line">  &#123;d&#125;,</span><br><span class="line">  &#123;e&#125;,</span><br><span class="line">  &#123;f&#125;,</span><br><span class="line">  &#123;c, g, h&#125;,</span><br><span class="line">  &#123;f, h&#125;,</span><br><span class="line">  &#123;f, g&#125;</span><br><span class="line">]</span><br><span class="line"><span class="comment"># N(v) 代表的是 v 的邻居节点集；</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b <span class="keyword">in</span> N[a]         <span class="comment"># neighborhood membership</span></span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(N[f])         <span class="comment"># out-degree：出度</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="加权邻接表"><a href="#加权邻接表" class="headerlink" title="加权邻接表"></a>加权邻接表</h3><p>使用 dict 类型来代替 set 或 list 来表示邻接集。在 dict 类型中，每个邻居节点都会有一个键和一个额外的值，用于表示与其邻居节点（或出边）之间的关联性，如边的权重。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">a, b, c, d, e, f, g, h = range(<span class="number">8</span>)</span><br><span class="line">N = [</span><br><span class="line">  &#123;b:<span class="number">2</span>, c:<span class="number">1</span>, d:<span class="number">3</span>, e:<span class="number">9</span>, f:<span class="number">4</span>&#125;,</span><br><span class="line">  &#123;c:<span class="number">4</span>, e:<span class="number">4</span>&#125;,</span><br><span class="line">  &#123;d:<span class="number">8</span>&#125;,</span><br><span class="line">  &#123;e:<span class="number">7</span>&#125;,</span><br><span class="line">  &#123;f:<span class="number">5</span>&#125;,</span><br><span class="line">  &#123;c:<span class="number">2</span>, g:<span class="number">2</span>, h:<span class="number">2</span>&#125;,</span><br><span class="line">  &#123;f:<span class="number">1</span>, h:<span class="number">6</span>&#125;,</span><br><span class="line">  &#123;f:<span class="number">9</span>, g:<span class="number">8</span>&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b <span class="keyword">in</span> N[a]         <span class="comment"># neighborhood membership</span></span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(N[f])         <span class="comment"># out-degree</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>N[a][b]          <span class="comment"># Edge weight for (a, b)</span></span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="图的实现"><a href="#图的实现" class="headerlink" title="图的实现"></a>图的实现</h2><p>有下面一张图：</p>
+<pre><code>A -&gt; B
+A -&gt; C
+B -&gt; C
+B -&gt; D
+C -&gt; D
+D -&gt; C
+E -&gt; F
+F -&gt; C
+</code></pre><p>可以用字典和列表来构建<br><code>graph = {&#39;A&#39;: [&#39;B&#39;, &#39;C&#39;],&#39;B&#39;: [&#39;C&#39;, &#39;D&#39;],&#39;C&#39;: [&#39;D&#39;],&#39;D&#39;: [&#39;C&#39;],&#39;E&#39;: [&#39;F&#39;],&#39;F&#39;: [&#39;C&#39;]}</code>  </p>
+<h3 id="找到一条路径"><a href="#找到一条路径" class="headerlink" title="找到一条路径"></a>找到一条路径</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_path</span><span class="params">(graph, start, end, path=[])</span>:</span></span><br><span class="line">        path = path + [start]</span><br><span class="line">        <span class="keyword">if</span> start == end:</span><br><span class="line">            <span class="keyword">return</span> path</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> start <span class="keyword">in</span> graph:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> graph[start]:</span><br><span class="line">            <span class="keyword">if</span> node <span class="keyword">not</span> <span class="keyword">in</span> path:</span><br><span class="line">                newpath = find_path(graph, node, end, path)</span><br><span class="line">                <span class="keyword">if</span> newpath: <span class="keyword">return</span> newpath</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+<h3 id="找到所有路径"><a href="#找到所有路径" class="headerlink" title="找到所有路径"></a>找到所有路径</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_all_paths</span><span class="params">(graph, start, end, path=[])</span>:</span></span><br><span class="line">        path = path + [start]</span><br><span class="line">        <span class="keyword">if</span> start == end:</span><br><span class="line">            <span class="keyword">return</span> [path]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> start <span class="keyword">in</span> graph:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        paths = []</span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> graph[start]:</span><br><span class="line">            <span class="keyword">if</span> node <span class="keyword">not</span> <span class="keyword">in</span> path:</span><br><span class="line">                newpaths = find_all_paths(graph, node, end, path)</span><br><span class="line">                <span class="keyword">for</span> newpath <span class="keyword">in</span> newpaths:</span><br><span class="line">                    paths.append(newpath)</span><br><span class="line">        <span class="keyword">return</span> paths</span><br></pre></td></tr></table></figure>
+<h3 id="找到最短路径"><a href="#找到最短路径" class="headerlink" title="找到最短路径"></a>找到最短路径</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_shortest_path</span><span class="params">(graph, start, end, path=[])</span>:</span></span><br><span class="line">        path = path + [start]</span><br><span class="line">        <span class="keyword">if</span> start == end:</span><br><span class="line">            <span class="keyword">return</span> path</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> start <span class="keyword">in</span> graph:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line">        shortest = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> graph[start]:</span><br><span class="line">            <span class="keyword">if</span> node <span class="keyword">not</span> <span class="keyword">in</span> path:</span><br><span class="line">                newpath = find_shortest_path(graph, node, end, path)</span><br><span class="line">                <span class="keyword">if</span> newpath:</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">not</span> shortest <span class="keyword">or</span> len(newpath) &lt; len(shortest):</span><br><span class="line">                        shortest = newpath</span><br><span class="line">        <span class="keyword">return</span> shortest</span><br></pre></td></tr></table></figure>
+<h2 id="图的搜索"><a href="#图的搜索" class="headerlink" title="图的搜索"></a>图的搜索</h2><h3 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h3><p>BFS算法框架<br>广（宽）度优先搜索（Breadth-First-Search）过程：</p>
+<ul>
+<li>给定起点a，将a放入缓冲区，开始搜索</li>
+<li>假定某时刻缓冲区结点为abc，则访问结点a的邻接点a1a2a3，同时缓冲区变为bca1a2a3<ul>
+<li>需要队列做辅助，先进先出 </li>
+</ul>
+</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>结点判重：判断是否已经访问过之前的节点</li>
+<li>路径记录：一个结点可能扩展出多个结点，但最多只能有1个前驱（除了起始点），用到和节点数目等长的数组pre记录结点前驱pre[i]=j</li>
+</ul>
+<p><img src="/images/pasted-23.png" alt="upload successful"></p>
+<h3 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h3><p>DFS算法框架<br>深度优先搜索（Depth-First-Search）<br>可以用栈的方法实现<br><img src="/images/pasted-22.png" alt="upload successful"></p>
+<p>深度优先搜索可以解决很多问题，比如八皇后、数独、LCA问题（Tarjan算法）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Graph</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,*args,**kwargs)</span>:</span></span><br><span class="line">        self.node_neighbors = &#123;&#125;</span><br><span class="line">        self.visited = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_nodes</span><span class="params">(self,nodelist)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> nodelist:</span><br><span class="line">            self.add_node(node)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_node</span><span class="params">(self,node)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> node <span class="keyword">in</span> self.nodes():</span><br><span class="line">            self.node_neighbors[node] = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_edge</span><span class="params">(self,edge)</span>:</span></span><br><span class="line">        u,v = edge</span><br><span class="line">        <span class="keyword">if</span>(v <span class="keyword">not</span> <span class="keyword">in</span> self.node_neighbors[u]) <span class="keyword">and</span> ( u <span class="keyword">not</span> <span class="keyword">in</span> self.node_neighbors[v]):</span><br><span class="line">            self.node_neighbors[u].append(v)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(u!=v):</span><br><span class="line">                self.node_neighbors[v].append(u)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">nodes</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.node_neighbors.keys()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">depth_first_search</span><span class="params">(self,root=None)</span>:</span></span><br><span class="line">        order = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(node)</span>:</span></span><br><span class="line">            self.visited[node] = <span class="keyword">True</span></span><br><span class="line">            order.append(node)</span><br><span class="line">            <span class="keyword">for</span> n <span class="keyword">in</span> self.node_neighbors[node]:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> n <span class="keyword">in</span> self.visited:</span><br><span class="line">                    dfs(n)</span><br><span class="line">        <span class="keyword">if</span> root:</span><br><span class="line">            dfs(root)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> self.nodes():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node <span class="keyword">in</span> self.visited:</span><br><span class="line">                dfs(node)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">print</span> (order)</span><br><span class="line">        <span class="keyword">return</span> order</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">breadth_first_search</span><span class="params">(self,root=None)</span>:</span></span><br><span class="line">        queue = []</span><br><span class="line">        order = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">bfs</span><span class="params">()</span>:</span></span><br><span class="line">            <span class="keyword">while</span> len(queue)&gt; <span class="number">0</span>:</span><br><span class="line">                node  = queue.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">                self.visited[node] = <span class="keyword">True</span></span><br><span class="line">                <span class="keyword">for</span> n <span class="keyword">in</span> self.node_neighbors[node]:</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">not</span> n <span class="keyword">in</span> self.visited) <span class="keyword">and</span> (<span class="keyword">not</span> n <span class="keyword">in</span> queue):</span><br><span class="line">                        queue.append(n)</span><br><span class="line">                        order.append(n)</span><br><span class="line">        <span class="keyword">if</span> root:</span><br><span class="line">            queue.append(root)</span><br><span class="line">            order.append(root)</span><br><span class="line">            bfs()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> self.nodes():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node <span class="keyword">in</span> self.visited:</span><br><span class="line">                queue.append(node)</span><br><span class="line">                order.append(node)</span><br><span class="line">                bfs()</span><br><span class="line">        <span class="keyword">print</span> (order)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> order</span><br><span class="line">g = Graph()</span><br><span class="line">g.add_nodes([i+<span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>)])</span><br><span class="line">g.add_edge((<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">g.add_edge((<span class="number">1</span>, <span class="number">3</span>))</span><br><span class="line">g.add_edge((<span class="number">2</span>, <span class="number">4</span>))</span><br><span class="line">g.add_edge((<span class="number">2</span>, <span class="number">5</span>))</span><br><span class="line">g.add_edge((<span class="number">4</span>, <span class="number">8</span>))</span><br><span class="line">g.add_edge((<span class="number">5</span>, <span class="number">8</span>))</span><br><span class="line">g.add_edge((<span class="number">3</span>, <span class="number">6</span>))</span><br><span class="line">g.add_edge((<span class="number">3</span>, <span class="number">7</span>))</span><br><span class="line">g.add_edge((<span class="number">6</span>, <span class="number">7</span>))</span><br><span class="line"><span class="keyword">print</span> (<span class="string">"nodes:"</span>, g.nodes())</span><br><span class="line"></span><br><span class="line">order = g.breadth_first_search(<span class="number">1</span>)</span><br><span class="line">order = g.depth_first_search(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="最短路径"><a href="#最短路径" class="headerlink" title="最短路径"></a>最短路径</h2><h3 id="Dijkstra算法"><a href="#Dijkstra算法" class="headerlink" title="Dijkstra算法"></a>Dijkstra算法</h3><p>是一种贪心算法，求出某点到所有点的最短路径，这样问题就解决。可以解决带权最短路径的问题，权值不能为负值。<br>优化：启发式A*算法、GIS</p>
+<h3 id="Floyd算法"><a href="#Floyd算法" class="headerlink" title="Floyd算法"></a>Floyd算法</h3><p>又叫做插点法，用于寻找给定过的加权图中多源点之间最短路径算法。Floyd算法的权值是可以为负值的。 </p>
+<h3 id="Bellman-ford算法"><a href="#Bellman-ford算法" class="headerlink" title="Bellman-ford算法"></a>Bellman-ford算法</h3><p>适用于单源节点到其他所有节点的最短路径。</p>
+<h2 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h2><h3 id="Prim算法"><a href="#Prim算法" class="headerlink" title="Prim算法"></a>Prim算法</h3><p>以一个节点作为最小生成树的初始节点，然后以迭代的方式找出与最小生成树中各节点权重最小的边，加入到最小生成树汇总。如果加入后缠身回路，则跳过这条边，选择下一个节点。最终将所有节点都加入到生成树停止。小树–&gt;大数</p>
+<h3 id="Kruskal算法"><a href="#Kruskal算法" class="headerlink" title="Kruskal算法"></a>Kruskal算法</h3><p>与Prim不同，Kruskal算法在找最小生成树结点前，对所有有权重边从小到大排序，将排序好的权重依次加入到最小生成树种，如果加入产生回路则跳过。最终将所有节点都加入到生成树停止。森林–&gt;大树</p>
+<p>为了加快判断候选边e的加入是否形成环，可以考虑用并查集的方法：把当前状态的每个连通子图保存在各自的集合中，候选边是否可以加入，转化成两个顶点是否位于同一集合中。</p>
+<p>Kruskal算法可以解决MST问题。</p>
+<h2 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h2><p>对一个有向无环图（Directed Acyclic Graph）G进行拓扑排序，将G中所有顶点排成线性序列，使得图中任意一对顶点u和v，若边(u,v)∈E(G)，则u在现行排序中出现在v之前。<br>相互关系不变形。拓扑排序是一种偏序的。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/20/图/">展开全文 >></a>
         </p>
       
 
@@ -1084,143 +1183,6 @@
 
 
   
-    <article id="post-python的命名空间" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/16/python的命名空间/">python的命名空间</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/16/python的命名空间/" class="archive-article-date">
-  	<time datetime="2018-05-16T11:51:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="命名空间的概念"><a href="#命名空间的概念" class="headerlink" title="命名空间的概念"></a>命名空间的概念</h2><p>C++会用到<code>std::cout</code>这样的用法，定义cout的命名空间，使用<code>using namespace std;</code>可以简化std::cout的写法，命名空间的使用可以避免不同的作用域之间函数重名的冲突问题。</p>
-<h2 id="python的命名空间"><a href="#python的命名空间" class="headerlink" title="python的命名空间"></a>python的命名空间</h2><p>python中也有命名空间，是用来记录变量轨迹的。命名空间是一个 字典，它的键就是变量名，它的值就是那些变量的值。<br>在一个 Python 程序中的任何一个地方，都存在几个可用的命名空间。这四类命名空间可以简记为 LEGB:  </p>
-<ol>
-<li><strong>局部命名空间（local）：</strong>指的是一个函数或者一个类所定义的名称空间；包括函数的参数、局部变量、类的属性等。</li>
-<li><strong>闭包命名空间（enclosing function）：</strong>闭包函数 的名称空间（Python 3 引入）。</li>
-<li><strong>全局命名空间（global）：</strong>读入一个模块（也即一个.py文档）后产生的名称空间。</li>
-<li><strong>内建命名空间（builtin）：</strong>Python 解释器启动时自动载入<strong>built</strong>模块后所形成的名称空间；诸如 str/list/dict…等内置对象的名称就处于这里。</li>
-</ol>
-<h2 id="命名空间查找顺序"><a href="#命名空间查找顺序" class="headerlink" title="命名空间查找顺序"></a>命名空间查找顺序</h2><p>同样的标识符在各层命名空间中可以被重复使用而不会发生冲突，但 Python 寻找一个标识符的过程总是从当前层开始逐层往上找，直到首次找到这个标识符为止：</p>
-<ol>
-<li>局部命名空间：特指当前函数或类的方法。如果函数定义了一个局部变量 x，或一个参数 x，Python 将使用它，然后停止搜索。</li>
-<li>全局命名空间：特指当前的模块。如果模块定义了一个名为 x 的变量，函数或类，Python 将使用它然后停止搜索。</li>
-<li>内置命名空间：对每个模块都是全局的。作为最后的尝试，Python 将假设 x 是内置函数或变量。</li>
-<li>如果 Python 在这些名字空间找不到 x，它将放弃查找并引发一个 NameError 异常，如，NameError: name ‘aa’ is not defined。</li>
-</ol>
-<h2 id="命名空间的生命周期"><a href="#命名空间的生命周期" class="headerlink" title="命名空间的生命周期"></a>命名空间的生命周期</h2><p>不同的命名空间在不同的时刻创建，有不同的生存期。</p>
-<ol>
-<li>内置命名空间在 Python 解释器启动时创建，会一直保留，不被删除。</li>
-<li>模块的全局命名空间在模块定义被读入时创建，通常模块命名空间也会一直保存到解释器退出。</li>
-<li>当函数被调用时创建一个局部命名空间，当函数返回结果 或 抛出异常时，被删除。每一个递归调用的函数都拥有自己的命名空间。</li>
-</ol>
-<h2 id="global-和-nonlocal-语句"><a href="#global-和-nonlocal-语句" class="headerlink" title="global 和 nonlocal 语句"></a>global 和 nonlocal 语句</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#e.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv <span class="comment">#UnboundLocalError:local variable 'gv' referenced before assignment</span></span><br><span class="line">    lv = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv = lv + [v]  <span class="comment">#UnboundLocalError:local variable 'lv' referenced before assignment</span></span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure>
-<p><strong>为什么使用global</strong>  </p>
-<pre><code>Python 在执行函数前，会首先生成各层命名空间和作用域，因此 Python 在执行赋值前会将func 内的 &apos;gv&apos; &apos;lv&apos; 写入局部命名空间和闭包命名空间，当 Python 执行赋值时会在局部作用域、闭包作用域内发现局部命名空间和闭包命名空间内已经具有&apos;gv&apos; 和 &apos;lv&apos; 标识符，但这两个非全局标识符在该赋值语句执行之前并没有被赋值，也即没有对象与标识符关联，因此无法参与四则运算，从而引发错误；
-</code></pre><p>局部空间无法获得，Python 便引入了 global、nonlocal 语句就来说明所修饰的 gv、lv 分别来自全局命名空间和局部命名空间，声明之后，就可以在 func 和 inn_func 内直接改写上层命名空间内 gv 和 lv 的值：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#f.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> gv</span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> lv</span><br><span class="line">        lv = lv + [v]</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
-<h2 id="借壳"><a href="#借壳" class="headerlink" title="借壳"></a>借壳</h2><p>那么是不是不使用 global 和 nonlocal 就不能达到上面的目的呢？来看看这段程序：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#g.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv.insert(<span class="number">0</span>, <span class="string">'gv'</span>)</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv.append(v)</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
-<p>我们改写的不是 gv 和 lv ,而是 gv 和 lv 的元素 gv[0:0] 和 lv[:] 。因此，不需要 global 和 nonlocal 修饰就可以直接改写，这就是“借壳”。修改 gv 和 lv实际上是在父函数作用域内，子函数调用只能读取而不能直接改写 gv 和 lv。<br>在 nonlocal 尚未引入 Python 中，比如 Python 2.x 若要在子函数中改写父函数变量的值就得通过这种方法。</p>
-<h2 id="命名空间的访问"><a href="#命名空间的访问" class="headerlink" title="命名空间的访问"></a>命名空间的访问</h2><ul>
-<li>局部命名空间可以 locals()  BIF来访问。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'1233'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, str )</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span> , <span class="string">"first"</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'str'</span>: <span class="string">'first'</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>全局 (模块级别)命名空间可以通过 globals() BIF来访问。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gstr = <span class="string">"global string"</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span>,<span class="string">'first'</span>)</span><br><span class="line">print(globals())</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br><span class="line">&#123;<span class="string">'__name__'</span>: <span class="string">'__main__'</span>, ....<span class="string">'func1'</span>: &lt;function func1 at <span class="number">0x000002A7BF382D90</span>&gt;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>locals 与 globals 之间的一个重要的区别<br>locals 是只读的，globals 可以改写</li>
-</ul>
-<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span>
-    x = <span class="number">12345</span>
-    print(locals())
-    locals()[<span class="string">"x"</span>]= <span class="number">6789</span>
-    print(<span class="string">"x="</span>,x)
-
-y=<span class="number">54321</span>
-func1(<span class="number">1</span> , <span class="string">"first"</span>)
-globals()[<span class="string">"y"</span>]= <span class="number">9876</span>
-print( <span class="string">"y="</span>,y)
-&gt;&gt;&gt;{<span class="string">'i'</span>: <span class="number">1</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>}
-x= <span class="number">12345</span>
-y= <span class="number">9876</span>
-</code></pre>
-<p>locals 实际上没有返回局部名字空间，它返回的是一个拷贝。所以对它进行改变对局部名字空间中的变量值并无影响。<br>globals 返回实际的全局名字空间，而不是一个拷贝。所以对 globals 所返回的 dictionary 的任何的改动都会直接影响到全局变量。（<a href="http://www.cnblogs.com/windlaughing/archive/2013/05/26/3100362.html" target="_blank" rel="noopener">原文解释连接</a>）</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/16/python的命名空间/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1327,7 +1289,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1335,11 +1297,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1347,11 +1305,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
               </li>
              
               <li class="article-tag-list-item">

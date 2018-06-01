@@ -8,22 +8,22 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>贝叶斯分类器 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="基本概念 条件概率的概念：A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=(P(AB))/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)$。 贝叶斯公式：$P(B│A)=(P(B)P(A|B))/(P(A))$。当$B1">
+  <meta name="description" content="基本概念 条件概率的概念：A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=P(AB)/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)=P(B)P(A|B)$。联合分布：$\sum_{A} P(A,B)=P(B)$$P(B">
 <meta name="keywords" content="py通红">
 <meta property="og:type" content="article">
 <meta property="og:title" content="贝叶斯分类器">
 <meta property="og:url" content="http://yoursite.com/2018/05/26/贝叶斯/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="基本概念 条件概率的概念：A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=(P(AB))/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)$。 贝叶斯公式：$P(B│A)=(P(B)P(A|B))/(P(A))$。当$B1">
+<meta property="og:description" content="基本概念 条件概率的概念：A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=P(AB)/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)=P(B)P(A|B)$。联合分布：$\sum_{A} P(A,B)=P(B)$$P(B">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/images/pasted-79.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-80.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-81.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-82.png">
-<meta property="og:updated_time" content="2018-05-26T07:31:56.534Z">
+<meta property="og:updated_time" content="2018-06-01T08:49:23.017Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="贝叶斯分类器">
-<meta name="twitter:description" content="基本概念 条件概率的概念：A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=(P(AB))/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)$。 贝叶斯公式：$P(B│A)=(P(B)P(A|B))/(P(A))$。当$B1">
+<meta name="twitter:description" content="基本概念 条件概率的概念：A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=P(AB)/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)=P(B)P(A|B)$。联合分布：$\sum_{A} P(A,B)=P(B)$$P(B">
 <meta name="twitter:image" content="http://yoursite.com/images/pasted-79.png">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
@@ -171,8 +171,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
-<li><strong>条件概率的概念：</strong>A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=(P(AB))/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)$。</li>
-<li><strong>贝叶斯公式：</strong>$P(B│A)=(P(B)P(A|B))/(P(A))$。当$B1、B2、B3……∈B，A⊂∑B_i$时，$P(B_i│A)=(P(B_i)P(A|B_i))/(∑P(B_j)P(A|B_j))$。<ul>
+<li><strong>条件概率的概念：</strong>A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=P(AB)/P(B)$。<br>事件独立：$P(AB)=P(A)P(B)$。<br>求和$P(A+B)=P(A)+P(B)-P(AB)$。<br>求差$P(A-B)=P(A)-P(AB)$。<br>乘积：$P(AB)=P(A)P(B|A)=P(B)P(A|B)$。<br>联合分布：$\sum_{A} P(A,B)=P(B)$<br>$P(B)=\sum_{B|A}P(A)$<br>联合分布条件概率：$P(S|W)=\frac {P(S,W)}{P(W)}$<br>$P(A,B|C)=P(A|B,C)P(B|C)$</li>
+<li><strong>贝叶斯公式：</strong><br>$P(B│A)=P(B)P(A|B)/(P(A))$。<br>当$B1、B2、B3……∈B，A⊂∑B_i$时，$P(B_i│A)=P(B_i)P(A|B_i)/(∑P(B_j)P(A|B_j))$。<ul>
 <li>$P(B_i)$先验概率</li>
 <li>$P(B_i│A)$为后验概率。</li>
 </ul>
@@ -192,6 +192,7 @@
 <h2 id="朴素贝叶斯分类器"><a href="#朴素贝叶斯分类器" class="headerlink" title="朴素贝叶斯分类器"></a>朴素贝叶斯分类器</h2><p>朴素贝叶斯分类器（Naïve Bayes classifier）：基于贝叶斯公式来估计后验概率 的主要困难在于求类条件概率 是所有属性上的联合概率，难以从有限的训练样本直接估计得到。为了解决这个问题，提出朴素贝叶斯分类器 它采用了“属性条件独立假设”对已知类别，假设所有属性相互独立，换言之，假设每个属性独立地对分类结果发生影响。<br><img src="/images/pasted-79.png" alt="upload successful"><br><img src="/images/pasted-80.png" alt="upload successful"></p>
 <h2 id="半朴素贝叶斯分类器"><a href="#半朴素贝叶斯分类器" class="headerlink" title="半朴素贝叶斯分类器"></a>半朴素贝叶斯分类器</h2><p>为了降低贝叶斯公式中估计后验概率$P(c|x)$的困难，提出使用朴素贝叶斯分类器采用属性条件独立性假设，然而在现实任务中这个假设很难成立，因此就提出半朴素贝叶斯分类器（Sem-naïve Bayes classifiers），它的基本思想是适当考虑一部分属性间的相互依赖信息，从而既不需要完全联合概率计算，又不至于彻底忽略了比较强的属性依赖关系。<br>独依赖估计（One-Dependent Estimator，ODE）每个属性在类别之外最多仅依赖于一个其他属性。最直接的做法，假设所有属性都依赖于同一属性，称为为超父（super-parent ODE）。TAN（Tree Augmented naïve Bayes）使用最大生成树算法，将属性间依赖关系生成最大带权生成树，保留了强相关属性之间的依赖性。AODE（Average的 One-Dependent Estimator）基于集成学习机制，尝试将每个属性作为超父来构建SPODE，最终返回具有足够支撑的SPODE集成作为最终结果。<br><img src="/images/pasted-81.png" alt="upload successful"></p>
 <h2 id="贝叶斯网"><a href="#贝叶斯网" class="headerlink" title="贝叶斯网"></a>贝叶斯网</h2><p>贝叶斯网是借助有向无环图（DAG）来刻画属性之间的依赖关系，并使用条件概率表（CPT）来描述属性的联合概率分布<br>结构<br>学习<br>推断<br><img src="/images/pasted-82.png" alt="upload successful"></p>
+<h2 id="经典贝叶斯问题"><a href="#经典贝叶斯问题" class="headerlink" title="经典贝叶斯问题"></a>经典贝叶斯问题</h2><p>A女士怀疑自己得了某种肝炎，希望在医院做一次检测。医生告诉A女士，她所属的人群得此种肝炎的概率仅有千分之一。但A女士不放心，还是坚持做了测试。然而很不幸，测试结果为阳性。现在已知测试仪器的正确率为95%，那么A女士确实得了肝炎而非误诊的概率为多少？</p>
 
       
 
@@ -302,7 +303,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本概念"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#贝叶斯决策论"><span class="toc-number">2.</span> <span class="toc-text">贝叶斯决策论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#极大拟然估计"><span class="toc-number">3.</span> <span class="toc-text">极大拟然估计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#朴素贝叶斯分类器"><span class="toc-number">4.</span> <span class="toc-text">朴素贝叶斯分类器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#半朴素贝叶斯分类器"><span class="toc-number">5.</span> <span class="toc-text">半朴素贝叶斯分类器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#贝叶斯网"><span class="toc-number">6.</span> <span class="toc-text">贝叶斯网</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本概念"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#贝叶斯决策论"><span class="toc-number">2.</span> <span class="toc-text">贝叶斯决策论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#极大拟然估计"><span class="toc-number">3.</span> <span class="toc-text">极大拟然估计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#朴素贝叶斯分类器"><span class="toc-number">4.</span> <span class="toc-text">朴素贝叶斯分类器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#半朴素贝叶斯分类器"><span class="toc-number">5.</span> <span class="toc-text">半朴素贝叶斯分类器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#贝叶斯网"><span class="toc-number">6.</span> <span class="toc-text">贝叶斯网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#经典贝叶斯问题"><span class="toc-number">7.</span> <span class="toc-text">经典贝叶斯问题</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -439,7 +440,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -447,11 +448,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -459,11 +456,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
               </li>
              
               <li class="article-tag-list-item">
