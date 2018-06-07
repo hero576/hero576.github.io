@@ -146,6 +146,98 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-算法题——833-Replace-in-String" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/13/算法题——833-Replace-in-String/">算法题——833 Replace in String</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/13/算法题——833-Replace-in-String/" class="archive-article-date">
+  	<time datetime="2018-05-13T10:52:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><p>To some string S, we will perform some replacement operations that replace groups of letters with new ones (not necessarily the same size).</p>
+<p>Each replacement operation has 3 parameters: a starting index i, a source word x and a target word y.  The rule is that if x starts at position i in the original string S, then we will replace that occurrence of x with y.  If not, we do nothing.</p>
+<p>For example, if we have S = “abcd” and we have some replacement operation i = 2, x = “cd”, y = “ffff”, then because “cd” starts at position 2 in the original string S, we will replace it with “ffff”.</p>
+<p>Using another example on S = “abcd”, if we have both the replacement operation i = 0, x = “ab”, y = “eee”, as well as another replacement operation i = 2, x = “ec”, y = “ffff”, this second operation does nothing because in the original string S[2] = ‘c’, which doesn’t match x[0] = ‘e’.</p>
+<p>All these operations occur simultaneously.  It’s guaranteed that there won’t be any overlap in replacement: for example, S = “abc”, indexes = [0, 1], sources = [“ab”,”bc”] is not a valid test case.</p>
+<p><strong>Example 1:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: S = <span class="string">"abcd"</span>, indexes = [<span class="number">0</span>,<span class="number">2</span>], sources = [<span class="string">"a"</span>,<span class="string">"cd"</span>], targets = [<span class="string">"eee"</span>,<span class="string">"ffff"</span>]</span><br><span class="line">Output: <span class="string">"eeebffff"</span></span><br><span class="line">Explanation: <span class="string">"a"</span> starts at index <span class="number">0</span> <span class="keyword">in</span> S, so it<span class="string">'s replaced by "eee".</span></span><br><span class="line"><span class="string">"cd" starts at index 2 in S, so it'</span>s replaced by <span class="string">"ffff"</span>.</span><br></pre></td></tr></table></figure></p>
+<p><strong>Example 2:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: S = <span class="string">"abcd"</span>, indexes = [<span class="number">0</span>,<span class="number">2</span>], sources = [<span class="string">"ab"</span>,<span class="string">"ec"</span>], targets = [<span class="string">"eee"</span>,<span class="string">"ffff"</span>]</span><br><span class="line">Output: <span class="string">"eeecd"</span></span><br><span class="line">Explanation: <span class="string">"ab"</span> starts at index <span class="number">0</span> <span class="keyword">in</span> S, so it<span class="string">'s replaced by "eee". </span></span><br><span class="line"><span class="string">"ec" doesn'</span>t starts at index <span class="number">2</span> <span class="keyword">in</span> the original S, so we do nothing.</span><br></pre></td></tr></table></figure></p>
+<p>题目难度 Medium<br>主要是更新完,字符串长度就变化了，一开始用指针，根据上一次的变化求索引，但是indexex不是按照顺序的，一直不通过。后来借助了列表，把索引先存起来，每次替换的时候再查找新的索引值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findReplaceString</span><span class="params">(self, S, indexes, sources, targets)</span>:</span></span><br><span class="line">        change=<span class="number">0</span></span><br><span class="line">        id_r=<span class="number">0</span>  <span class="comment">#定义待输出字符串指针</span></span><br><span class="line">        result=S</span><br><span class="line">        id_list=[i <span class="keyword">for</span> i <span class="keyword">in</span> range(len(S))]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i,index <span class="keyword">in</span> enumerate(indexes):</span><br><span class="line">            id_r=id_list.index(index) <span class="comment">#初始化待输出字符串指针</span></span><br><span class="line">            s1=sources[i]</span><br><span class="line">            is_change=<span class="keyword">True</span></span><br><span class="line">            <span class="keyword">for</span> j,sor <span class="keyword">in</span> enumerate(s1):</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> sor==S[index+j]:</span><br><span class="line">                    is_change=<span class="keyword">False</span></span><br><span class="line">            <span class="keyword">if</span> is_change:</span><br><span class="line">                result=result[:id_r]+targets[i]+result[id_r+len(sources[i]):]</span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> range(len(sources[i])):</span><br><span class="line">                    id_list.pop(id_r)</span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> range(len(targets[i])):</span><br><span class="line">                    id_list.insert(id_r,<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/13/算法题——833-Replace-in-String/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-算法题——832-Flipping-an-Image" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -917,362 +1009,9 @@
 
 
   
-    <article id="post-Chrome ERR UNSAFE PORT" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/11/Chrome ERR UNSAFE PORT/">Chrome浏览器ERR_UNSAFE_PORT</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/11/Chrome ERR UNSAFE PORT/" class="archive-article-date">
-  	<time datetime="2018-05-11T05:26:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在开启flask项目时候使用了6000端口，谷歌就一直不能访问，出现下面的问题：</p>
-<p><img src="/images/pasted-7.png" alt="upload successful"></p>
-<p>下面是Google Chrome 默认非安全端口列表，建议尽量避免以下端口：</p>
-<table>
-<thead>
-<tr>
-<th>端口号</th>
-<th style="text-align:left">功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td style="text-align:left">tcpmux</td>
-</tr>
-<tr>
-<td>7</td>
-<td style="text-align:left">echo</td>
-</tr>
-<tr>
-<td>9</td>
-<td style="text-align:left">discard</td>
-</tr>
-<tr>
-<td>11</td>
-<td style="text-align:left">systat</td>
-</tr>
-<tr>
-<td>13</td>
-<td style="text-align:left">daytime</td>
-</tr>
-<tr>
-<td>15</td>
-<td style="text-align:left">netstat</td>
-</tr>
-<tr>
-<td>17</td>
-<td style="text-align:left">qotd</td>
-</tr>
-<tr>
-<td>19</td>
-<td style="text-align:left">chargen</td>
-</tr>
-<tr>
-<td>20</td>
-<td style="text-align:left">ftp data</td>
-</tr>
-<tr>
-<td>21</td>
-<td style="text-align:left">ftp access</td>
-</tr>
-<tr>
-<td>22</td>
-<td style="text-align:left">ssh</td>
-</tr>
-<tr>
-<td>23</td>
-<td style="text-align:left">telnet</td>
-</tr>
-<tr>
-<td>25</td>
-<td style="text-align:left">smtp</td>
-</tr>
-<tr>
-<td>37</td>
-<td style="text-align:left">time</td>
-</tr>
-<tr>
-<td>42</td>
-<td style="text-align:left">name</td>
-</tr>
-<tr>
-<td>43</td>
-<td style="text-align:left">nicname</td>
-</tr>
-<tr>
-<td>53</td>
-<td style="text-align:left">domain</td>
-</tr>
-<tr>
-<td>77</td>
-<td style="text-align:left">priv-rjs</td>
-</tr>
-<tr>
-<td>79</td>
-<td style="text-align:left">finger</td>
-</tr>
-<tr>
-<td>87</td>
-<td style="text-align:left">ttylink</td>
-</tr>
-<tr>
-<td>95</td>
-<td style="text-align:left">supdup</td>
-</tr>
-<tr>
-<td>101</td>
-<td style="text-align:left">hostriame</td>
-</tr>
-<tr>
-<td>102</td>
-<td style="text-align:left">iso-tsap</td>
-</tr>
-<tr>
-<td>103</td>
-<td style="text-align:left">gppitnp</td>
-</tr>
-<tr>
-<td>104</td>
-<td style="text-align:left">acr-nema</td>
-</tr>
-<tr>
-<td>109</td>
-<td style="text-align:left">pop2</td>
-</tr>
-<tr>
-<td>110</td>
-<td style="text-align:left">pop3</td>
-</tr>
-<tr>
-<td>111</td>
-<td style="text-align:left">sunrpc</td>
-</tr>
-<tr>
-<td>113</td>
-<td style="text-align:left">auth</td>
-</tr>
-<tr>
-<td>115</td>
-<td style="text-align:left">sftp</td>
-</tr>
-<tr>
-<td>117</td>
-<td style="text-align:left">uucp-path</td>
-</tr>
-<tr>
-<td>119</td>
-<td style="text-align:left">nntp</td>
-</tr>
-<tr>
-<td>123</td>
-<td style="text-align:left">NTP</td>
-</tr>
-<tr>
-<td>135</td>
-<td style="text-align:left">loc-srv /epmap</td>
-</tr>
-<tr>
-<td>139</td>
-<td style="text-align:left">netbios</td>
-</tr>
-<tr>
-<td>143</td>
-<td style="text-align:left">imap2</td>
-</tr>
-<tr>
-<td>179</td>
-<td style="text-align:left">BGP</td>
-</tr>
-<tr>
-<td>389</td>
-<td style="text-align:left">ldap</td>
-</tr>
-<tr>
-<td>465</td>
-<td style="text-align:left">smtp+ssl</td>
-</tr>
-<tr>
-<td>512</td>
-<td style="text-align:left">print / exec</td>
-</tr>
-<tr>
-<td>513</td>
-<td style="text-align:left">login</td>
-</tr>
-<tr>
-<td>514</td>
-<td style="text-align:left">shell</td>
-</tr>
-<tr>
-<td>515</td>
-<td style="text-align:left">printer</td>
-</tr>
-<tr>
-<td>526</td>
-<td style="text-align:left">tempo</td>
-</tr>
-<tr>
-<td>530</td>
-<td style="text-align:left">courier</td>
-</tr>
-<tr>
-<td>531</td>
-<td style="text-align:left">chat</td>
-</tr>
-<tr>
-<td>532</td>
-<td style="text-align:left">netnews</td>
-</tr>
-<tr>
-<td>540</td>
-<td style="text-align:left">uucp</td>
-</tr>
-<tr>
-<td>556</td>
-<td style="text-align:left">remotefs</td>
-</tr>
-<tr>
-<td>563</td>
-<td style="text-align:left">nntp+ssl</td>
-</tr>
-<tr>
-<td>587</td>
-<td style="text-align:left">stmp?</td>
-</tr>
-<tr>
-<td>601</td>
-<td style="text-align:left">??</td>
-</tr>
-<tr>
-<td>636</td>
-<td style="text-align:left">ldap+ssl</td>
-</tr>
-<tr>
-<td>993</td>
-<td style="text-align:left">ldap+ssl</td>
-</tr>
-<tr>
-<td>995</td>
-<td style="text-align:left">pop3+ssl</td>
-</tr>
-<tr>
-<td>2049</td>
-<td style="text-align:left">nfs</td>
-</tr>
-<tr>
-<td>3659</td>
-<td style="text-align:left">apple-sasl / PasswordServer</td>
-</tr>
-<tr>
-<td>4045</td>
-<td style="text-align:left">lockd</td>
-</tr>
-<tr>
-<td>6000</td>
-<td style="text-align:left">X11</td>
-</tr>
-<tr>
-<td>6665</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6666</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6667</td>
-<td style="text-align:left">Standard IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6668</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6669</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-</tbody>
-</table>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">web服务器</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/web服务器//" class="article-tag-list-link color2">web服务器</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/11/Chrome ERR UNSAFE PORT/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/page/2/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/4/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/archives/page/2/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/archives/page/4/">4</a><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/4/">Next &raquo;</a>
     </nav>
   
 

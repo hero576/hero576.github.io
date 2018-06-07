@@ -146,6 +146,108 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-数据结构——哈希" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/12/数据结构——哈希/">数据结构——哈希</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/12/数据结构——哈希/" class="archive-article-date">
+  	<time datetime="2018-05-12T10:29:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h3><p>开辟一个足够大的空间H，数组的元素值作为自变量，通过某一个函数f，将元素值映射到hash空间的index索引处，这样通过f计算出索引，可以快速定位到元素的值，时间复杂度O(1)。基本思想就是用空间换时间。</p>
+<h3 id="Hash函数"><a href="#Hash函数" class="headerlink" title="Hash函数"></a>Hash函数</h3><p>哈希函数又叫散列函数，输入域可以是非常大的（无限）范围，但输出域是固定范围（所以不同输入可能返回相同输出）。Hash函数非常重要，一个好的Hash函数，能够将数据映射到“杂乱”的位置。</p>
+<ul>
+<li>dbj2</li>
+<li>sdbm</li>
+<li>MurmurHash</li>
+<li>MD5</li>
+<li>SHA1<h4 id="dbj2"><a href="#dbj2" class="headerlink" title="dbj2"></a>dbj2</h4>这个算法是Dan Bernstein在comp.lang.c提出的，这个算法的另一个版本是使用异或的方式：<br>$hash(i)=hash(i-1)*33^str[i]$<br>魔数33本身是个合数，但是它的表现比其他很多素数效果都好。这里表现好意思就是经过映射后，数组更为散列。<br>输入是字符串，输出时整数值。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(str)</span>:</span></span><br><span class="line">    hash=<span class="number">5381</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">        hash=hash*<span class="number">33</span>+ord(i)</span><br><span class="line">    <span class="keyword">return</span> hash</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="sdbm"><a href="#sdbm" class="headerlink" title="sdbm"></a>sdbm</h4><p>dbj2使用的是魔数33，我们也可以用65599，这样就是sdbm算法了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(str)</span>:</span></span><br><span class="line">    hash=<span class="number">0</span>  <span class="comment"># 随机给的初值种子</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">        hash=hash*<span class="number">65599</span>+ord(i)</span><br><span class="line">    <span class="keyword">return</span> hash</span><br></pre></td></tr></table></figure></p>
+<p>这个算法在实际中有很好的分布，这样造成的冲突概率大大降低。</p>
+<h3 id="Hash冲突"><a href="#Hash冲突" class="headerlink" title="Hash冲突"></a>Hash冲突</h3><p>当两个及以上的键分配到了哈希表同一个索引上时，则称这些键发成了冲突。<br>处理冲突的方法：  </p>
+<ul>
+<li>拉链法：冲突后在后面开辟新的空间，不用考虑二次哈希</li>
+<li>两次哈希</li>
+</ul>
+<p>下面是Python实现采用除余留数法的散列函数hash结构：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hash</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,size)</span>:</span></span><br><span class="line">        self.elem=[<span class="keyword">None</span>]*size</span><br><span class="line">        self.count=size</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(self,value)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> value%self.count</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insert_hash</span><span class="params">(self,key)</span>:</span></span><br><span class="line">        address=self.hash(key)</span><br><span class="line">        <span class="keyword">while</span> self.elem[address]!=<span class="keyword">None</span>:</span><br><span class="line">            address=(address+<span class="number">1</span>)%self.count</span><br><span class="line">        self.elem[address]=key</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search_hash</span><span class="params">(self,key)</span>:</span></span><br><span class="line">        star=address=self.hash(key)</span><br><span class="line">        <span class="keyword">while</span> self.elem[address]!=key:</span><br><span class="line">            address=(address+<span class="number">1</span>)%self.count</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> self.elem[address] <span class="keyword">or</span> address == star:  <span class="comment"># 说明没找到或者循环到了开始的位置</span></span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    list_a = [<span class="number">0</span>, <span class="number">12</span>, <span class="number">67</span>, <span class="number">56</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">37</span>, <span class="number">22</span>, <span class="number">29</span>, <span class="number">15</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">34</span>]</span><br><span class="line">    hash_table = Hash(len(list_a))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> list_a:</span><br><span class="line">        hash_table.insert_hash(i)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> hash_table.elem:</span><br><span class="line">        print((i, hash_table.elem.index(i)))</span><br><span class="line">    print(hash_table.search_hash(<span class="number">15</span>))</span><br><span class="line">    print(hash_table.search_hash(<span class="number">33</span>))</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/12/数据结构——哈希/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-人工智能数学基础-1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1847,93 +1949,6 @@ HEAP_SIZE(A)：堆A当前的元素数目
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/05/07/数据结构——链表/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-数据结构——基本线性数据结构——队列" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/07/数据结构——基本线性数据结构——队列/">数据结构——基本线性数据结构——队列</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/07/数据结构——基本线性数据结构——队列/" class="archive-article-date">
-  	<time datetime="2018-05-07T12:34:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="3、队列"><a href="#3、队列" class="headerlink" title="3、队列"></a>3、队列</h2><h6 id="什么是队列"><a href="#什么是队列" class="headerlink" title="什么是队列"></a>什么是队列</h6><p>和堆栈类似，唯一的区别是队列只能在队头进行出队操作，所以队列是是先进先出（FIFO, First-In-First-Out）的线性表</p>
-<h6 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h6><p>先入先出,后入后出<br>除尾节点外,每个节点有一个后继<br>（可选）除头节点外,每个节点有一个前驱</p>
-<h6 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h6><p>push（）:入队<br>pop（）：出队</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/07/数据结构——基本线性数据结构——队列/">展开全文 >></a>
         </p>
       
 

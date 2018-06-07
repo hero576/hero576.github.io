@@ -146,6 +146,359 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Chrome ERR UNSAFE PORT" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/11/Chrome ERR UNSAFE PORT/">Chrome浏览器ERR_UNSAFE_PORT</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/11/Chrome ERR UNSAFE PORT/" class="archive-article-date">
+  	<time datetime="2018-05-11T05:26:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在开启flask项目时候使用了6000端口，谷歌就一直不能访问，出现下面的问题：</p>
+<p><img src="/images/pasted-7.png" alt="upload successful"></p>
+<p>下面是Google Chrome 默认非安全端口列表，建议尽量避免以下端口：</p>
+<table>
+<thead>
+<tr>
+<th>端口号</th>
+<th style="text-align:left">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td style="text-align:left">tcpmux</td>
+</tr>
+<tr>
+<td>7</td>
+<td style="text-align:left">echo</td>
+</tr>
+<tr>
+<td>9</td>
+<td style="text-align:left">discard</td>
+</tr>
+<tr>
+<td>11</td>
+<td style="text-align:left">systat</td>
+</tr>
+<tr>
+<td>13</td>
+<td style="text-align:left">daytime</td>
+</tr>
+<tr>
+<td>15</td>
+<td style="text-align:left">netstat</td>
+</tr>
+<tr>
+<td>17</td>
+<td style="text-align:left">qotd</td>
+</tr>
+<tr>
+<td>19</td>
+<td style="text-align:left">chargen</td>
+</tr>
+<tr>
+<td>20</td>
+<td style="text-align:left">ftp data</td>
+</tr>
+<tr>
+<td>21</td>
+<td style="text-align:left">ftp access</td>
+</tr>
+<tr>
+<td>22</td>
+<td style="text-align:left">ssh</td>
+</tr>
+<tr>
+<td>23</td>
+<td style="text-align:left">telnet</td>
+</tr>
+<tr>
+<td>25</td>
+<td style="text-align:left">smtp</td>
+</tr>
+<tr>
+<td>37</td>
+<td style="text-align:left">time</td>
+</tr>
+<tr>
+<td>42</td>
+<td style="text-align:left">name</td>
+</tr>
+<tr>
+<td>43</td>
+<td style="text-align:left">nicname</td>
+</tr>
+<tr>
+<td>53</td>
+<td style="text-align:left">domain</td>
+</tr>
+<tr>
+<td>77</td>
+<td style="text-align:left">priv-rjs</td>
+</tr>
+<tr>
+<td>79</td>
+<td style="text-align:left">finger</td>
+</tr>
+<tr>
+<td>87</td>
+<td style="text-align:left">ttylink</td>
+</tr>
+<tr>
+<td>95</td>
+<td style="text-align:left">supdup</td>
+</tr>
+<tr>
+<td>101</td>
+<td style="text-align:left">hostriame</td>
+</tr>
+<tr>
+<td>102</td>
+<td style="text-align:left">iso-tsap</td>
+</tr>
+<tr>
+<td>103</td>
+<td style="text-align:left">gppitnp</td>
+</tr>
+<tr>
+<td>104</td>
+<td style="text-align:left">acr-nema</td>
+</tr>
+<tr>
+<td>109</td>
+<td style="text-align:left">pop2</td>
+</tr>
+<tr>
+<td>110</td>
+<td style="text-align:left">pop3</td>
+</tr>
+<tr>
+<td>111</td>
+<td style="text-align:left">sunrpc</td>
+</tr>
+<tr>
+<td>113</td>
+<td style="text-align:left">auth</td>
+</tr>
+<tr>
+<td>115</td>
+<td style="text-align:left">sftp</td>
+</tr>
+<tr>
+<td>117</td>
+<td style="text-align:left">uucp-path</td>
+</tr>
+<tr>
+<td>119</td>
+<td style="text-align:left">nntp</td>
+</tr>
+<tr>
+<td>123</td>
+<td style="text-align:left">NTP</td>
+</tr>
+<tr>
+<td>135</td>
+<td style="text-align:left">loc-srv /epmap</td>
+</tr>
+<tr>
+<td>139</td>
+<td style="text-align:left">netbios</td>
+</tr>
+<tr>
+<td>143</td>
+<td style="text-align:left">imap2</td>
+</tr>
+<tr>
+<td>179</td>
+<td style="text-align:left">BGP</td>
+</tr>
+<tr>
+<td>389</td>
+<td style="text-align:left">ldap</td>
+</tr>
+<tr>
+<td>465</td>
+<td style="text-align:left">smtp+ssl</td>
+</tr>
+<tr>
+<td>512</td>
+<td style="text-align:left">print / exec</td>
+</tr>
+<tr>
+<td>513</td>
+<td style="text-align:left">login</td>
+</tr>
+<tr>
+<td>514</td>
+<td style="text-align:left">shell</td>
+</tr>
+<tr>
+<td>515</td>
+<td style="text-align:left">printer</td>
+</tr>
+<tr>
+<td>526</td>
+<td style="text-align:left">tempo</td>
+</tr>
+<tr>
+<td>530</td>
+<td style="text-align:left">courier</td>
+</tr>
+<tr>
+<td>531</td>
+<td style="text-align:left">chat</td>
+</tr>
+<tr>
+<td>532</td>
+<td style="text-align:left">netnews</td>
+</tr>
+<tr>
+<td>540</td>
+<td style="text-align:left">uucp</td>
+</tr>
+<tr>
+<td>556</td>
+<td style="text-align:left">remotefs</td>
+</tr>
+<tr>
+<td>563</td>
+<td style="text-align:left">nntp+ssl</td>
+</tr>
+<tr>
+<td>587</td>
+<td style="text-align:left">stmp?</td>
+</tr>
+<tr>
+<td>601</td>
+<td style="text-align:left">??</td>
+</tr>
+<tr>
+<td>636</td>
+<td style="text-align:left">ldap+ssl</td>
+</tr>
+<tr>
+<td>993</td>
+<td style="text-align:left">ldap+ssl</td>
+</tr>
+<tr>
+<td>995</td>
+<td style="text-align:left">pop3+ssl</td>
+</tr>
+<tr>
+<td>2049</td>
+<td style="text-align:left">nfs</td>
+</tr>
+<tr>
+<td>3659</td>
+<td style="text-align:left">apple-sasl / PasswordServer</td>
+</tr>
+<tr>
+<td>4045</td>
+<td style="text-align:left">lockd</td>
+</tr>
+<tr>
+<td>6000</td>
+<td style="text-align:left">X11</td>
+</tr>
+<tr>
+<td>6665</td>
+<td style="text-align:left">Alternate IRC [Apple addition]</td>
+</tr>
+<tr>
+<td>6666</td>
+<td style="text-align:left">Alternate IRC [Apple addition]</td>
+</tr>
+<tr>
+<td>6667</td>
+<td style="text-align:left">Standard IRC [Apple addition]</td>
+</tr>
+<tr>
+<td>6668</td>
+<td style="text-align:left">Alternate IRC [Apple addition]</td>
+</tr>
+<tr>
+<td>6669</td>
+<td style="text-align:left">Alternate IRC [Apple addition]</td>
+</tr>
+</tbody>
+</table>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">web服务器</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/web服务器//" class="article-tag-list-link color2">web服务器</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/11/Chrome ERR UNSAFE PORT/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Scrapy设置项介绍" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1388,103 +1741,9 @@ HEAP_SIZE(A)：堆A当前的元素数目
 
 
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/07/hello-world/">数据结构——基本线性数据结构——数组</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/07/hello-world/" class="archive-article-date">
-  	<time datetime="2018-05-07T11:22:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1、数组"><a href="#1、数组" class="headerlink" title="1、数组"></a>1、数组</h2><h6 id="数组的设计"><a href="#数组的设计" class="headerlink" title="数组的设计"></a>数组的设计</h6><p>数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：</p>
-<ol>
-<li>请求空间以后大小固定，不能再改变（数据溢出问题）；</li>
-<li>在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间；</li>
-<li>在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分的内存上）。</li>
-</ol>
-<p>因为简单数组强烈倚赖电脑硬件之内存，所以不适用于现代的程序设计。欲使用可变大小、硬件无关性的数据类型，Java等程序设计语言均提供了更高级的数据结构：ArrayList、Vector等动态数组。</p>
-<h6 id="python数组的实现"><a href="#python数组的实现" class="headerlink" title="python数组的实现"></a>python数组的实现</h6><p>首先来一个错误的实现方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list=[[]]*<span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[], [], []]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[<span class="number">3</span>], [<span class="number">3</span>], [<span class="number">3</span>]]</span><br></pre></td></tr></table></figure></p>
-<p>*号运算只是对原来数据的多次引用，也就是说实际上，我们用*号创建的二位数组其实只是将原来的一位数组复制了多次，我们并不能用其实现二维数组的功能。<br>官方推荐使用列表生成式：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list=[[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[<span class="number">3</span>], [], []]</span><br></pre></td></tr></table></figure></p>
-<p>所以，二维数组可以这样实现：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>array=[[<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>)] <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>array</span><br><span class="line">[[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]]</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/07/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2018/05/page/3/">&laquo; Prev</a><a class="page-number" href="/archives/2018/05/">1</a><a class="page-number" href="/archives/2018/05/page/2/">2</a><a class="page-number" href="/archives/2018/05/page/3/">3</a><span class="page-number current">4</span>
+      <a class="extend prev" rel="prev" href="/archives/2018/05/page/3/">&laquo; Prev</a><a class="page-number" href="/archives/2018/05/">1</a><a class="page-number" href="/archives/2018/05/page/2/">2</a><a class="page-number" href="/archives/2018/05/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/2018/05/page/5/">5</a><a class="extend next" rel="next" href="/archives/2018/05/page/5/">Next &raquo;</a>
     </nav>
   
 

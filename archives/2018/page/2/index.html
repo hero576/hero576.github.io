@@ -146,6 +146,95 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-SVM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/21/SVM/">SVM</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/21/SVM/" class="archive-article-date">
+  	<time datetime="2018-05-21T07:50:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h2><h3 id="间隔与支持间隔"><a href="#间隔与支持间隔" class="headerlink" title="间隔与支持间隔"></a>间隔与支持间隔</h3><p>分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。<br>能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。<br>在样本空间中，划分超平面可通过以下线性方程来描述<br>$$ω^Tx+b=0$$<br>样本空间中任意点 x 到超平面 (w,b) 的距离可以写成<br>$$r=\frac{|w^Tx+b|}{||w||}$$<br>假设超平面能够正确分类样本，则可以通过对 ω 缩放可以使得下式成立<br>\begin{cases}<br>|w^Tx+b|&gt;=1,y_i=+1<br>|w^Tx+b|&lt;=-1,y_i=-1<br>\end{cases}<br>距离超平面最近的几个样本点使得上式等号成立，称作“支持向量”。两个异类支持向量到超平面的距离之和称为“间隔”，$γ=\frac{2}{||w||}$。所有位于最大边界上的点称作支持向量。撑起了边界的宽度，其中$||w||$是向量的范数（norm）：<br>$$\if W = {w_1,w_2,….w_n}then\sqrt{W·W}=\sqrt{w_1^2,w_2^2,….w_n^2}$$<br><img src="/images/pasted-27.png" alt="upload successful"><br>距离是x和x’在w上的投影：<br><img src="/images/pasted-28.png" alt="upload successful"><br>欲最大化间隔，等价于最小化$||w||^2$ , 这就是支持向量机的基本型。<br>$$\min{w,b} \frac{1}{2} ||w||^2$$<br>$$s.t. y_i(w^Tx_i+b)≥1，i=1,2,…,m$$<br><img src="/images/pasted-29.png" alt="upload successful"></p>
+<h2 id="对偶问题"><a href="#对偶问题" class="headerlink" title="对偶问题"></a>对偶问题</h2><p>上述问题是一个凸二次规划问题，能直接用现成的优化计算包求解。但是通过拉格朗日乘子法变换到对偶变量的优化问题之后，可以找到一种更加有效的方法来进行求解。<br>原问题的拉格朗日函数为<br>$$L(w,b,α)=\frac{1}{2}||w||^2+\sum{i=1}^m α_i(1-y_i(w^Tx_i+b))$$<br>求偏导为零可以得到<br>$$w=\sum{i=1}^m α_iy_ix_i$$<br>$$0=\sum{i=1}^mα_iy_i$$<br>对偶问题，将最大最小互换：<br>$$\min{w,b}\max{α}L(w,b,α)-&gt;\max{α}\min{w,b}L(w,b,α)$$<br>$$\max{α} \sum{i=1}{m}α_i-\frac{1}{2}\sum{i=1}^m\sum{j=1}^mα_iα_jy_iy_jx_i^Tx_j{}$$<br>$$s.t. \sum{i=1}^mα_iy_i=0,α_i≥0，i=1,2,…,m$$<br>于是可以得到模型为<br>$$f(x)=w^Tx+b=\sum{i=1}^mα_iy_ix_i^Tx+b$$<br>上述过程需要满足KKT(Karush-Kuhn-Tucker)条件，即<br>\begin{cases}<br>α_i≥0<br>y_if(x_i)-1≥0<br>α_i(y_if(x_i)-1)=0<br>\end{cases}<br>对任意训练样本 $(x_i,y_i)$ ，总有 $α_i=0$ 或 $y_if(x_i)=1$ 。因此训练完成后，大部分的样本都不需要保留，最终模型仅与支持向量有关。<br>如果用二次规划算法求解对偶问题，则问题的规模正比于训练样本数，这会在实际任务中造成很大开销，为此提出SMO(Sequential Minimal Optimization)算法。</p>
+<h4 id="SMO算法"><a href="#SMO算法" class="headerlink" title="SMO算法"></a>SMO算法</h4><p>SMO将比较大的问题拆解为比较小的问题，多个变量不好求，先求两个。<br>步骤：不断执行以下两个步骤直到收敛<br>1、选取一对需要更新的变量 αi 和 αj<br>2、固定 αi 和 αj 以外的参数，求解对偶问题更新后的 αi 和 αj<br>只要选取的 αi 和 αj 中有一个不满足KKT条件， 目标函数就会在迭代后减小。KKT条件违背的程度越大，变量更新后可能导致的目标函数值减幅越大。<br>使选取的两变量所对应样本之间的间隔最大（两个变量有很大的差别，对它们进行更新会带给目标函数值更大的变化）。</p>
+<h3 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h3><p>原始样本空间线性不可分：将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分。如果原始空间是有限维，那么一定存在一个高维特征空间使样本可分。<br>模型变成：$ω^Tϕ(x)+b=0 $<br>$$\min{w,b}\frac{1}{2}||w||^2$$<br>$$s.t. y_i(w^Tϕ(x_i)+b)≥1，i=1,2,…m$$<br>对偶问题为：<br>$$\max{α} \sum{i=1}{m}α_i-\frac{1}{2}\sum{i=1}^m\sum{j=1}^mα_iα_jy_iy_jx_i^Tx_j{}$$<br>$$s.t. \sum{i=1}^mα_iy_i=0,α_i≥0，i=1,2,…,m$$<br>由于特征空间维数可能很高，直接计算 $ϕ(x_i)^Tϕ(x_j)$通常是困难的。设想函数$k(x_i,x_j)=ϕ(x_i)Tϕ(x_j)$,$x_ixi$与$x_jxj$在特征空间的内积<strong>等于</strong>它们在原始样本空间中通过核函数计算的结果。<br>核函数选择成为支持向量机的最大变数，若核函数选择不合适，则意味着将样本映射到了一个不合适的特征空间，很可能导致性能不佳。比如图像分类，一般使用高斯径向基核函数，因为需要超平面要非常的平滑。<br>常用核函数：<br><img src="/images/pasted-30.png" alt="upload successful"></p>
+<h2 id="软间隔与正则化"><a href="#软间隔与正则化" class="headerlink" title="软间隔与正则化"></a>软间隔与正则化</h2><p>现实任务中往往很难确定合适的核函数使得训练样本在特征空间中线性可分，即便线性可分，也很难判定这个结果不是由于过拟合造成的。<br>缓解这个问题的一个方法是允许支持向量机在一些样本上出错，引入“软间隔”概念。允许某些样本不满足约束 $y_i(ω^Txi+b)≥1 $<br>优化目标可写成<br>$$\min{w,b}\frac{1}{2}||w||^2+C\sum{i=1}^mξ_i$$<br>其中 l0/1 是“0/1损失函数”<br> <img src="/images/pasted-11.png" alt="upload successful"><br>l0/1 非凸、非连续、数学性质不好，使得上式难以求解，因此人们用其他一些函数来代替它，称为“代替函数”。<br>常用的代替函数：<br><img src="/images/pasted-21.png" alt="upload successful"><br>常用的软间隔支持向量机：<br><img src="/images/pasted-31.png" alt="upload successful"><br>与硬间隔支持向量机相似，软间隔支持向量机也是一个二次规划问题，可以通过拉格朗日乘子法得到拉格朗日函数：<br><img src="/images/pasted-32.png" alt="upload successful"><br>求偏导为零可以得到<br><img src="/images/pasted-33.png" alt="upload successful"><br>对偶问题为<br><img src="/images/pasted-34.png" alt="upload successful"><br>上述过程需要满足KKT(Karush-Kuhn-Tucker)条件，即<br><img src="/images/pasted-35.png" alt="upload successful"><br>实际上支持向量机和对率回归的优化目标相近，通常情况下他们的性能相当。对率回归的优势主要对于其输出具有自然的概率意义，即在给出预测标记的同时也给了概率，而支持向量机的输出不具有概率意义，欲得到概率需要进行特殊处理；此外，对率回归能够直接用于多分类任务，支持向量机为此需要进行推广。另一方面，可以看出hinge损失函数有一块平摊的零区域，这使得支持向量机的解具有稀疏性，而对率损失是光滑的而单调递减函数，不能导出类似支持向量的概念。因此对率回归的解依赖于更多的训练样本，其预测开销大。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pylab <span class="keyword">as</span> pl</span><br><span class="line">np.random.seed(<span class="number">0</span>)</span><br><span class="line">X=np.r_[np.random.randn(<span class="number">20</span>,<span class="number">2</span>)-[<span class="number">2</span>,<span class="number">2</span>],np.random.randn(<span class="number">20</span>,<span class="number">2</span>)+[<span class="number">2</span>,<span class="number">2</span>]]</span><br><span class="line">Y=[<span class="number">0</span>]*<span class="number">20</span>+[<span class="number">1</span>]*<span class="number">20</span></span><br><span class="line">clf=svm.SVC(kernel=<span class="string">'linear'</span>)</span><br><span class="line">clf.fit(X,Y)</span><br><span class="line">w=clf.coef_[<span class="number">0</span>]</span><br><span class="line">a=-w[<span class="number">0</span>]/w[<span class="number">1</span>]</span><br><span class="line">xx=np.linspace(<span class="number">-5</span>,<span class="number">5</span>)</span><br><span class="line">yy=a*xx-(clf.intercept_[<span class="number">0</span>])/w[<span class="number">1</span>]</span><br><span class="line">b=clf.support_vectors_[<span class="number">0</span>]</span><br><span class="line">yy_down=a*xx+b[<span class="number">1</span>]-a*b[<span class="number">0</span>]</span><br><span class="line">b=clf.support_vectors_[<span class="number">-1</span>]</span><br><span class="line">yy_up=a*xx+b[<span class="number">1</span>]-a*b[<span class="number">0</span>]</span><br><span class="line">pl.plot(xx,yy,<span class="string">'k-'</span>)</span><br><span class="line">pl.plot(xx,yy_down,<span class="string">'k--'</span>)</span><br><span class="line">pl.plot(xx,yy_up,<span class="string">'k--'</span>)</span><br><span class="line">pl.scatter(clf.support_vectors_[:,<span class="number">0</span>],clf.support_vectors_[:,<span class="number">1</span>])</span><br><span class="line">pl.scatter(X[:,<span class="number">0</span>],X[:,<span class="number">1</span>],c=Y,cmap=pl.cm.Paired)</span><br><span class="line">pl.show()</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/21/SVM/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-图" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -957,101 +1046,9 @@ y= <span class="number">9876</span>
 
 
   
-    <article id="post-算法题——833-Replace-in-String" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/13/算法题——833-Replace-in-String/">算法题——833 Replace in String</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/13/算法题——833-Replace-in-String/" class="archive-article-date">
-  	<time datetime="2018-05-13T10:52:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><p>To some string S, we will perform some replacement operations that replace groups of letters with new ones (not necessarily the same size).</p>
-<p>Each replacement operation has 3 parameters: a starting index i, a source word x and a target word y.  The rule is that if x starts at position i in the original string S, then we will replace that occurrence of x with y.  If not, we do nothing.</p>
-<p>For example, if we have S = “abcd” and we have some replacement operation i = 2, x = “cd”, y = “ffff”, then because “cd” starts at position 2 in the original string S, we will replace it with “ffff”.</p>
-<p>Using another example on S = “abcd”, if we have both the replacement operation i = 0, x = “ab”, y = “eee”, as well as another replacement operation i = 2, x = “ec”, y = “ffff”, this second operation does nothing because in the original string S[2] = ‘c’, which doesn’t match x[0] = ‘e’.</p>
-<p>All these operations occur simultaneously.  It’s guaranteed that there won’t be any overlap in replacement: for example, S = “abc”, indexes = [0, 1], sources = [“ab”,”bc”] is not a valid test case.</p>
-<p><strong>Example 1:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: S = <span class="string">"abcd"</span>, indexes = [<span class="number">0</span>,<span class="number">2</span>], sources = [<span class="string">"a"</span>,<span class="string">"cd"</span>], targets = [<span class="string">"eee"</span>,<span class="string">"ffff"</span>]</span><br><span class="line">Output: <span class="string">"eeebffff"</span></span><br><span class="line">Explanation: <span class="string">"a"</span> starts at index <span class="number">0</span> <span class="keyword">in</span> S, so it<span class="string">'s replaced by "eee".</span></span><br><span class="line"><span class="string">"cd" starts at index 2 in S, so it'</span>s replaced by <span class="string">"ffff"</span>.</span><br></pre></td></tr></table></figure></p>
-<p><strong>Example 2:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: S = <span class="string">"abcd"</span>, indexes = [<span class="number">0</span>,<span class="number">2</span>], sources = [<span class="string">"ab"</span>,<span class="string">"ec"</span>], targets = [<span class="string">"eee"</span>,<span class="string">"ffff"</span>]</span><br><span class="line">Output: <span class="string">"eeecd"</span></span><br><span class="line">Explanation: <span class="string">"ab"</span> starts at index <span class="number">0</span> <span class="keyword">in</span> S, so it<span class="string">'s replaced by "eee". </span></span><br><span class="line"><span class="string">"ec" doesn'</span>t starts at index <span class="number">2</span> <span class="keyword">in</span> the original S, so we do nothing.</span><br></pre></td></tr></table></figure></p>
-<p>题目难度 Medium<br>主要是更新完,字符串长度就变化了，一开始用指针，根据上一次的变化求索引，但是indexex不是按照顺序的，一直不通过。后来借助了列表，把索引先存起来，每次替换的时候再查找新的索引值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findReplaceString</span><span class="params">(self, S, indexes, sources, targets)</span>:</span></span><br><span class="line">        change=<span class="number">0</span></span><br><span class="line">        id_r=<span class="number">0</span>  <span class="comment">#定义待输出字符串指针</span></span><br><span class="line">        result=S</span><br><span class="line">        id_list=[i <span class="keyword">for</span> i <span class="keyword">in</span> range(len(S))]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i,index <span class="keyword">in</span> enumerate(indexes):</span><br><span class="line">            id_r=id_list.index(index) <span class="comment">#初始化待输出字符串指针</span></span><br><span class="line">            s1=sources[i]</span><br><span class="line">            is_change=<span class="keyword">True</span></span><br><span class="line">            <span class="keyword">for</span> j,sor <span class="keyword">in</span> enumerate(s1):</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> sor==S[index+j]:</span><br><span class="line">                    is_change=<span class="keyword">False</span></span><br><span class="line">            <span class="keyword">if</span> is_change:</span><br><span class="line">                result=result[:id_r]+targets[i]+result[id_r+len(sources[i]):]</span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> range(len(sources[i])):</span><br><span class="line">                    id_list.pop(id_r)</span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> range(len(targets[i])):</span><br><span class="line">                    id_list.insert(id_r,<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/13/算法题——833-Replace-in-String/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2018/">&laquo; Prev</a><a class="page-number" href="/archives/2018/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2018/page/3/">3</a><a class="page-number" href="/archives/2018/page/4/">4</a><a class="extend next" rel="next" href="/archives/2018/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/archives/2018/">&laquo; Prev</a><a class="page-number" href="/archives/2018/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2018/page/3/">3</a><a class="page-number" href="/archives/2018/page/4/">4</a><a class="page-number" href="/archives/2018/page/5/">5</a><a class="extend next" rel="next" href="/archives/2018/page/3/">Next &raquo;</a>
     </nav>
   
 

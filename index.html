@@ -700,6 +700,149 @@
 
 
   
+    <article id="post-聚类算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/24/聚类算法/">聚类算法</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/24/聚类算法/" class="archive-article-date">
+  	<time datetime="2018-05-24T11:41:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>聚类可以说是一种无监督的学习，也就是说在训练样本中对应的标记信息是没有的，目标是通过对无标记训练样本的学习来揭示数据内在性质和规律，为进一步的数据分析提供基础。</p>
+<h3 id="聚类的任务"><a href="#聚类的任务" class="headerlink" title="聚类的任务"></a>聚类的任务</h3><p>聚类试图将数据集中的样本划分为若干个通常是不相交的子集，每个子集称为一个“簇”。</p>
+<h3 id="性能度量"><a href="#性能度量" class="headerlink" title="性能度量"></a>性能度量</h3><p>簇内相似度高，簇间相似度低。 </p>
+<ul>
+<li>外部指标：是将聚类结果与某个“参考模型”进行比较 </li>
+<li>内部指标：直接考察聚类结果而不利用任何参考模型。</li>
+</ul>
+<h3 id="距离计算"><a href="#距离计算" class="headerlink" title="距离计算"></a>距离计算</h3><p>距离度量满足的基本性质：非负性、同一性、对称性、直递性 </p>
+<ul>
+<li>闵可夫斯基距离：$distmk=(n∑u=1|xiu−xju|p)1p$<ul>
+<li>如果p=2时，则表示欧氏距离 </li>
+<li>如果p=1时，则表示曼哈顿距离</li>
+</ul>
+</li>
+<li>有序属性： </li>
+<li>无序属性：闵可夫斯基可以用于无序属性。对于无序属性可以采用VDM</li>
+</ul>
+<h2 id="原型聚类"><a href="#原型聚类" class="headerlink" title="原型聚类"></a>原型聚类</h2><p>原型聚类亦称“基于原型的聚类”，常用的原型聚类算法如下 </p>
+<ul>
+<li>K均值聚类(Kmeans)</li>
+<li>学习向量量化</li>
+<li><a href="http://www.cnblogs.com/mmziscoming/p/5750849.html" target="_blank" rel="noopener">高斯混合聚类(GMM)</a></li>
+</ul>
+<h2 id="密度聚类"><a href="#密度聚类" class="headerlink" title="密度聚类"></a>密度聚类</h2><p>基于密度的聚类算法主要的目标是寻找被低密度区域分离的高密度区域。与基于距离的聚类算法不同的是，基于距离的聚类算法的聚类结果是球状的簇，而基于密度的聚类算法可以发现任意形状的聚类，这对于带有噪音点的数据起着重要的作用。 </p>
+<h2 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h2><p>层次聚类也叫连通聚类方法，有两个基本方法：自顶而下和自底而上。自顶而将所有样本看做是同一簇，然后进行分裂。自底而上将初所有样本看做不同的簇，然后进行凝聚。这种聚类的中心思想是：离观测点较近的点相比离观测点较远的点更可能是一类。<br>过程如下：</p>
+<ol>
+<li>把每个样本归为一类，计算两个类之间的距离；</li>
+<li>寻找各类之间最近的两个类归为一类；</li>
+<li>重新计算新生成的这个类与旧类之间的相似度；</li>
+<li>重复2到3，直到所有样本归为一类停止。</li>
+</ol>
+<p>实际上聚类过程就是建立了一棵树：<br><img src="/images/pasted-76.png" alt="upload successful"><br>可以在中间过程设置阈值，当两个类距离大于阈值，则迭代终止。</p>
+<p>第三步相似度的度量有很多方法，例如：</p>
+<ul>
+<li>两个类之间距离最近的两个样本的距离</li>
+<li>两个类之间距离最远的两个样本的距离</li>
+<li>两个类的样本平均距离</li>
+<li>两个类的样本中位数的距离</li>
+</ul>
+<h2 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h2><h3 id="ART网络"><a href="#ART网络" class="headerlink" title="ART网络"></a>ART网络</h3><p>ART（Adaptive Resonance Theory，自适应谐振理论）竞争学习的代表，是一种常用的无监督学习策略。该策略网络输出神经元相互竞争，每一时刻仅有一个竞争获胜的神经元被激活。其他神经元被抑制。包含比较层、识别层、识别阈值和重置模块。</p>
+<h3 id="SOM网络"><a href="#SOM网络" class="headerlink" title="SOM网络"></a>SOM网络</h3><p><img src="/images/pasted-77.png" alt="upload successful"><br>SOM（Self-Organizing Map，自组织映射）网络是最常用的聚类方法之一： </p>
+<ul>
+<li>竞争型的无监督神经网络</li>
+<li>将高维数据映射到低维空间，并保持输入数据在高维空间的拓扑结构。即将高维空间中相似的样本点映射到网络输出层中邻近神经元</li>
+<li>每个神经元拥有一个权向量</li>
+<li>目标：为每个输出层神经元找到合适的权向量以保持拓扑结构</li>
+</ul>
+<p>训练</p>
+<ul>
+<li>网络接收输入样本后，将会确定输出层的“获胜”神经元（“胜者通吃”）</li>
+<li>获胜神经元的权向量将向当前输入样本移动</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kmeans</span><span class="params">(x,k,maxIt)</span>:</span></span><br><span class="line">    numPoints,numDim=x.shape</span><br><span class="line">    dataSet=np.zeros((numPoints,numDim+<span class="number">1</span>))</span><br><span class="line">    dataSet[:,:<span class="number">-1</span>]=x</span><br><span class="line">    centroids=dataSet[np.random.randint(numPoints,size=k),:]</span><br><span class="line"><span class="comment">#     centroids=dataSet[0:2,:]</span></span><br><span class="line">    centroids[:,<span class="number">-1</span>]=range(<span class="number">1</span>,k+<span class="number">1</span>)</span><br><span class="line">    iterations=<span class="number">0</span></span><br><span class="line">    oldCentroids=<span class="keyword">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> shouldstop(oldCentroids,centroids,iterations,maxIt):</span><br><span class="line">        print(iterations,dataSet,centroids)</span><br><span class="line">        oldCentroids=np.copy(centroids)</span><br><span class="line">        iterations+=<span class="number">1</span></span><br><span class="line">        updateLabels(dataSet,centroids)</span><br><span class="line">        centroids=getCentroids(dataSet,k)</span><br><span class="line">    <span class="keyword">return</span> dataSet</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shouldstop</span><span class="params">(oldCentroids,centroids,iterations,maxIt)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> iterations&gt;maxIt:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">    <span class="keyword">return</span> np.array_equal(oldCentroids,centroids)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">updateLabels</span><span class="params">(dataSet,centroids)</span>:</span></span><br><span class="line">    numPoints,numDim=dataSet.shape</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numPoints):</span><br><span class="line">        dataSet[i,<span class="number">-1</span>]=getLabelFromClosestCentroid(dataSet[i,:<span class="number">-1</span>],centroids)        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getLabelFromClosestCentroid</span><span class="params">(dataSetRow,centroids)</span>:</span></span><br><span class="line">    label=centroids[<span class="number">0</span>,<span class="number">-1</span>]</span><br><span class="line">    minDist=np.linalg.norm(dataSetRow-centroids[<span class="number">0</span>,:<span class="number">-1</span>])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,centroids.shape[<span class="number">0</span>]):</span><br><span class="line">        dist=np.linalg.norm(dataSetRow-centroids[i,:<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">if</span> dist&lt;minDist:</span><br><span class="line">            minDist=dist</span><br><span class="line">            label=centroids[i,<span class="number">-1</span>]</span><br><span class="line">    print(minDist)</span><br><span class="line">    <span class="keyword">return</span> label        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getCentroids</span><span class="params">(dataSet,k)</span>:</span></span><br><span class="line">    result=np.zeros((k,dataSet.shape[<span class="number">1</span>]))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,k+<span class="number">1</span>):</span><br><span class="line">        oneCluster=dataSet[dataSet[:,<span class="number">-1</span>]==i,:<span class="number">-1</span>]</span><br><span class="line">        result[i<span class="number">-1</span>,:<span class="number">-1</span>]=np.mean(oneCluster,axis=<span class="number">0</span>)</span><br><span class="line">        result[i<span class="number">-1</span>,<span class="number">-1</span>]=i</span><br><span class="line">    <span class="keyword">return</span> result        </span><br><span class="line">x1=np.array([<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">x2=np.array([<span class="number">2</span>,<span class="number">1</span>])</span><br><span class="line">x3=np.array([<span class="number">4</span>,<span class="number">3</span>])</span><br><span class="line">x4=np.array([<span class="number">5</span>,<span class="number">4</span>])</span><br><span class="line">testX=np.vstack((x1,x2,x3,x4))</span><br><span class="line"></span><br><span class="line">result=kmeans(testX,<span class="number">2</span>,<span class="number">10</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<p>层次聚类的实现<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image,ImageDraw</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cluster_node</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,vec,left=None,right=None,distance=<span class="number">0.0</span>,id=None,count=<span class="number">1</span>)</span>:</span></span><br><span class="line">        self.vec=vec</span><br><span class="line">        self.left=left</span><br><span class="line">        self.right=right</span><br><span class="line">        self.distance=distance</span><br><span class="line">        self.id=id</span><br><span class="line">        self.count=count</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L2dist</span><span class="params">(v1,v2)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> np.linalg.norm(v1-v2,ord=<span class="number">2</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hcluster</span><span class="params">(features,distance=L2dist)</span>:</span></span><br><span class="line">    distances=&#123;&#125;</span><br><span class="line">    currentclustid=<span class="number">-1</span></span><br><span class="line">    clust=[Cluster_node(array(features[i]),id=i) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(features))]</span><br><span class="line">    <span class="keyword">while</span> len(clust)&gt;<span class="number">1</span>:</span><br><span class="line">        lowestpair=(<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">        closest=distance(clust[<span class="number">0</span>].vec,clust[<span class="number">1</span>].vec)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(clust)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(i+<span class="number">1</span>,len(clust)):</span><br><span class="line">                <span class="keyword">if</span> (clust[i].id,clust[j].id) <span class="keyword">not</span> <span class="keyword">in</span> distances:</span><br><span class="line">                    distances[(clust[i].id,clust[j].id)]=distance(clust[i].vec,clust[j].vec)</span><br><span class="line">                d=distances[(clust[i].id,clust[j].id)]</span><br><span class="line">                <span class="keyword">if</span> d&lt;closest:</span><br><span class="line">                    closest=d</span><br><span class="line">                    lowestpair=(i,j)</span><br><span class="line">        mergevec=[(clust[lowestpair[<span class="number">0</span>]].vec[i]+clust[lowestpair[<span class="number">1</span>]].vec[i])/<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(len(clust[<span class="number">0</span>].vec))]</span><br><span class="line">        newcluster=Cluster_node(array(mergevec),left=clust[lowestpair[<span class="number">0</span>]],right=clust[lowestpair[<span class="number">1</span>]],distance=closest,id=currentclustid)</span><br><span class="line">        currentclustid-=<span class="number">1</span></span><br><span class="line">        <span class="keyword">del</span> clust[lowestpair[<span class="number">1</span>]]</span><br><span class="line">        <span class="keyword">del</span> clust[lowestpair[<span class="number">0</span>]]</span><br><span class="line">        clust.append(newcluster)</span><br><span class="line">    <span class="keyword">return</span> clust[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extract_clusters</span><span class="params">(clust,dist)</span>:</span></span><br><span class="line">    clusters=&#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> clust.distance&lt;dist:</span><br><span class="line">        <span class="keyword">return</span> [clust]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cl=[]</span><br><span class="line">        cr=[]</span><br><span class="line">        <span class="keyword">if</span> clust.left!=<span class="keyword">None</span>:</span><br><span class="line">            c1=extract_clusters(clust.left,dist=dist)</span><br><span class="line">        <span class="keyword">if</span> clust.right!=<span class="keyword">None</span>:</span><br><span class="line">            cr=extract_clusters(clust.right,dist=dist)</span><br><span class="line">        <span class="keyword">return</span> cl+cr</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_cluster_elements</span><span class="params">(clust)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> clust.id&gt;=<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> [clust.id]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cl=[]</span><br><span class="line">        cr=[]</span><br><span class="line">        <span class="keyword">if</span> clust.left!=<span class="keyword">None</span>:</span><br><span class="line">            c1=get_cluster_elements(clust.left)</span><br><span class="line">        <span class="keyword">if</span> clust.right!=<span class="keyword">None</span>:</span><br><span class="line">            cr=get_cluster_elements(clust.right)</span><br><span class="line">        <span class="keyword">return</span> cl+cr</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printclust</span><span class="params">(clust,labels=None,n=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        print(<span class="string">' '</span>,end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">if</span> clust.id&lt;<span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'-'</span>,end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> labels==<span class="keyword">None</span>:</span><br><span class="line">            print(clust.id,end=<span class="string">''</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(labels[clust.id],end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">if</span> clust.left!=<span class="keyword">None</span>:</span><br><span class="line">        printclust(clust.left,labels=labels,n=n+<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> clust.right!=<span class="keyword">None</span>:</span><br><span class="line">        printclust(clust.right,labels=labels,n=n+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getheight</span><span class="params">(clust)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> clust.left==<span class="keyword">None</span> <span class="keyword">and</span> clust.right==<span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> getheight(clust.left)+getheight(clust.right)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getdepth</span><span class="params">(clust)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> clust.left==<span class="keyword">None</span> <span class="keyword">and</span> clust.right==<span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> max(getheight(clust.left),getheight(clust.right))+clust.distance</span><br></pre></td></tr></table></figure></p>
+<p>下面是几个城市的GDP等信息，根据这些信息，写一个SOM网络，使之对下面城市进行聚类。并且，将结果画在一个二维平面上。</p>
+<p>//表1中，X。为人均GDP(元)；X2为工业总产值(亿元)；X。为社会消费品零售总额(亿元)；x。为批发零售贸易总额(亿元)；x。为地区货运总量(万吨)，表1中数据来自2002年城市统计年鉴。</p>
+<p>//城市 X1 X2 X3 Xa X5<br>北京 27527 2738.30 1494.83 3055.63 30500<br>青岛 29682 1212.02 182.80 598.06 29068<br>天津 22073 2663.56 782.33 1465.65 28151<br>烟台 21017 298.73 92.71 227.39 8178<br>石家庄 25584 467.42 156.02 763.46 12415<br>郑州 17330 261.80 215.63 402.98 7373<br>唐山 19387 338.67 95.73 199.69 14522<br>武汉 17882 1020.84 685.82 1452 16244<br>太原 13919 304.13 141.94 155.22 15170<br>长沙 26327 241.76 269.93 369.83 7550<br>呼和浩特 13738 82.23 69.27 108.12 2415<br>衡阳 12386 61.53 63.95 72.65 3004<br>沈阳 21736 729.04 590.26 1752.4 15156<br>广州 42828 2446.97 1166.10 3214.19 24500<br>大连 34659 1003.56 431.83 728.08 19736<br>深圳 152099 3079.63 609.26 801.06 5167<br>长春 24799 900.26 309.75 173.99 10346<br>油头 19414 192.93 112.96 280.84 1443<br>哈尔滨 20737 402.73 360.38 762.94 8814<br>湛江 15290 228.45 99.08 149.16 5524<br>上海 40788 6935.57 1531.89 3921.2 49499<br>南宁 17715 109.39 142.08 264.32 3371<br>南京 26697 1579.21 401.20 1253.73 14120<br>柳州 17598 256.76 68.93 159.44 3397<br>徐州 19727 295.73 108.17 187.39 7124<br>海口 24782 100.13 81.03 142.54 2018<br>连云港 17869 112.18 47.94 134.89 4096<br>成都 22956 412.23 400.56 754.07 23724<br>杭州 31784 1615.63 373.28 1788.29 15841<br>重庆 9778 870.82 389.60 823.72 29470<br>宁波 46471 751.58 167.70 529.68 11182<br>贵阳 13176 207.95 108.93 285.27 4885<br>温州 29781 381.93 233.44 272.84 6292<br>昆明 24554 303.78 227.44 428.64 12084<br>合肥 19770 330.14 140.14 328.98 2903<br>西安 16002 449.14 323.37 558.27 7728<br>福州 33570 379.51 209.72 613.24 7280<br>兰州 16629 354.30 163.97 374.9 5401<br>厦门 42039 803.29 186.55 620.47 2547<br>西宁 7261 38.00 48.95 91.14 1837<br>南昌 19923 238.82 14.09 348.21 3246<br>银川 12779 77.74 41.22 53.16 1573<br>济南 25642 616.97 323.08 462.39 13057<br>乌鲁木齐 19793 251.19 129.05 277.8 9283</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">result = pd.read_csv(<span class="string">'./data/diqu.csv'</span>,sep=<span class="string">'\s+'</span>,encoding=<span class="string">'gbk'</span>)</span><br><span class="line"><span class="comment"># 将result归一化</span></span><br><span class="line"><span class="comment"># 标准化操作：from sklearn.preprocessing import StanderdScaler</span></span><br><span class="line"><span class="comment"># result_std=StandardScaler().fit_transform(reslut)</span></span><br><span class="line">result_norm = (result.iloc[:,<span class="number">1</span>:] - result.iloc[:,<span class="number">1</span>:].min()) / (result.iloc[:,<span class="number">1</span>:].max() - result.iloc[:,<span class="number">1</span>:].min())</span><br><span class="line">result_norm.head()</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line">kmeans_model=KMeans(n_clusters=<span class="number">4</span>,random_state=<span class="number">1</span>)</span><br><span class="line">senator_distances=kmeans_model.fit_transform(result_norm.iloc[:,<span class="number">1</span>:])</span><br><span class="line">labels=kmeans_model.labels_</span><br><span class="line">print(pd.crosstab(labels,result[<span class="string">'城市'</span>]))</span><br><span class="line"><span class="comment"># democratic_outliers=votes[(labels==1)&amp;(result['party']!='D')]</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.scatter(x=senator_distances[:,<span class="number">0</span>],y=senator_distances[:,<span class="number">1</span>],c=labels)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pasted-78.png" alt="upload successful"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/24/聚类算法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-线性回归" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1187,114 +1330,6 @@ F -&gt; C
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/05/20/图/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-KNN" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/19/KNN/">KNN</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/19/KNN/" class="archive-article-date">
-  	<time datetime="2018-05-19T10:14:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="K邻近学习"><a href="#K邻近学习" class="headerlink" title="K邻近学习"></a>K邻近学习</h2><p>k近邻学习是一种监督学习算法，lazy-learning算法。训练复杂度为0。在给定的训练样本集中，基于某种距离度量，找出与训练集最靠近的k个训练样本，然后基于这k个邻居信息来进行预测。<br><strong>投票法：</strong>通常在分类任务中使用，判别方法是选择这k个样本中出现最多的雷冰标记作为预测结果。（所以k值取值一般为奇数，以便可以得到有偏向的投票结果）<br><strong>平均法：</strong>通常在回归任务中使用，判别方法是将这k个样本的实值输出标记的平均值最为预测结果。<br><strong>加权平均或加权投票：</strong>根据距离远近来决定权重，距离越近，权重越大。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526725719271s4cfc85r.png?imageslim" alt="paste image"><br>增加权重后，就可以避免由于密集的样本造成的影响。</p>
-<h3 id="KNN算法主要过程"><a href="#KNN算法主要过程" class="headerlink" title="KNN算法主要过程"></a>KNN算法主要过程</h3><ol>
-<li>计算训练样本和测试样本中每个样本点的距离（常见的距离度量有欧式距离，马氏距离等）；</li>
-<li>对上面所有的距离值进行排序；</li>
-<li>选前k个最小距离的样本；</li>
-<li>根据这k个样本的标签进行投票，得到最后的分类类别；</li>
-</ol>
-<p>如何选择一个最佳的K值，这取决于数据。一般情况下，在分类时较大的K值能够减小噪声的影响。但会使类别之间的界限变得模糊。一个较好的K值可通过各种启发式技术来获取，比如，交叉验证。另外噪声和非相关性特征向量的存在会使K近邻算法的准确性减小。<br>近邻算法具有较强的一致性结果。随着数据趋于无限，算法保证错误率不会超过贝叶斯算法错误率的两倍。对于一些好的K值，K近邻保证错误率不会超过贝叶斯理论误差率。</p>
-<h3 id="距离衡量方法"><a href="#距离衡量方法" class="headerlink" title="距离衡量方法"></a>距离衡量方法</h3><h4 id="Euclidean-Distance"><a href="#Euclidean-Distance" class="headerlink" title="Euclidean Distance"></a>Euclidean Distance</h4><p>$D=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}$</p>
-<h4 id="余弦（cos）"><a href="#余弦（cos）" class="headerlink" title="余弦（cos）"></a>余弦（cos）</h4><h4 id="相关度-correlation"><a href="#相关度-correlation" class="headerlink" title="相关度(correlation)"></a>相关度(correlation)</h4><p>$$cos(θ)=\frac{A·B}{||A||×||B||}$$</p>
-<h4 id="曼哈顿距离-Manhattan-distance"><a href="#曼哈顿距离-Manhattan-distance" class="headerlink" title="曼哈顿距离(Manhattan distance)"></a>曼哈顿距离(Manhattan distance)</h4><p>走过的街区数。</p>
-<h3 id="KNN算法的优缺点"><a href="#KNN算法的优缺点" class="headerlink" title="KNN算法的优缺点"></a>KNN算法的优缺点</h3><p><strong>优点：</strong>  </p>
-<ol>
-<li>思想简单，理论成熟，既可以用来做分类也可以用来做回归；</li>
-<li>可用于非线性分类；</li>
-<li>训练时间复杂度为O(n)；</li>
-<li>准确度高，对数据没有假设，对outlier不敏感；</li>
-</ol>
-<p><strong>缺点：</strong>  </p>
-<ol>
-<li>计算量大；</li>
-<li>样本不平衡问题（即有些类别的样本数量很多，而其它样本的数量很少）；</li>
-<li>需要大量的内存；</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> neighbors,datasets</span><br><span class="line">knn=neighbors.KNeighborsClassifier()</span><br><span class="line">iris=datasets.load_iris()</span><br><span class="line">knn.fit(iris.data,iris.target)</span><br><span class="line">predictedLabel=knn.predict([[<span class="number">0.1</span>,<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.4</span>]])</span><br><span class="line">print(predictedLabel)</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/19/KNN/">展开全文 >></a>
         </p>
       
 
