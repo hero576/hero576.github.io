@@ -146,6 +146,262 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-算法题——832-Flipping-an-Image" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/13/算法题——832-Flipping-an-Image/">算法题——832 Flipping an Image</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/13/算法题——832-Flipping-an-Image/" class="archive-article-date">
+  	<time datetime="2018-05-13T09:15:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><p>Given a binary matrix A, we want to flip the image horizontally, then invert it, and return the resulting image.</p>
+<p>To flip an image horizontally means that each row of the image is reversed.  For example, flipping [1, 1, 0] horizontally results in [0, 1, 1].</p>
+<p>To invert an image means that each 0 is replaced by 1, and each 1 is replaced by 0. For example, inverting [0, 1, 1] results in [1, 0, 0].<br><strong>Example 1:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line">Output: [[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]</span><br><span class="line">Explanation: First reverse each row: [[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]].</span><br><span class="line">Then, invert the image: [[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]</span><br></pre></td></tr></table></figure></p>
+<p><strong>Example 2:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]]</span><br><span class="line">Output: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]]</span><br><span class="line">Explanation: First reverse each row: [[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>]].</span><br><span class="line">Then invert the image: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]]</span><br></pre></td></tr></table></figure></p>
+<p>难度级别：简单</p>
+<p>这个题比较简单，用列表的方法就可以了。我的答案：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">flipAndInvertImage</span><span class="params">(self, A)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> A:</span><br><span class="line">            line.reverse()</span><br><span class="line">            <span class="keyword">for</span> i,val <span class="keyword">in</span> enumerate(line):</span><br><span class="line">                line[i]=<span class="number">0</span> <span class="keyword">if</span> val==<span class="number">1</span> <span class="keyword">else</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/13/算法题——832-Flipping-an-Image/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-数据结构——树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/13/数据结构——树/">数据结构——树</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/13/数据结构——树/" class="archive-article-date">
+  	<time datetime="2018-05-13T08:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><p>树是一种重要的非线性数据结构，主要的用途是用来提高查找效率，对于要重复查找的情况效果更佳，如二叉排序树、FP-树。另外可以用来提高编码效率，如哈弗曼树。一切具有层次关系的问题都可用树来描述。<br>树结构的特点是：</p>
+<ul>
+<li>它的每一个结点都可以有不止一个直接后继</li>
+<li>除根结点外的所有结点都有且只有一个直接前驱。<br>树的递归定义如下：</li>
+</ul>
+<ol>
+<li>至少有一个结点（称为根）</li>
+<li>其它是互不相交的子树</li>
+</ol>
+<h3 id="二叉树结构"><a href="#二叉树结构" class="headerlink" title="二叉树结构"></a>二叉树结构</h3><ul>
+<li>节点值</li>
+<li>左孩子</li>
+<li>右孩子<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span>:</span></span><br><span class="line">    <span class="comment"># 创建节点类，包含左右两个指针，一个节点</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,elem=None)</span>:</span></span><br><span class="line">        self.elem=elem</span><br><span class="line">        self.right=<span class="keyword">None</span></span><br><span class="line">        self.left=<span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="二叉树遍历"><a href="#二叉树遍历" class="headerlink" title="二叉树遍历"></a>二叉树遍历</h3><p><img src="http://p8cigu7up.bkt.clouddn.com/1526286772063isf9jqp4.png?imageslim" alt="paste image"><br><strong>先序遍历：</strong>1,2,4,5,3,6,7<br><strong>中序遍历：</strong>4,2,5,1,6,3,7<br><strong>后序遍历：</strong>4,5,2,6,7,3,1<br>还有：中右左、右中左、右左中三中不常见的遍历<br><strong>层序遍历：</strong>1,2,3,4,5,6,7<br>按层遍历二叉树实际上是宽度优先搜索的应用。</p>
+<p>使用递归实现二叉树的遍历：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">printTree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.root = Node()</span><br><span class="line">        self.myQueue = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, elem)</span>:</span>  <span class="comment"># 采用一个堆栈实现</span></span><br><span class="line">        node = Node(elem)</span><br><span class="line">        <span class="keyword">if</span> self.root.elem == <span class="keyword">None</span>:</span><br><span class="line">            self.root = node</span><br><span class="line">            self.myQueue.append(self.root)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cur = self.myQueue[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">if</span> cur.left == <span class="keyword">None</span>:</span><br><span class="line">                cur.left = node</span><br><span class="line">                self.myQueue.append(cur.left)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur.right = node</span><br><span class="line">                self.myQueue.append(cur.right)</span><br><span class="line">                self.myQueue.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pre_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#前序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br><span class="line">        self.pre_order(root.left)</span><br><span class="line">        self.pre_order(root.right)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mid_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#中序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.mid_order(root.left)</span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br><span class="line">        self.mid_order(root.right)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#后序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.post_order(root.left)</span><br><span class="line">        self.post_order(root.right)</span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
+<p>非递归实现二叉树的遍历：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pre_stack</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        node = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(node.elem, end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> node.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, node.right)</span><br><span class="line">        <span class="keyword">if</span> node.left:</span><br><span class="line">            stack.insert(<span class="number">0</span>, node.left)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mid_stack</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = []</span><br><span class="line">    cur = root</span><br><span class="line">    <span class="keyword">while</span> stack <span class="keyword">or</span> cur:</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            stack.insert(<span class="number">0</span>, cur)</span><br><span class="line">            cur = cur.left</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line">        cur = cur.right</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_stack</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现方法一</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack1 = [root]</span><br><span class="line">    stack2 = []</span><br><span class="line">    <span class="keyword">while</span> stack1:</span><br><span class="line">        cur = stack1.pop()</span><br><span class="line">        stack2.insert(<span class="number">0</span>, cur)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack1.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack1.append(cur.right)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> stack2:</span><br><span class="line">        print(i.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_stack2</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现方法二</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    h = root  <span class="comment"># 最近一次弹出并打印的节点</span></span><br><span class="line">    c = <span class="keyword">None</span>  <span class="comment"># 当前stack的栈顶节点</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        c = stack[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> c.left <span class="keyword">and</span> h != c.left <span class="keyword">and</span> h != c.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, c.left)</span><br><span class="line">        <span class="keyword">elif</span> c.right <span class="keyword">and</span> h != c.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, c.right)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            h = stack.pop(<span class="number">0</span>)</span><br><span class="line">            print(h.elem, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
+<p>递归和非递归的方法时间复杂度都是O(N)，N为二叉树节点数，额外空间复杂度为O(L)，L为二叉树的层数。</p>
+<p>实现二叉树的层序遍历：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack=[root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur=stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem,end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue_enter</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现换行</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    last = root  <span class="comment"># 表示正在打印的当前行的最右节点</span></span><br><span class="line">    nlast = <span class="keyword">None</span>  <span class="comment"># 表示下一行的最右节点</span></span><br><span class="line">    stack = [last]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">            nlast = cur.left</span><br><span class="line">        <span class="keyword">if</span> nlast.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line">            nlast = cur.right</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> last == cur:</span><br><span class="line">            print()</span><br><span class="line">            last = nlast</span><br></pre></td></tr></table></figure>
+<h4 id="根据遍历顺序还原二叉树"><a href="#根据遍历顺序还原二叉树" class="headerlink" title="根据遍历顺序还原二叉树"></a>根据遍历顺序还原二叉树</h4><p>例如给定前序和中序的打印顺序，求后续遍历。<br>前序遍历有个特点，第一个肯定为根。然后根据根，在中序遍历可以区分出来左子树和右子树。递归的查找，就可以还原了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">permid_post</span><span class="params">(perstr, midstr)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> perstr <span class="keyword">or</span> <span class="keyword">not</span> midstr:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    val = perstr[<span class="number">0</span>]</span><br><span class="line">    node = Node(val)</span><br><span class="line">    index = midstr.find(val)</span><br><span class="line">    permid_post(perstr[<span class="number">1</span>:index+<span class="number">1</span>],midstr[:index])</span><br><span class="line">    permid_post(perstr[index+<span class="number">1</span>:],midstr[index+<span class="number">1</span>:])</span><br><span class="line">    print(node.elem,end=<span class="string">' '</span>)</span><br><span class="line">perstr = <span class="string">'GDAFEMHZ'</span></span><br><span class="line">midstr = <span class="string">'ADEFGHMZ'</span></span><br><span class="line">permid_post(perstr,midstr)</span><br></pre></td></tr></table></figure></p>
+<h3 id="二叉树序列化和反序列化"><a href="#二叉树序列化和反序列化" class="headerlink" title="二叉树序列化和反序列化"></a>二叉树序列化和反序列化</h3><p>有时我们需要用文件的形式将二叉树记录下来，下次要重构二叉树的时候只需将按照文件重新建立二叉树即可。这个过程叫做序列化过程，也叫持久化过程。<br>序列化方式：</p>
+<ul>
+<li>先序遍历序列化</li>
+<li>中序遍历序列化</li>
+<li>后序遍历序列化</li>
+<li>按层序列化</li>
+</ul>
+<p>先序遍历二叉树过程与中序后序相同，步骤如下：</p>
+<ul>
+<li>假设序列化结果为str，初始时str为空字符串</li>
+<li>先序遍历二叉树时如果遇到空节点，在str末尾加上“#！”</li>
+<li>如果遇到不为空的节点，假设节点值为3，就在str末尾增加‘3！’<br>先序遍历反序列化过程：</li>
+<li>按照！分割字符串</li>
+<li>按照先序遍历的顺序构建二叉树，遇到#设置为空节点</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Serialize</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 把对象转换为字节序列的过程称为对象的序列化</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Per_order</span><span class="params">(root)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            result.append(<span class="string">'#!'</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        result.append(str(root.elem) + <span class="string">'!'</span>)</span><br><span class="line">        Per_order(root.left)</span><br><span class="line">        Per_order(root.right)</span><br><span class="line"></span><br><span class="line">    result = []</span><br><span class="line">    Per_order(root)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(result)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Deserialize2</span><span class="params">(self, s)</span>:</span>  <span class="comment"># 把字节序列恢复为对象的过程称为对象的反序列化</span></span><br><span class="line">    s = s.split(<span class="string">"!"</span>)</span><br><span class="line">    self.myroot=<span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(index)</span>:</span></span><br><span class="line">        index[<span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> index[<span class="number">0</span>] &gt;= len(s):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> s[index[<span class="number">0</span>]] == <span class="string">'#'</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        node = Node()</span><br><span class="line">        node.elem = s[index[<span class="number">0</span>]]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.myroot:</span><br><span class="line">            self.myroot = node</span><br><span class="line">        node.left = change(index)</span><br><span class="line">        node.right = change(index)</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">    index = [<span class="number">-1</span>]</span><br><span class="line">    change(index)</span><br><span class="line">    <span class="keyword">return</span> self.myroot</span><br></pre></td></tr></table></figure>
+<p>当然，用什么方法序列化，要用同样的方法反序列化才行。</p>
+<h3 id="二叉树的一些概念"><a href="#二叉树的一些概念" class="headerlink" title="二叉树的一些概念"></a>二叉树的一些概念</h3><h4 id="二叉的子树"><a href="#二叉的子树" class="headerlink" title="二叉的子树"></a>二叉的子树</h4><p>在二叉树中以任何一个节点为头部的整棵树称为二叉树的子树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526449053269984bqugc.png?imageslim" alt="paste image"><br>上图不是子树，因为不是整棵树。只是一个联通的子结构</p>
+<h4 id="平衡二叉树（AVL树）"><a href="#平衡二叉树（AVL树）" class="headerlink" title="平衡二叉树（AVL树）"></a>平衡二叉树（AVL树）</h4><ul>
+<li>空树是平衡二叉树</li>
+<li>一棵树不为空，并且其中所有子树都满足各自的左子树与有字数的高度差都不超过1。<br><img src="http://p8cigu7up.bkt.clouddn.com/15264502137521q7nmg1y.png?imageslim" alt="paste image"><br>这不是一颗平衡二叉树，以②为节点划分，左子树高度为2，右子树高度为0，高度差超过了1。</li>
+</ul>
+<p>判断一个树是否是平衡二叉树，采用递归的后续遍历：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526449320079uu0a5qv0.png?imageslim" alt="paste image"></p>
+<ol>
+<li>首先判断左子树是否为平衡二叉树返回false，则结束。</li>
+<li>计算左子树最深到哪一层，LH</li>
+<li>判断右子树是否为平衡二叉树返回false，则结束。</li>
+<li>计算右子树最深到哪一层，RH</li>
+<li>判断LH和RH是否相等。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_balanced2</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:<span class="comment">#空树是平衡二叉树</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span>,<span class="number">0</span></span><br><span class="line">    left_info=self.is_balanced(root.left)</span><br><span class="line">    right_info=self.is_balanced(root.right)</span><br><span class="line">    <span class="keyword">if</span> left_info[<span class="number">0</span>] <span class="keyword">and</span> right_info[<span class="number">0</span>]:</span><br><span class="line">        diff=left_info[<span class="number">1</span>]-right_info[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="number">-1</span>&lt;=diff&lt;=<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">False</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>不平衡二叉树旋转</strong><br>首先旋转的二叉树是二叉查找树，讨论的是其平衡问题。这样很好的解决了二叉查找树退化成链表的问题。使得插入、查找删除的最好最坏时间复杂度都为O(logN)。<br>左左或者右右，可以使用单旋转：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456177997sm3ap9gg.png?imageslim" alt="paste image"></p>
+<p>左右或者右左，可以使用双旋转<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456468138w779bb24.png?imageslim" alt="paste image"></p>
+<p><strong>平衡二叉树查找</strong><br><strong>平衡二叉树插入</strong><br><strong>平衡二叉树删除</strong> </p>
+<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>是满足以下条件的二叉树：</p>
+<ul>
+<li>左子树上所有节点值均小于根节点值</li>
+<li>右子树上所有节点值均不小于根节点值 </li>
+<li>左右子树也满足上述两个条件<br><img src="http://p8cigu7up.bkt.clouddn.com/1526202114625uqdqohku.png?imageslim" alt="paste image"></li>
+</ul>
+<p><strong>二叉查找树的查找过程</strong></p>
+<ul>
+<li>若当前节点cur的值小于p的值，查找cur的左子树</li>
+<li>若当前节点cur的值不小于p的值，查找cur的右子树</li>
+<li>递归上述过程，直到cur==p或者cur为空</li>
+</ul>
+<p><strong>二叉查找树的插入</strong></p>
+<p><strong>二叉查找树的删除</strong></p>
+<h4 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h4><p>除了最后一层的节点无任何子节点外，剩下的每一层节点都有两个子节点。</p>
+<pre><code>满二叉树层数为L，节点数为N，则$N=2^L-1$，$L=\log_2^{(N+1)}$
+</code></pre><h4 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h4><p>除了最后一层外，其他的每一层节点都是满的。最后一层慢了那就是满二叉树。最后一层不满，缺少的节点也全部集中在右边，那也是完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452010331fujrxunj.png?imageslim" alt="paste image"><img src="http://p8cigu7up.bkt.clouddn.com/1526452023806sp4w4qbd.png?imageslim" alt="paste image"><br>上面两个图均为完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452115869iru3yarm.png?imageslim" alt="paste image"><br>这就不是一个完全二叉树。</p>
+<p><strong>判断是否完全二叉树</strong></p>
+<ul>
+<li>采用按层遍历二叉树的方式，从每层左边向右边一次遍历所有节点。</li>
+<li>如果当前节点有右孩子，但没有左海子，直接返回False.</li>
+<li>如果当前节点不是左右孩子全有，那之后节点必须都为叶节点，否则返回False。</li>
+<li>遍历过程中如果不返回False，遍历结束后返回True。<h4 id="后继与前驱"><a href="#后继与前驱" class="headerlink" title="后继与前驱"></a>后继与前驱</h4><strong>后继节点：</strong>这个节点在中序遍历序列中的下一个节点。<br><strong>前驱结点：</strong>这个节点在中序遍历序列中的前一个节点。 </li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/13/数据结构——树/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-算法题——NO39 组合总和" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1014,574 +1270,6 @@
 
 
   
-    <article id="post-Scrapy设置项介绍" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/09/Scrapy设置项介绍/">Scrapy设置项介绍</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/09/Scrapy设置项介绍/" class="archive-article-date">
-  	<time datetime="2018-05-09T07:26:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h2><p>Scrapy设置允许您自定义所有Scrapy组件的行为，包括核心，扩展，管道和爬虫本身。<br>设置的基础结构提供了键值映射的全局命名空间，代码可以使用它从中提取配置值。可以通过不同的机制来填充设置，这将在下面描述。<br>这些设置也是选择当前活动Scrapy项目的机制（如果您有很多）。<br>有关可用内置设置的列表，请参阅：<a href="https://link.jianshu.com/?t=https://doc.scrapy.org/en/1.3/topics/settings.html#topics-settings-ref" target="_blank" rel="noopener">内置设置参考</a>。</p>
-<h2 id="指定设置"><a href="#指定设置" class="headerlink" title="指定设置"></a>指定设置</h2><p>当你使用Scrapy，你必须告诉它你使用哪些设置。您可以通过使用环境变量来执行此操作SCRAPY_SETTINGS_MODULE。<br>值SCRAPY_SETTINGS_MODULE应该在Python路径语法中，例如 myproject.settings。请注意，设置模块应该在Python 导入搜索路径上。    </p>
-<h2 id="填充设置"><a href="#填充设置" class="headerlink" title="填充设置"></a>填充设置</h2><p>可以使用不同的机制来填充设置，每个机制具有不同的优先级。这里是按优先级降序排列的列表：    </p>
-<ol>
-<li>命令行选项（最高优先级）  </li>
-<li>每个爬虫的设置  </li>
-<li>项目设置模块  </li>
-<li>每命令的默认设置  </li>
-<li>默认全局设置（优先级较低）<br>这些设置源的数量在内部处理，但可以使用API调用进行手动处理。请参阅 设置API主题以供参考。<br>这些机制在下面更详细地描述。    </li>
-</ol>
-<h3 id="1-命令行选项"><a href="#1-命令行选项" class="headerlink" title="1.命令行选项"></a>1.命令行选项</h3><p>命令行提供的参数是最优先的参数，覆盖任何其他选项。您可以使用-s（或–set）命令行选项显式覆盖一个（或多个）设置。<br>例：    </p>
-<pre><code class="python">scrapy crawl myspider -s
-LOG_FILE=scrapy.log
-</code></pre>
-<h3 id="2-每个爬虫的设置"><a href="#2-每个爬虫的设置" class="headerlink" title="2.每个爬虫的设置"></a>2.每个爬虫的设置</h3><p>爬虫（请参阅爬虫章节以供参考）可以定义自己的设置，这些设置将优先并覆盖项目。他们可以通过设置custom_settings属性来实现：  </p>
-<pre><code>class MySpider(scrapy.Spider):  
-    name = &apos;myspider&apos;    
-    custom_settings = {  
-        &apos;SOME_SETTING&apos;: &apos;some value&apos;,  
-    }  
-</code></pre><h3 id="3-项目设置模块"><a href="#3-项目设置模块" class="headerlink" title="3.项目设置模块"></a>3.项目设置模块</h3><p>项目设置模块是Scrapy项目的标准配置文件，它将填充大多数自定义设置。对于标准的Scrapy项目，这意味着您将添加或更改settings.py为您的项目创建的文件中的设置。    </p>
-<h3 id="4-每命令的默认设置"><a href="#4-每命令的默认设置" class="headerlink" title="4.每命令的默认设置"></a>4.每命令的默认设置</h3><p>每个Scrapy工具命令都可以有自己的默认设置，覆盖全局默认设置。这些自定义命令设置default_settings在命令类的属性中指定。    </p>
-<h3 id="5-默认全局设置"><a href="#5-默认全局设置" class="headerlink" title="5.默认全局设置"></a>5.默认全局设置</h3><p>全局默认值位于scrapy.settings.default_settings 模块中，并记录在内置设置参考部分中。    </p>
-<h3 id="如何访问设置"><a href="#如何访问设置" class="headerlink" title="如何访问设置"></a>如何访问设置</h3><p>在爬虫中，设置可通过self.settings以下方式获得：  </p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">MySpider</span><span class="params">(scrapy.Spider)</span>:</span>  
-    name = <span class="string">'myspider'</span>  
-    start_urls = [<span class="string">'http://example.com'</span>]    
-    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span>  
-        print(<span class="string">"Existing settings: %s"</span> % self.settings.attributes.keys())  
-</code></pre>
-<p><strong>注意</strong><br>该settings爬虫初始化后的属性是在基类爬虫设置。如果你想在初始化之前使用设置（例如，在你的爬虫的<strong>init</strong>()方法），你需要覆盖该 from_crawler()方法。<br>可以scrapy.crawler.Crawler.settings 通过传递到from_crawler扩展，中间件和项目管道中的方法的爬网程序的属性访问设置：  </p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">MyExtension</span><span class="params">(object)</span>:</span>  
-    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, log_is_enabled=False)</span>:</span>  
-        <span class="keyword">if</span> log_is_enabled:  
-            print(<span class="string">"log is enabled!"</span>)    
-<span class="meta">    @classmethod  </span>
-    <span class="function"><span class="keyword">def</span> <span class="title">from_crawler</span><span class="params">(cls, crawler)</span>:</span>  
-        settings = crawler.settings  
-        <span class="keyword">return</span> cls(settings.getbool(<span class="string">'LOG_ENABLED'</span>))  
-</code></pre>
-<p>设置对象可以像dict（例如， settings[‘LOG_ENABLED’]）一样使用，但通常首选使用SettingsAPI 提供的方法之一，以您需要的格式提取设置，以避免类型错误。    </p>
-<h3 id="设置名称的原因"><a href="#设置名称的原因" class="headerlink" title="设置名称的原因"></a>设置名称的原因</h3><p>设置名称通常以它们配置的组件为前缀。例如，对于一个虚构的robots.txt分机正确的设置的名称将是<br>ROBOTSTXT_ENABLED，ROBOTSTXT_OBEY，ROBOTSTXT_CACHEDIR等。    </p>
-<h3 id="内置设置参考"><a href="#内置设置参考" class="headerlink" title="内置设置参考"></a>内置设置参考</h3><p>以下是所有可用Scrapy设置的列表，按字母顺序，以及其默认值和适用范围。<br>范围（如果可用）显示设置在哪里使用，如果它绑定到任何特定组件。在这种情况下，将显示该组件的模块，通常是扩展，中间件或管道。这也意味着必须启用组件才能使设置具有任何效果。</p>
-<ul>
-<li><p>AWS_ACCESS_KEY_ID<br>默认：None<br>由需要访问Amazon Web服务的代码使用的AWS访问密钥，例如S3源存储后端。    </p>
-</li>
-<li><p>AWS_SECRET_ACCESS_KEY<br>默认： None<br>由需要访问Amazon Web服务的代码使用的AWS密钥，例如S3源存储后端。    </p>
-</li>
-<li><p>BOT_NAME<br>默认： ‘scrapybot’<br>此Scrapy项目实施的bot的名称（也称为项目名称）。这将用于默认情况下构造User-Agent，也用于日志记录。<br>当您使用startproject命令创建项目时，它会自动填充您的项目名称。    </p>
-</li>
-<li><p>CONCURRENT_ITEMS<br>默认： 100<br>在项处理器（也称为项目管道）中并行处理的并发项目的最大数量（每个响应）。    </p>
-</li>
-<li><p>CONCURRENT_REQUESTS<br>默认： 16<br>将由Scrapy下载程序执行的并发（即同时）请求的最大数量。    </p>
-</li>
-<li><p>CONCURRENT_REQUESTS_PER_DOMAIN<br>默认： 8<br>将对任何单个域执行的并发（即同时）请求的最大数量。<br>参见：AutoThrottle扩展及其 AUTOTHROTTLE_TARGET_CONCURRENCY选项。    </p>
-</li>
-<li><p>CONCURRENT_REQUESTS_PER_IP<br>默认： 0<br>将对任何单个IP执行的并发（即同时）请求的最大数量。如果非零，CONCURRENT_REQUESTS_PER_DOMAIN则忽略该 设置，而改为使用此设置。换句话说，并发限制将应用于每个IP，而不是每个域。<br>此设置也会影响DOWNLOAD_DELAY和 AutoThrottle扩展：如果CONCURRENT_REQUESTS_PER_IP 非零，下载延迟是强制每IP，而不是每个域。    </p>
-</li>
-<li><p>DEFAULT_ITEM_CLASS<br>默认： ‘scrapy.item.Item’<br>将用于在Scrapy shell中实例化项的默认类。    </p>
-</li>
-<li><p>DEFAULT_REQUEST_HEADERS<br>默认：      </p>
-<pre><code class="shell">{  
-&#39;Accept&#39;: &#39;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#39;,  
-&#39;Accept-Language&#39;: &#39;en&#39;,  
-}  
-</code></pre>
-<p>用于Scrapy HTTP请求的默认标头。他们居住在 DefaultHeadersMiddleware。    </p>
-</li>
-<li><p>DEPTH_LIMIT<br>默认： 0<br>范围：  scrapy.spidermiddlewares.depth.DepthMiddleware<br>允许抓取任何网站的最大深度。如果为零，则不施加限制。    </p>
-</li>
-<li><p>DEPTH_PRIORITY<br>默认： 0<br>范围： scrapy.spidermiddlewares.depth.DepthMiddleware<br>用于根据深度调整请求优先级的整数：<br>如果为零（默认），则不从深度进行优先级调整<br>正值将降低优先级，即，较高深度请求将被稍后处理 ; 这通常用于做广度优先爬网（BFO）<br>负值将增加优先级，即，较高深度请求将被更快地处理（DFO）<br>参见：Scrapy是否以广度优先或深度优先顺序爬行？关于调整BFO或DFO的Scrapy。<br><strong>注意</strong><br>此设置以与其他优先级设置 和相反的方式调整优先级。REDIRECT_PRIORITY_ADJUSTRETRY_PRIORITY_ADJUST    </p>
-</li>
-<li><p>DEPTH_STATS<br>默认： True<br>范围： scrapy.spidermiddlewares.depth.DepthMiddleware<br>是否收集最大深度统计。    </p>
-</li>
-<li><p>DEPTH_STATS_VERBOSE<br>默认： False<br>范围： scrapy.spidermiddlewares.depth.DepthMiddleware<br>是否收集详细的深度统计信息。如果启用此选项，则在统计信息中收集每个深度的请求数。    </p>
-</li>
-<li><p>DNSCACHE_ENABLED<br>默认： True<br>是否启用DNS内存缓存。    </p>
-</li>
-<li><p>DNSCACHE_SIZE<br>默认： 10000<br>DNS内存缓存大小。    </p>
-</li>
-<li><p>DNS_TIMEOUT<br>默认： 60<br>以秒为单位处理DNS查询的超时。支持浮点。    </p>
-</li>
-<li><p>DOWNLOADER<br>默认： ‘scrapy.core.downloader.Downloader’<br>用于抓取的下载器。    </p>
-</li>
-<li><p>DOWNLOADER_HTTPCLIENTFACTORY<br>默认： ‘scrapy.core.downloader.webclient.ScrapyHTTPClientFactory’<br>定义protocol.ClientFactory 用于HTTP / 1.0连接（for HTTP10DownloadHandler）的Twisted 类。<br><strong>注意</strong><br>HTTP / 1.0现在很少使用，所以你可以安全地忽略这个设置，除非你使用Twisted &lt;11.1，或者如果你真的想使用HTTP / 1.0和覆盖DOWNLOAD_HANDLERS_BASE相应的http(s)方案，即到 ‘scrapy.core.downloader.handlers.http.HTTP10DownloadHandler’。    </p>
-</li>
-<li><p>DOWNLOADER_CLIENTCONTEXTFACTORY<br>默认： ‘scrapy.core.downloader.contextfactory.ScrapyClientContextFactory’<br>表示要使用的ContextFactory的类路径。<br>这里，“ContextFactory”是用于SSL / TLS上下文的Twisted术语，定义要使用的TLS / SSL协议版本，是否执行证书验证，或者甚至启用客户端验证（以及各种其他事情）。<br><strong>注意</strong><br>Scrapy默认上下文工厂不执行远程服务器证书验证。这通常对于网络刮削是很好的。<br>如果您需要启用远程服务器证书验证，Scrapy还有另一个上下文工厂类，您可以设置， ‘scrapy.core.downloader.contextfactory.BrowserLikeContextFactory’使用平台的证书来验证远程端点。 仅当使用Twisted&gt; = 14.0时，此选项才可用。<br>如果你使用一个自定义的ContextFactory，确保它接受一个method 参数在init（这是OpenSSL.SSL方法映射DOWNLOADER_CLIENT_TLS_METHOD）。    </p>
-</li>
-<li><p>DOWNLOADER_CLIENT_TLS_METHOD<br>默认： ‘TLS’<br>使用此设置可自定义默认HTTP / 1.1下载程序使用的TLS / SSL方法。<br>此设置必须是以下字符串值之一：<br>‘TLS’：映射到OpenSSL TLS_method()（aka SSLv23_method()），允许协议协商，从平台支持的最高开始; 默认，推荐<br>‘TLSv1.0’：此值强制HTTPS连接使用TLS版本1.0; 如果你想要Scrapy &lt;1.1的行为，设置这个<br>‘TLSv1.1’：强制TLS版本1.1<br>‘TLSv1.2’：强制TLS版本1.2<br>‘SSLv3’：强制SSL版本3（不推荐）<br><em>注意</em><br>我们建议您使用PyOpenSSL&gt; = 0.13和Twisted&gt; = 0.13或以上（如果可以，Twisted&gt; = 14.0）。    </p>
-</li>
-<li><p>DOWNLOADER_MIDDLEWARES<br>默认：： {}<br>包含在您的项目中启用的下载器中间件及其顺序的字典。有关更多信息，请参阅激活下载器中间件。    </p>
-</li>
-<li><p>DOWNLOADER_MIDDLEWARES_BASE<br>默认：  </p>
-<pre><code class="shell">{  
-&#39;scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware&#39;: 100,  
-&#39;scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware&#39;: 300,  
-&#39;scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware&#39;: 350,  
-&#39;scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware&#39;: 400,  
-&#39;scrapy.downloadermiddlewares.useragent.UserAgentMiddleware&#39;: 500,  
-&#39;scrapy.downloadermiddlewares.retry.RetryMiddleware&#39;: 550,  
-&#39;scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware&#39;: 560,  
-&#39;scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware&#39;: 580,  
-&#39;scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware&#39;: 590,  
-&#39;scrapy.downloadermiddlewares.redirect.RedirectMiddleware&#39;: 600,  
-&#39;scrapy.downloadermiddlewares.cookies.CookiesMiddleware&#39;: 700,  
-&#39;scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware&#39;: 750,  
-&#39;scrapy.downloadermiddlewares.stats.DownloaderStats&#39;: 850,  
-&#39;scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware&#39;: 900,  
-}  
-</code></pre>
-<p>包含Scrapy中默认启用的下载器中间件的字典。低订单更靠近发动机，高订单更接近下载器。您不应该在项目中修改此设置，DOWNLOADER_MIDDLEWARES而应修改 。有关更多信息，请参阅 激活下载器中间件。    </p>
-</li>
-<li><p>DOWNLOADER_STATS<br>默认： True<br>是否启用下载器统计信息收集。    </p>
-</li>
-<li><p>DOWNLOAD_DELAY<br>默认： 0<br>下载器在从同一网站下载连续页面之前应等待的时间（以秒为单位）。这可以用于限制爬行速度，以避免击中服务器太难。支持小数。例：<br>DOWNLOAD_DELAY = 0.25    # 250 ms of delay<br>此设置也受RANDOMIZE_DOWNLOAD_DELAY 设置（默认情况下启用）的影响。默认情况下，Scrapy不会在请求之间等待固定的时间量，而是使用0.5 <em> DOWNLOAD_DELAY和1.5 </em> 之间的随机间隔DOWNLOAD_DELAY。<br>当CONCURRENT_REQUESTS_PER_IP为非零时，每个IP地址而不是每个域强制执行延迟。<br>您还可以通过设置download_delay spider属性来更改每个爬虫的此设置。    </p>
-</li>
-<li><p>DOWNLOAD_HANDLERS<br>默认： {}<br>包含在您的项目中启用的请求下载器处理程序的dict。参见DOWNLOAD_HANDLERS_BASE示例格式。    </p>
-</li>
-<li><p>DOWNLOAD_HANDLERS_BASE<br>默认：    </p>
-<pre><code class="shell">{   
-&#39;file&#39; ： &#39;scrapy.core.downloader.handlers.file.FileDownloadHandler&#39; ，  
-&#39;http&#39; ： &#39;scrapy.core.downloader.handlers.http.HTTPDownloadHandler&#39; ，  
-&#39;https&#39; ： &#39;scrapy.core.downloader.handlers。 http.HTTPDownloadHandler&#39; ，  
-&#39;s3&#39; ： &#39;scrapy.core.downloader.handlers.s3.S3DownloadHandler&#39; ，  
-&#39;ftp&#39; ： &#39;scrapy.core.downloader.handlers.ftp.FTPDownloadHandler&#39; ，  
-}  
-</code></pre>
-<p>包含Scrapy中默认启用的请求下载处理程序的字典。您不应该在项目中修改此设置，DOWNLOAD_HANDLERS而应修改 。<br>您可以通过在其中None分配URI方案来禁用这些下载处理程序DOWNLOAD_HANDLERS。例如，要禁用内置的FTP处理程序（无替换），请将其放置在settings.py：  </p>
-<pre><code class="shell">DOWNLOAD_HANDLERS = {  
-&#39;ftp&#39;: None,  
-}  
-</code></pre>
-</li>
-<li><p>DOWNLOAD_TIMEOUT<br>默认： 180<br>下载器在超时前等待的时间量（以秒为单位）。<br><em>注意</em><br>可以使用download_timeout Spider属性和每个请求使用download_timeout Request.meta键为每个爬虫设置此超时。    </p>
-</li>
-<li><p>DOWNLOAD_MAXSIZE<br>默认值：1073741824（1024MB）<br>下载器将下载的最大响应大小（以字节为单位）。<br>如果要禁用它设置为0。<br><strong>注意</strong><br>可以使用download_maxsize Spider属性和每个请求使用download_maxsize Request.meta键为每个爬虫设置此大小。<br>此功能需要Twisted&gt; = 11.1。    </p>
-</li>
-<li><p>DOWNLOAD_WARNSIZE<br>默认值：33554432（32MB）<br>下载程序将开始警告的响应大小（以字节为单位）。<br>如果要禁用它设置为0。<br><strong>注意</strong><br>可以使用download_warnsize Spider属性和每个请求使用download_warnsize Request.meta键为每个爬虫设置此大小。<br>此功能需要Twisted&gt; = 11.1。    </p>
-</li>
-<li><p>DUPEFILTER_CLASS<br>默认： ‘scrapy.dupefilters.RFPDupeFilter’<br>用于检测和过滤重复请求的类。<br>默认（RFPDupeFilter）过滤器基于请求指纹使用该scrapy.utils.request.request_fingerprint函数。为了改变重复检查的方式，你可以子类化RFPDupeFilter并重载它的request_fingerprint方法。这个方法应该接受scrapy Request对象并返回其指纹（一个字符串）。    </p>
-</li>
-<li><p>DUPEFILTER_DEBUG<br>默认： False<br>默认情况下，RFPDupeFilter只记录第一个重复的请求。设置DUPEFILTER_DEBUG为True将使其记录所有重复的请求。    </p>
-</li>
-<li><p>EDITOR<br>默认值：取决于环境<br>用于使用edit命令编辑爬虫的编辑器。它默认为EDITOR环境变量，如果设置。否则，它默认为vi（在Unix系统上）或IDLE编辑器（在Windows上）。    </p>
-</li>
-<li><p>EXTENSIONS<br>默认：： {}<br>包含项目中启用的扩展名及其顺序的字典。    </p>
-</li>
-<li><p>EXTENSIONS_BASE<br>默认：    </p>
-<pre><code class="shell">{  
-&#39;scrapy.extensions.corestats.CoreStats&#39;: 0,  
-&#39;scrapy.extensions.telnet.TelnetConsole&#39;: 0,  
-&#39;scrapy.extensions.memusage.MemoryUsage&#39;: 0,  
-&#39;scrapy.extensions.memdebug.MemoryDebugger&#39;: 0,  
-&#39;scrapy.extensions.closespider.CloseSpider&#39;: 0,  
-&#39;scrapy.extensions.feedexport.FeedExporter&#39;: 0,  
-&#39;scrapy.extensions.logstats.LogStats&#39;: 0,  
-&#39;scrapy.extensions.spiderstate.SpiderState&#39;: 0,  
-&#39;scrapy.extensions.throttle.AutoThrottle&#39;: 0,  
-}  
-</code></pre>
-<p>包含默认情况下在Scrapy中可用的扩展名及其顺序的字典。此设置包含所有稳定的内置扩展。请记住，其中一些需要通过设置启用。<br>有关详细信息，请参阅扩展程序用户指南 和可用扩展列表。    </p>
-</li>
-<li><p>FEED_TEMPDIR<br>Feed Temd dir允许您在使用FTP源存储和 Amazon S3上传之前设置自定义文件夹以保存搜寻器临时文件。    </p>
-</li>
-<li><p>ITEM_PIPELINES<br>默认： {}<br>包含要使用的项目管道及其顺序的字典。顺序值是任意的，但通常将它们定义在0-1000范围内。较低订单处理较高订单前。<br>例：  </p>
-<pre><code class="shell">ITEM_PIPELINES = {  
-&#39;mybot.pipelines.validate.ValidateMyItem&#39;: 300,  
-&#39;mybot.pipelines.validate.StoreMyItem&#39;: 800,  
-}  
-</code></pre>
-</li>
-<li><p>ITEM_PIPELINES_BASE<br>默认： {}<br>包含Scrapy中默认启用的管道的字典。您不应该在项目中修改此设置，ITEM_PIPELINES而应修改。    </p>
-</li>
-<li><p>LOG_ENABLED<br>默认： True<br>是否启用日志记录。    </p>
-</li>
-<li><p>LOG_ENCODING<br>默认： ‘utf-8’<br>用于记录的编码。    </p>
-</li>
-<li><p>LOG_FILE<br>默认： None<br>用于记录输出的文件名。如果None，将使用标准误差。    </p>
-</li>
-<li><p>LOG_FORMAT<br>默认： ‘%(asctime)s [%(name)s] %(levelname)s: %(message)s’<br>用于格式化日志消息的字符串。有关可用占位符的完整列表，请参阅Python日志记录文档。    </p>
-</li>
-<li><p>LOG_DATEFORMAT<br>默认： ‘%Y-%m-%d %H:%M:%S’<br>用于格式化日期/时间的字符串，占位符的%(asctime)s扩展LOG_FORMAT。有关可用指令的完整列表，请参阅Python datetime文档。    </p>
-</li>
-<li><p>LOG_LEVEL<br>默认： ‘DEBUG’<br>记录的最低级别。可用级别为：CRITICAL，ERROR，WARNING，INFO，DEBUG。有关详细信息，请参阅日志。    </p>
-</li>
-<li><p>LOG_STDOUT<br>默认： False<br>如果True，您的进程的所有标准输出（和错误）将被重定向到日志。例如，如果它将出现在Scrapy日志中。print ‘hello’    </p>
-</li>
-<li><p>LOG_SHORT_NAMES<br>默认： False<br>如果True，日志将仅包含根路径。如果设置为，False 则它显示负责日志输出的组件    </p>
-</li>
-<li><p>MEMDEBUG_ENABLED<br>默认： False<br>是否启用内存调试。    </p>
-</li>
-<li><p>MEMDEBUG_NOTIFY<br>默认： []<br>当启用内存调试时，如果此设置不为空，则会将内存报告发送到指定的地址，否则报告将写入日志。<br>例：  </p>
-<pre><code class="shell">MEMDEBUG_NOTIFY = [&#39;user@example.com&#39;]  
-</code></pre>
-</li>
-<li><p>MEMUSAGE_ENABLED<br>默认： False<br>范围： scrapy.extensions.memusage<br>是否启用内存使用扩展，当超过内存限制时关闭Scrapy进程，并在发生这种情况时通过电子邮件通知。<br>请参阅内存使用扩展。    </p>
-</li>
-<li><p>MEMUSAGE_LIMIT_MB<br>默认： 0<br>范围： scrapy.extensions.memusage<br>在关闭Scrapy之前允许的最大内存量（以兆字节为单位）（如果MEMUSAGE_ENABLED为True）。如果为零，则不执行检查。<br>请参阅内存使用扩展。    </p>
-</li>
-<li><p>MEMUSAGE_CHECK_INTERVAL_SECONDS<br>新版本1.1。<br>默认： 60.0<br>范围： scrapy.extensions.memusage<br>该内存使用扩展 检查当前内存使用情况，相对于限制由设置 MEMUSAGE_LIMIT_MB和MEMUSAGE_WARNING_MB在固定的时间间隔。<br>这将设置这些间隔的长度（以秒为单位）。<br>请参阅内存使用扩展。    </p>
-</li>
-<li><p>MEMUSAGE_NOTIFY_MAIL<br>默认： False<br>范围： scrapy.extensions.memusage<br>要达到内存限制时通知的电子邮件列表。<br>例：  </p>
-<pre><code class="shell">MEMUSAGE_NOTIFY_MAIL = [&#39;user@example.com&#39;]  
-</code></pre>
-<p>请参阅内存使用扩展。    </p>
-</li>
-<li><p>MEMUSAGE_REPORT<br>默认： False<br>范围： scrapy.extensions.memusage<br>是否在每个爬虫关闭后发送内存使用报告。<br>请参阅内存使用扩展。    </p>
-</li>
-<li><p>MEMUSAGE_WARNING_MB<br>默认： 0<br>范围： scrapy.extensions.memusage<br>在发送警告电子邮件通知之前，要允许的最大内存量（以兆字节为单位）。如果为零，则不会产生警告。    </p>
-</li>
-<li><p>NEWSPIDER_MODULE<br>默认： ‘’<br>模块在哪里使用genspider命令创建新的爬虫。<br>例：  </p>
-<pre><code class="shell">NEWSPIDER_MODULE = &#39;mybot.spiders_dev&#39;  
-</code></pre>
-</li>
-<li><p>RANDOMIZE_DOWNLOAD_DELAY<br>默认： True<br>如果启用，Scrapy会在从同一网站获取请求时等待随机时间（介于0.5 <em> DOWNLOAD_DELAY和1.5 </em>之间DOWNLOAD_DELAY）。<br>该随机化降低了由分析请求的站点检测（并随后阻塞）爬行器的机会，所述站点在它们的请求之间的时间内寻找统计上显着的相似性。<br>随机化策略与wget –random-wait选项使用的策略相同。<br>如果DOWNLOAD_DELAY为零（默认），此选项不起作用。    </p>
-</li>
-<li><p>REACTOR_THREADPOOL_MAXSIZE<br>默认： 10<br>Twisted Reactor线程池大小的上限。这是各种Scrapy组件使用的常见多用途线程池。线程DNS解析器，BlockingFeedStorage，S3FilesStore仅举几个例子。如果您遇到阻塞IO不足的问题，请增加此值。    </p>
-</li>
-<li><p>REDIRECT_MAX_TIMES<br>默认： 20<br>定义请求可重定向的最长时间。在此最大值之后，请求的响应被原样返回。我们对同一个任务使用Firefox默认值。    </p>
-</li>
-<li><p>REDIRECT_PRIORITY_ADJUST<br>默认： +2<br>范围： scrapy.downloadermiddlewares.redirect.RedirectMiddleware<br>相对于原始请求调整重定向请求优先级：<br>正优先级调整（默认）意味着更高的优先级。<br>负优先级调整意味着较低优先级。  </p>
-</li>
-<li><p>RETRY_PRIORITY_ADJUST<br>默认： -1<br>范围： scrapy.downloadermiddlewares.retry.RetryMiddleware<br>调整相对于原始请求的重试请求优先级：<br>正优先级调整意味着更高的优先级。<br>负优先级调整（默认）表示较低优先级。  </p>
-</li>
-<li><p>ROBOTSTXT_OBEY<br>默认： False<br>范围： scrapy.downloadermiddlewares.robotstxt<br>如果启用，Scrapy会尊重robots.txt政策。有关详细信息，请参阅 RobotsTxtMiddleware。<br><strong>注意</strong><br>虽然默认值是False由于历史原因，默认情况下在settings.py文件中通过命令生成此选项。scrapy startproject    </p>
-</li>
-<li><p>SCHEDULER<br>默认： ‘scrapy.core.scheduler.Scheduler’<br>用于爬网的调度程序。    </p>
-</li>
-<li><p>SCHEDULER_DEBUG<br>默认： False<br>设置True将记录有关请求调度程序的调试信息。如果请求无法序列化到磁盘，则当前日志（仅一次）。Stats counter（scheduler/unserializable）跟踪发生的次数。<br>日志中的示例条目：  </p>
-<pre><code class="shell">1956-01-31 00:00:00+0800 [scrapy.core.scheduler] ERROR: Unable to serialize request:  
-&lt;GET http://example.com&gt; 
-- reason: cannot serialize &lt;Request at 0x9a7c7ec&gt;  
-(type Request)&gt; 
-- no more unserializable requests will be logged  
-(see 'scheduler/unserializable' stats counter)  
-</code></pre>
-</li>
-<li><p>SCHEDULER_DISK_QUEUE<br>默认： ‘scrapy.squeues.PickleLifoDiskQueue’<br>将由调度程序使用的磁盘队列的类型。其它可用的类型有 scrapy.squeues.PickleFifoDiskQueue，scrapy.squeues.MarshalFifoDiskQueue， scrapy.squeues.MarshalLifoDiskQueue。    </p>
-</li>
-<li><p>SCHEDULER_MEMORY_QUEUE<br>默认： ‘scrapy.squeues.LifoMemoryQueue’<br>调度程序使用的内存中队列的类型。其他可用类型是： scrapy.squeues.FifoMemoryQueue。    </p>
-</li>
-<li><p>SCHEDULER_PRIORITY_QUEUE<br>默认： ‘queuelib.PriorityQueue’<br>调度程序使用的优先级队列的类型。    </p>
-</li>
-<li><p>SPIDER_CONTRACTS<br>默认：： {}<br>包含在项目中启用的爬虫契约的dict，用于测试爬虫。有关更多信息，请参阅爬虫合同。    </p>
-</li>
-<li><p>SPIDER_CONTRACTS_BASE<br>默认：  </p>
-<pre><code class="shell">{  
-  &#39;scrapy.contracts.default.UrlContract&#39; : 1,  
-  &#39;scrapy.contracts.default.ReturnsContract&#39;: 2,  
-  &#39;scrapy.contracts.default.ScrapesContract&#39;: 3,  
-}  
-</code></pre>
-<p>包含Scrapy中默认启用的scrapy合约的dict。您不应该在项目中修改此设置，SPIDER_CONTRACTS 而应修改。有关更多信息，请参阅爬虫合同。<br>您可以通过None将其中的类路径指定为禁用任何这些合同SPIDER_CONTRACTS。例如，要禁用内置 ScrapesContract，将此放在您的settings.py：  </p>
-<pre><code class="shell">SPIDER_CONTRACTS = {  
-  &#39;scrapy.contracts.default.ScrapesContract&#39;: None,  
-}  
-</code></pre>
-</li>
-<li><p>SPIDER_LOADER_CLASS<br>默认： ‘scrapy.spiderloader.SpiderLoader’<br>将用于加载爬虫程序的类，它必须实现 SpiderLoader API。    </p>
-</li>
-<li><p>SPIDER_LOADER_WARN_ONLY<br>新版本1.3.3。<br>默认： False<br>默认情况下，当scrapy尝试从中导入爬虫类时SPIDER_MODULES，如果有任何ImportError异常，它将大声失败。但是你可以选择沉默此异常，并通过设置将其变成一个简单的警告。SPIDER_LOADER_WARN_ONLY = True<br><strong>注意</strong><br>有些scrapy命令使用此设置运行True 已经（即他们只会发出警告并不会失败），因为他们实际上并不需要加载爬虫类的工作: scrapy runspider, scrapy settings, scrapy startproject, scrapy version.    </p>
-</li>
-<li><p>SPIDER_MIDDLEWARES<br>默认：： {}<br>包含在您的项目中启用的爬虫中间件的字典及其顺序。有关更多信息，请参阅激活爬虫中间件。    </p>
-</li>
-<li><p>SPIDER_MIDDLEWARES_BASE<br>默认：  </p>
-<pre><code class="shell">{  
-&#39;scrapy.spidermiddlewares.httperror.HttpErrorMiddleware&#39;: 50,  
-&#39;scrapy.spidermiddlewares.offsite.OffsiteMiddleware&#39;: 500,  
-&#39;scrapy.spidermiddlewares.referer.RefererMiddleware&#39;: 700,  
-&#39;scrapy.spidermiddlewares.urllength.UrlLengthMiddleware&#39;: 800,  
-&#39;scrapy.spidermiddlewares.depth.DepthMiddleware&#39;: 900,  
-}  
-</code></pre>
-<p>包含在Scrapy中默认启用的爬虫中间件的字典及其顺序。低订单更靠近发动机，高订单更接近爬虫。有关更多信息，请参阅激活爬虫中间件。    </p>
-</li>
-<li><p>SPIDER_MODULES<br>默认： []<br>Scrapy将寻找爬虫的模块列表。<br>例：<br>SPIDER_MODULES = [‘mybot.spiders_prod’, ‘mybot.spiders_dev’]<br>STATS_CLASS<br>默认： ‘scrapy.statscollectors.MemoryStatsCollector’<br>用于收集统计信息的类，谁必须实现 Stats Collector API。<br>STATS_DUMP<br>默认： True<br>一旦爬虫完成，转储Scrapy统计（到Scrapy日志）。<br>更多信息请参阅：统计数据收集。    </p>
-</li>
-<li><p>STATSMAILER_RCPTS<br>默认:( []空列表）<br>爬虫完成刮擦后发送Scrapy stats。查看 StatsMailer更多信息。    </p>
-</li>
-<li><p>TELNETCONSOLE_ENABLED<br>默认： True<br>布尔值，指定是否 启用telnet控制台（如果其扩展名也启用）。    </p>
-</li>
-<li><p>TELNETCONSOLE_PORT<br>默认： [6023, 6073]<br>用于telnet控制台的端口范围。如果设置为None或0，则使用动态分配的端口。有关详细信息，请参阅 telnet控制台。    </p>
-</li>
-<li><p>TEMPLATES_DIR<br>默认值：templates dir里面的scrapy模块<br>使用startproject命令和新爬虫创建新项目时使用命令查找模板的目录 genspider 。<br>项目名称不得与子目录中的自定义文件或目录的名称冲突project。    </p>
-</li>
-<li><p>URLLENGTH_LIMIT<br>默认： 2083<br>范围： spidermiddlewares.urllength<br>允许抓取网址的最大网址长度。有关此设置的默认值的详细信息，请参阅<a href="http://www.boutell.com/newfaq/misc/urllength.html" target="_blank" rel="noopener">http://www.boutell.com/newfaq/misc/urllength.html</a>    </p>
-</li>
-<li><p>USER_AGENT<br>默认： “Scrapy/VERSION (+<a href="http://scrapy.org)&quot;" target="_blank" rel="noopener">http://scrapy.org)&quot;</a><br>检索时使用的默认用户代理，除非被覆盖。<br>其他地方记录的设置：<br>以下设置在其他地方记录，请检查每个具体案例，了解如何启用和使用它们。  </p>
-<pre><code class="shell">AJAXCRAWL_ENABLED
-AUTOTHROTTLE_DEBUG
-AUTOTHROTTLE_ENABLED
-AUTOTHROTTLE_MAX_DELAY  
-AUTOTHROTTLE_START_DELAY  
-AUTOTHROTTLE_TARGET_CONCURRENCY  
-CLOSESPIDER_ERRORCOUNT  
-CLOSESPIDER_ITEMCOUNT  
-CLOSESPIDER_PAGECOUNT  
-CLOSESPIDER_TIMEOUT  
-COMMANDS_MODULE  
-COMPRESSION_ENABLED  
-COOKIES_DEBUG  
-COOKIES_ENABLED  
-FEED_EXPORTERS  
-FEED_EXPORTERS_BASE  
-FEED_EXPORT_ENCODING  
-FEED_EXPORT_FIELDS  
-FEED_FORMAT  
-FEED_STORAGES  
-FEED_STORAGES_BASE  
-FEED_STORE_EMPTY  
-FEED_URI  
-FILES_EXPIRES  
-FILES_RESULT_FIELD  
-FILES_STORE  
-FILES_STORE_S3_ACL  
-FILES_URLS_FIELD  
-HTTPCACHE_ALWAYS_STORE  
-HTTPCACHE_DBM_MODULE  
-HTTPCACHE_DIR  
-HTTPCACHE_ENABLED  
-HTTPCACHE_EXPIRATION_SECS  
-HTTPCACHE_GZIP  
-HTTPCACHE_IGNORE_HTTP_CODES  
-HTTPCACHE_IGNORE_MISSING  
-HTTPCACHE_IGNORE_RESPONSE_CACHE_CONTROLS  
-HTTPCACHE_IGNORE_SCHEMES  
-HTTPCACHE_POLICY  
-HTTPCACHE_STORAGE  
-HTTPERROR_ALLOWED_CODES  
-HTTPERROR_ALLOW_ALL  
-HTTPPROXY_AUTH_ENCODING  
-IMAGES_EXPIRES  
-IMAGES_MIN_HEIGHT  
-IMAGES_MIN_WIDTH  
-IMAGES_RESULT_FIELD  
-IMAGES_STORE  
-IMAGES_STORE_S3_ACL  
-IMAGES_THUMBS  
-IMAGES_URLS_FIELD  
-MAIL_FROM  
-MAIL_HOST  
-MAIL_PASS  
-MAIL_PORT  
-MAIL_SSL  
-MAIL_TLS  
-MAIL_USER  
-METAREFRESH_ENABLED  
-METAREFRESH_MAXDELAY  
-REDIRECT_ENABLED  
-REDIRECT_MAX_TIMES  
-REFERER_ENABLED  
-RETRY_ENABLED  
-RETRY_HTTP_CODES  
-RETRY_TIMES  
-TELNETCONSOLE_HOST  
-TELNETCONSOLE_PORT  
-</code></pre>
-<p><a href="https://www.jianshu.com/p/df9c0d1e9087" target="_blank" rel="noopener">原文链接</a></p>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">爬虫</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/爬虫//" class="article-tag-list-link color3">爬虫</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/09/Scrapy设置项介绍/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-MongoDB的基本使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/08/MongoDB的基本使用/">MongoDB的基本使用</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/08/MongoDB的基本使用/" class="archive-article-date">
-  	<time datetime="2018-05-08T09:28:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://docs.mongodb.com/manual/introduction/" target="_blank" rel="noopener">官方文档链接</a></p>
-<h2 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h2><h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><ol>
-<li><p>下载完安装包，并解压 tgz（以下演示的是 64 位 Linux上的安装）。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.6.tgz # 下载</span><br><span class="line">tar -zxvf mongodb-linux-x86_64-3.0.6.tgz # 解压</span><br><span class="line">mv  mongodb-linux-x86_64-3.0.6/ /usr/local/mongodb # 将解压包拷贝到指定目录</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>MongoDB 的可执行文件位于 bin 目录下，所以可以将其添加到 PATH 路径中：  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&lt;mongodb-install-directory&gt;/bin:$PATH</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>mongodb-install-directory 为 MongoDB 的安装路径。如本文的 /usr/local/mongodb 。  </p>
-<ol start="3">
-<li><p>创建数据库目录<br>MongoDB的数据存储在data目录的db目录下，但是这个目录在安装过程不会自动创建，所以你需要手动创建data目录，并在data目录中创建db目录。以下实例中我们将data目录创建于根目录下(/)。<br><strong>注意：</strong>/data/db 是 MongoDB 默认的启动的数据库路径(–dbpath)。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /data/db</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>命令行中运行 MongoDB 服务</p>
-<ul>
-<li><p>可以在 /usr/local/mongodb/bin/ 目录下使用命令：　　</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mongod</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在 /usr/local/mongodb/ 下添加conf目录，并添加mongodb.conf配置文件。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./mongod -f /usr/local/mongodb/conf/mongodb.conf 　　或者</span><br><span class="line">./mongod --config /usr/local/mongodb/conf/mongodb.conf</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ol>
-<p>mongodb.conf配置文件内容如下：</p>
-<pre><code class="shelldbpath=/data/db">bind_ip=127.0.0.1
-port=27017
-fork=true
-logappend=true
-shardsvr=true
-pidfilepath=/usr/local/mongodb/mongo.pid
-logpath=/usr/local/mongodb/log/mongodb.log
-</code></pre>
-<ol start="5">
-<li>设置开机启动mongo  <ul>
-<li>将/usr/local/mongodb/bin/mongod<br>–dbpath /data/db<br>–fork<br>–port 27017 –logpath=/usr/local/mongodb/log/mongodb.log<br>–logappend<br>添加到 /etc/rc.local 中。</li>
-</ul>
-</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">MongoDB</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据库//" class="article-tag-list-link color4">数据库</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/08/MongoDB的基本使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/archives/page/2/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/4/">Next &raquo;</a>
@@ -1703,11 +1391,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1716,6 +1404,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数据结构与算法</a>
               </li>
             
             <div class="clearfix"></div>

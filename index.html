@@ -146,6 +146,206 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GMM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/31/GMM/">GMM</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/31/GMM/" class="archive-article-date">
+  	<time datetime="2018-05-31T08:43:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="信息论"><a href="#信息论" class="headerlink" title="信息论"></a>信息论</h2><h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><ul>
+<li>自信息：$I(x)=l\log p(x)$</li>
+<li>互信息：已知x，y不确定度的减少量取值可正可负。$I(x;y)= \log \frac{p(x|y)}{p(x)}=\log \frac{p(xy)}{p(x)p(y)}=\log \frac{p(y|x)}{p(y)}=I(y;x)$</li>
+</ul>
+<h3 id="熵"><a href="#熵" class="headerlink" title="熵"></a>熵</h3><p>在决策树中已经了解了熵是什么：<br>$H(X)=\sum_{x}p(x)I(x)=-\sum_{x}p(x)\log p(x)$<br>单位为比特，表示信息的不确定度。</p>
+<h3 id="联合熵"><a href="#联合熵" class="headerlink" title="联合熵"></a>联合熵</h3><p>$H(XY)=\sum_{x,y}p(x,y)I(xy)=-\sum_{x,y}p(x,y)\log p(x,y)$<br>联合熵是XY上每个元素x，y的自信息量概率加权平均。<br>条件熵与联合熵的关系为：<br>$H(XY)=H(X)+H(Y|X)=H(Y)+H(X|Y)$</p>
+<h3 id="最大熵原理"><a href="#最大熵原理" class="headerlink" title="最大熵原理"></a>最大熵原理</h3><h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>若概率模型的变量都是观测变量，则可以直接使用极大似然估计。但是大部分应用中，含有隐变量，不能直接使用极大似然。EM算法就是针对隐变量模型参数的极大似然的估计方法。</p>
+<h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p><img src="/images/pasted-83.png" alt="upload successful">定义很好理解，高斯混合模型是一种混合模型，混合的基本分布是高斯分布而已。<br><img src="/images/pasted-84.png" alt="upload successful"><br>这图显示了拥有三个高斯分量的一个维度的GMM是如何由其高斯分量叠加而成。<br><strong>GMM的各个高斯分量的系数之和必须为1</strong><br>      GMM的定义本质上是一个概率密度函数。而概率密度函数在其作用域内的积分之和必然为1。GMM整体的概率密度函数是由若干个高斯分量的概率密度函数线性叠加而成的，而每一个高斯分量的概率密度函数的积分必然也是1，所以，要想GMM整体的概率密度积分为1，就必须对每一个高斯分量赋予一个其值不大于1的权重，并且权重之和为1。<br><strong>求解GMM的EM算法隐变量的理解：</strong><br>      使用EM算法必须明确隐变量。求解GMM的时候设想观测数据x是这样产生的：首选依赖GMM的某个高斯分量的系数概率（因为系数取值在0~1之间，因此可以看做是一个概率取值）选择到这个高斯分量，然后根据这个被选择的高斯分量生成观测数据。然后隐变量就是某个高斯分量是否被选中：选中就为1，否则为0。<br>      按照这样的设想：隐变量是一个向量，并且这个向量中只有一个元素取值为1，其它的都是0。因为假设只有一个高斯分量被选中并产生观测数据。然而我们的GMM的一个观测数据在直观上应该是每个高斯分量都有产生，而不是由一个高斯分量单独生成，只是重要性不同（由系数控制）。<br>      接着，现在我们不知道GMM具体的参数值，想要根据观测数据去求解其参数。而GMM的参数是由各个高斯分量的参数再加上权值系数组成的。那么我们就先假定，如果这个观测值只是由其中一个高斯分量产生，去求解其中一个高斯分量的参数。我们假设不同的观测值都有一个产生自己的唯一归宿，就像K-means算法一样。然后在后面的迭代过程中，根据数据整体似然函数的优化过程，逐渐找到一个最优的分配方案。然而，不同于K-means算法的是，我们最终给出的只是某一个观测是由某一个高斯分量唯一生成的概率值，而不是确定下来的属于某一类。每个高斯分量其实都可以产生这个观测数据只是输出不同而已，即产生观测数据的概率不同。最后，根据每个高斯分量产生观测数据的可能性不同，结合其权值汇总出整个GMM产生这个观测数据的概率值。</p>
+<ul>
+<li>EM算法<br>如果训练样本的属性“不完整”，因此在这种存在“未观测”变量（隐变量）的情形下，如何进行模型参数估计呢？EM算法就是常用的估计参数隐变量的利器。<br>X表示已观测变量集，Z表示隐变量集，θ表示模型参数，对θ求极大似然估计，最大化对数似然为：$LL(Θ|X,Z)=lnP(X,Z|Θ)$。由于Z是隐变量，无法直接求解，此时需求通过Z计算期望，来最大化以观测数据的对数边际似然（marginal likelihood） $LL(Θ|X)=lnP(X|Θ)=ln\sum_{Z}P(X,Z|Θ)$<br>EM 算法 简单来说，使用两个步骤交替计算。不取Z的期望，而是基于$Θ^t$计算隐变量Z的概率分布$P(Z|X,Θ^t)$：期望（E）步，利用当前估计的参数值来计算对数似然的期望值；二是最大化（M）步，寻找能使E步产生的似然期望最大化的参数值。然后，新得到的参数值重新被用于 步，……直至收敛到局部最优解。</li>
+</ul>
+<ol>
+<li>定义隐变量<br>我们引入隐变量γjk，它的取值只能是1或者0。<br>取值为1：第j个观测变量来自第k个高斯分量<br>取值为0：第j个观测变量不是来自第k个高斯分量<br>那么对于每一个观测数据yj都会对应于一个向量变量Γj={γj1,…,γjK}，那么有：<br>∑k=1Kγjk=1<br>p(Γj)=∏k=1Kαkγjk<br>其中，K为GMM高斯分量的个数，αk为第k个高斯分量的权值。因为观测数据来自GMM的各个高斯分量相互独立，而αk刚好可以看做是观测数据来自第k个高斯分量的概率，因此可以直接通过连乘得到整个隐变量Γj的先验分布概率。</li>
+<li>得到完全数据的似然函数<br>对于观测数据yj,当已知其是哪个高斯分量生成的之后，其服从的概率分布为：<br>p(yj|γjk=1;Θ)=N(yj|μk,Σk)<br>由于观测数据从哪个高斯分量生成这个事件之间的相互独立的，因此可以写为：<br>p(yj|Γj;Θ)=∏k=1KN(yj|μk,Σk)γjk<br>这样我们就得到了已知Γj的情况下单个观测数据的后验概率分布。结合之前得到的Γj的先验分布，则我们可以写出单个完全观测数据的似然函数为：<br>p(yj,Γj;Θ)=∏k=1KαkγjkN(yj|μk,Σk)γjk<br>最终得到所有观测数据的完全数据似然函数为：<br>p(y,Γj;Θ)=∏j=1N∏k=1KαkγjkN(yj|μk,Σk)γjk<br>取对数，得到对数似然函数为：<br>lnp(y,Γj;Θ)=∑j=1N∑k=1K(γjklnαk+γjklnN(yj|μk,Σk))</li>
+<li>得到各个高斯分量的参数计算公式<br>首先，我们将上式中的lnN(yj|μk,Σk)根据单高斯的向量形式的概率密度函数的表达形式展开：<br>lnN(yj|μk,Σk)=−D2ln(2π)−12ln|Σk|−12(yj−μk)TΣ−1k(yj−μk)<br>假设我们已经知道隐变量γjk的取值，对上面得到的似然函数分别对αk和Σk求偏导并且偏导结果为零，可以得到：<br>μk=∑Nj=1∑Kk=1γjkyj∑Nj=1∑Kk=1γjk<br>Σk=∑Nj=1∑Kk=1γjk(yj−μk)(yj−μk)T∑Nj=1∑Kk=1γjk<br>由于在上面两式的第二个求和符号是对k=1…K求和，而在求和过程中γjk只有以此取到1，其它都是0，因此上面两式可以简化为：<br>μk=∑Nj=1γjkyj∑Nj=1γjk<br>Σk=∑Nj=1γjk(yj−μk)(yj−μk)T∑Nj=1γjk<br>现在参数空间中剩下一个αk还没有求。这是一个约束满足问题，因为必须满足约束ΣKk=1αk=1。我们使用拉格朗日乘子法结合似然函数和约束条件对αk求偏导，可以得到：<br>αk=∑Nj=1γjk−λ<br>将上式的左右两边分别对k=1…K求和，可以得到：<br>λ=−N<br>将λ代入，最终得到：<br>αk=∑Nj=1γjkN<br>至此，我们在隐变量已知的情况下得到了GMM的三种类型参数的求解公式。</li>
+<li>得到隐变量的估计公式<br>根据EM算法，现在我们需要通过当前参数的取值得到隐变量的估计公式也就是说隐变量的期望的表达形式。即如何求解E{γjk|y,Θ}。<br>E{γjk|y,Θ}=P(γjk=1|y,Θ)<br>=P(γjk=1,yj|Θ)∑Kk=1P(γjk=1,yj|Θ)<br>=P(yj|γjk=1,Θ)P(γjk=1|Θ)∑Kk=1P(yj|γjk=1,Θ)P(γjk=1|Θ)<br>=αkN(yj|μk,Σk)∑Kk=1αkN(yj|μk,Σk)</li>
+<li>使用EM算法迭代进行参数求解<br>熟悉EM算法的朋友应该已经可以从上面的推导中找到EM算法的E步和M步。</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/31/GMM/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-动态规划" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/30/动态规划/">动态规划</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/30/动态规划/" class="archive-article-date">
+  	<time datetime="2018-05-30T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="认识论"><a href="#认识论" class="headerlink" title="认识论"></a>认识论</h2><ul>
+<li><strong>认识事物的方法</strong>概念、判断、推理  </li>
+<li><strong>推理</strong>分为归纳、演绎  <ul>
+<li><strong>基本归纳法</strong>常常称之为马尔科夫模型，特点是只要状态$A_i$确定，那么计算$A_{i+1}$时不需要考察更新序的状态$A_1…A_{i-1}$的状态。计算机算法中叫做贪心算法。</li>
+<li><strong>高阶归纳法</strong>称之为高阶马尔科夫模型，对于$A_{i+1}$需考察前i个状态集$A_1…A_{i-1}$的状态才可完成整个推理过程。计算机算法中叫做动态规划算法。</li>
+<li><strong>无后效性</strong>对于$A_{i+1}$以后的节点来说，是不会影响到前面的节点的，一旦计算完成，前面的节点不会改变。</li>
+</ul>
+</li>
+</ul>
+<h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><h3 id="硬币问题的求解"><a href="#硬币问题的求解" class="headerlink" title="硬币问题的求解"></a>硬币问题的求解</h3><p>现有不限数量的面额分别为1元，2元，5元，10元的货币，如果要用这些货币组合成x元，求一共有多少种组合方式？</p>
+<h4 id="暴力求解法"><a href="#暴力求解法" class="headerlink" title="暴力求解法"></a>暴力求解法</h4><p>从第一个硬币开始，用0个第一个硬币，求解剩余硬币组合成x元的方法，用1个第一个硬币，求解剩余硬币组合成x-1元的方法，……<br>最终求得结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">coins = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">10</span>]</span><br><span class="line">N = <span class="number">100</span></span><br><span class="line">array = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solution_digui</span><span class="params">(price, coin, result)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> price &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> price == <span class="number">0</span>:</span><br><span class="line">        array.append(result)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">if</span> len(coin) &gt; <span class="number">0</span>:</span><br><span class="line">        cur = coin[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(int(N / cur) + <span class="number">1</span>):</span><br><span class="line">            solution_digui(price - i * cur, coin[<span class="number">1</span>:], result + [cur] * i)</span><br><span class="line">solution_digui(N, coins, [])</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">coins = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">10</span>]</span><br><span class="line">N = <span class="number">100</span></span><br><span class="line">array = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solution_digui</span><span class="params">(price, coin, result)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> price &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> price == <span class="number">0</span>:</span><br><span class="line">        array.append(result)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">if</span> len(coin) &gt; <span class="number">0</span>:</span><br><span class="line">        cur = coin[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(int(N / cur) + <span class="number">1</span>):</span><br><span class="line">            solution_digui(price - i * cur, coin[<span class="number">1</span>:], result + [cur] * i)</span><br><span class="line">solution_digui(N, coins, [])</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure>
+<h4 id="记忆搜索法"><a href="#记忆搜索法" class="headerlink" title="记忆搜索法"></a>记忆搜索法</h4><p>递归的方法会有大量的重复计算，记忆搜索算法会将结果组成key：value放入到一个map中，进入递归过程前，查询是否存在value，如果存在，则直接取值，这样就减少了递归的次数。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/30/动态规划/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-降维与度量学习" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -187,7 +387,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -234,7 +456,7 @@
 
         
         <a href="/2018/05/26/集成学习/" class="archive-article-date">
-  	<time datetime="2018-05-26T07:33:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
+  	<time datetime="2018-05-26T07:33:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
 </a>
         
       </header>
@@ -315,7 +537,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -362,7 +606,7 @@
 
         
         <a href="/2018/05/26/贝叶斯/" class="archive-article-date">
-  	<time datetime="2018-05-26T06:16:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
+  	<time datetime="2018-05-26T06:16:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
 </a>
         
       </header>
@@ -371,7 +615,7 @@
       
         <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
 <li><strong>条件概率的概念：</strong>A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=P(AB)/P(B)$。<br>事件独立：$P(AB)=P(A)P(B)$。<br>求和$P(A+B)=P(A)+P(B)-P(AB)$。<br>求差$P(A-B)=P(A)-P(AB)$。<br>乘积：$P(AB)=P(A)P(B|A)=P(B)P(A|B)$。<br>联合分布：$\sum_{A} P(A,B)=P(B)$<br>$P(B)=\sum_{B|A}P(A)$<br>联合分布条件概率：$P(S|W)=\frac {P(S,W)}{P(W)}$<br>$P(A,B|C)=P(A|B,C)P(B|C)$</li>
-<li><strong>贝叶斯公式：</strong><br>$P(B│A)=P(B)P(A|B)/(P(A))$。<br>当$B1、B2、B3……∈B，A⊂∑B_i$时，$P(B_i│A)=P(B_i)P(A|B_i)/(∑P(B_j)P(A|B_j))$。<ul>
+<li><strong>贝叶斯公式：</strong><br>$P(B│A)=\frac{P(B)P(A|B)}{P(A)}$。<br>由全概率公式，当$B1、B2、B3……∈B，A⊂∑B_i$时，$P(B_i│A)=P(B_i)P(A|B_i)/(∑P(B_j)P(A|B_j))$。<ul>
 <li>$P(B_i)$先验概率</li>
 <li>$P(B_i│A)$为后验概率。</li>
 </ul>
@@ -400,132 +644,33 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/05/26/贝叶斯/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-聚类算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/24/聚类算法/">聚类算法</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/24/聚类算法/" class="archive-article-date">
-  	<time datetime="2018-05-24T11:41:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>聚类可以说是一种无监督的学习，也就是说在训练样本中对应的标记信息是没有的，目标是通过对无标记训练样本的学习来揭示数据内在性质和规律，为进一步的数据分析提供基础。</p>
-<h3 id="聚类的任务"><a href="#聚类的任务" class="headerlink" title="聚类的任务"></a>聚类的任务</h3><p>聚类试图将数据集中的样本划分为若干个通常是不相交的子集，每个子集称为一个“簇”。</p>
-<h3 id="性能度量"><a href="#性能度量" class="headerlink" title="性能度量"></a>性能度量</h3><p>簇内相似度高，簇间相似度低。 </p>
-<ul>
-<li>外部指标：是将聚类结果与某个“参考模型”进行比较 </li>
-<li>内部指标：直接考察聚类结果而不利用任何参考模型。</li>
-</ul>
-<h3 id="距离计算"><a href="#距离计算" class="headerlink" title="距离计算"></a>距离计算</h3><p>距离度量满足的基本性质：非负性、同一性、对称性、直递性 </p>
-<ul>
-<li>闵可夫斯基距离：$distmk=(n∑u=1|xiu−xju|p)1p$<ul>
-<li>如果p=2时，则表示欧氏距离 </li>
-<li>如果p=1时，则表示曼哈顿距离</li>
-</ul>
-</li>
-<li>有序属性： </li>
-<li>无序属性：闵可夫斯基可以用于无序属性。对于无序属性可以采用VDM</li>
-</ul>
-<h2 id="原型聚类"><a href="#原型聚类" class="headerlink" title="原型聚类"></a>原型聚类</h2><p>原型聚类亦称“基于原型的聚类”，常用的原型聚类算法如下 </p>
-<ul>
-<li>K均值聚类(Kmeans)</li>
-<li>学习向量量化</li>
-<li><a href="http://www.cnblogs.com/mmziscoming/p/5750849.html" target="_blank" rel="noopener">高斯混合聚类(GMM)</a></li>
-</ul>
-<h2 id="密度聚类"><a href="#密度聚类" class="headerlink" title="密度聚类"></a>密度聚类</h2><p>基于密度的聚类算法主要的目标是寻找被低密度区域分离的高密度区域。与基于距离的聚类算法不同的是，基于距离的聚类算法的聚类结果是球状的簇，而基于密度的聚类算法可以发现任意形状的聚类，这对于带有噪音点的数据起着重要的作用。 </p>
-<h2 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h2><p>层次聚类也叫连通聚类方法，有两个基本方法：自顶而下和自底而上。自顶而将所有样本看做是同一簇，然后进行分裂。自底而上将初所有样本看做不同的簇，然后进行凝聚。这种聚类的中心思想是：离观测点较近的点相比离观测点较远的点更可能是一类。<br>过程如下：</p>
-<ol>
-<li>把每个样本归为一类，计算两个类之间的距离；</li>
-<li>寻找各类之间最近的两个类归为一类；</li>
-<li>重新计算新生成的这个类与旧类之间的相似度；</li>
-<li>重复2到3，直到所有样本归为一类停止。</li>
-</ol>
-<p>实际上聚类过程就是建立了一棵树：<br><img src="/images/pasted-76.png" alt="upload successful"><br>可以在中间过程设置阈值，当两个类距离大于阈值，则迭代终止。</p>
-<p>第三步相似度的度量有很多方法，例如：</p>
-<ul>
-<li>两个类之间距离最近的两个样本的距离</li>
-<li>两个类之间距离最远的两个样本的距离</li>
-<li>两个类的样本平均距离</li>
-<li>两个类的样本中位数的距离</li>
-</ul>
-<h2 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h2><h3 id="ART网络"><a href="#ART网络" class="headerlink" title="ART网络"></a>ART网络</h3><p>ART（Adaptive Resonance Theory，自适应谐振理论）竞争学习的代表，是一种常用的无监督学习策略。该策略网络输出神经元相互竞争，每一时刻仅有一个竞争获胜的神经元被激活。其他神经元被抑制。包含比较层、识别层、识别阈值和重置模块。</p>
-<h3 id="SOM网络"><a href="#SOM网络" class="headerlink" title="SOM网络"></a>SOM网络</h3><p><img src="/images/pasted-77.png" alt="upload successful"><br>SOM（Self-Organizing Map，自组织映射）网络是最常用的聚类方法之一： </p>
-<ul>
-<li>竞争型的无监督神经网络</li>
-<li>将高维数据映射到低维空间，并保持输入数据在高维空间的拓扑结构。即将高维空间中相似的样本点映射到网络输出层中邻近神经元</li>
-<li>每个神经元拥有一个权向量</li>
-<li>目标：为每个输出层神经元找到合适的权向量以保持拓扑结构</li>
-</ul>
-<p>训练</p>
-<ul>
-<li>网络接收输入样本后，将会确定输出层的“获胜”神经元（“胜者通吃”）</li>
-<li>获胜神经元的权向量将向当前输入样本移动</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kmeans</span><span class="params">(x,k,maxIt)</span>:</span></span><br><span class="line">    numPoints,numDim=x.shape</span><br><span class="line">    dataSet=np.zeros((numPoints,numDim+<span class="number">1</span>))</span><br><span class="line">    dataSet[:,:<span class="number">-1</span>]=x</span><br><span class="line">    centroids=dataSet[np.random.randint(numPoints,size=k),:]</span><br><span class="line"><span class="comment">#     centroids=dataSet[0:2,:]</span></span><br><span class="line">    centroids[:,<span class="number">-1</span>]=range(<span class="number">1</span>,k+<span class="number">1</span>)</span><br><span class="line">    iterations=<span class="number">0</span></span><br><span class="line">    oldCentroids=<span class="keyword">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> shouldstop(oldCentroids,centroids,iterations,maxIt):</span><br><span class="line">        print(iterations,dataSet,centroids)</span><br><span class="line">        oldCentroids=np.copy(centroids)</span><br><span class="line">        iterations+=<span class="number">1</span></span><br><span class="line">        updateLabels(dataSet,centroids)</span><br><span class="line">        centroids=getCentroids(dataSet,k)</span><br><span class="line">    <span class="keyword">return</span> dataSet</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shouldstop</span><span class="params">(oldCentroids,centroids,iterations,maxIt)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> iterations&gt;maxIt:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">    <span class="keyword">return</span> np.array_equal(oldCentroids,centroids)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">updateLabels</span><span class="params">(dataSet,centroids)</span>:</span></span><br><span class="line">    numPoints,numDim=dataSet.shape</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numPoints):</span><br><span class="line">        dataSet[i,<span class="number">-1</span>]=getLabelFromClosestCentroid(dataSet[i,:<span class="number">-1</span>],centroids)        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getLabelFromClosestCentroid</span><span class="params">(dataSetRow,centroids)</span>:</span></span><br><span class="line">    label=centroids[<span class="number">0</span>,<span class="number">-1</span>]</span><br><span class="line">    minDist=np.linalg.norm(dataSetRow-centroids[<span class="number">0</span>,:<span class="number">-1</span>])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,centroids.shape[<span class="number">0</span>]):</span><br><span class="line">        dist=np.linalg.norm(dataSetRow-centroids[i,:<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">if</span> dist&lt;minDist:</span><br><span class="line">            minDist=dist</span><br><span class="line">            label=centroids[i,<span class="number">-1</span>]</span><br><span class="line">    print(minDist)</span><br><span class="line">    <span class="keyword">return</span> label        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getCentroids</span><span class="params">(dataSet,k)</span>:</span></span><br><span class="line">    result=np.zeros((k,dataSet.shape[<span class="number">1</span>]))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,k+<span class="number">1</span>):</span><br><span class="line">        oneCluster=dataSet[dataSet[:,<span class="number">-1</span>]==i,:<span class="number">-1</span>]</span><br><span class="line">        result[i<span class="number">-1</span>,:<span class="number">-1</span>]=np.mean(oneCluster,axis=<span class="number">0</span>)</span><br><span class="line">        result[i<span class="number">-1</span>,<span class="number">-1</span>]=i</span><br><span class="line">    <span class="keyword">return</span> result        </span><br><span class="line">x1=np.array([<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">x2=np.array([<span class="number">2</span>,<span class="number">1</span>])</span><br><span class="line">x3=np.array([<span class="number">4</span>,<span class="number">3</span>])</span><br><span class="line">x4=np.array([<span class="number">5</span>,<span class="number">4</span>])</span><br><span class="line">testX=np.vstack((x1,x2,x3,x4))</span><br><span class="line"></span><br><span class="line">result=kmeans(testX,<span class="number">2</span>,<span class="number">10</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
-<p>层次聚类的实现<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image,ImageDraw</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cluster_node</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,vec,left=None,right=None,distance=<span class="number">0.0</span>,id=None,count=<span class="number">1</span>)</span>:</span></span><br><span class="line">        self.vec=vec</span><br><span class="line">        self.left=left</span><br><span class="line">        self.right=right</span><br><span class="line">        self.distance=distance</span><br><span class="line">        self.id=id</span><br><span class="line">        self.count=count</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L2dist</span><span class="params">(v1,v2)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> np.linalg.norm(v1-v2,ord=<span class="number">2</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hcluster</span><span class="params">(features,distance=L2dist)</span>:</span></span><br><span class="line">    distances=&#123;&#125;</span><br><span class="line">    currentclustid=<span class="number">-1</span></span><br><span class="line">    clust=[Cluster_node(array(features[i]),id=i) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(features))]</span><br><span class="line">    <span class="keyword">while</span> len(clust)&gt;<span class="number">1</span>:</span><br><span class="line">        lowestpair=(<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">        closest=distance(clust[<span class="number">0</span>].vec,clust[<span class="number">1</span>].vec)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(clust)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(i+<span class="number">1</span>,len(clust)):</span><br><span class="line">                <span class="keyword">if</span> (clust[i].id,clust[j].id) <span class="keyword">not</span> <span class="keyword">in</span> distances:</span><br><span class="line">                    distances[(clust[i].id,clust[j].id)]=distance(clust[i].vec,clust[j].vec)</span><br><span class="line">                d=distances[(clust[i].id,clust[j].id)]</span><br><span class="line">                <span class="keyword">if</span> d&lt;closest:</span><br><span class="line">                    closest=d</span><br><span class="line">                    lowestpair=(i,j)</span><br><span class="line">        mergevec=[(clust[lowestpair[<span class="number">0</span>]].vec[i]+clust[lowestpair[<span class="number">1</span>]].vec[i])/<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(len(clust[<span class="number">0</span>].vec))]</span><br><span class="line">        newcluster=Cluster_node(array(mergevec),left=clust[lowestpair[<span class="number">0</span>]],right=clust[lowestpair[<span class="number">1</span>]],distance=closest,id=currentclustid)</span><br><span class="line">        currentclustid-=<span class="number">1</span></span><br><span class="line">        <span class="keyword">del</span> clust[lowestpair[<span class="number">1</span>]]</span><br><span class="line">        <span class="keyword">del</span> clust[lowestpair[<span class="number">0</span>]]</span><br><span class="line">        clust.append(newcluster)</span><br><span class="line">    <span class="keyword">return</span> clust[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extract_clusters</span><span class="params">(clust,dist)</span>:</span></span><br><span class="line">    clusters=&#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> clust.distance&lt;dist:</span><br><span class="line">        <span class="keyword">return</span> [clust]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cl=[]</span><br><span class="line">        cr=[]</span><br><span class="line">        <span class="keyword">if</span> clust.left!=<span class="keyword">None</span>:</span><br><span class="line">            c1=extract_clusters(clust.left,dist=dist)</span><br><span class="line">        <span class="keyword">if</span> clust.right!=<span class="keyword">None</span>:</span><br><span class="line">            cr=extract_clusters(clust.right,dist=dist)</span><br><span class="line">        <span class="keyword">return</span> cl+cr</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_cluster_elements</span><span class="params">(clust)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> clust.id&gt;=<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> [clust.id]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cl=[]</span><br><span class="line">        cr=[]</span><br><span class="line">        <span class="keyword">if</span> clust.left!=<span class="keyword">None</span>:</span><br><span class="line">            c1=get_cluster_elements(clust.left)</span><br><span class="line">        <span class="keyword">if</span> clust.right!=<span class="keyword">None</span>:</span><br><span class="line">            cr=get_cluster_elements(clust.right)</span><br><span class="line">        <span class="keyword">return</span> cl+cr</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printclust</span><span class="params">(clust,labels=None,n=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        print(<span class="string">' '</span>,end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">if</span> clust.id&lt;<span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'-'</span>,end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> labels==<span class="keyword">None</span>:</span><br><span class="line">            print(clust.id,end=<span class="string">''</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(labels[clust.id],end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">if</span> clust.left!=<span class="keyword">None</span>:</span><br><span class="line">        printclust(clust.left,labels=labels,n=n+<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> clust.right!=<span class="keyword">None</span>:</span><br><span class="line">        printclust(clust.right,labels=labels,n=n+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getheight</span><span class="params">(clust)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> clust.left==<span class="keyword">None</span> <span class="keyword">and</span> clust.right==<span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> getheight(clust.left)+getheight(clust.right)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getdepth</span><span class="params">(clust)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> clust.left==<span class="keyword">None</span> <span class="keyword">and</span> clust.right==<span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> max(getheight(clust.left),getheight(clust.right))+clust.distance</span><br></pre></td></tr></table></figure></p>
-<p>下面是几个城市的GDP等信息，根据这些信息，写一个SOM网络，使之对下面城市进行聚类。并且，将结果画在一个二维平面上。</p>
-<p>//表1中，X。为人均GDP(元)；X2为工业总产值(亿元)；X。为社会消费品零售总额(亿元)；x。为批发零售贸易总额(亿元)；x。为地区货运总量(万吨)，表1中数据来自2002年城市统计年鉴。</p>
-<p>//城市 X1 X2 X3 Xa X5<br>北京 27527 2738.30 1494.83 3055.63 30500<br>青岛 29682 1212.02 182.80 598.06 29068<br>天津 22073 2663.56 782.33 1465.65 28151<br>烟台 21017 298.73 92.71 227.39 8178<br>石家庄 25584 467.42 156.02 763.46 12415<br>郑州 17330 261.80 215.63 402.98 7373<br>唐山 19387 338.67 95.73 199.69 14522<br>武汉 17882 1020.84 685.82 1452 16244<br>太原 13919 304.13 141.94 155.22 15170<br>长沙 26327 241.76 269.93 369.83 7550<br>呼和浩特 13738 82.23 69.27 108.12 2415<br>衡阳 12386 61.53 63.95 72.65 3004<br>沈阳 21736 729.04 590.26 1752.4 15156<br>广州 42828 2446.97 1166.10 3214.19 24500<br>大连 34659 1003.56 431.83 728.08 19736<br>深圳 152099 3079.63 609.26 801.06 5167<br>长春 24799 900.26 309.75 173.99 10346<br>油头 19414 192.93 112.96 280.84 1443<br>哈尔滨 20737 402.73 360.38 762.94 8814<br>湛江 15290 228.45 99.08 149.16 5524<br>上海 40788 6935.57 1531.89 3921.2 49499<br>南宁 17715 109.39 142.08 264.32 3371<br>南京 26697 1579.21 401.20 1253.73 14120<br>柳州 17598 256.76 68.93 159.44 3397<br>徐州 19727 295.73 108.17 187.39 7124<br>海口 24782 100.13 81.03 142.54 2018<br>连云港 17869 112.18 47.94 134.89 4096<br>成都 22956 412.23 400.56 754.07 23724<br>杭州 31784 1615.63 373.28 1788.29 15841<br>重庆 9778 870.82 389.60 823.72 29470<br>宁波 46471 751.58 167.70 529.68 11182<br>贵阳 13176 207.95 108.93 285.27 4885<br>温州 29781 381.93 233.44 272.84 6292<br>昆明 24554 303.78 227.44 428.64 12084<br>合肥 19770 330.14 140.14 328.98 2903<br>西安 16002 449.14 323.37 558.27 7728<br>福州 33570 379.51 209.72 613.24 7280<br>兰州 16629 354.30 163.97 374.9 5401<br>厦门 42039 803.29 186.55 620.47 2547<br>西宁 7261 38.00 48.95 91.14 1837<br>南昌 19923 238.82 14.09 348.21 3246<br>银川 12779 77.74 41.22 53.16 1573<br>济南 25642 616.97 323.08 462.39 13057<br>乌鲁木齐 19793 251.19 129.05 277.8 9283</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">result = pd.read_csv(<span class="string">'./data/diqu.csv'</span>,sep=<span class="string">'\s+'</span>,encoding=<span class="string">'gbk'</span>)</span><br><span class="line"><span class="comment"># 将result归一化</span></span><br><span class="line"><span class="comment"># 标准化操作：from sklearn.preprocessing import StanderdScaler</span></span><br><span class="line"><span class="comment"># result_std=StandardScaler().fit_transform(reslut)</span></span><br><span class="line">result_norm = (result.iloc[:,<span class="number">1</span>:] - result.iloc[:,<span class="number">1</span>:].min()) / (result.iloc[:,<span class="number">1</span>:].max() - result.iloc[:,<span class="number">1</span>:].min())</span><br><span class="line">result_norm.head()</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line">kmeans_model=KMeans(n_clusters=<span class="number">4</span>,random_state=<span class="number">1</span>)</span><br><span class="line">senator_distances=kmeans_model.fit_transform(result_norm.iloc[:,<span class="number">1</span>:])</span><br><span class="line">labels=kmeans_model.labels_</span><br><span class="line">print(pd.crosstab(labels,result[<span class="string">'城市'</span>]))</span><br><span class="line"><span class="comment"># democratic_outliers=votes[(labels==1)&amp;(result['party']!='D')]</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.scatter(x=senator_distances[:,<span class="number">0</span>],y=senator_distances[:,<span class="number">1</span>],c=labels)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><img src="/images/pasted-78.png" alt="upload successful"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/24/聚类算法/">展开全文 >></a>
         </p>
       
 
@@ -602,6 +747,30 @@
 <p>均方差是常用的性能度量指标：<br><img src="/images/pasted-67.png" alt="upload successful"><br>只需针对w和b分别求偏导即可得到最优解（闭式close-form解）w和b。<br>基于均方误差最小化来进行模型求解的方法也称为最小二乘法。在线性回归中，最小二乘法可以找到一条这样的直线，使得所有样本到直线上的欧氏距离之和最小。<br>$$w=\frac{\sum (x_i-\overline x)(y_i-\overline y)}{\sum (x_i-\overline x)^2}$$<br>$$b=\overline y -w\overline x$$</p>
 <h3 id="多属性线性回归"><a href="#多属性线性回归" class="headerlink" title="多属性线性回归"></a>多属性线性回归</h3><p>多元线性回归也就是有d个属性，建立矩阵方程。</p>
 <h3 id="线性回归与最小二乘"><a href="#线性回归与最小二乘" class="headerlink" title="线性回归与最小二乘"></a>线性回归与最小二乘</h3><p>$$y=w^Tx+ε$$<br>假设ε满足独立同分布，服从均值0方差$θ^2$的高斯分布。所以ε表示为：$p(ε)=\frac{1}{\sqrt{2π}}e^{(-\frac{ε^2}{2σ^2})}$<br>由于$ε=y-w^Tx$，带入到上式：$$p(y|x;w)=\frac{1}{\sqrt{2π}}e^{(-\frac{(y-w^Tx)^2}{2σ^2})}$$<br>其中$p(y|x;w)$表示w能够最大y的概率的取值，可以用似然函数求解。<br>$$L(θ)=\prod_{i=1}{m}p(y|x;w)$$<br>通过取对数，化简得到目标函数：求取J(θ)的最小值<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>最小值可以通过凸函数的导数为零的解，由于X和θ是矩阵，求导要符合矩阵求导的公式。求导公式，可参照<a href="https://en.wikipedia.org/wiki/Matrix_calculus#Scalar-by-vector_identities" target="_blank" rel="noopener">wiki百科</a><br><img src="/images/pasted-71.png" alt="upload successful"></p>
+<h3 id="岭回归"><a href="#岭回归" class="headerlink" title="岭回归"></a><a href="https://zhuanlan.zhihu.com/p/30535220" target="_blank" rel="noopener">岭回归</a></h3><p><img src="/images/pasted-93.png" alt="upload successful"><br>岭回归和Lasso是两种线性回归的缩减(shrinkage)方法。<br>标准最小二乘法优化问题:<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>可以表示为：<br>$$J(θ)=\frac{1}{2} (h_θ(x)-y)^T(h_θ(x)-y)$$<br>回归系数为：<br>$$θ=(X^TX)^{-1}X^Ty$$<br>这个问题解存在且唯一的条件就是XX列满秩: rank(X) = dim(X)。但即使 X 列满秩，但是当数据特征中存在共线性，即相关性比较大的时候，会使得标准最小二乘求解不稳定, $X^TX$的行列式接近零，计算$X^TX$的时候误差会很大。这个时候我们需要在cost function上添加一个惩罚项 $\lambda\sum_{i=1}^{n}θ_{i}^2$，称为L2正则化。<br>这个时候的cost function的形式就为:</p>
+<p>$$f(θ) = \sum_{i=1}^{m} (y_i - x_{i}^{T}θ)^2 + \lambda\sum_{i=1}^{n}θ_{i}^{2}$$</p>
+<p>通过加入此惩罚项进行优化后，限制了回归系数$wiwi$的绝对值，数学上可以证明上式的等价形式如下:</p>
+<p>$$f(θ) = \sum_{i=1}^{m} (y_i - x_{i}^{T}θ)^2 $$</p>
+<p>$$s.t. \sum_{i=1}^{n}θ_{j}^2 \le t$$</p>
+<p>其中t为某个阈值。</p>
+<p>将岭回归系数用矩阵的形式表示:</p>
+<p>$$\hat{θ} = (X^{T}X + \lambda I)^{-1}X^{T}y$$</p>
+<p>可以看到，就是通过将 $X^TX$ 加上一个单位矩阵是的矩阵变成非奇异矩阵并可以进行求逆运算。</p>
+<p><img src="\images\pasted-94.png" alt="upload successful"></p>
+<p><strong>岭回归的一些性质</strong></p>
+<p>当岭参数 $\lambda = 0 $时，得到的解是最小二乘解<br>当岭参数 $\lambda$ 趋向更大时，岭回归系数 $θ_i $趋向于0，约束项 t 很小</p>
+<h3 id="Lasso"><a href="#Lasso" class="headerlink" title="Lasso"></a>Lasso</h3><p>岭回归限定了所有回归系数的平方和不大于 t , 在使用普通最小二乘法回归的时候当两个变量具有相关性的时候，可能会使得其中一个系数是个很大正数，另一个系数是很大的负数。通过岭回归的  $\sum_{i=1}^{n} θ_i \le t $的限制，可以避免这个问题。</p>
+<p>LASSO(The Least Absolute Shrinkage and Selection Operator)是另一种缩减方法，将回归系数收缩在一定的区域内。LASSO的主要思想是构造一个一阶惩罚函数获得一个精炼的模型, 通过最终确定一些变量的系数为0进行特征筛选。</p>
+<p>LASSO的惩罚项为:</p>
+<p>$$\sum_{i=1}^{n} \vert θ_i \vert \le t$$</p>
+<p>与岭回归的不同在于，此约束条件使用了绝对值的一阶惩罚函数代替了平方和的二阶函数。虽然只是形式稍有不同，但是得到的结果却又很大差别。在LASSO中，当λ很小的时候，一些系数会随着变为0而岭回归却很难使得某个系数恰好缩减为0. 我们可以通过几何解释看到LASSO与岭回归之间的不同。</p>
+<p><img src="\images\pasted-95.png" alt="upload successful"><br>虽然惩罚函数只是做了细微的变化，但是相比岭回归可以直接通过矩阵运算得到回归系数相比，LASSO的计算变得相对复杂。</p>
+<h3 id="Kernel-Regression-and-RBFs"><a href="#Kernel-Regression-and-RBFs" class="headerlink" title="Kernel Regression and RBFs"></a>Kernel Regression and RBFs</h3><p><strong>径向基函数</strong></p>
+<p>我们可以用核函数线性组合来表示线性回归模型：<br>$$Φ(x)=[κ(x,μ_1,λ),…,κ(x,μ_d,λ)]，e.g. 高斯核函数：κ(x,μ,λ)=e^{-\frac{1}{2}||x-μ_i||^2}$$</p>
+<ul>
+<li>d的确定可以指定，这个可以使用x的个数，但是如果x个数太多，那么会导致很复杂。第二个方法可以通过Kmeans聚类。</li>
+<li>超参数的确定，λ取0.1，μ取在x聚类后的均值。（还没验证…）</li>
+</ul>
 <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="广义线性回归"><a href="#广义线性回归" class="headerlink" title="广义线性回归"></a>广义线性回归</h3><p>线性回归模型$y=w^Tx+b$，如果将y表示为在指数尺度上的变化，则：$\ln y=w^Tx+b$称为对数线性回归。$y=e^{w^Tx+b}$，实质上是在求输入空间到输出空间的非线性函数的映射（欧拉公式）。<br><img src="/images/pasted-68.png" alt="upload successful"><br>对更一般的单调可微函数g(x)，$y=g^{-1}(w^Tx+b)$这样的模型成为广义线性模型。g(x)称为联系函数（link function）</p>
 <h3 id="对数几率函数（逻辑回归）"><a href="#对数几率函数（逻辑回归）" class="headerlink" title="对数几率函数（逻辑回归）"></a>对数几率函数（逻辑回归）</h3><p>之前讨论的是使用线性模型进行回归学习，如果要应用到分类中，思路就是利用广义线性模型，找一单调可微函数将分类任务的真实标记y与线性回归模型的预测值对应起来即可。<br>设$z=w^Tx+b$，单位阶跃函数（unit-step function）表示为：<br>$y=\begin{cases}<br>0,z&lt;0;<br>0.5,z=0;<br>1z&gt;0<br>\end{cases}$<br>可以表征二分类任务，z大于零为正例，小于零为负例，临界值可任意。但是单位阶跃不连续，固需利用类似的替代函数（surrogate function）：对数几率函数（logistic function）$y=\frac{1}{1+\exp{-z}}$</p>
 <p>目前使用比较广泛的是对数几率函数logistic function，它是Sigmoid函数的一种。它的好处在于： </p>
@@ -638,11 +807,165 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/05/24/线性回归/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-神经网络" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/23/神经网络/">神经网络</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/23/神经网络/" class="archive-article-date">
+  	<time datetime="2018-05-23T02:41:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="神经元（neuron）模型"><a href="#神经元（neuron）模型" class="headerlink" title="神经元（neuron）模型"></a>神经元（neuron）模型</h2><p> 神经网络是由具有适应性的简单单元组成的广泛并行互连的网络，它的组织能够模拟生物神经系统对真实世界物体所作出的交互反应。<br> 神经网络中最基本的成分是神经元（neuron）模型，即“简单单元”，在生物神经网络中，每个神经元与其他神经元相连，当它“兴奋”时，就会向相连的神经元发送化学物质，从而改变这些神经元内的电位；如果某神经元的电位超过一个“阈值（threshold）”，那么它就会被激活，即“兴奋” 起来，向其他神经元发送化学物质。</p>
+<p><img src="/images/pasted-36.png" alt="upload successful"></p>
+<h3 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h3><p>理想激活函数是阶跃函数，0 表示抑制神经元而1表示激活神经元<br>阶跃函数具有不连续、不光滑等不好的性质，常用的是Sigmoid函数</p>
+<h4 id="Sigmoid函数"><a href="#Sigmoid函数" class="headerlink" title="Sigmoid函数"></a>Sigmoid函数</h4><p><img src="/images/pasted-37.png" alt="upload successful"><br>Sigmoid函数可能在较大范围内变化的输入值挤压到（0,1）输出值范围内，因此有时也称为”挤压函数”<br> 把这样许多个神经元按一定的层次结构连接起来，就得到了神经网络。</p>
+<h4 id="ReLu函数"><a href="#ReLu函数" class="headerlink" title="ReLu函数"></a>ReLu函数</h4><h4 id="tanh"><a href="#tanh" class="headerlink" title="tanh"></a>tanh</h4><h4 id="softmax"><a href="#softmax" class="headerlink" title="softmax"></a>softmax</h4><p>$max(0,(y-\widehat{y}))$</p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><ul>
+<li>回归问题：SSE（Sum of Squared Error）均方误差和</li>
+<li>分类问题：CE（Cross Entropy）交叉熵</li>
+</ul>
+<h2 id="感知机（Perceptron）与多层网络"><a href="#感知机（Perceptron）与多层网络" class="headerlink" title="感知机（Perceptron）与多层网络"></a>感知机（Perceptron）与多层网络</h2><p>感知机有两层神经元组成<br><img src="/images/pasted-38.png" alt="upload successful"><br>权重 及阈值θ通过学习获得，阈值θ可看做一个固定输入为-1的哑结点（dummy node）所对应的权重 。这样权重和阈值可以统一学习。对训练样例(x,y)，感知机输出 ，学习规则：<br>$$w_i←w_i+\nabla{w_i}$$<br>$$\nabla{w_i}=η(y-\widehat{y})x_i$$<br>η∈(0,1)称为学习率(learning rate)。<br>感知机只有输出层神经元进行激活函数处理，即只拥有一层功能神经元。与或非问题都是线性可分（linearly separable）。感知机对线性可分学习过程一定收敛，非线性可分问题w难以稳定下来，不能求合适的解，如下图D。<br><img src="/images/pasted-41.png" alt="upload successful"><br>要解决非线性可分问题，需要考虑使用多层功能神经元<br><img src="/images/pasted-42.png" alt="upload successful"><br><img src="/images/pasted-43.png" alt="upload successful"><br>网络结构中，输入层与输出层之间的神经元层成为隐含层（hidden layer），每层神经元与下一层神经元完全互联，神经元之间不存在同层连接，也不存在跨层连接，称为多层前馈网络结构(multi-layer feedforward nerual networks)</p>
+<ul>
+<li>多层网络：包含隐层的网络</li>
+<li>前馈网络：神经元之间不存在同层连接也不存在跨层连接  </li>
+</ul>
+<p>隐层和输出层具有激活函数，所以这两层的神经元亦称“功能单元”。多层前馈网络有强大的表示能力。只需一个包含足够多神经元的隐层，多层前馈神经网络就能以任意精度逼近任意复杂度的连续函数。设置隐层神经元数，通常用“试错法”。</p>
+<ul>
+<li>主要特点：信号是前向传播的，而误差是反向传播的。</li>
+<li>主要过程：信号的前向传播，从输入层经过隐含层，最后到达输出层</li>
+<li>误差的反向传播，从输出层到隐含层，最后到输入层，依次调节隐含层到输出层的权重和偏置，输入层到隐含层的权重和偏置</li>
+</ul>
+<h2 id="误差逆传播算法——BP神经网络"><a href="#误差逆传播算法——BP神经网络" class="headerlink" title="误差逆传播算法——BP神经网络"></a>误差逆传播算法——BP神经网络</h2><p> 误差逆传播（error BackPropagation，简称BP）它是迄今为止最成功的神经网络学习算法，现实任务中使用神经网络时，大多在使用BP算法进行训练多层前馈神经网络，还可用于训练例如递归神经网络。</p>
+<h3 id="链式法则"><a href="#链式法则" class="headerlink" title="链式法则"></a>链式法则</h3><p>$y=g(x)$，$z=h(y)$，$$\nabla{x}→\nabla{y}→\nabla{z} , \frac{dz}{dx}=\frac{dz}{dy}\frac{dy}{dx}$$<br>$x=g(s)$，$y=h(s)$，$z=k(x,y)$，$$\nabla{s}→\nabla{x},\nabla{y}→\nabla{z} , \frac{dz}{ds}=\frac{dz}{dx}\frac{dx}{ds}+\frac{dz}{dy}\frac{dy}{ds}$$</p>
+<h3 id="BP算法过程"><a href="#BP算法过程" class="headerlink" title="BP算法过程"></a>BP算法过程</h3><p>给定训练集：$D=((x_1,y_1),(x_2,y_2)….(x_m,y_m)),x∈\Bbb{R}^d,y∈\Bbb{R}^l,$<br>输入：d维特征向量，（d个属性）；<br>输出：L个输出值（l维实值向量）；<br>隐层：假定使用q个隐层神经元；<br>输出层权重：$w_{ij}$；隐层权重：$v_{ij}$；输出层阈值：$θ_i$；隐层阈值：$γ_i$<br>隐层输入<br><img src="/images/pasted-45.png" alt="upload successful">；<br>输出层输入<br><img src="/images/pasted-46.png" alt="upload successful">；<br>隐层第h个神经元输出：bh；<br>假定功能单元均使用Sigmoid函数 。<br><img src="/images/pasted-47.png" alt="upload successful"><br>对训练<br><img src="/images/pasted-48.png" alt="upload successful">，假定输出为<br><img src="/images/pasted-49.png" alt="upload successful"> ，即<br><img src="/images/pasted-50.png" alt="upload successful">，则网络在<br><img src="/images/pasted-51.png" alt="upload successful">的均方误差为<br><img src="/images/pasted-52.png" alt="upload successful">，未知的参数包括隐层及输出层权值、阈值。<br>BP通过迭代学习，在每一轮采用广义的感知机学习规划对参数进行更新估计：<br><img src="/images/pasted-53.png" alt="upload successful">。BP算法基于梯度下降策略（gradient descent），以目标负梯度方向对参数进行调整。对于误差Ek，给定学习率：η：</p>
+<p><img src="/images/pasted-54.png" alt="upload successful"><br>由于<br><img src="/images/pasted-55.png" alt="upload successful">，可得到<br><img src="/images/pasted-56.png" alt="upload successful"> 。<br>Sigmoid函数有以下性质：<br><img src="/images/pasted-57.png" alt="upload successful"> ，所以<br><img src="/images/pasted-58.png" alt="upload successful">：<br><img src="/images/pasted-59.png" alt="upload successful"><br>最终推得：<br><img src="/images/pasted-60.png" alt="upload successful"><br>其他参数的推导式同样的方法：<br><img src="/images/pasted-61.png" alt="upload successful"> 。<br>其中：<br><img src="/images/pasted-62.png" alt="upload successful"><br>学习率<br><img src="/images/pasted-63.png" alt="upload successful">，控制迭代中的更新步长，太大容易震荡，太小则收敛过慢。其中wθ与vγ的学习率不一定相等。</p>
+<h3 id="BP算法流程"><a href="#BP算法流程" class="headerlink" title="BP算法流程"></a>BP算法流程</h3><p>算法的工作流程：<br><img src="/images/pasted-64.png" alt="upload successful"></p>
+<h3 id="标准BP算法与累计BP算法"><a href="#标准BP算法与累计BP算法" class="headerlink" title="标准BP算法与累计BP算法"></a>标准BP算法与累计BP算法</h3><p>主要目标：最小化训练集D上的累计误差 。前面算法更新规则是基于单个Ek推导的，也称作“标准BP算法”。若使用基于累计误差最小化的更新规则，成为累计误差逆传播算法（accumulated errror backpropagation）。两者都很常用：</p>
+<p>| ————- |—–:|<br>|标准BP算法|    1、每次针对单个训练样例更新权值与阈值；2、参数更新频繁，不同样例可以抵消，需要多次迭代|</p>
+<p>|累计BP算法|    1、其优化目标是最小化整个训练集上的累计误差；<br>2、读取整个训练集一遍才对参数进行更新，参数更新频率较低|</p>
+<p>累计BP算法更新频率低，防止不同样例导致训练出现抵消的现象。在很多任务中，累计误差下降到一定程度后，进一步下降会非常缓慢，这是标准BP算法往往会获得较好的解，尤其当训练集非常大时效果更明显。</p>
+<h3 id="缓解过拟合"><a href="#缓解过拟合" class="headerlink" title="缓解过拟合"></a>缓解过拟合</h3><p>主要策略</p>
+<ul>
+<li>早停early stopping<br>将训练数据分为训练集和验证集。训练集计算梯度和更新，验证估计误差。<br>1、若训练误差连续a轮的变化小于b,则停止训练<br>2、使用验证集：若训练误差降低，验证误差升高，则停止训练。<br>返回具有最小验证误差的链接权重和阈值。</li>
+<li>正则化<br>regularization    在误差目标函数中，增加一项描述网络复杂度：例如连接权和阈值的平方和<br>误差目标函数改为： ， 用于对经验误差和网络复杂度进行折中。偏好比较小的连接权和阈值，使网络输出更“光滑”</li>
+</ul>
+<h2 id="全局最小与局部极小"><a href="#全局最小与局部极小" class="headerlink" title="全局最小与局部极小"></a>全局最小与局部极小</h2><p><img src="/images/pasted-65.png" alt="upload successful"><br>神经网络的训练过程可看作一个参数寻优过程：<br>在参数空间中，寻找一组最优参数使得误差最小<br>特点：存在多个“局部极小”；只有一个“全局最小”<br>常用策略跳出局部极小</p>
+<ul>
+<li>不同参数进行初始化    </li>
+<li>模拟退火（simulated annealing）    以一定概率接收比当前解更差的结果，每部迭代中，接受次优解的概率随时间推移而降低。</li>
+<li>随机梯度下降    计算梯度时增加随机因素，即使陷入局部极小也有机会跳出继续搜索。</li>
+<li>遗传算法（genetic algorithms）    </li>
+</ul>
+<h2 id="其他常见神经网络模型"><a href="#其他常见神经网络模型" class="headerlink" title="其他常见神经网络模型"></a>其他常见神经网络模型</h2><h3 id="RBF网络"><a href="#RBF网络" class="headerlink" title="RBF网络"></a>RBF网络</h3><p>RBF（Radial Basis Function，径向基函数）网络在分类任务中除BP之外最常用的一种<br>•    单隐层前馈神经网络<br>•    使用径向基函数作为隐层神经元激活函数ρ： ，定义为样本x到数据中心ci之间欧式距离的单调函数，常用高斯径向基函数。 。ci表示隐层神经元对应的中心、wi表示权重。<br>•    输出层是隐层神经元输出的线性组合<br>训练RBF网络：<br>•    确定神经元中心ci，常用的方式包括随机采样、聚类等<br>•    利用BP算法等确定参数wi和βi。</p>
+<h3 id="ART网络"><a href="#ART网络" class="headerlink" title="ART网络"></a>ART网络</h3><p>ART（Adaptive Resonance Theory，自适应谐振理论）竞争学习的代表，是一种常用的无监督学习策略。该策略网络输出神经元相互竞争，每一时刻仅有一个竞争获胜的神经元被激活。其他神经元被抑制。包含比较层、识别层、识别阈值和重置模块。</p>
+<h3 id="SOM网络"><a href="#SOM网络" class="headerlink" title="SOM网络"></a>SOM网络</h3><p>SOM（Self-Organizing Map，自组织映射）网络是最常用的聚类方法之一：<br>•    竞争型的无监督神经网络<br>•    将高维数据映射到低维空间，并保持输入数据在高维空间的拓扑结构。即将高维空间中相似的样本点映射到网络输出层中邻近神经元<br>•    每个神经元拥有一个权向量<br>•    目标：为每个输出层神经元找到合适的权向量以保持拓扑结构<br>训练<br>•    网络接收输入样本后，将会确定输出层的“获胜”神经元（“胜者通吃”）<br>•    获胜神经元的权向量将向当前输入样本移动</p>
+<h3 id="级联相关网络：“构造性”神经网络的代表"><a href="#级联相关网络：“构造性”神经网络的代表" class="headerlink" title="级联相关网络：“构造性”神经网络的代表"></a>级联相关网络：“构造性”神经网络的代表</h3><p>构造性神经网络：将网络结构也当做学习的目标，并在训练过程中找到最符合的网络结构。是结构自适应网络的重要代表。<br>训练<br>•    开始时只有输入层和输出层<br>•    级联（Cascade）：新的隐层节点逐渐加入，从而创建起层级结构<br>•    相关（Correlation）：最大化新节点的输出与网络误差之间的相关性</p>
+<h3 id="Elman网络：递归神经网络的代表"><a href="#Elman网络：递归神经网络的代表" class="headerlink" title="Elman网络：递归神经网络的代表"></a>Elman网络：递归神经网络的代表</h3><p>•    网络可以有环形结构，可让使一些神经元的输出反馈回来最为输入<br>•    t 时刻网络的输出状态： 由 t 时刻的输入状态和 t-1时刻的网络状态共同决定<br>Elman网络是最常用的递归神经网络之一<br>•    结构与前馈神经网络很相似，但隐层神经元的输出被反馈回来<br>•    使用推广的BP算法训练</p>
+<h3 id="Bolyzmann机：”基于能量的模型”的代表"><a href="#Bolyzmann机：”基于能量的模型”的代表" class="headerlink" title="Bolyzmann机：”基于能量的模型”的代表"></a>Bolyzmann机：”基于能量的模型”的代表</h3><h2 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h2><p>•    卷积神经网络CNN</p>
+<p><img src="/images/pasted-66.png" alt="upload successful"><br>•    每个卷积层包含多个特征映射，每个特征映射是一个由多个神经元构成的“平面”，通过一种卷积滤波器提取输入的一种特征<br>•    采样层亦称“汇合层”，其作用是基于局部相关性原理进行亚采样，从而在减少数据量的同事保留有用信息<br>•    连接层就是传统神经网络对隐层与输出层的全连接<br>典型的深度学习模型就是很深层的神经网络</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/23/神经网络/">展开全文 >></a>
         </p>
       
 
@@ -685,7 +1008,7 @@
 
         
         <a href="/2018/05/21/SVM/" class="archive-article-date">
-  	<time datetime="2018-05-21T07:50:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-21</time>
+  	<time datetime="2018-05-21T07:50:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-21</time>
 </a>
         
       </header>
@@ -705,7 +1028,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -752,7 +1097,7 @@
 
         
         <a href="/2018/05/20/图/" class="archive-article-date">
-  	<time datetime="2018-05-20T07:22:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-20</time>
+  	<time datetime="2018-05-20T07:22:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-20</time>
 </a>
         
       </header>
@@ -815,7 +1160,29 @@ F -&gt; C
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -957,235 +1324,9 @@ F -&gt; C
 
 
   
-    <article id="post-排序和查找" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/18/排序和查找/">排序和查找</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/18/排序和查找/" class="archive-article-date">
-  	<time datetime="2018-05-18T13:28:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><p>时间复杂度：$O(n^2)$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526650653105c9q9t5q9.png?imageslim" alt="paste image"><br>从开始两个比较，将大值向后移动，直到吧最大值移到了最后的位置。再将第二大数移动到倒数第二个位置，直到完成。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">array = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    array=list.copy()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(array)-i<span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> array[j]&gt;array[j+<span class="number">1</span>]:</span><br><span class="line">                array[j+<span class="number">1</span>],array[j]=array[j],array[j+<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">print(bubble_sort(array))</span><br></pre></td></tr></table></figure></p>
-<h3 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h3><p>时间复杂度：$O(n^2)$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526651186781qx8kk0oc.png?imageslim" alt="paste image"><br>将最小值移动到第一个位置，然后第二小值移动到第二个位置，直到最后。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">select_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    array=list.copy()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i,len(array)):</span><br><span class="line">            <span class="keyword">if</span> array[i]&gt;array[j]:</span><br><span class="line">                array[i],array[j]=array[j],array[i]</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">print(select_sort(array))</span><br></pre></td></tr></table></figure></p>
-<h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><p>时间复杂度：$O(n^2)$<br><img src="http://p8cigu7up.bkt.clouddn.com/15266515054520au94k4p.png?imageslim" alt="paste image"><br>将第一个与第二个比较，将小的放在前面，然后将第三放在对应有序的位置，直至最后都变有序。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inser_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    array=list.copy()</span><br><span class="line">    print(array)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> array[i]&lt;array[j]:</span><br><span class="line">                array[i],array[j]=array[j],array[i]</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">print(inser_sort(array))</span><br></pre></td></tr></table></figure></p>
-<h3 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526694242004ao197dyn.png?imageslim" alt="paste image"><br>首先归并排序使用了二分法，归根到底的思想还是分而治之。拿到一个长数组，将其不停的分为左边和右边两份，然后以此递归分下去。然后再将她们按照两个有序数组的样子合并起来。<br><img src="http://p8cigu7up.bkt.clouddn.com/15266957258474xkl1upc.png?imageslim" alt="paste image"><br>这里显示了归并排序的第一步，将数组按照middle进行递归拆分，最后分到最细之后再将其使用对两个有序数组进行排序的方法对其进行排序。</p>
-<p>两个有序数组排序的方法则非常简单，同时对两个数组的第一个位置进行比大小，将小的放入一个空数组，然后被放入空数组的那个位置的指针往后 移一个，然后继续和另外一个数组的上一个位置进行比较，以此类推。到最后任何一个数组先出栈完，就将另外i一个数组里的所有元素追加到新数组后面。</p>
-<p>由于递归拆分的时间复杂度是logN 然而，进行两个有序数组排序的方法复杂度是N该算法的时间复杂度是N*logN 所以是NlogN。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    i=j=<span class="number">0</span></span><br><span class="line">    c=[]</span><br><span class="line">    <span class="keyword">while</span> i&lt;len(a) <span class="keyword">and</span> j&lt;len(b):</span><br><span class="line">        <span class="keyword">if</span> a[i]&lt;=b[j]:</span><br><span class="line">            c.append(a[i])</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> i==len(a):</span><br><span class="line">                c+=b[j:]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            c.append(b[j])</span><br><span class="line">            j+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> j==len(b):</span><br><span class="line">                c+=a[i:]</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line">        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(list)&lt;=<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> list</span><br><span class="line">    mid=int(len(list)/<span class="number">2</span>)</span><br><span class="line">    left=merge_sort(list[:mid])</span><br><span class="line">    right=merge_sort(list[mid:])</span><br><span class="line">    <span class="keyword">return</span> merge(left,right)</span><br><span class="line"></span><br><span class="line">array=[<span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br><span class="line">print(merge_sort(array))</span><br></pre></td></tr></table></figure>
-<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526697530070bvq8x58w.png?imageslim" alt="paste image"></p>
-<ol>
-<li>选取一个数字作为基准，可选取末位数字</li>
-<li>将数列第一位开始，依次与此数字比较，如果小于此数，将小数交换到左边，最后达到小于基准数的在左边，大于基准数的在右边，分为两个数组</li>
-<li>分别对两个数组重复上述步骤<br><img src="http://p8cigu7up.bkt.clouddn.com/15266976047924jrijd0i.png?imageslim" alt="paste image"><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def quick_sort(list):</span><br><span class="line">    if len(list)&lt;=1:</span><br><span class="line">        return list</span><br><span class="line">    left=[]</span><br><span class="line">    right=[]</span><br><span class="line">    for i in list[1:]:</span><br><span class="line">        if i&lt;=list[0]:</span><br><span class="line">            left.append(i)</span><br><span class="line">        else:</span><br><span class="line">            right.append(i)</span><br><span class="line">    return quick_sort(left)+[list[0]]+quick_sort(right)</span><br><span class="line">quick_sort(array)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>可以用一行实现快速排序：<code>quick_sort = lambda array: array if len(array)&lt;=1 else quick_sort([item for item in array[1:] if item&lt;=array[0]]) + [array[0]] +quick_sort([item for item in array[1:] if item&gt;array[0]])</code></p>
-<p><strong>用栈实现非递归的快排程序</strong><br>需要考虑两个问题:<br>1）栈里边保存什么？<br>2）迭代结束的条件是什么？<br>栈里边保存的当然是需要迭代的函数参数，结束条件也是跟需要迭代的参数有关。对于快速排序来说，迭代的参数是数组的上边界low和下边界high，迭代结束的条件是low == high。</p>
-<p>由于通过切片传递列表会对列表进行复制，所以需要传递索引，传入原列表，这样在执行操作时就可以改变原始列表了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort_stack</span><span class="params">(list,l=None,r=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> l==<span class="keyword">None</span>:</span><br><span class="line">        l=<span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> r==<span class="keyword">None</span>:</span><br><span class="line">        r=len(list)<span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> l&gt;=r:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack=[(l,r)]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        left,right = stack.pop(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span> right-left&lt;=<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        x=list[left]</span><br><span class="line">        left_index=left+<span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(left+<span class="number">1</span>,right+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> list[i]&lt;x:</span><br><span class="line">                list[left_index],list[i]=list[i],list[left_index]</span><br><span class="line">                left_index+=<span class="number">1</span></span><br><span class="line">        list[left_index<span class="number">-1</span>],list[left]=list[left],list[left_index<span class="number">-1</span>]</span><br><span class="line">        <span class="keyword">if</span> left&lt;left_index<span class="number">-1</span>:</span><br><span class="line">            stack.insert(<span class="number">0</span>,(left,left_index<span class="number">-2</span>))</span><br><span class="line">        <span class="keyword">if</span> left_index+<span class="number">1</span>&lt;right:</span><br><span class="line">            stack.insert(<span class="number">0</span>,(left_index,right))</span><br><span class="line">        print(stack)</span><br><span class="line">        print(<span class="string">'list'</span>,list,list[left:left_index],list[left_index+<span class="number">1</span>:right+<span class="number">1</span>])</span><br><span class="line">array=[<span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br><span class="line">quick_sort_stack(array)</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure></p>
-<h3 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="http://p8cigu7up.bkt.clouddn.com/15267101496640wgoaq7w.png?imageslim" alt="paste image">  </p>
-<p><a href="https://www.cnblogs.com/chengxiao/p/6129630.html" target="_blank" rel="noopener">这篇文章讲解的比较清楚</a><br>建立大小为n的大根堆，堆顶元素是这个元素的最大值。将堆顶值与最后一个元素交换，然后将最大值脱离堆结构，放在数组的最后的位置。再将n-1的元素构成大根堆。直到元素全部有序。</p>
-<p>在这里首先要先解释一下什么是堆，堆栈是计算机的两种最基本的数据结构。堆的特点就是FIFO(first in first out)先进先出，这里的话我觉得可以理解成树的结构。堆在接收数据的时候先接收的数据会被先弹出。<br>栈的特性正好与堆相反，是属于FILO(first in/last out)先进后出的类型。栈处于一级缓存而堆处于二级缓存中。这个不是本文重点所以不做过多展开。<br><img src="http://p8cigu7up.bkt.clouddn.com/20160707112601875.gif" alt="堆排序"><br>堆可以分为大根堆和小根堆，这里用最大堆的情况来定义操作: </p>
-<ol>
-<li>最大堆调整(MAX_Heapify):将堆的末端子节点作调整，使得子节点永远小于父节点。这是核心步骤，在建堆和堆排序都会用到。比较i的根节点和与其所对应i的孩子节点的值。当i根节点的值比左孩子节点的值要小的时候，就把i根节点和左孩子节点所对应的值交换，当i根节点的值比右孩子的节点所对应的值要小的时候，就把i根节点和右孩子节点所对应的值交换。然后再调用堆调整这个过程，可见这是一个递归的过程。 </li>
-<li>建立最大堆(Build_Max_Heap):将堆所有数据重新排序。建堆的过程其实就是不断做最大堆调整的过程，从len/2出开始调整，一直比到第一个节点。 </li>
-<li>堆排序(HeapSort):移除位在第一个数据的根节点，并做最大堆调整的递归运算。堆排序是利用建堆和堆调整来进行的。首先先建堆，然后将堆的根节点选出与最后一个节点进行交换，然后将前面len-1个节点继续做堆调整的过程。直到将所有的节点取出，对于n个数我们只需要做n-1次操作。<br><a href="https://zh.wikipedia.org/zh/%E5%A0%86%E6%8E%92%E5%BA%8F#Python" target="_blank" rel="noopener">参考代码</a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap_adjust</span><span class="params">(list,start,end)</span>:</span></span><br><span class="line">   root=start</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">       child=<span class="number">2</span>*root+<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> child&gt;end:</span><br><span class="line">           <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> child+<span class="number">1</span>&lt;end <span class="keyword">and</span> list[child]&lt;list[child+<span class="number">1</span>]:</span><br><span class="line">           child+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> list[root]&lt;list[child]:</span><br><span class="line">           list[root],list[child]=list[child],list[root]</span><br><span class="line">            root=child</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">           <span class="keyword">break</span>      </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">   <span class="comment"># 创建最大堆</span></span><br><span class="line">    <span class="keyword">for</span> start <span class="keyword">in</span> range((len(list) - <span class="number">2</span>) // <span class="number">2</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">       heap_adjust(list,start, len(list) - <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 堆排序</span></span><br><span class="line">    <span class="keyword">for</span> end <span class="keyword">in</span> range(len(list) - <span class="number">1</span>, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">       list[<span class="number">0</span>], list[end] = list[end], list[<span class="number">0</span>]</span><br><span class="line">        heap_adjust(list,<span class="number">0</span>, end - <span class="number">1</span>)</span><br><span class="line">array=[<span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br><span class="line">heap_sort(array)</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h3><p>时间复杂度：$O(n·\log_ n)$<br>希尔排序是插入排序的一个调整，步长是可变的。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526722476067snttsu9u.png?imageslim" alt="paste image"><br>首先看步长为3，查找如果小于前面的第3个数，则交换，然后再查找前面的第3个数，如果不小于则停止。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526722455119oo5klc3p.png?imageslim" alt="paste image"><br>整个数组排序完成后，再用步长为2的排序，再用步长为1的排序。<br><a href="https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F#Python" target="_blank" rel="noopener">参考代码</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shell_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    n = len(list)</span><br><span class="line">    <span class="comment"># 初始步长</span></span><br><span class="line">    gap = n // <span class="number">2</span></span><br><span class="line">    <span class="keyword">while</span> gap &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(gap, n):</span><br><span class="line">            <span class="comment"># 每个步长进行插入排序</span></span><br><span class="line">            temp = list[i]</span><br><span class="line">            j = i</span><br><span class="line">            <span class="comment"># 插入排序</span></span><br><span class="line">            <span class="keyword">while</span> j &gt;= gap <span class="keyword">and</span> list[j - gap] &gt; temp:</span><br><span class="line">                list[j] = list[j - gap]</span><br><span class="line">                j -= gap</span><br><span class="line">            list[j] = temp</span><br><span class="line">        <span class="comment"># 得到新的步长</span></span><br><span class="line">        gap = gap // <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> list</span><br></pre></td></tr></table></figure></p>
-<h3 id="锦标赛排序"><a href="#锦标赛排序" class="headerlink" title="锦标赛排序"></a>锦标赛排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526715354948mthyueis.png?imageslim" alt="paste image"></p>
-<h3 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h3><p>桶排序是一种思想，比较常规的是计数排序和基数排序。桶排序的速度非常之快，比其他排序算法快非常多，但是需要占用大量空间。<br><a href="http://code.py40.com/1766.html" target="_blank" rel="noopener">代码参考</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bucket</span><span class="params">(list)</span>:</span></span><br><span class="line">    bucket_list=[<span class="number">0</span>]*(max(list)-min(list)+<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> list:</span><br><span class="line">        bucket_list[i]+=<span class="number">1</span></span><br><span class="line">    ret=[]</span><br><span class="line">    <span class="keyword">for</span> i,val <span class="keyword">in</span> enumerate(bucket_list):</span><br><span class="line">        <span class="keyword">if</span> val:</span><br><span class="line">            ret+=[i <span class="keyword">for</span> j <span class="keyword">in</span> range(val)]</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">a =[<span class="number">12</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">56</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">0</span>]</span><br><span class="line">b = bucket(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/18/排序和查找/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-python的垃圾回收" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/16/python的垃圾回收/">python的垃圾回收</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/16/python的垃圾回收/" class="archive-article-date">
-  	<time datetime="2018-05-16T12:48:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>现在的高级语言如java，c#等，都采用了垃圾收集机制，而不再是c，c++里用户自己管理维护内存的方式。自己管理内存极其自由，可以任意申请内存，但如同一把双刃剑，为大量内存泄露，悬空指针等bug埋下隐患。</p>
-<p>python里每一个东西都是对象，它们的核心就是一个结构体：PyObject<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef struct_object &#123;</span><br><span class="line">int ob_refcnt;</span><br><span class="line">struct_typeobject *ob_type;</span><br><span class="line">&#125;PyObject;</span><br></pre></td></tr></table></figure></p>
-<h2 id="引用计数机制"><a href="#引用计数机制" class="headerlink" title="引用计数机制"></a>引用计数机制</h2><p>PyObject是每个对象必有的内容，其中ob_refcnt就是做为引用计数。当一个对象有新的引用时，它的ob_refcnt就会增加，当引用它的对象被删除，它的ob_refcnt就会减少</p>
-<p>引用计数为0时，该对象生命就结束了。</p>
-<p>引用计数机制的优点：</p>
-<ol>
-<li>简单</li>
-<li>实时性：一旦没有引用，内存就直接释放了。不用像其他机制等到特定时机。实时性还带来一个好处：处理回收内存的时间分摊到了平时。        </li>
-</ol>
-<p>引用计数机制的缺点： </p>
-<ol>
-<li>维护引用计数消耗资源 </li>
-<li>如果出现循环引用的话，引用计数机制就不在起有效作用了。</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list1 = []</span><br><span class="line">list2 = []</span><br><span class="line">list1.append(list2)</span><br><span class="line">list2.append(list1)</span><br></pre></td></tr></table></figure>
-<p>list1与list2相互引用，如果不存在其他对象对它们的引用，list1与list2的引用计数也仍然为1，所占用的内存永远无法被回收，这将是致命的。</p>
-<p>对于如今的强大硬件，缺点1尚可接受，但是循环引用导致内存泄露，注定python还将引入新的回收机制。</p>
-<h2 id="标记-清除机制"><a href="#标记-清除机制" class="headerlink" title="标记-清除机制"></a>标记-清除机制</h2><p>如果两个对象的引用计数都为1，但是仅仅存在她们之间的循环引用，那么这两个对象都是需要被回收的，也就是说他们的引用计数虽然表现为非0，但实际有效的引用计数为0。所以现将循环引用摘掉，就会得出对象的有用计数。</p>
-<p>缺点：该机制所带来的额外操作和需要回收的内存块成正比。</p>
-<h2 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h2><p>从“标记-清除”的垃圾回收机制来看，当需要回收的内存块较多时，垃圾检测带来的额外操作会增多，而垃圾回收带来的额外操作就越少。反之，内存块较多时，垃圾检测就比垃圾回收带来更少的额外操作。</p>
-<h3 id="内存池"><a href="#内存池" class="headerlink" title="内存池"></a>内存池</h3><ol>
-<li>Python的内存机制呈现金字塔形状，-1，-2层主要有操作系统进行操作；</li>
-<li>第0层是C中的malloc,free等内存分配和释放函数进行操作；</li>
-<li>第1层和第2层是内存池，有Python的接口函数PyMem_Malloc函数实现，当对象小于256K时有该层直接分配内存；</li>
-<li>第3层是最上层，也就是我们对Python对象的直接操作；</li>
-</ol>
-<p>Python在运行期间会大量地执行malloc和free的操作，频繁地在用户态和核心态之间进行切换，这将严重影响Python的执行效率。为了加速Python的执行效率，Python引入了一个内存池机制，用于管理对小块内存的申请和释放。</p>
-<p>Python内部默认的小块内存与大块内存的分界点定在256个字节，当申请的内存小于256字节时，PyObject_Malloc会在内存池中申请内存；当申请的内存大于256字节时，PyObject_Malloc的行为将蜕化为malloc的行为。</p>
-<p>当然，通过修改Python源代码，我们可以改变这个默认值，从而改变Python的默认内存管理行为。有时间可以仔细看看<a href="https://www.jianshu.com/p/1e375fb40506" target="_blank" rel="noopener">一篇垃圾回收讲解比较详细文章</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/16/python的垃圾回收/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1305,11 +1446,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1318,6 +1459,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数据结构与算法</a>
               </li>
             
             <div class="clearfix"></div>

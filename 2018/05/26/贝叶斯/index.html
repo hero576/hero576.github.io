@@ -9,7 +9,7 @@
   <title>贝叶斯分类器 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="基本概念 条件概率的概念：A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=P(AB)/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)=P(B)P(A|B)$。联合分布：$\sum_{A} P(A,B)=P(B)$$P(B">
-<meta name="keywords" content="py通红">
+<meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="贝叶斯分类器">
 <meta property="og:url" content="http://yoursite.com/2018/05/26/贝叶斯/index.html">
@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://yoursite.com/images/pasted-80.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-81.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-82.png">
-<meta property="og:updated_time" content="2018-06-01T08:49:23.017Z">
+<meta property="og:updated_time" content="2018-06-07T14:20:58.044Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="贝叶斯分类器">
 <meta name="twitter:description" content="基本概念 条件概率的概念：A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=P(AB)/P(B)$。事件独立：$P(AB)=P(A)P(B)$。求和$P(A+B)=P(A)+P(B)-P(AB)$。求差$P(A-B)=P(A)-P(AB)$。乘积：$P(AB)=P(A)P(B|A)=P(B)P(A|B)$。联合分布：$\sum_{A} P(A,B)=P(B)$$P(B">
@@ -163,7 +163,7 @@
 
         
         <a href="/2018/05/26/贝叶斯/" class="archive-article-date">
-  	<time datetime="2018-05-26T06:16:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
+  	<time datetime="2018-05-26T06:16:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
 </a>
         
       </header>
@@ -172,7 +172,7 @@
       
         <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
 <li><strong>条件概率的概念：</strong>A和B是两个事件，事件A发生的条件下，事件B发生的概率，表示为：$P(A|B)=P(AB)/P(B)$。<br>事件独立：$P(AB)=P(A)P(B)$。<br>求和$P(A+B)=P(A)+P(B)-P(AB)$。<br>求差$P(A-B)=P(A)-P(AB)$。<br>乘积：$P(AB)=P(A)P(B|A)=P(B)P(A|B)$。<br>联合分布：$\sum_{A} P(A,B)=P(B)$<br>$P(B)=\sum_{B|A}P(A)$<br>联合分布条件概率：$P(S|W)=\frac {P(S,W)}{P(W)}$<br>$P(A,B|C)=P(A|B,C)P(B|C)$</li>
-<li><strong>贝叶斯公式：</strong><br>$P(B│A)=P(B)P(A|B)/(P(A))$。<br>当$B1、B2、B3……∈B，A⊂∑B_i$时，$P(B_i│A)=P(B_i)P(A|B_i)/(∑P(B_j)P(A|B_j))$。<ul>
+<li><strong>贝叶斯公式：</strong><br>$P(B│A)=\frac{P(B)P(A|B)}{P(A)}$。<br>由全概率公式，当$B1、B2、B3……∈B，A⊂∑B_i$时，$P(B_i│A)=P(B_i)P(A|B_i)/(∑P(B_j)P(A|B_j))$。<ul>
 <li>$P(B_i)$先验概率</li>
 <li>$P(B_i│A)$为后验概率。</li>
 </ul>
@@ -201,7 +201,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -275,8 +297,8 @@
     </a>
   
   
-    <a href="/2018/05/24/聚类算法/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">聚类算法</div>
+    <a href="/2018/05/24/线性回归/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">线性模型</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -456,11 +478,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -469,6 +491,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数据结构与算法</a>
               </li>
             
             <div class="clearfix"></div>

@@ -9,7 +9,7 @@
   <title>线性模型 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="线性模型是机器学习里面最基础的一个模型，也是比较简单的，主要用于属于线性关系的模型，像y=wx+b，就是只有一个属性x表示的y值的变化规律，也称做单属性线性回归。 基本形式当给定d个属性示例$x=[x_1;x_2….x_d]$，线性模型视图学得一个属性的线性组合来进行预测：$f(x)=w_1x_1+w_2x_2+w_3x_4+…w_dx_d+b=w^T+b$，w和b确认后，模型即可确认。线性模型形">
-<meta name="keywords" content="py通红">
+<meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线性模型">
 <meta property="og:url" content="http://yoursite.com/2018/05/24/线性回归/index.html">
@@ -18,6 +18,9 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/images/pasted-67.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-71.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-93.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-94.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-95.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-68.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-72.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-69.png">
@@ -25,7 +28,7 @@
 <meta property="og:image" content="http://yoursite.com/images/pasted-73.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-74.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-75.png">
-<meta property="og:updated_time" content="2018-05-24T11:01:29.724Z">
+<meta property="og:updated_time" content="2018-06-07T14:21:44.625Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线性模型">
 <meta name="twitter:description" content="线性模型是机器学习里面最基础的一个模型，也是比较简单的，主要用于属于线性关系的模型，像y=wx+b，就是只有一个属性x表示的y值的变化规律，也称做单属性线性回归。 基本形式当给定d个属性示例$x=[x_1;x_2….x_d]$，线性模型视图学得一个属性的线性组合来进行预测：$f(x)=w_1x_1+w_2x_2+w_3x_4+…w_dx_d+b=w^T+b$，w和b确认后，模型即可确认。线性模型形">
@@ -202,6 +205,30 @@
 <p>均方差是常用的性能度量指标：<br><img src="/images/pasted-67.png" alt="upload successful"><br>只需针对w和b分别求偏导即可得到最优解（闭式close-form解）w和b。<br>基于均方误差最小化来进行模型求解的方法也称为最小二乘法。在线性回归中，最小二乘法可以找到一条这样的直线，使得所有样本到直线上的欧氏距离之和最小。<br>$$w=\frac{\sum (x_i-\overline x)(y_i-\overline y)}{\sum (x_i-\overline x)^2}$$<br>$$b=\overline y -w\overline x$$</p>
 <h3 id="多属性线性回归"><a href="#多属性线性回归" class="headerlink" title="多属性线性回归"></a>多属性线性回归</h3><p>多元线性回归也就是有d个属性，建立矩阵方程。</p>
 <h3 id="线性回归与最小二乘"><a href="#线性回归与最小二乘" class="headerlink" title="线性回归与最小二乘"></a>线性回归与最小二乘</h3><p>$$y=w^Tx+ε$$<br>假设ε满足独立同分布，服从均值0方差$θ^2$的高斯分布。所以ε表示为：$p(ε)=\frac{1}{\sqrt{2π}}e^{(-\frac{ε^2}{2σ^2})}$<br>由于$ε=y-w^Tx$，带入到上式：$$p(y|x;w)=\frac{1}{\sqrt{2π}}e^{(-\frac{(y-w^Tx)^2}{2σ^2})}$$<br>其中$p(y|x;w)$表示w能够最大y的概率的取值，可以用似然函数求解。<br>$$L(θ)=\prod_{i=1}{m}p(y|x;w)$$<br>通过取对数，化简得到目标函数：求取J(θ)的最小值<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>最小值可以通过凸函数的导数为零的解，由于X和θ是矩阵，求导要符合矩阵求导的公式。求导公式，可参照<a href="https://en.wikipedia.org/wiki/Matrix_calculus#Scalar-by-vector_identities" target="_blank" rel="noopener">wiki百科</a><br><img src="/images/pasted-71.png" alt="upload successful"></p>
+<h3 id="岭回归"><a href="#岭回归" class="headerlink" title="岭回归"></a><a href="https://zhuanlan.zhihu.com/p/30535220" target="_blank" rel="noopener">岭回归</a></h3><p><img src="/images/pasted-93.png" alt="upload successful"><br>岭回归和Lasso是两种线性回归的缩减(shrinkage)方法。<br>标准最小二乘法优化问题:<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>可以表示为：<br>$$J(θ)=\frac{1}{2} (h_θ(x)-y)^T(h_θ(x)-y)$$<br>回归系数为：<br>$$θ=(X^TX)^{-1}X^Ty$$<br>这个问题解存在且唯一的条件就是XX列满秩: rank(X) = dim(X)。但即使 X 列满秩，但是当数据特征中存在共线性，即相关性比较大的时候，会使得标准最小二乘求解不稳定, $X^TX$的行列式接近零，计算$X^TX$的时候误差会很大。这个时候我们需要在cost function上添加一个惩罚项 $\lambda\sum_{i=1}^{n}θ_{i}^2$，称为L2正则化。<br>这个时候的cost function的形式就为:</p>
+<p>$$f(θ) = \sum_{i=1}^{m} (y_i - x_{i}^{T}θ)^2 + \lambda\sum_{i=1}^{n}θ_{i}^{2}$$</p>
+<p>通过加入此惩罚项进行优化后，限制了回归系数$wiwi$的绝对值，数学上可以证明上式的等价形式如下:</p>
+<p>$$f(θ) = \sum_{i=1}^{m} (y_i - x_{i}^{T}θ)^2 $$</p>
+<p>$$s.t. \sum_{i=1}^{n}θ_{j}^2 \le t$$</p>
+<p>其中t为某个阈值。</p>
+<p>将岭回归系数用矩阵的形式表示:</p>
+<p>$$\hat{θ} = (X^{T}X + \lambda I)^{-1}X^{T}y$$</p>
+<p>可以看到，就是通过将 $X^TX$ 加上一个单位矩阵是的矩阵变成非奇异矩阵并可以进行求逆运算。</p>
+<p><img src="\images\pasted-94.png" alt="upload successful"></p>
+<p><strong>岭回归的一些性质</strong></p>
+<p>当岭参数 $\lambda = 0 $时，得到的解是最小二乘解<br>当岭参数 $\lambda$ 趋向更大时，岭回归系数 $θ_i $趋向于0，约束项 t 很小</p>
+<h3 id="Lasso"><a href="#Lasso" class="headerlink" title="Lasso"></a>Lasso</h3><p>岭回归限定了所有回归系数的平方和不大于 t , 在使用普通最小二乘法回归的时候当两个变量具有相关性的时候，可能会使得其中一个系数是个很大正数，另一个系数是很大的负数。通过岭回归的  $\sum_{i=1}^{n} θ_i \le t $的限制，可以避免这个问题。</p>
+<p>LASSO(The Least Absolute Shrinkage and Selection Operator)是另一种缩减方法，将回归系数收缩在一定的区域内。LASSO的主要思想是构造一个一阶惩罚函数获得一个精炼的模型, 通过最终确定一些变量的系数为0进行特征筛选。</p>
+<p>LASSO的惩罚项为:</p>
+<p>$$\sum_{i=1}^{n} \vert θ_i \vert \le t$$</p>
+<p>与岭回归的不同在于，此约束条件使用了绝对值的一阶惩罚函数代替了平方和的二阶函数。虽然只是形式稍有不同，但是得到的结果却又很大差别。在LASSO中，当λ很小的时候，一些系数会随着变为0而岭回归却很难使得某个系数恰好缩减为0. 我们可以通过几何解释看到LASSO与岭回归之间的不同。</p>
+<p><img src="\images\pasted-95.png" alt="upload successful"><br>虽然惩罚函数只是做了细微的变化，但是相比岭回归可以直接通过矩阵运算得到回归系数相比，LASSO的计算变得相对复杂。</p>
+<h3 id="Kernel-Regression-and-RBFs"><a href="#Kernel-Regression-and-RBFs" class="headerlink" title="Kernel Regression and RBFs"></a>Kernel Regression and RBFs</h3><p><strong>径向基函数</strong></p>
+<p>我们可以用核函数线性组合来表示线性回归模型：<br>$$Φ(x)=[κ(x,μ_1,λ),…,κ(x,μ_d,λ)]，e.g. 高斯核函数：κ(x,μ,λ)=e^{-\frac{1}{2}||x-μ_i||^2}$$</p>
+<ul>
+<li>d的确定可以指定，这个可以使用x的个数，但是如果x个数太多，那么会导致很复杂。第二个方法可以通过Kmeans聚类。</li>
+<li>超参数的确定，λ取0.1，μ取在x聚类后的均值。（还没验证…）</li>
+</ul>
 <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="广义线性回归"><a href="#广义线性回归" class="headerlink" title="广义线性回归"></a>广义线性回归</h3><p>线性回归模型$y=w^Tx+b$，如果将y表示为在指数尺度上的变化，则：$\ln y=w^Tx+b$称为对数线性回归。$y=e^{w^Tx+b}$，实质上是在求输入空间到输出空间的非线性函数的映射（欧拉公式）。<br><img src="/images/pasted-68.png" alt="upload successful"><br>对更一般的单调可微函数g(x)，$y=g^{-1}(w^Tx+b)$这样的模型成为广义线性模型。g(x)称为联系函数（link function）</p>
 <h3 id="对数几率函数（逻辑回归）"><a href="#对数几率函数（逻辑回归）" class="headerlink" title="对数几率函数（逻辑回归）"></a>对数几率函数（逻辑回归）</h3><p>之前讨论的是使用线性模型进行回归学习，如果要应用到分类中，思路就是利用广义线性模型，找一单调可微函数将分类任务的真实标记y与线性回归模型的预测值对应起来即可。<br>设$z=w^Tx+b$，单位阶跃函数（unit-step function）表示为：<br>$y=\begin{cases}<br>0,z&lt;0;<br>0.5,z=0;<br>1z&gt;0<br>\end{cases}$<br>可以表征二分类任务，z大于零为正例，小于零为负例，临界值可任意。但是单位阶跃不连续，固需利用类似的替代函数（surrogate function）：对数几率函数（logistic function）$y=\frac{1}{1+\exp{-z}}$</p>
 <p>目前使用比较广泛的是对数几率函数logistic function，它是Sigmoid函数的一种。它的好处在于： </p>
@@ -238,7 +265,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -302,18 +351,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/05/24/聚类算法/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/05/26/贝叶斯/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          聚类算法
+          贝叶斯分类器
         
       </div>
     </a>
   
   
-    <a href="/2018/05/21/SVM/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SVM</div>
+    <a href="/2018/05/23/神经网络/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">神经网络</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -340,7 +389,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本形式"><span class="toc-number">1.</span> <span class="toc-text">基本形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线性回归"><span class="toc-number">2.</span> <span class="toc-text">线性回归</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#度量指标"><span class="toc-number">2.1.</span> <span class="toc-text">度量指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单属性线性回归"><span class="toc-number">2.2.</span> <span class="toc-text">单属性线性回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多属性线性回归"><span class="toc-number">2.3.</span> <span class="toc-text">多属性线性回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线性回归与最小二乘"><span class="toc-number">2.4.</span> <span class="toc-text">线性回归与最小二乘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分类"><span class="toc-number">3.</span> <span class="toc-text">分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#广义线性回归"><span class="toc-number">3.1.</span> <span class="toc-text">广义线性回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对数几率函数（逻辑回归）"><span class="toc-number">3.2.</span> <span class="toc-text">对数几率函数（逻辑回归）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#logistic回归求解"><span class="toc-number">3.3.</span> <span class="toc-text">logistic回归求解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线性判别分析"><span class="toc-number">4.</span> <span class="toc-text">线性判别分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#回归中的相关度和R平方值"><span class="toc-number">4.1.</span> <span class="toc-text">回归中的相关度和R平方值</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本形式"><span class="toc-number">1.</span> <span class="toc-text">基本形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线性回归"><span class="toc-number">2.</span> <span class="toc-text">线性回归</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#度量指标"><span class="toc-number">2.1.</span> <span class="toc-text">度量指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单属性线性回归"><span class="toc-number">2.2.</span> <span class="toc-text">单属性线性回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多属性线性回归"><span class="toc-number">2.3.</span> <span class="toc-text">多属性线性回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线性回归与最小二乘"><span class="toc-number">2.4.</span> <span class="toc-text">线性回归与最小二乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#岭回归"><span class="toc-number">2.5.</span> <span class="toc-text">岭回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lasso"><span class="toc-number">2.6.</span> <span class="toc-text">Lasso</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kernel-Regression-and-RBFs"><span class="toc-number">2.7.</span> <span class="toc-text">Kernel Regression and RBFs</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分类"><span class="toc-number">3.</span> <span class="toc-text">分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#广义线性回归"><span class="toc-number">3.1.</span> <span class="toc-text">广义线性回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对数几率函数（逻辑回归）"><span class="toc-number">3.2.</span> <span class="toc-text">对数几率函数（逻辑回归）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#logistic回归求解"><span class="toc-number">3.3.</span> <span class="toc-text">logistic回归求解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线性判别分析"><span class="toc-number">4.</span> <span class="toc-text">线性判别分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#回归中的相关度和R平方值"><span class="toc-number">4.1.</span> <span class="toc-text">回归中的相关度和R平方值</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -493,11 +542,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -506,6 +555,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数据结构与算法</a>
               </li>
             
             <div class="clearfix"></div>
