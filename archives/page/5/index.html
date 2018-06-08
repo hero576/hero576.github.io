@@ -146,36 +146,79 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-python的命名空间" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/07/hello-world/">数据结构——基本线性数据结构——数组</a>
+      <a class="article-title" href="/2017/08/16/python的命名空间/">python的命名空间</a>
     </h1>
   
 
         
-        <a href="/2018/05/07/hello-world/" class="archive-article-date">
-  	<time datetime="2018-05-07T11:22:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-07</time>
+        <a href="/2017/08/16/python的命名空间/" class="archive-article-date">
+  	<time datetime="2017-08-16T11:51:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-16</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="1、数组"><a href="#1、数组" class="headerlink" title="1、数组"></a>1、数组</h2><h6 id="数组的设计"><a href="#数组的设计" class="headerlink" title="数组的设计"></a>数组的设计</h6><p>数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：</p>
+        <h2 id="命名空间的概念"><a href="#命名空间的概念" class="headerlink" title="命名空间的概念"></a>命名空间的概念</h2><p>C++会用到<code>std::cout</code>这样的用法，定义cout的命名空间，使用<code>using namespace std;</code>可以简化std::cout的写法，命名空间的使用可以避免不同的作用域之间函数重名的冲突问题。</p>
+<h2 id="python的命名空间"><a href="#python的命名空间" class="headerlink" title="python的命名空间"></a>python的命名空间</h2><p>python中也有命名空间，是用来记录变量轨迹的。命名空间是一个 字典，它的键就是变量名，它的值就是那些变量的值。<br>在一个 Python 程序中的任何一个地方，都存在几个可用的命名空间。这四类命名空间可以简记为 LEGB:  </p>
 <ol>
-<li>请求空间以后大小固定，不能再改变（数据溢出问题）；</li>
-<li>在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间；</li>
-<li>在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分的内存上）。</li>
+<li><strong>局部命名空间（local）：</strong>指的是一个函数或者一个类所定义的名称空间；包括函数的参数、局部变量、类的属性等。</li>
+<li><strong>闭包命名空间（enclosing function）：</strong>闭包函数 的名称空间（Python 3 引入）。</li>
+<li><strong>全局命名空间（global）：</strong>读入一个模块（也即一个.py文档）后产生的名称空间。</li>
+<li><strong>内建命名空间（builtin）：</strong>Python 解释器启动时自动载入<strong>built</strong>模块后所形成的名称空间；诸如 str/list/dict…等内置对象的名称就处于这里。</li>
 </ol>
-<p>因为简单数组强烈倚赖电脑硬件之内存，所以不适用于现代的程序设计。欲使用可变大小、硬件无关性的数据类型，Java等程序设计语言均提供了更高级的数据结构：ArrayList、Vector等动态数组。</p>
-<h6 id="python数组的实现"><a href="#python数组的实现" class="headerlink" title="python数组的实现"></a>python数组的实现</h6><p>首先来一个错误的实现方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list=[[]]*<span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[], [], []]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[<span class="number">3</span>], [<span class="number">3</span>], [<span class="number">3</span>]]</span><br></pre></td></tr></table></figure></p>
-<p>*号运算只是对原来数据的多次引用，也就是说实际上，我们用*号创建的二位数组其实只是将原来的一位数组复制了多次，我们并不能用其实现二维数组的功能。<br>官方推荐使用列表生成式：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list=[[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[<span class="number">3</span>], [], []]</span><br></pre></td></tr></table></figure></p>
-<p>所以，二维数组可以这样实现：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>array=[[<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>)] <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>array</span><br><span class="line">[[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]]</span><br></pre></td></tr></table></figure></p>
+<h2 id="命名空间查找顺序"><a href="#命名空间查找顺序" class="headerlink" title="命名空间查找顺序"></a>命名空间查找顺序</h2><p>同样的标识符在各层命名空间中可以被重复使用而不会发生冲突，但 Python 寻找一个标识符的过程总是从当前层开始逐层往上找，直到首次找到这个标识符为止：</p>
+<ol>
+<li>局部命名空间：特指当前函数或类的方法。如果函数定义了一个局部变量 x，或一个参数 x，Python 将使用它，然后停止搜索。</li>
+<li>全局命名空间：特指当前的模块。如果模块定义了一个名为 x 的变量，函数或类，Python 将使用它然后停止搜索。</li>
+<li>内置命名空间：对每个模块都是全局的。作为最后的尝试，Python 将假设 x 是内置函数或变量。</li>
+<li>如果 Python 在这些名字空间找不到 x，它将放弃查找并引发一个 NameError 异常，如，NameError: name ‘aa’ is not defined。</li>
+</ol>
+<h2 id="命名空间的生命周期"><a href="#命名空间的生命周期" class="headerlink" title="命名空间的生命周期"></a>命名空间的生命周期</h2><p>不同的命名空间在不同的时刻创建，有不同的生存期。</p>
+<ol>
+<li>内置命名空间在 Python 解释器启动时创建，会一直保留，不被删除。</li>
+<li>模块的全局命名空间在模块定义被读入时创建，通常模块命名空间也会一直保存到解释器退出。</li>
+<li>当函数被调用时创建一个局部命名空间，当函数返回结果 或 抛出异常时，被删除。每一个递归调用的函数都拥有自己的命名空间。</li>
+</ol>
+<h2 id="global-和-nonlocal-语句"><a href="#global-和-nonlocal-语句" class="headerlink" title="global 和 nonlocal 语句"></a>global 和 nonlocal 语句</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#e.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv <span class="comment">#UnboundLocalError:local variable 'gv' referenced before assignment</span></span><br><span class="line">    lv = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv = lv + [v]  <span class="comment">#UnboundLocalError:local variable 'lv' referenced before assignment</span></span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure>
+<p><strong>为什么使用global</strong>  </p>
+<pre><code>Python 在执行函数前，会首先生成各层命名空间和作用域，因此 Python 在执行赋值前会将func 内的 &apos;gv&apos; &apos;lv&apos; 写入局部命名空间和闭包命名空间，当 Python 执行赋值时会在局部作用域、闭包作用域内发现局部命名空间和闭包命名空间内已经具有&apos;gv&apos; 和 &apos;lv&apos; 标识符，但这两个非全局标识符在该赋值语句执行之前并没有被赋值，也即没有对象与标识符关联，因此无法参与四则运算，从而引发错误；
+</code></pre><p>局部空间无法获得，Python 便引入了 global、nonlocal 语句就来说明所修饰的 gv、lv 分别来自全局命名空间和局部命名空间，声明之后，就可以在 func 和 inn_func 内直接改写上层命名空间内 gv 和 lv 的值：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#f.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> gv</span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> lv</span><br><span class="line">        lv = lv + [v]</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
+<h2 id="借壳"><a href="#借壳" class="headerlink" title="借壳"></a>借壳</h2><p>那么是不是不使用 global 和 nonlocal 就不能达到上面的目的呢？来看看这段程序：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#g.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv.insert(<span class="number">0</span>, <span class="string">'gv'</span>)</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv.append(v)</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
+<p>我们改写的不是 gv 和 lv ,而是 gv 和 lv 的元素 gv[0:0] 和 lv[:] 。因此，不需要 global 和 nonlocal 修饰就可以直接改写，这就是“借壳”。修改 gv 和 lv实际上是在父函数作用域内，子函数调用只能读取而不能直接改写 gv 和 lv。<br>在 nonlocal 尚未引入 Python 中，比如 Python 2.x 若要在子函数中改写父函数变量的值就得通过这种方法。</p>
+<h2 id="命名空间的访问"><a href="#命名空间的访问" class="headerlink" title="命名空间的访问"></a>命名空间的访问</h2><ul>
+<li>局部命名空间可以 locals()  BIF来访问。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'1233'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, str )</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span> , <span class="string">"first"</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'str'</span>: <span class="string">'first'</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>全局 (模块级别)命名空间可以通过 globals() BIF来访问。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gstr = <span class="string">"global string"</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span>,<span class="string">'first'</span>)</span><br><span class="line">print(globals())</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br><span class="line">&#123;<span class="string">'__name__'</span>: <span class="string">'__main__'</span>, ....<span class="string">'func1'</span>: &lt;function func1 at <span class="number">0x000002A7BF382D90</span>&gt;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>locals 与 globals 之间的一个重要的区别<br>locals 是只读的，globals 可以改写</li>
+</ul>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span>
+    x = <span class="number">12345</span>
+    print(locals())
+    locals()[<span class="string">"x"</span>]= <span class="number">6789</span>
+    print(<span class="string">"x="</span>,x)
+
+y=<span class="number">54321</span>
+func1(<span class="number">1</span> , <span class="string">"first"</span>)
+globals()[<span class="string">"y"</span>]= <span class="number">9876</span>
+print( <span class="string">"y="</span>,y)
+&gt;&gt;&gt;{<span class="string">'i'</span>: <span class="number">1</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>}
+x= <span class="number">12345</span>
+y= <span class="number">9876</span>
+</code></pre>
+<p>locals 实际上没有返回局部名字空间，它返回的是一个拷贝。所以对它进行改变对局部名字空间中的变量值并无影响。<br>globals 返回实际的全局名字空间，而不是一个拷贝。所以对 globals 所返回的 dictionary 的任何的改动都会直接影响到全局变量。（<a href="http://www.cnblogs.com/windlaughing/archive/2013/05/26/3100362.html" target="_blank" rel="noopener">原文解释连接</a>）</p>
 
       
 
@@ -189,7 +232,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
         		</li>
       		
 		</ul>
@@ -201,7 +244,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
         		</li>
       		
 		</ul>
@@ -210,7 +253,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/07/hello-world/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/08/16/python的命名空间/">展开全文 >></a>
         </p>
       
 
@@ -373,11 +416,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+                <a href="javascript:void(0)" class="js-tag color3">数据结构与算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数据结构与算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
               </li>
             
             <div class="clearfix"></div>

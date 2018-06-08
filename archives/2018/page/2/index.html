@@ -146,31 +146,55 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-SVM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-人工智能数学基础-1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/21/SVM/">SVM</a>
+      <a class="article-title" href="/2018/04/11/人工智能数学基础-1/">数学基础</a>
     </h1>
   
 
         
-        <a href="/2018/05/21/SVM/" class="archive-article-date">
-  	<time datetime="2018-05-21T07:50:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-21</time>
+        <a href="/2018/04/11/人工智能数学基础-1/" class="archive-article-date">
+  	<time datetime="2018-04-11T13:46:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-11</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h2><h3 id="间隔与支持间隔"><a href="#间隔与支持间隔" class="headerlink" title="间隔与支持间隔"></a>间隔与支持间隔</h3><p>分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。<br>能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。<br>在样本空间中，划分超平面可通过以下线性方程来描述<br>$$ω^Tx+b=0$$<br>样本空间中任意点 x 到超平面 (w,b) 的距离可以写成<br>$$r=\frac{|w^Tx+b|}{||w||}$$<br>假设超平面能够正确分类样本，则可以通过对 ω 缩放可以使得下式成立<br>\begin{cases}<br>|w^Tx+b|&gt;=1,y_i=+1<br>|w^Tx+b|&lt;=-1,y_i=-1<br>\end{cases}<br>距离超平面最近的几个样本点使得上式等号成立，称作“支持向量”。两个异类支持向量到超平面的距离之和称为“间隔”，$γ=\frac{2}{||w||}$。所有位于最大边界上的点称作支持向量。撑起了边界的宽度，其中$||w||$是向量的范数（norm）：<br>$$\if W = {w_1,w_2,….w_n}then\sqrt{W·W}=\sqrt{w_1^2,w_2^2,….w_n^2}$$<br><img src="/images/pasted-27.png" alt="upload successful"><br>距离是x和x’在w上的投影：<br><img src="/images/pasted-28.png" alt="upload successful"><br>欲最大化间隔，等价于最小化$||w||^2$ , 这就是支持向量机的基本型。<br>$$\min{w,b} \frac{1}{2} ||w||^2$$<br>$$s.t. y_i(w^Tx_i+b)≥1，i=1,2,…,m$$<br><img src="/images/pasted-29.png" alt="upload successful"></p>
-<h2 id="对偶问题"><a href="#对偶问题" class="headerlink" title="对偶问题"></a>对偶问题</h2><p>上述问题是一个凸二次规划问题，能直接用现成的优化计算包求解。但是通过拉格朗日乘子法变换到对偶变量的优化问题之后，可以找到一种更加有效的方法来进行求解。<br>原问题的拉格朗日函数为<br>$$L(w,b,α)=\frac{1}{2}||w||^2+\sum{i=1}^m α_i(1-y_i(w^Tx_i+b))$$<br>求偏导为零可以得到<br>$$w=\sum{i=1}^m α_iy_ix_i$$<br>$$0=\sum{i=1}^mα_iy_i$$<br>对偶问题，将最大最小互换：<br>$$\min{w,b}\max{α}L(w,b,α)-&gt;\max{α}\min{w,b}L(w,b,α)$$<br>$$\max{α} \sum{i=1}{m}α_i-\frac{1}{2}\sum{i=1}^m\sum{j=1}^mα_iα_jy_iy_jx_i^Tx_j{}$$<br>$$s.t. \sum{i=1}^mα_iy_i=0,α_i≥0，i=1,2,…,m$$<br>于是可以得到模型为<br>$$f(x)=w^Tx+b=\sum{i=1}^mα_iy_ix_i^Tx+b$$<br>上述过程需要满足KKT(Karush-Kuhn-Tucker)条件，即<br>\begin{cases}<br>α_i≥0<br>y_if(x_i)-1≥0<br>α_i(y_if(x_i)-1)=0<br>\end{cases}<br>对任意训练样本 $(x_i,y_i)$ ，总有 $α_i=0$ 或 $y_if(x_i)=1$ 。因此训练完成后，大部分的样本都不需要保留，最终模型仅与支持向量有关。<br>如果用二次规划算法求解对偶问题，则问题的规模正比于训练样本数，这会在实际任务中造成很大开销，为此提出SMO(Sequential Minimal Optimization)算法。</p>
-<h4 id="SMO算法"><a href="#SMO算法" class="headerlink" title="SMO算法"></a>SMO算法</h4><p>SMO将比较大的问题拆解为比较小的问题，多个变量不好求，先求两个。<br>步骤：不断执行以下两个步骤直到收敛<br>1、选取一对需要更新的变量 αi 和 αj<br>2、固定 αi 和 αj 以外的参数，求解对偶问题更新后的 αi 和 αj<br>只要选取的 αi 和 αj 中有一个不满足KKT条件， 目标函数就会在迭代后减小。KKT条件违背的程度越大，变量更新后可能导致的目标函数值减幅越大。<br>使选取的两变量所对应样本之间的间隔最大（两个变量有很大的差别，对它们进行更新会带给目标函数值更大的变化）。</p>
-<h3 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h3><p>原始样本空间线性不可分：将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分。如果原始空间是有限维，那么一定存在一个高维特征空间使样本可分。<br>模型变成：$ω^Tϕ(x)+b=0 $<br>$$\min{w,b}\frac{1}{2}||w||^2$$<br>$$s.t. y_i(w^Tϕ(x_i)+b)≥1，i=1,2,…m$$<br>对偶问题为：<br>$$\max{α} \sum{i=1}{m}α_i-\frac{1}{2}\sum{i=1}^m\sum{j=1}^mα_iα_jy_iy_jx_i^Tx_j{}$$<br>$$s.t. \sum{i=1}^mα_iy_i=0,α_i≥0，i=1,2,…,m$$<br>由于特征空间维数可能很高，直接计算 $ϕ(x_i)^Tϕ(x_j)$通常是困难的。设想函数$k(x_i,x_j)=ϕ(x_i)Tϕ(x_j)$,$x_ixi$与$x_jxj$在特征空间的内积<strong>等于</strong>它们在原始样本空间中通过核函数计算的结果。<br>核函数选择成为支持向量机的最大变数，若核函数选择不合适，则意味着将样本映射到了一个不合适的特征空间，很可能导致性能不佳。比如图像分类，一般使用高斯径向基核函数，因为需要超平面要非常的平滑。<br>常用核函数：<br><img src="/images/pasted-30.png" alt="upload successful"></p>
-<h2 id="软间隔与正则化"><a href="#软间隔与正则化" class="headerlink" title="软间隔与正则化"></a>软间隔与正则化</h2><p>现实任务中往往很难确定合适的核函数使得训练样本在特征空间中线性可分，即便线性可分，也很难判定这个结果不是由于过拟合造成的。<br>缓解这个问题的一个方法是允许支持向量机在一些样本上出错，引入“软间隔”概念。允许某些样本不满足约束 $y_i(ω^Txi+b)≥1 $<br>优化目标可写成<br>$$\min{w,b}\frac{1}{2}||w||^2+C\sum{i=1}^mξ_i$$<br>其中 l0/1 是“0/1损失函数”<br> <img src="/images/pasted-11.png" alt="upload successful"><br>l0/1 非凸、非连续、数学性质不好，使得上式难以求解，因此人们用其他一些函数来代替它，称为“代替函数”。<br>常用的代替函数：<br><img src="/images/pasted-21.png" alt="upload successful"><br>常用的软间隔支持向量机：<br><img src="/images/pasted-31.png" alt="upload successful"><br>与硬间隔支持向量机相似，软间隔支持向量机也是一个二次规划问题，可以通过拉格朗日乘子法得到拉格朗日函数：<br><img src="/images/pasted-32.png" alt="upload successful"><br>求偏导为零可以得到<br><img src="/images/pasted-33.png" alt="upload successful"><br>对偶问题为<br><img src="/images/pasted-34.png" alt="upload successful"><br>上述过程需要满足KKT(Karush-Kuhn-Tucker)条件，即<br><img src="/images/pasted-35.png" alt="upload successful"><br>实际上支持向量机和对率回归的优化目标相近，通常情况下他们的性能相当。对率回归的优势主要对于其输出具有自然的概率意义，即在给出预测标记的同时也给了概率，而支持向量机的输出不具有概率意义，欲得到概率需要进行特殊处理；此外，对率回归能够直接用于多分类任务，支持向量机为此需要进行推广。另一方面，可以看出hinge损失函数有一块平摊的零区域，这使得支持向量机的解具有稀疏性，而对率损失是光滑的而单调递减函数，不能导出类似支持向量的概念。因此对率回归的解依赖于更多的训练样本，其预测开销大。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pylab <span class="keyword">as</span> pl</span><br><span class="line">np.random.seed(<span class="number">0</span>)</span><br><span class="line">X=np.r_[np.random.randn(<span class="number">20</span>,<span class="number">2</span>)-[<span class="number">2</span>,<span class="number">2</span>],np.random.randn(<span class="number">20</span>,<span class="number">2</span>)+[<span class="number">2</span>,<span class="number">2</span>]]</span><br><span class="line">Y=[<span class="number">0</span>]*<span class="number">20</span>+[<span class="number">1</span>]*<span class="number">20</span></span><br><span class="line">clf=svm.SVC(kernel=<span class="string">'linear'</span>)</span><br><span class="line">clf.fit(X,Y)</span><br><span class="line">w=clf.coef_[<span class="number">0</span>]</span><br><span class="line">a=-w[<span class="number">0</span>]/w[<span class="number">1</span>]</span><br><span class="line">xx=np.linspace(<span class="number">-5</span>,<span class="number">5</span>)</span><br><span class="line">yy=a*xx-(clf.intercept_[<span class="number">0</span>])/w[<span class="number">1</span>]</span><br><span class="line">b=clf.support_vectors_[<span class="number">0</span>]</span><br><span class="line">yy_down=a*xx+b[<span class="number">1</span>]-a*b[<span class="number">0</span>]</span><br><span class="line">b=clf.support_vectors_[<span class="number">-1</span>]</span><br><span class="line">yy_up=a*xx+b[<span class="number">1</span>]-a*b[<span class="number">0</span>]</span><br><span class="line">pl.plot(xx,yy,<span class="string">'k-'</span>)</span><br><span class="line">pl.plot(xx,yy_down,<span class="string">'k--'</span>)</span><br><span class="line">pl.plot(xx,yy_up,<span class="string">'k--'</span>)</span><br><span class="line">pl.scatter(clf.support_vectors_[:,<span class="number">0</span>],clf.support_vectors_[:,<span class="number">1</span>])</span><br><span class="line">pl.scatter(X[:,<span class="number">0</span>],X[:,<span class="number">1</span>],c=Y,cmap=pl.cm.Paired)</span><br><span class="line">pl.show()</span><br></pre></td></tr></table></figure></p>
+        <h2 id="微积分"><a href="#微积分" class="headerlink" title="微积分"></a>微积分</h2><p><strong>夹逼定理：</strong>$g(x)&lt;=f(x)&lt;=h(x)$成立，且$\lim_{x\to0}g(x)=A$<br>$\lim_{x\to0}h(x)=A$,则$\lim_{x\to0}f(x)=A$<br><strong>极限的定义：</strong>$\lim_{x\to0}sinx/x=1$,<br><img src="http://p8cigu7up.bkt.clouddn.com/1526046740175opawbglw.png?imageslim" alt="paste image"><br><strong>分步积分</strong><br><img src="http://p8cigu7up.bkt.clouddn.com/1526046782042q7n1b2rc.png?imageslim" alt="paste image"><br>应用：例如：求$f(x)最小值$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526046811476uagtkvuy.png?imageslim" alt="paste image"></p>
+<p><img src="http://p8cigu7up.bkt.clouddn.com/15260468682169yoeit5n.png?imageslim" alt="paste image"></p>
+<h2 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h2><p><strong>方向导数：</strong><img src="http://p8cigu7up.bkt.clouddn.com/1526046905297mbojtto7.png?imageslim" alt="paste image"></p>
+<p>φ为x轴到方向L的转角</p>
+<p><strong>梯度：</strong><img src="http://p8cigu7up.bkt.clouddn.com/1526047051671cujiauam.png?imageslim" alt="paste image"><br>梯度方向是函数在该点变化最快的方向。</p>
+<h2 id="Jensen不等式"><a href="#Jensen不等式" class="headerlink" title="Jensen不等式"></a>Jensen不等式</h2><p><strong>凸函数：</strong><img src="http://p8cigu7up.bkt.clouddn.com/1526047197413vo87brcr.png?imageslim" alt="paste image"><br><img src="http://p8cigu7up.bkt.clouddn.com/1526047219531agv1nvou.png?imageslim" alt="paste image"><br><strong>一阶可微</strong><br>凸函数的切线，一定位于函数图像的下方。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526047331546ayoqpcus.png?imageslim" alt="paste image"><br><strong>二阶可微</strong><br>函数满足二阶可微，则为凸函数的条件表示为<img src="http://p8cigu7up.bkt.clouddn.com/1526047415799hmcryljw.png?imageslim" alt="paste image"><br><img src="http://p8cigu7up.bkt.clouddn.com/1526047424737iw8g1sbd.png?imageslim" alt="paste image"><br>常见的凸函数<br><img src="http://p8cigu7up.bkt.clouddn.com/1526047472799y6c896ka.png?imageslim" alt="paste image"><br><strong>Jensen不等式</strong><br><img src="http://p8cigu7up.bkt.clouddn.com/1526047508849usc7kybd.png?imageslim" alt="paste image"><br>表示凸函数，如果做一个推广：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526047561126kgkoyamk.png?imageslim" alt="paste image"><br>表示的是x1~xk的线性加权，小于函数值的线性加权。<br>如果θ表示的概率分布的话，得到下面的结论：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526047656173g0pa24l9.png?imageslim" alt="paste image"><br>期望的函数&lt;=函数的期望</p>
+<p>Jesen不等式非常重要，几乎是所有不等式的基础。</p>
+<h3 id="共轭函数"><a href="#共轭函数" class="headerlink" title="共轭函数"></a>共轭函数</h3><p>f是$\Bbb{R}^n–&gt;\Bbb{R}$是一个函数，那么f的共轭函数<br>$$f^*(y)=\sup {x∈dom f}(x^Tx-f(x))$$<br>以x为斜率，f(x)为截距。<br>共轭函数是描述在x点处，函数的斜率和截距之间的全体。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526730911799r042hrac.png?imageslim" alt="paste image"><br><strong>共轭函数的性质</strong>  </p>
+<ul>
+<li>共轭函数$f^*$是一个凸函数</li>
+<li>如果g是f的凸闭，那么$g^<em>=f^</em>$</li>
+<li>如果f是一个凸函数，那么$f^{**}=f$</li>
+</ul>
+<p><img src="/images/pasted-13.png" alt="upload successful"></p>
+<h3 id="拉格朗日对偶函数"><a href="#拉格朗日对偶函数" class="headerlink" title="拉格朗日对偶函数"></a>拉格朗日对偶函数</h3><p><img src="/images/pasted-16.png" alt="upload successful"><br><img src="/images/pasted-17.png" alt="upload successful"><br><img src="/images/pasted-18.png" alt="upload successful"><br><img src="/images/pasted-19.png" alt="upload successful"><br><img src="/images/pasted-20.png" alt="upload successful"></p>
+<h2 id="Taylor展开式"><a href="#Taylor展开式" class="headerlink" title="Taylor展开式"></a>Taylor展开式</h2><p>$$f(x)=f(x_0)+f’(x_0)(x-x_0)+\frac{f’’(x_0)}{2!}(x-x_0)^2+…+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+R_n(x)$$<br>在$x=0$对$f(x)$进行Taylor展开就是Maclaurin公式<br>$$f(x)=f(0)+f’(0)x+\frac{f’’(0)}{2!}x^2+…+\frac{f^{(n)}(x)}{n!}x^n+o(x^{n})$$</p>
+<h3 id="计算函数值"><a href="#计算函数值" class="headerlink" title="计算函数值"></a>计算函数值</h3><p>Taylor公式的应用首先可以计算初等函数值，一般在远点展开<br>$$\sin x=x-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!}+\frac{x^9}{9!}-…+(-1)^{m-1}\frac{x^{2m-1}}{(2m-1)!}+R_{2m}$$<br>$$e^x=1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+…+\frac{x^n}{n!}+R_n$$<br>通过泰勒展开，可以对函数值最近似求解。例如下题<br><img src="http://p8cigu7up.bkt.clouddn.com/1526176929364zt7rzxq6.png?imageslim" alt="paste image"><br>k是整数，$2^k$比较好求，$e^r$就可以通过Taylor展开近似的求解</p>
+<h3 id="Gini系数公式"><a href="#Gini系数公式" class="headerlink" title="Gini系数公式"></a>Gini系数公式</h3><p>Gini系数、熵、分类误差率有下图显示的关系：<br><img src="http://p8cigu7up.bkt.clouddn.com/15261766665534b21yx3j.png?imageslim" alt="paste image"><br>熵的定义为：$H(x)=-\sum_{k=1}^K p_k·\ln p_k$<br>Gini系数利用了$f(x)=-\ln x$在$x=1$处的一阶展开，忽略高阶无穷小，近似得到$f(x)\approx 1-x$，熵就可以近似求解为：$H(x)\approx \sum_{k=1}^K p_k·(1-p_k)$</p>
+<h3 id="平方根公式"><a href="#平方根公式" class="headerlink" title="平方根公式"></a>平方根公式</h3><p>Taylor公式的另一个应用，可以求解平方根，例如一个数a的平方根的值，$a=x^2$，令$f(x)=x^2-a$，即$f(x)=0$<br>$$ f(x)=f(x_0)+f’(x_0)(x-x_0)+o(x)$$<br>在任意点$x_0$做Taylor展开可得：$f(x)=0\approx f(x_0)+f’(x_0)(x-x_0)$—-&gt;$x-x_0=\frac{f(x_0)}{f’(x_0)}$—-&gt;$x=x_0+\frac{f(x_0)}{f’(x_0)}$  </p>
+<p>由于$f(x_0)=x_0^2-a$，$f’(x_0)=2x_0$，所以可得$x=\frac{1}{2}(x_0+\frac{a}{x_0})$，$f(x_0)≠0$，给定任意一个x0，求解x1，然后将x1再带入公式求解x2，直到xn-xn+1足够小的时候，作为平方根的解，一般5至6次就可以得到很好的解了。</p>
+<h2 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h2><h3 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h3><p>如果要估计θ，而且已经建立了目标函数J(θ)，例如最小二乘法建立的目标函数（损失函数）：$$J(\theta)=\frac{1}{2}\sum_{i=1}^m(h_{\theta}(x^{(i)})-y^{(i)})^2$$，想计算一个$θ^*$，可以使得$J(θ)$最小。计算方法：随机或者先验的给定$θ$初值，然后沿着负梯度方向迭代，更新$θ$使得$J(θ)$减小，$\theta_j=\theta_j-\alpha·\frac{\partial J(\theta)}{\partial \theta}$，$\alpha$是学习率。  </p>
+<h3 id="拟牛顿法"><a href="#拟牛顿法" class="headerlink" title="拟牛顿法"></a>拟牛顿法</h3><p><strong>牛顿法</strong><br>通过Taylor展开可不可以做一些处理呢？若$f(x)$二阶导连续，那么$f(x)$在$x_k$处做Taylor展开：<br>$$\phi(x)=f(x_k)+f’(x_k)(x-x_k)+\frac{1}{2}f’’(x_k)(x-x_k)^2+R_2(x)$$<br>$$\approx f(x_k)+f’(x_k)(x-x_k)+\frac{1}{2}f’’(x_k)(x-x_k)^2=0$$<br>$$x_{k+1}=x_k-\frac{f’(x_k)}{f’’(x_k)}$$<br>这个公式就是牛顿法，本质上是用二次函数做近似，求解二次函数的极值点，而梯度下降法师用一次函数做近似，学习率控制步长。所以二阶收敛性，可以使得目标函数（线性回归、Logistic回归）的问题中收敛速度快。<br>但是牛顿法要求初始点尽量靠近极小点，否则有可能不收敛。原因：</p>
+<ol>
+<li>Hessian矩阵奇异，也就是二阶导数为零，牛顿方向不存在；</li>
+<li>Hessian非正定，牛顿方向可能是反方向。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526182698594tz1oorv4.png?imageslim" alt="paste image"><br><strong>拟牛顿法</strong><br>拟牛顿法的思路，通过近似矩阵代替Hessian矩阵，只要满足矩阵正定，容易求逆。<br>DFP和BFGS是两种拟牛顿的方法。<h2 id="概率论"><a href="#概率论" class="headerlink" title="概率论"></a>概率论</h2>概率$P(x)$<br>分布函数$\Phi(x)=P(x&lt;=x_0)$<h3 id="概率公式"><a href="#概率公式" class="headerlink" title="概率公式"></a>概率公式</h3><strong>条件概率：</strong>$P(A|B)=\frac{P(AB)}{P(B)}$<br><strong>条件概率的链式法则：</strong>$P(a,b,c)=P(a|b,c)P(b,c)=P(a|b,c)P(b|c)P(c)$<br><strong>全概率公式：</strong>$P(A)=\sum_{i} P(A|B_i)P(B_i)$<br><strong>贝叶斯（Bayes）公式：</strong>$P(B_i|A)=\frac{P(A|B_i)P(B_i)}{\sum_{j}P(A|B_j)P(B_j)}$<br>对于求解<a href="http://www.cnblogs.com/AndyJee/p/4714781.html" target="_blank" rel="noopener">碰面问题</a>的概率，可以通过画出x和y所有可能的区域，再求出碰面的范围，再计算面积得到。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526188781608ucrz546h.png?imageslim" alt="paste image"><br>如果使用积分，需要考虑两种情况，一个是x&lt;=3,x可以等1个小时，另一个是x&gt;3，x只能等4-x小时。计算稍微复杂一些。<br><strong>事件独立：</strong>$P(AB)=P(A)P(B)$事件A⊥B正交。<br><strong>条件独立：</strong>A⊥B|Z，$P(A,B|Z)=P(A|Z)P(B|Z)$<br><strong>期望：</strong>1、离散型：$E(x)=\sum_{i}x_ip_i$；2、连续型：$E(x)=\int_\infty^{-\infty} xf(x)$(概率加权的平均值)<br>期望的性质：$E(kX)=kE(X)$，$E(X+Y)=E(X)+E(Y)$，若X和Y相互独立$E(XY)+E(X)E(Y)$<br><strong>方差：</strong>$Var(X)=E{[X-E(X)]^2}=E(X^2)-E^2(X)$<br>方差的性质：$Var(c)=0$，$Var(X+c)=Var(X)$，$Var(kX)=k^2Var(X)$，若X和Y相互独立$Var(X+Y)=Var(X)+Var(Y)$<br><strong>协方差：</strong>$Cov(X,Y)=E(XY)-E(X)E(Y)$，当X和Y独立时，$Cov(X,Y)=0$。协方差表示两个随机变量变化趋势的度量，大于零表示趋势相同，小于零趋势相反，等于零表示不相关。<br>协方差的性质：若$Var(X)=\sigma_1^2$；$Var(Y)=\sigma_2^2$，则$|Cov(X,Y)|&lt;=\sigma_1\sigma_2$。当X和Y之间有线性关系时，等号成立。例如：X=aY+b。<br><strong>相关系数：</strong>$\rho_{XY}=\frac{Cov(X,Y)}{Var(X)Var(Y)}$<br>相关系数的性质：$|\rho_|&lt;=1$<br><strong>协方差矩阵：</strong>当有多个随机向量，每两个随机向量间都可以得到一个协方差，从而组成了协方差矩阵，协方差矩阵时对称阵。$$<br>\begin{bmatrix}<br>c_{11} &amp; c_{12} &amp; \cdots &amp; c_{1n} \\<br>c_{21} &amp; c_{22} &amp; \cdots &amp; c_{2n} \\<br>\vdots &amp; \vdots &amp; \ddots  &amp; \vdots \\<br>c_{n1} &amp; c_{n2} &amp; \cdots &amp; c_{nn} \\<br>\end{bmatrix}<br>$$<h3 id="矩"><a href="#矩" class="headerlink" title="矩"></a>矩</h3>k阶原点矩$E(X^k)$<br>k阶中心距$E { [X-E(X)]^k } $<br>通过矩的定义可以看出，期望是1阶原点矩，方差是2阶中心距。三阶的统计量偏度，四阶统计量是峰度。<br>偏的方向尾巴更长。<br>左偏（负偏）|右偏（正偏）<br><img src="http://p8cigu7up.bkt.clouddn.com/1526195691472ao96bwj9.png?imageslim" alt="paste image"><br>峰度度量的是峰的陡峭程度。通常定义四阶中心矩除以方差的平方减3。减3为了让正态分布的峰度为0，超值峰度为正，称为尖峰态，负为低峰态。它是反应陡峭程度，但需要跟其他结合分析。<br><strong>契比雪夫不等式：</strong>随机变量X的期望$\mu$和方差$\sigma^2$，对于任意正数$\epsilion$$P({|X-\mu|&gt;=\epsilon})&lt;=\frac{\sigma^2}{\epsilon^2}$<br><strong>大数定理：</strong>随机变量X1~Xn相互独立，并且具有相同的期望$\mu$和方差$\sigma^2$，$Y_n=\frac{1}{n}\sum_{i=1}^nX_i$，对于任意正整数$\epsilon$<br>$\lim_{n\to\infty}P({|Y_n-\mu|&lt;\epsilon})=1$<br>大数定理为实际应用中频率来估计概率提供了理论依据。正态分布的参数估计，朴素贝叶斯做垃圾邮件分类，隐马尔科夫模型有监督参数学习等。<br><strong>伯努利定理：</strong>是大数定理最早的形式，表争了事件A发生的频率收敛于事件A发生的概率P。</li>
+</ol>
+<h2 id="统计学"><a href="#统计学" class="headerlink" title="统计学"></a>统计学</h2><h3 id="统计量"><a href="#统计量" class="headerlink" title="统计量"></a>统计量</h3><p><strong>样本：</strong>$X_1，X_1，…X_n$<br><strong>样本均值：</strong>$\overline{X}=/frac{1}{n}/sum_{i=1}^n(X_i-\overline{X})^2$<br><strong>样本方差：</strong>$S^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\overline{X})^2$（n-1保证无偏）<br><strong>k阶样本原点矩：</strong>$A_k=\frac{1}{n}\sum_{i=1}^nX_i^k$<br><strong>k阶样本中心矩：</strong>$M_k=\frac{1}{n}\sum_{i=1}^n(X_i-\overline{X})^k$</p>
+<h3 id="矩估计"><a href="#矩估计" class="headerlink" title="矩估计"></a>矩估计</h3><p>有一些独立同分布的样本，待求均值$\mu$和方差$\sigma^2$，有原点矩表达式是这样的：<br>$$\begin{cases}<br>E(X)=\mu \\<br>E(X^2)=Var(X)+[E(X)]^2=\sigma^2+\mu^2 \\<br>\end{cases}<br>$$<br>根据样本可以求得原点矩：<br>$$\begin{cases}<br>A_1=\frac{1}{n} \sum_{i=1}^n X_i \\<br>A_2=\frac{1}{n} \sum_{i=1}^n X_i^2 \\<br>\end{cases}<br>$$<br>这样就可以求出矩估计的均值$\widehat{\mu}$和方差$\widehat{\sigma}^2$。求得最终的表达式为：<br>$$\begin{cases}<br>\widehat{\mu}=\overline{X} \\<br>\widehat{\sigma}^2=\frac{1}{n} \sum_{i=1}^n (X_i-\overline{X})^2 \\<br>\end{cases}<br>$$</p>
+<h3 id="极大似然估计"><a href="#极大似然估计" class="headerlink" title="极大似然估计"></a>极大似然估计</h3><p>以后完善</p>
 
       
 
@@ -205,7 +229,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/21/SVM/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/04/11/人工智能数学基础-1/">展开全文 >></a>
         </p>
       
 
@@ -235,74 +259,871 @@
 
 
   
-    <article id="post-图" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Scrapy设置项介绍" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/20/图/">图</a>
+      <a class="article-title" href="/2018/04/09/Scrapy设置项介绍/">Scrapy设置项介绍</a>
     </h1>
   
 
         
-        <a href="/2018/05/20/图/" class="archive-article-date">
-  	<time datetime="2018-05-20T07:22:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-20</time>
+        <a href="/2018/04/09/Scrapy设置项介绍/" class="archive-article-date">
+  	<time datetime="2018-04-09T07:26:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="图的表示"><a href="#图的表示" class="headerlink" title="图的表示"></a>图的表示</h2><h3 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h3><p>n*n的矩阵，有边是1，无边是0</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a, b, c, d, e, f, g, h = range(<span class="number">8</span>)</span><br><span class="line">N =[</span><br><span class="line">  [<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>关于邻接矩阵：</p>
+        <h2 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h2><p>Scrapy设置允许您自定义所有Scrapy组件的行为，包括核心，扩展，管道和爬虫本身。<br>设置的基础结构提供了键值映射的全局命名空间，代码可以使用它从中提取配置值。可以通过不同的机制来填充设置，这将在下面描述。<br>这些设置也是选择当前活动Scrapy项目的机制（如果您有很多）。<br>有关可用内置设置的列表，请参阅：<a href="https://link.jianshu.com/?t=https://doc.scrapy.org/en/1.3/topics/settings.html#topics-settings-ref" target="_blank" rel="noopener">内置设置参考</a>。</p>
+<h2 id="指定设置"><a href="#指定设置" class="headerlink" title="指定设置"></a>指定设置</h2><p>当你使用Scrapy，你必须告诉它你使用哪些设置。您可以通过使用环境变量来执行此操作SCRAPY_SETTINGS_MODULE。<br>值SCRAPY_SETTINGS_MODULE应该在Python路径语法中，例如 myproject.settings。请注意，设置模块应该在Python 导入搜索路径上。    </p>
+<h2 id="填充设置"><a href="#填充设置" class="headerlink" title="填充设置"></a>填充设置</h2><p>可以使用不同的机制来填充设置，每个机制具有不同的优先级。这里是按优先级降序排列的列表：    </p>
 <ol>
-<li>主对角线为自己到自己，为0</li>
-<li>行和为出度</li>
-<li>列和为入度</li>
+<li>命令行选项（最高优先级）  </li>
+<li>每个爬虫的设置  </li>
+<li>项目设置模块  </li>
+<li>每命令的默认设置  </li>
+<li>默认全局设置（优先级较低）<br>这些设置源的数量在内部处理，但可以使用API调用进行手动处理。请参阅 设置API主题以供参考。<br>这些机制在下面更详细地描述。    </li>
 </ol>
-<h3 id="邻接表"><a href="#邻接表" class="headerlink" title="邻接表"></a>邻接表</h3><p>为每个点建立一个链表（数组）存放与之连接点<br><img src="/images/pasted-91.png" alt="upload successful"><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">a, b, c, d, e, f, g, h = range(<span class="number">8</span>)</span><br><span class="line">N = [</span><br><span class="line">  &#123;b, c, d, e, f&#125;,</span><br><span class="line">  &#123;c, e&#125;,</span><br><span class="line">  &#123;d&#125;,</span><br><span class="line">  &#123;e&#125;,</span><br><span class="line">  &#123;f&#125;,</span><br><span class="line">  &#123;c, g, h&#125;,</span><br><span class="line">  &#123;f, h&#125;,</span><br><span class="line">  &#123;f, g&#125;</span><br><span class="line">]</span><br><span class="line"><span class="comment"># N(v) 代表的是 v 的邻居节点集；</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b <span class="keyword">in</span> N[a]         <span class="comment"># neighborhood membership</span></span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(N[f])         <span class="comment"># out-degree：出度</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="加权邻接表"><a href="#加权邻接表" class="headerlink" title="加权邻接表"></a>加权邻接表</h3><p>使用 dict 类型来代替 set 或 list 来表示邻接集。在 dict 类型中，每个邻居节点都会有一个键和一个额外的值，用于表示与其邻居节点（或出边）之间的关联性，如边的权重。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">a, b, c, d, e, f, g, h = range(<span class="number">8</span>)</span><br><span class="line">N = [</span><br><span class="line">  &#123;b:<span class="number">2</span>, c:<span class="number">1</span>, d:<span class="number">3</span>, e:<span class="number">9</span>, f:<span class="number">4</span>&#125;,</span><br><span class="line">  &#123;c:<span class="number">4</span>, e:<span class="number">4</span>&#125;,</span><br><span class="line">  &#123;d:<span class="number">8</span>&#125;,</span><br><span class="line">  &#123;e:<span class="number">7</span>&#125;,</span><br><span class="line">  &#123;f:<span class="number">5</span>&#125;,</span><br><span class="line">  &#123;c:<span class="number">2</span>, g:<span class="number">2</span>, h:<span class="number">2</span>&#125;,</span><br><span class="line">  &#123;f:<span class="number">1</span>, h:<span class="number">6</span>&#125;,</span><br><span class="line">  &#123;f:<span class="number">9</span>, g:<span class="number">8</span>&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b <span class="keyword">in</span> N[a]         <span class="comment"># neighborhood membership</span></span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(N[f])         <span class="comment"># out-degree</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>N[a][b]          <span class="comment"># Edge weight for (a, b)</span></span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="图的实现"><a href="#图的实现" class="headerlink" title="图的实现"></a>图的实现</h2><p>有下面一张图：</p>
-<pre><code>A -&gt; B
-A -&gt; C
-B -&gt; C
-B -&gt; D
-C -&gt; D
-D -&gt; C
-E -&gt; F
-F -&gt; C
-</code></pre><p>可以用字典和列表来构建<br><code>graph = {&#39;A&#39;: [&#39;B&#39;, &#39;C&#39;],&#39;B&#39;: [&#39;C&#39;, &#39;D&#39;],&#39;C&#39;: [&#39;D&#39;],&#39;D&#39;: [&#39;C&#39;],&#39;E&#39;: [&#39;F&#39;],&#39;F&#39;: [&#39;C&#39;]}</code>  </p>
-<h3 id="找到一条路径"><a href="#找到一条路径" class="headerlink" title="找到一条路径"></a>找到一条路径</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_path</span><span class="params">(graph, start, end, path=[])</span>:</span></span><br><span class="line">        path = path + [start]</span><br><span class="line">        <span class="keyword">if</span> start == end:</span><br><span class="line">            <span class="keyword">return</span> path</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> start <span class="keyword">in</span> graph:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> graph[start]:</span><br><span class="line">            <span class="keyword">if</span> node <span class="keyword">not</span> <span class="keyword">in</span> path:</span><br><span class="line">                newpath = find_path(graph, node, end, path)</span><br><span class="line">                <span class="keyword">if</span> newpath: <span class="keyword">return</span> newpath</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">None</span></span><br></pre></td></tr></table></figure>
-<h3 id="找到所有路径"><a href="#找到所有路径" class="headerlink" title="找到所有路径"></a>找到所有路径</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_all_paths</span><span class="params">(graph, start, end, path=[])</span>:</span></span><br><span class="line">        path = path + [start]</span><br><span class="line">        <span class="keyword">if</span> start == end:</span><br><span class="line">            <span class="keyword">return</span> [path]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> start <span class="keyword">in</span> graph:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        paths = []</span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> graph[start]:</span><br><span class="line">            <span class="keyword">if</span> node <span class="keyword">not</span> <span class="keyword">in</span> path:</span><br><span class="line">                newpaths = find_all_paths(graph, node, end, path)</span><br><span class="line">                <span class="keyword">for</span> newpath <span class="keyword">in</span> newpaths:</span><br><span class="line">                    paths.append(newpath)</span><br><span class="line">        <span class="keyword">return</span> paths</span><br></pre></td></tr></table></figure>
-<h3 id="找到最短路径"><a href="#找到最短路径" class="headerlink" title="找到最短路径"></a>找到最短路径</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_shortest_path</span><span class="params">(graph, start, end, path=[])</span>:</span></span><br><span class="line">        path = path + [start]</span><br><span class="line">        <span class="keyword">if</span> start == end:</span><br><span class="line">            <span class="keyword">return</span> path</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> start <span class="keyword">in</span> graph:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line">        shortest = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> graph[start]:</span><br><span class="line">            <span class="keyword">if</span> node <span class="keyword">not</span> <span class="keyword">in</span> path:</span><br><span class="line">                newpath = find_shortest_path(graph, node, end, path)</span><br><span class="line">                <span class="keyword">if</span> newpath:</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">not</span> shortest <span class="keyword">or</span> len(newpath) &lt; len(shortest):</span><br><span class="line">                        shortest = newpath</span><br><span class="line">        <span class="keyword">return</span> shortest</span><br></pre></td></tr></table></figure>
-<h2 id="图的搜索"><a href="#图的搜索" class="headerlink" title="图的搜索"></a>图的搜索</h2><h3 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h3><p>BFS算法框架<br>广（宽）度优先搜索（Breadth-First-Search）过程：</p>
+<h3 id="1-命令行选项"><a href="#1-命令行选项" class="headerlink" title="1.命令行选项"></a>1.命令行选项</h3><p>命令行提供的参数是最优先的参数，覆盖任何其他选项。您可以使用-s（或–set）命令行选项显式覆盖一个（或多个）设置。<br>例：    </p>
+<pre><code class="python">scrapy crawl myspider -s
+LOG_FILE=scrapy.log
+</code></pre>
+<h3 id="2-每个爬虫的设置"><a href="#2-每个爬虫的设置" class="headerlink" title="2.每个爬虫的设置"></a>2.每个爬虫的设置</h3><p>爬虫（请参阅爬虫章节以供参考）可以定义自己的设置，这些设置将优先并覆盖项目。他们可以通过设置custom_settings属性来实现：  </p>
+<pre><code>class MySpider(scrapy.Spider):  
+    name = &apos;myspider&apos;    
+    custom_settings = {  
+        &apos;SOME_SETTING&apos;: &apos;some value&apos;,  
+    }  
+</code></pre><h3 id="3-项目设置模块"><a href="#3-项目设置模块" class="headerlink" title="3.项目设置模块"></a>3.项目设置模块</h3><p>项目设置模块是Scrapy项目的标准配置文件，它将填充大多数自定义设置。对于标准的Scrapy项目，这意味着您将添加或更改settings.py为您的项目创建的文件中的设置。    </p>
+<h3 id="4-每命令的默认设置"><a href="#4-每命令的默认设置" class="headerlink" title="4.每命令的默认设置"></a>4.每命令的默认设置</h3><p>每个Scrapy工具命令都可以有自己的默认设置，覆盖全局默认设置。这些自定义命令设置default_settings在命令类的属性中指定。    </p>
+<h3 id="5-默认全局设置"><a href="#5-默认全局设置" class="headerlink" title="5.默认全局设置"></a>5.默认全局设置</h3><p>全局默认值位于scrapy.settings.default_settings 模块中，并记录在内置设置参考部分中。    </p>
+<h3 id="如何访问设置"><a href="#如何访问设置" class="headerlink" title="如何访问设置"></a>如何访问设置</h3><p>在爬虫中，设置可通过self.settings以下方式获得：  </p>
+<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">MySpider</span><span class="params">(scrapy.Spider)</span>:</span>  
+    name = <span class="string">'myspider'</span>  
+    start_urls = [<span class="string">'http://example.com'</span>]    
+    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span>  
+        print(<span class="string">"Existing settings: %s"</span> % self.settings.attributes.keys())  
+</code></pre>
+<p><strong>注意</strong><br>该settings爬虫初始化后的属性是在基类爬虫设置。如果你想在初始化之前使用设置（例如，在你的爬虫的<strong>init</strong>()方法），你需要覆盖该 from_crawler()方法。<br>可以scrapy.crawler.Crawler.settings 通过传递到from_crawler扩展，中间件和项目管道中的方法的爬网程序的属性访问设置：  </p>
+<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">MyExtension</span><span class="params">(object)</span>:</span>  
+    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, log_is_enabled=False)</span>:</span>  
+        <span class="keyword">if</span> log_is_enabled:  
+            print(<span class="string">"log is enabled!"</span>)    
+<span class="meta">    @classmethod  </span>
+    <span class="function"><span class="keyword">def</span> <span class="title">from_crawler</span><span class="params">(cls, crawler)</span>:</span>  
+        settings = crawler.settings  
+        <span class="keyword">return</span> cls(settings.getbool(<span class="string">'LOG_ENABLED'</span>))  
+</code></pre>
+<p>设置对象可以像dict（例如， settings[‘LOG_ENABLED’]）一样使用，但通常首选使用SettingsAPI 提供的方法之一，以您需要的格式提取设置，以避免类型错误。    </p>
+<h3 id="设置名称的原因"><a href="#设置名称的原因" class="headerlink" title="设置名称的原因"></a>设置名称的原因</h3><p>设置名称通常以它们配置的组件为前缀。例如，对于一个虚构的robots.txt分机正确的设置的名称将是<br>ROBOTSTXT_ENABLED，ROBOTSTXT_OBEY，ROBOTSTXT_CACHEDIR等。    </p>
+<h3 id="内置设置参考"><a href="#内置设置参考" class="headerlink" title="内置设置参考"></a>内置设置参考</h3><p>以下是所有可用Scrapy设置的列表，按字母顺序，以及其默认值和适用范围。<br>范围（如果可用）显示设置在哪里使用，如果它绑定到任何特定组件。在这种情况下，将显示该组件的模块，通常是扩展，中间件或管道。这也意味着必须启用组件才能使设置具有任何效果。</p>
 <ul>
-<li>给定起点a，将a放入缓冲区，开始搜索</li>
-<li>假定某时刻缓冲区结点为abc，则访问结点a的邻接点a1a2a3，同时缓冲区变为bca1a2a3<ul>
-<li>需要队列做辅助，先进先出 </li>
+<li><p>AWS_ACCESS_KEY_ID<br>默认：None<br>由需要访问Amazon Web服务的代码使用的AWS访问密钥，例如S3源存储后端。    </p>
+</li>
+<li><p>AWS_SECRET_ACCESS_KEY<br>默认： None<br>由需要访问Amazon Web服务的代码使用的AWS密钥，例如S3源存储后端。    </p>
+</li>
+<li><p>BOT_NAME<br>默认： ‘scrapybot’<br>此Scrapy项目实施的bot的名称（也称为项目名称）。这将用于默认情况下构造User-Agent，也用于日志记录。<br>当您使用startproject命令创建项目时，它会自动填充您的项目名称。    </p>
+</li>
+<li><p>CONCURRENT_ITEMS<br>默认： 100<br>在项处理器（也称为项目管道）中并行处理的并发项目的最大数量（每个响应）。    </p>
+</li>
+<li><p>CONCURRENT_REQUESTS<br>默认： 16<br>将由Scrapy下载程序执行的并发（即同时）请求的最大数量。    </p>
+</li>
+<li><p>CONCURRENT_REQUESTS_PER_DOMAIN<br>默认： 8<br>将对任何单个域执行的并发（即同时）请求的最大数量。<br>参见：AutoThrottle扩展及其 AUTOTHROTTLE_TARGET_CONCURRENCY选项。    </p>
+</li>
+<li><p>CONCURRENT_REQUESTS_PER_IP<br>默认： 0<br>将对任何单个IP执行的并发（即同时）请求的最大数量。如果非零，CONCURRENT_REQUESTS_PER_DOMAIN则忽略该 设置，而改为使用此设置。换句话说，并发限制将应用于每个IP，而不是每个域。<br>此设置也会影响DOWNLOAD_DELAY和 AutoThrottle扩展：如果CONCURRENT_REQUESTS_PER_IP 非零，下载延迟是强制每IP，而不是每个域。    </p>
+</li>
+<li><p>DEFAULT_ITEM_CLASS<br>默认： ‘scrapy.item.Item’<br>将用于在Scrapy shell中实例化项的默认类。    </p>
+</li>
+<li><p>DEFAULT_REQUEST_HEADERS<br>默认：      </p>
+<pre><code class="shell">{  
+&#39;Accept&#39;: &#39;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#39;,  
+&#39;Accept-Language&#39;: &#39;en&#39;,  
+}  
+</code></pre>
+<p>用于Scrapy HTTP请求的默认标头。他们居住在 DefaultHeadersMiddleware。    </p>
+</li>
+<li><p>DEPTH_LIMIT<br>默认： 0<br>范围：  scrapy.spidermiddlewares.depth.DepthMiddleware<br>允许抓取任何网站的最大深度。如果为零，则不施加限制。    </p>
+</li>
+<li><p>DEPTH_PRIORITY<br>默认： 0<br>范围： scrapy.spidermiddlewares.depth.DepthMiddleware<br>用于根据深度调整请求优先级的整数：<br>如果为零（默认），则不从深度进行优先级调整<br>正值将降低优先级，即，较高深度请求将被稍后处理 ; 这通常用于做广度优先爬网（BFO）<br>负值将增加优先级，即，较高深度请求将被更快地处理（DFO）<br>参见：Scrapy是否以广度优先或深度优先顺序爬行？关于调整BFO或DFO的Scrapy。<br><strong>注意</strong><br>此设置以与其他优先级设置 和相反的方式调整优先级。REDIRECT_PRIORITY_ADJUSTRETRY_PRIORITY_ADJUST    </p>
+</li>
+<li><p>DEPTH_STATS<br>默认： True<br>范围： scrapy.spidermiddlewares.depth.DepthMiddleware<br>是否收集最大深度统计。    </p>
+</li>
+<li><p>DEPTH_STATS_VERBOSE<br>默认： False<br>范围： scrapy.spidermiddlewares.depth.DepthMiddleware<br>是否收集详细的深度统计信息。如果启用此选项，则在统计信息中收集每个深度的请求数。    </p>
+</li>
+<li><p>DNSCACHE_ENABLED<br>默认： True<br>是否启用DNS内存缓存。    </p>
+</li>
+<li><p>DNSCACHE_SIZE<br>默认： 10000<br>DNS内存缓存大小。    </p>
+</li>
+<li><p>DNS_TIMEOUT<br>默认： 60<br>以秒为单位处理DNS查询的超时。支持浮点。    </p>
+</li>
+<li><p>DOWNLOADER<br>默认： ‘scrapy.core.downloader.Downloader’<br>用于抓取的下载器。    </p>
+</li>
+<li><p>DOWNLOADER_HTTPCLIENTFACTORY<br>默认： ‘scrapy.core.downloader.webclient.ScrapyHTTPClientFactory’<br>定义protocol.ClientFactory 用于HTTP / 1.0连接（for HTTP10DownloadHandler）的Twisted 类。<br><strong>注意</strong><br>HTTP / 1.0现在很少使用，所以你可以安全地忽略这个设置，除非你使用Twisted &lt;11.1，或者如果你真的想使用HTTP / 1.0和覆盖DOWNLOAD_HANDLERS_BASE相应的http(s)方案，即到 ‘scrapy.core.downloader.handlers.http.HTTP10DownloadHandler’。    </p>
+</li>
+<li><p>DOWNLOADER_CLIENTCONTEXTFACTORY<br>默认： ‘scrapy.core.downloader.contextfactory.ScrapyClientContextFactory’<br>表示要使用的ContextFactory的类路径。<br>这里，“ContextFactory”是用于SSL / TLS上下文的Twisted术语，定义要使用的TLS / SSL协议版本，是否执行证书验证，或者甚至启用客户端验证（以及各种其他事情）。<br><strong>注意</strong><br>Scrapy默认上下文工厂不执行远程服务器证书验证。这通常对于网络刮削是很好的。<br>如果您需要启用远程服务器证书验证，Scrapy还有另一个上下文工厂类，您可以设置， ‘scrapy.core.downloader.contextfactory.BrowserLikeContextFactory’使用平台的证书来验证远程端点。 仅当使用Twisted&gt; = 14.0时，此选项才可用。<br>如果你使用一个自定义的ContextFactory，确保它接受一个method 参数在init（这是OpenSSL.SSL方法映射DOWNLOADER_CLIENT_TLS_METHOD）。    </p>
+</li>
+<li><p>DOWNLOADER_CLIENT_TLS_METHOD<br>默认： ‘TLS’<br>使用此设置可自定义默认HTTP / 1.1下载程序使用的TLS / SSL方法。<br>此设置必须是以下字符串值之一：<br>‘TLS’：映射到OpenSSL TLS_method()（aka SSLv23_method()），允许协议协商，从平台支持的最高开始; 默认，推荐<br>‘TLSv1.0’：此值强制HTTPS连接使用TLS版本1.0; 如果你想要Scrapy &lt;1.1的行为，设置这个<br>‘TLSv1.1’：强制TLS版本1.1<br>‘TLSv1.2’：强制TLS版本1.2<br>‘SSLv3’：强制SSL版本3（不推荐）<br><em>注意</em><br>我们建议您使用PyOpenSSL&gt; = 0.13和Twisted&gt; = 0.13或以上（如果可以，Twisted&gt; = 14.0）。    </p>
+</li>
+<li><p>DOWNLOADER_MIDDLEWARES<br>默认：： {}<br>包含在您的项目中启用的下载器中间件及其顺序的字典。有关更多信息，请参阅激活下载器中间件。    </p>
+</li>
+<li><p>DOWNLOADER_MIDDLEWARES_BASE<br>默认：  </p>
+<pre><code class="shell">{  
+&#39;scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware&#39;: 100,  
+&#39;scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware&#39;: 300,  
+&#39;scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware&#39;: 350,  
+&#39;scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware&#39;: 400,  
+&#39;scrapy.downloadermiddlewares.useragent.UserAgentMiddleware&#39;: 500,  
+&#39;scrapy.downloadermiddlewares.retry.RetryMiddleware&#39;: 550,  
+&#39;scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware&#39;: 560,  
+&#39;scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware&#39;: 580,  
+&#39;scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware&#39;: 590,  
+&#39;scrapy.downloadermiddlewares.redirect.RedirectMiddleware&#39;: 600,  
+&#39;scrapy.downloadermiddlewares.cookies.CookiesMiddleware&#39;: 700,  
+&#39;scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware&#39;: 750,  
+&#39;scrapy.downloadermiddlewares.stats.DownloaderStats&#39;: 850,  
+&#39;scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware&#39;: 900,  
+}  
+</code></pre>
+<p>包含Scrapy中默认启用的下载器中间件的字典。低订单更靠近发动机，高订单更接近下载器。您不应该在项目中修改此设置，DOWNLOADER_MIDDLEWARES而应修改 。有关更多信息，请参阅 激活下载器中间件。    </p>
+</li>
+<li><p>DOWNLOADER_STATS<br>默认： True<br>是否启用下载器统计信息收集。    </p>
+</li>
+<li><p>DOWNLOAD_DELAY<br>默认： 0<br>下载器在从同一网站下载连续页面之前应等待的时间（以秒为单位）。这可以用于限制爬行速度，以避免击中服务器太难。支持小数。例：<br>DOWNLOAD_DELAY = 0.25    # 250 ms of delay<br>此设置也受RANDOMIZE_DOWNLOAD_DELAY 设置（默认情况下启用）的影响。默认情况下，Scrapy不会在请求之间等待固定的时间量，而是使用0.5 <em> DOWNLOAD_DELAY和1.5 </em> 之间的随机间隔DOWNLOAD_DELAY。<br>当CONCURRENT_REQUESTS_PER_IP为非零时，每个IP地址而不是每个域强制执行延迟。<br>您还可以通过设置download_delay spider属性来更改每个爬虫的此设置。    </p>
+</li>
+<li><p>DOWNLOAD_HANDLERS<br>默认： {}<br>包含在您的项目中启用的请求下载器处理程序的dict。参见DOWNLOAD_HANDLERS_BASE示例格式。    </p>
+</li>
+<li><p>DOWNLOAD_HANDLERS_BASE<br>默认：    </p>
+<pre><code class="shell">{   
+&#39;file&#39; ： &#39;scrapy.core.downloader.handlers.file.FileDownloadHandler&#39; ，  
+&#39;http&#39; ： &#39;scrapy.core.downloader.handlers.http.HTTPDownloadHandler&#39; ，  
+&#39;https&#39; ： &#39;scrapy.core.downloader.handlers。 http.HTTPDownloadHandler&#39; ，  
+&#39;s3&#39; ： &#39;scrapy.core.downloader.handlers.s3.S3DownloadHandler&#39; ，  
+&#39;ftp&#39; ： &#39;scrapy.core.downloader.handlers.ftp.FTPDownloadHandler&#39; ，  
+}  
+</code></pre>
+<p>包含Scrapy中默认启用的请求下载处理程序的字典。您不应该在项目中修改此设置，DOWNLOAD_HANDLERS而应修改 。<br>您可以通过在其中None分配URI方案来禁用这些下载处理程序DOWNLOAD_HANDLERS。例如，要禁用内置的FTP处理程序（无替换），请将其放置在settings.py：  </p>
+<pre><code class="shell">DOWNLOAD_HANDLERS = {  
+&#39;ftp&#39;: None,  
+}  
+</code></pre>
+</li>
+<li><p>DOWNLOAD_TIMEOUT<br>默认： 180<br>下载器在超时前等待的时间量（以秒为单位）。<br><em>注意</em><br>可以使用download_timeout Spider属性和每个请求使用download_timeout Request.meta键为每个爬虫设置此超时。    </p>
+</li>
+<li><p>DOWNLOAD_MAXSIZE<br>默认值：1073741824（1024MB）<br>下载器将下载的最大响应大小（以字节为单位）。<br>如果要禁用它设置为0。<br><strong>注意</strong><br>可以使用download_maxsize Spider属性和每个请求使用download_maxsize Request.meta键为每个爬虫设置此大小。<br>此功能需要Twisted&gt; = 11.1。    </p>
+</li>
+<li><p>DOWNLOAD_WARNSIZE<br>默认值：33554432（32MB）<br>下载程序将开始警告的响应大小（以字节为单位）。<br>如果要禁用它设置为0。<br><strong>注意</strong><br>可以使用download_warnsize Spider属性和每个请求使用download_warnsize Request.meta键为每个爬虫设置此大小。<br>此功能需要Twisted&gt; = 11.1。    </p>
+</li>
+<li><p>DUPEFILTER_CLASS<br>默认： ‘scrapy.dupefilters.RFPDupeFilter’<br>用于检测和过滤重复请求的类。<br>默认（RFPDupeFilter）过滤器基于请求指纹使用该scrapy.utils.request.request_fingerprint函数。为了改变重复检查的方式，你可以子类化RFPDupeFilter并重载它的request_fingerprint方法。这个方法应该接受scrapy Request对象并返回其指纹（一个字符串）。    </p>
+</li>
+<li><p>DUPEFILTER_DEBUG<br>默认： False<br>默认情况下，RFPDupeFilter只记录第一个重复的请求。设置DUPEFILTER_DEBUG为True将使其记录所有重复的请求。    </p>
+</li>
+<li><p>EDITOR<br>默认值：取决于环境<br>用于使用edit命令编辑爬虫的编辑器。它默认为EDITOR环境变量，如果设置。否则，它默认为vi（在Unix系统上）或IDLE编辑器（在Windows上）。    </p>
+</li>
+<li><p>EXTENSIONS<br>默认：： {}<br>包含项目中启用的扩展名及其顺序的字典。    </p>
+</li>
+<li><p>EXTENSIONS_BASE<br>默认：    </p>
+<pre><code class="shell">{  
+&#39;scrapy.extensions.corestats.CoreStats&#39;: 0,  
+&#39;scrapy.extensions.telnet.TelnetConsole&#39;: 0,  
+&#39;scrapy.extensions.memusage.MemoryUsage&#39;: 0,  
+&#39;scrapy.extensions.memdebug.MemoryDebugger&#39;: 0,  
+&#39;scrapy.extensions.closespider.CloseSpider&#39;: 0,  
+&#39;scrapy.extensions.feedexport.FeedExporter&#39;: 0,  
+&#39;scrapy.extensions.logstats.LogStats&#39;: 0,  
+&#39;scrapy.extensions.spiderstate.SpiderState&#39;: 0,  
+&#39;scrapy.extensions.throttle.AutoThrottle&#39;: 0,  
+}  
+</code></pre>
+<p>包含默认情况下在Scrapy中可用的扩展名及其顺序的字典。此设置包含所有稳定的内置扩展。请记住，其中一些需要通过设置启用。<br>有关详细信息，请参阅扩展程序用户指南 和可用扩展列表。    </p>
+</li>
+<li><p>FEED_TEMPDIR<br>Feed Temd dir允许您在使用FTP源存储和 Amazon S3上传之前设置自定义文件夹以保存搜寻器临时文件。    </p>
+</li>
+<li><p>ITEM_PIPELINES<br>默认： {}<br>包含要使用的项目管道及其顺序的字典。顺序值是任意的，但通常将它们定义在0-1000范围内。较低订单处理较高订单前。<br>例：  </p>
+<pre><code class="shell">ITEM_PIPELINES = {  
+&#39;mybot.pipelines.validate.ValidateMyItem&#39;: 300,  
+&#39;mybot.pipelines.validate.StoreMyItem&#39;: 800,  
+}  
+</code></pre>
+</li>
+<li><p>ITEM_PIPELINES_BASE<br>默认： {}<br>包含Scrapy中默认启用的管道的字典。您不应该在项目中修改此设置，ITEM_PIPELINES而应修改。    </p>
+</li>
+<li><p>LOG_ENABLED<br>默认： True<br>是否启用日志记录。    </p>
+</li>
+<li><p>LOG_ENCODING<br>默认： ‘utf-8’<br>用于记录的编码。    </p>
+</li>
+<li><p>LOG_FILE<br>默认： None<br>用于记录输出的文件名。如果None，将使用标准误差。    </p>
+</li>
+<li><p>LOG_FORMAT<br>默认： ‘%(asctime)s [%(name)s] %(levelname)s: %(message)s’<br>用于格式化日志消息的字符串。有关可用占位符的完整列表，请参阅Python日志记录文档。    </p>
+</li>
+<li><p>LOG_DATEFORMAT<br>默认： ‘%Y-%m-%d %H:%M:%S’<br>用于格式化日期/时间的字符串，占位符的%(asctime)s扩展LOG_FORMAT。有关可用指令的完整列表，请参阅Python datetime文档。    </p>
+</li>
+<li><p>LOG_LEVEL<br>默认： ‘DEBUG’<br>记录的最低级别。可用级别为：CRITICAL，ERROR，WARNING，INFO，DEBUG。有关详细信息，请参阅日志。    </p>
+</li>
+<li><p>LOG_STDOUT<br>默认： False<br>如果True，您的进程的所有标准输出（和错误）将被重定向到日志。例如，如果它将出现在Scrapy日志中。print ‘hello’    </p>
+</li>
+<li><p>LOG_SHORT_NAMES<br>默认： False<br>如果True，日志将仅包含根路径。如果设置为，False 则它显示负责日志输出的组件    </p>
+</li>
+<li><p>MEMDEBUG_ENABLED<br>默认： False<br>是否启用内存调试。    </p>
+</li>
+<li><p>MEMDEBUG_NOTIFY<br>默认： []<br>当启用内存调试时，如果此设置不为空，则会将内存报告发送到指定的地址，否则报告将写入日志。<br>例：  </p>
+<pre><code class="shell">MEMDEBUG_NOTIFY = [&#39;user@example.com&#39;]  
+</code></pre>
+</li>
+<li><p>MEMUSAGE_ENABLED<br>默认： False<br>范围： scrapy.extensions.memusage<br>是否启用内存使用扩展，当超过内存限制时关闭Scrapy进程，并在发生这种情况时通过电子邮件通知。<br>请参阅内存使用扩展。    </p>
+</li>
+<li><p>MEMUSAGE_LIMIT_MB<br>默认： 0<br>范围： scrapy.extensions.memusage<br>在关闭Scrapy之前允许的最大内存量（以兆字节为单位）（如果MEMUSAGE_ENABLED为True）。如果为零，则不执行检查。<br>请参阅内存使用扩展。    </p>
+</li>
+<li><p>MEMUSAGE_CHECK_INTERVAL_SECONDS<br>新版本1.1。<br>默认： 60.0<br>范围： scrapy.extensions.memusage<br>该内存使用扩展 检查当前内存使用情况，相对于限制由设置 MEMUSAGE_LIMIT_MB和MEMUSAGE_WARNING_MB在固定的时间间隔。<br>这将设置这些间隔的长度（以秒为单位）。<br>请参阅内存使用扩展。    </p>
+</li>
+<li><p>MEMUSAGE_NOTIFY_MAIL<br>默认： False<br>范围： scrapy.extensions.memusage<br>要达到内存限制时通知的电子邮件列表。<br>例：  </p>
+<pre><code class="shell">MEMUSAGE_NOTIFY_MAIL = [&#39;user@example.com&#39;]  
+</code></pre>
+<p>请参阅内存使用扩展。    </p>
+</li>
+<li><p>MEMUSAGE_REPORT<br>默认： False<br>范围： scrapy.extensions.memusage<br>是否在每个爬虫关闭后发送内存使用报告。<br>请参阅内存使用扩展。    </p>
+</li>
+<li><p>MEMUSAGE_WARNING_MB<br>默认： 0<br>范围： scrapy.extensions.memusage<br>在发送警告电子邮件通知之前，要允许的最大内存量（以兆字节为单位）。如果为零，则不会产生警告。    </p>
+</li>
+<li><p>NEWSPIDER_MODULE<br>默认： ‘’<br>模块在哪里使用genspider命令创建新的爬虫。<br>例：  </p>
+<pre><code class="shell">NEWSPIDER_MODULE = &#39;mybot.spiders_dev&#39;  
+</code></pre>
+</li>
+<li><p>RANDOMIZE_DOWNLOAD_DELAY<br>默认： True<br>如果启用，Scrapy会在从同一网站获取请求时等待随机时间（介于0.5 <em> DOWNLOAD_DELAY和1.5 </em>之间DOWNLOAD_DELAY）。<br>该随机化降低了由分析请求的站点检测（并随后阻塞）爬行器的机会，所述站点在它们的请求之间的时间内寻找统计上显着的相似性。<br>随机化策略与wget –random-wait选项使用的策略相同。<br>如果DOWNLOAD_DELAY为零（默认），此选项不起作用。    </p>
+</li>
+<li><p>REACTOR_THREADPOOL_MAXSIZE<br>默认： 10<br>Twisted Reactor线程池大小的上限。这是各种Scrapy组件使用的常见多用途线程池。线程DNS解析器，BlockingFeedStorage，S3FilesStore仅举几个例子。如果您遇到阻塞IO不足的问题，请增加此值。    </p>
+</li>
+<li><p>REDIRECT_MAX_TIMES<br>默认： 20<br>定义请求可重定向的最长时间。在此最大值之后，请求的响应被原样返回。我们对同一个任务使用Firefox默认值。    </p>
+</li>
+<li><p>REDIRECT_PRIORITY_ADJUST<br>默认： +2<br>范围： scrapy.downloadermiddlewares.redirect.RedirectMiddleware<br>相对于原始请求调整重定向请求优先级：<br>正优先级调整（默认）意味着更高的优先级。<br>负优先级调整意味着较低优先级。  </p>
+</li>
+<li><p>RETRY_PRIORITY_ADJUST<br>默认： -1<br>范围： scrapy.downloadermiddlewares.retry.RetryMiddleware<br>调整相对于原始请求的重试请求优先级：<br>正优先级调整意味着更高的优先级。<br>负优先级调整（默认）表示较低优先级。  </p>
+</li>
+<li><p>ROBOTSTXT_OBEY<br>默认： False<br>范围： scrapy.downloadermiddlewares.robotstxt<br>如果启用，Scrapy会尊重robots.txt政策。有关详细信息，请参阅 RobotsTxtMiddleware。<br><strong>注意</strong><br>虽然默认值是False由于历史原因，默认情况下在settings.py文件中通过命令生成此选项。scrapy startproject    </p>
+</li>
+<li><p>SCHEDULER<br>默认： ‘scrapy.core.scheduler.Scheduler’<br>用于爬网的调度程序。    </p>
+</li>
+<li><p>SCHEDULER_DEBUG<br>默认： False<br>设置True将记录有关请求调度程序的调试信息。如果请求无法序列化到磁盘，则当前日志（仅一次）。Stats counter（scheduler/unserializable）跟踪发生的次数。<br>日志中的示例条目：  </p>
+<pre><code class="shell">1956-01-31 00:00:00+0800 [scrapy.core.scheduler] ERROR: Unable to serialize request:  
+&lt;GET http://example.com&gt; 
+- reason: cannot serialize &lt;Request at 0x9a7c7ec&gt;  
+(type Request)&gt; 
+- no more unserializable requests will be logged  
+(see 'scheduler/unserializable' stats counter)  
+</code></pre>
+</li>
+<li><p>SCHEDULER_DISK_QUEUE<br>默认： ‘scrapy.squeues.PickleLifoDiskQueue’<br>将由调度程序使用的磁盘队列的类型。其它可用的类型有 scrapy.squeues.PickleFifoDiskQueue，scrapy.squeues.MarshalFifoDiskQueue， scrapy.squeues.MarshalLifoDiskQueue。    </p>
+</li>
+<li><p>SCHEDULER_MEMORY_QUEUE<br>默认： ‘scrapy.squeues.LifoMemoryQueue’<br>调度程序使用的内存中队列的类型。其他可用类型是： scrapy.squeues.FifoMemoryQueue。    </p>
+</li>
+<li><p>SCHEDULER_PRIORITY_QUEUE<br>默认： ‘queuelib.PriorityQueue’<br>调度程序使用的优先级队列的类型。    </p>
+</li>
+<li><p>SPIDER_CONTRACTS<br>默认：： {}<br>包含在项目中启用的爬虫契约的dict，用于测试爬虫。有关更多信息，请参阅爬虫合同。    </p>
+</li>
+<li><p>SPIDER_CONTRACTS_BASE<br>默认：  </p>
+<pre><code class="shell">{  
+  &#39;scrapy.contracts.default.UrlContract&#39; : 1,  
+  &#39;scrapy.contracts.default.ReturnsContract&#39;: 2,  
+  &#39;scrapy.contracts.default.ScrapesContract&#39;: 3,  
+}  
+</code></pre>
+<p>包含Scrapy中默认启用的scrapy合约的dict。您不应该在项目中修改此设置，SPIDER_CONTRACTS 而应修改。有关更多信息，请参阅爬虫合同。<br>您可以通过None将其中的类路径指定为禁用任何这些合同SPIDER_CONTRACTS。例如，要禁用内置 ScrapesContract，将此放在您的settings.py：  </p>
+<pre><code class="shell">SPIDER_CONTRACTS = {  
+  &#39;scrapy.contracts.default.ScrapesContract&#39;: None,  
+}  
+</code></pre>
+</li>
+<li><p>SPIDER_LOADER_CLASS<br>默认： ‘scrapy.spiderloader.SpiderLoader’<br>将用于加载爬虫程序的类，它必须实现 SpiderLoader API。    </p>
+</li>
+<li><p>SPIDER_LOADER_WARN_ONLY<br>新版本1.3.3。<br>默认： False<br>默认情况下，当scrapy尝试从中导入爬虫类时SPIDER_MODULES，如果有任何ImportError异常，它将大声失败。但是你可以选择沉默此异常，并通过设置将其变成一个简单的警告。SPIDER_LOADER_WARN_ONLY = True<br><strong>注意</strong><br>有些scrapy命令使用此设置运行True 已经（即他们只会发出警告并不会失败），因为他们实际上并不需要加载爬虫类的工作: scrapy runspider, scrapy settings, scrapy startproject, scrapy version.    </p>
+</li>
+<li><p>SPIDER_MIDDLEWARES<br>默认：： {}<br>包含在您的项目中启用的爬虫中间件的字典及其顺序。有关更多信息，请参阅激活爬虫中间件。    </p>
+</li>
+<li><p>SPIDER_MIDDLEWARES_BASE<br>默认：  </p>
+<pre><code class="shell">{  
+&#39;scrapy.spidermiddlewares.httperror.HttpErrorMiddleware&#39;: 50,  
+&#39;scrapy.spidermiddlewares.offsite.OffsiteMiddleware&#39;: 500,  
+&#39;scrapy.spidermiddlewares.referer.RefererMiddleware&#39;: 700,  
+&#39;scrapy.spidermiddlewares.urllength.UrlLengthMiddleware&#39;: 800,  
+&#39;scrapy.spidermiddlewares.depth.DepthMiddleware&#39;: 900,  
+}  
+</code></pre>
+<p>包含在Scrapy中默认启用的爬虫中间件的字典及其顺序。低订单更靠近发动机，高订单更接近爬虫。有关更多信息，请参阅激活爬虫中间件。    </p>
+</li>
+<li><p>SPIDER_MODULES<br>默认： []<br>Scrapy将寻找爬虫的模块列表。<br>例：<br>SPIDER_MODULES = [‘mybot.spiders_prod’, ‘mybot.spiders_dev’]<br>STATS_CLASS<br>默认： ‘scrapy.statscollectors.MemoryStatsCollector’<br>用于收集统计信息的类，谁必须实现 Stats Collector API。<br>STATS_DUMP<br>默认： True<br>一旦爬虫完成，转储Scrapy统计（到Scrapy日志）。<br>更多信息请参阅：统计数据收集。    </p>
+</li>
+<li><p>STATSMAILER_RCPTS<br>默认:( []空列表）<br>爬虫完成刮擦后发送Scrapy stats。查看 StatsMailer更多信息。    </p>
+</li>
+<li><p>TELNETCONSOLE_ENABLED<br>默认： True<br>布尔值，指定是否 启用telnet控制台（如果其扩展名也启用）。    </p>
+</li>
+<li><p>TELNETCONSOLE_PORT<br>默认： [6023, 6073]<br>用于telnet控制台的端口范围。如果设置为None或0，则使用动态分配的端口。有关详细信息，请参阅 telnet控制台。    </p>
+</li>
+<li><p>TEMPLATES_DIR<br>默认值：templates dir里面的scrapy模块<br>使用startproject命令和新爬虫创建新项目时使用命令查找模板的目录 genspider 。<br>项目名称不得与子目录中的自定义文件或目录的名称冲突project。    </p>
+</li>
+<li><p>URLLENGTH_LIMIT<br>默认： 2083<br>范围： spidermiddlewares.urllength<br>允许抓取网址的最大网址长度。有关此设置的默认值的详细信息，请参阅<a href="http://www.boutell.com/newfaq/misc/urllength.html" target="_blank" rel="noopener">http://www.boutell.com/newfaq/misc/urllength.html</a>    </p>
+</li>
+<li><p>USER_AGENT<br>默认： “Scrapy/VERSION (+<a href="http://scrapy.org)&quot;" target="_blank" rel="noopener">http://scrapy.org)&quot;</a><br>检索时使用的默认用户代理，除非被覆盖。<br>其他地方记录的设置：<br>以下设置在其他地方记录，请检查每个具体案例，了解如何启用和使用它们。  </p>
+<pre><code class="shell">AJAXCRAWL_ENABLED
+AUTOTHROTTLE_DEBUG
+AUTOTHROTTLE_ENABLED
+AUTOTHROTTLE_MAX_DELAY  
+AUTOTHROTTLE_START_DELAY  
+AUTOTHROTTLE_TARGET_CONCURRENCY  
+CLOSESPIDER_ERRORCOUNT  
+CLOSESPIDER_ITEMCOUNT  
+CLOSESPIDER_PAGECOUNT  
+CLOSESPIDER_TIMEOUT  
+COMMANDS_MODULE  
+COMPRESSION_ENABLED  
+COOKIES_DEBUG  
+COOKIES_ENABLED  
+FEED_EXPORTERS  
+FEED_EXPORTERS_BASE  
+FEED_EXPORT_ENCODING  
+FEED_EXPORT_FIELDS  
+FEED_FORMAT  
+FEED_STORAGES  
+FEED_STORAGES_BASE  
+FEED_STORE_EMPTY  
+FEED_URI  
+FILES_EXPIRES  
+FILES_RESULT_FIELD  
+FILES_STORE  
+FILES_STORE_S3_ACL  
+FILES_URLS_FIELD  
+HTTPCACHE_ALWAYS_STORE  
+HTTPCACHE_DBM_MODULE  
+HTTPCACHE_DIR  
+HTTPCACHE_ENABLED  
+HTTPCACHE_EXPIRATION_SECS  
+HTTPCACHE_GZIP  
+HTTPCACHE_IGNORE_HTTP_CODES  
+HTTPCACHE_IGNORE_MISSING  
+HTTPCACHE_IGNORE_RESPONSE_CACHE_CONTROLS  
+HTTPCACHE_IGNORE_SCHEMES  
+HTTPCACHE_POLICY  
+HTTPCACHE_STORAGE  
+HTTPERROR_ALLOWED_CODES  
+HTTPERROR_ALLOW_ALL  
+HTTPPROXY_AUTH_ENCODING  
+IMAGES_EXPIRES  
+IMAGES_MIN_HEIGHT  
+IMAGES_MIN_WIDTH  
+IMAGES_RESULT_FIELD  
+IMAGES_STORE  
+IMAGES_STORE_S3_ACL  
+IMAGES_THUMBS  
+IMAGES_URLS_FIELD  
+MAIL_FROM  
+MAIL_HOST  
+MAIL_PASS  
+MAIL_PORT  
+MAIL_SSL  
+MAIL_TLS  
+MAIL_USER  
+METAREFRESH_ENABLED  
+METAREFRESH_MAXDELAY  
+REDIRECT_ENABLED  
+REDIRECT_MAX_TIMES  
+REFERER_ENABLED  
+RETRY_ENABLED  
+RETRY_HTTP_CODES  
+RETRY_TIMES  
+TELNETCONSOLE_HOST  
+TELNETCONSOLE_PORT  
+</code></pre>
+<p><a href="https://www.jianshu.com/p/df9c0d1e9087" target="_blank" rel="noopener">原文链接</a></p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">爬虫</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/爬虫//" class="article-tag-list-link color3">爬虫</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/09/Scrapy设置项介绍/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-MongoDB的基本使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/08/MongoDB的基本使用/">MongoDB的基本使用</a>
+    </h1>
+  
+
+        
+        <a href="/2018/04/08/MongoDB的基本使用/" class="archive-article-date">
+  	<time datetime="2018-04-08T09:28:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://docs.mongodb.com/manual/introduction/" target="_blank" rel="noopener">官方文档链接</a></p>
+<h2 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h2><h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><ol>
+<li><p>下载完安装包，并解压 tgz（以下演示的是 64 位 Linux上的安装）。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.6.tgz # 下载</span><br><span class="line">tar -zxvf mongodb-linux-x86_64-3.0.6.tgz # 解压</span><br><span class="line">mv  mongodb-linux-x86_64-3.0.6/ /usr/local/mongodb # 将解压包拷贝到指定目录</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MongoDB 的可执行文件位于 bin 目录下，所以可以将其添加到 PATH 路径中：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&lt;mongodb-install-directory&gt;/bin:$PATH</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>mongodb-install-directory 为 MongoDB 的安装路径。如本文的 /usr/local/mongodb 。  </p>
+<ol start="3">
+<li><p>创建数据库目录<br>MongoDB的数据存储在data目录的db目录下，但是这个目录在安装过程不会自动创建，所以你需要手动创建data目录，并在data目录中创建db目录。以下实例中我们将data目录创建于根目录下(/)。<br><strong>注意：</strong>/data/db 是 MongoDB 默认的启动的数据库路径(–dbpath)。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /data/db</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令行中运行 MongoDB 服务</p>
+<ul>
+<li><p>可以在 /usr/local/mongodb/bin/ 目录下使用命令：　　</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mongod</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 /usr/local/mongodb/ 下添加conf目录，并添加mongodb.conf配置文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./mongod -f /usr/local/mongodb/conf/mongodb.conf 　　或者</span><br><span class="line">./mongod --config /usr/local/mongodb/conf/mongodb.conf</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<p>mongodb.conf配置文件内容如下：</p>
+<pre><code class="shelldbpath=/data/db">bind_ip=127.0.0.1
+port=27017
+fork=true
+logappend=true
+shardsvr=true
+pidfilepath=/usr/local/mongodb/mongo.pid
+logpath=/usr/local/mongodb/log/mongodb.log
+</code></pre>
+<ol start="5">
+<li>设置开机启动mongo  <ul>
+<li>将/usr/local/mongodb/bin/mongod<br>–dbpath /data/db<br>–fork<br>–port 27017 –logpath=/usr/local/mongodb/log/mongodb.log<br>–logappend<br>添加到 /etc/rc.local 中。</li>
+</ul>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">MongoDB</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据库//" class="article-tag-list-link color4">数据库</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/08/MongoDB的基本使用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-time和datetime模块" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/08/time和datetime模块/">time和datetime模块</a>
+    </h1>
+  
+
+        
+        <a href="/2018/04/08/time和datetime模块/" class="archive-article-date">
+  	<time datetime="2018-04-08T09:05:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="时间模块"><a href="#时间模块" class="headerlink" title="时间模块"></a>时间模块</h2><p>python 中时间表示方法有：时间戳，即从1975年1月1日00:00:00到现在的秒数；格式化后的时间字符串；时间struct_time 元组。</p>
+<p>struct_time元组中元素主要包括：</p>
+<ul>
+<li>tm_year（年）、tm_mon（月）、tm_mday（日）、tm_hour（时）、tm_min（分）、tm_sec（秒）、tm_wday（weekday0 - 6（0表示周日））、tm_yday（一年中的第几天1 - 366）、tm_isdst（是否是夏令时）</li>
+</ul>
+<h2 id="time"><a href="#time" class="headerlink" title="time"></a>time</h2><h3 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h3><ul>
+<li>time.time()返回当前时间戳</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.time()</span><br><span class="line"><span class="number">1465370844.096474</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>time.ctime() 返回这种格式的时间字符’Wed Jun 8 15:27:48 2016’，显示当前时间.同时也可以转换时间戳</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.ctime()</span><br><span class="line"><span class="string">'Wed Jun  8 15:27:48 2016'</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.ctime(time.time()<span class="number">-86400</span>)</span><br><span class="line"><span class="string">'Tue Jun  7 15:29:36 2016'</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>time.gmtime 将时间戳转换成struct_time格式，此显示的是格林威治0时区的时间</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.gmtime()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">7</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.gmtime(time.time() - <span class="number">86400</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">7</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">41</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>time.localtime 将当前系统时间戳转化为struct_time格式 </li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.localtime()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">35</span>, tm_sec=<span class="number">33</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.localtime(time.time() - <span class="number">86400</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">37</span>, tm_sec=<span class="number">10</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>time.mktime 将struct_time格式转回成时间戳</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>now = time.localtime()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>now</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">38</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.mktime(now)</span><br><span class="line"><span class="number">1465371508.0</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>time.strftime 将struct_time格式转成指定的字符串格式</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>now = time.localtime()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>now</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">38</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = time.localtime(time.time() - <span class="number">86400</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">40</span>, tm_sec=<span class="number">23</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,last)</span><br><span class="line"><span class="string">'2016-06-07 15:40:23'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,now)</span><br><span class="line"><span class="string">'2016-06-08 15:38:28'</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>time.strptime 将自定义时间格式的字符串转换为struct_time格式</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strptime(<span class="string">"2016-06-08"</span>,<span class="string">"%Y-%m-%d"</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">0</span>, tm_min=<span class="number">0</span>, tm_sec=<span class="number">0</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strptime(<span class="string">"2016-06-08 15:50:44"</span>,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">50</span>, tm_sec=<span class="number">44</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>time.sleep 暂停时间，类似于shell的sleep()</p>
+</li>
+<li><p>其他</p>
+<ul>
+<li>时间格式：</li>
 </ul>
 </li>
 </ul>
-<p>注意：</p>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%a</td>
+<td style="text-align:center">显示简化星期名称</td>
+</tr>
+<tr>
+<td>%A</td>
+<td style="text-align:center">显示完整星期名称</td>
+</tr>
+<tr>
+<td>%b</td>
+<td style="text-align:center">显示简化月份名称</td>
+</tr>
+<tr>
+<td>%B</td>
+<td style="text-align:center">显示完整月份名称</td>
+</tr>
+<tr>
+<td>%c</td>
+<td style="text-align:center">本地相应的日期和时间表示</td>
+</tr>
+<tr>
+<td>%d</td>
+<td style="text-align:center">显示当月第几天</td>
+</tr>
+<tr>
+<td>%H</td>
+<td style="text-align:center">按24小时制显示小时</td>
+</tr>
+<tr>
+<td>%I</td>
+<td style="text-align:center">按12小时制显示小时</td>
+</tr>
+<tr>
+<td>%j</td>
+<td style="text-align:center">显示当年第几天</td>
+</tr>
+<tr>
+<td>%m</td>
+<td style="text-align:center">显示月份</td>
+</tr>
+<tr>
+<td>%M</td>
+<td style="text-align:center">显示分钟数）</td>
+</tr>
+<tr>
+<td>%p</td>
+<td style="text-align:center">本地am或者pm的相应符</td>
+</tr>
+<tr>
+<td>%S</td>
+<td style="text-align:center">显示秒数）</td>
+</tr>
+<tr>
+<td>%U</td>
+<td style="text-align:center">一年中的星期数</td>
+</tr>
+<tr>
+<td>%w</td>
+<td style="text-align:center">显示在星期中的第几天，默认从0开始表示周一</td>
+</tr>
+<tr>
+<td>%W</td>
+<td style="text-align:center">和%U基本相同</td>
+</tr>
+<tr>
+<td>%x</td>
+<td style="text-align:center">本地相应日期</td>
+</tr>
+<tr>
+<td>%X</td>
+<td style="text-align:center">本地相应时间</td>
+</tr>
+<tr>
+<td>%y</td>
+<td style="text-align:center">去掉世纪的年份（00 - 99）</td>
+</tr>
+<tr>
+<td>%Y</td>
+<td style="text-align:center">完整的年份</td>
+</tr>
+<tr>
+<td>%Z</td>
+<td style="text-align:center">时区的名字（如果不存在为空字符）</td>
+</tr>
+<tr>
+<td>%%</td>
+<td style="text-align:center">‘%’字符</td>
+</tr>
+<tr>
+<td>o</td>
+<td style="text-align:center">时间函数之间转换关系</td>
+</tr>
+</tbody>
+</table>
+<p> ￼</p>
+<h2 id="datetime"><a href="#datetime" class="headerlink" title="datetime"></a>datetime</h2><p>datime是time的升级版，可以对date(日期)、time(时间)、datetime（日期时间）等三种单独管理。主要是由下面四个类组成</p>
 <ul>
-<li>结点判重：判断是否已经访问过之前的节点</li>
-<li>路径记录：一个结点可能扩展出多个结点，但最多只能有1个前驱（除了起始点），用到和节点数目等长的数组pre记录结点前驱pre[i]=j</li>
+<li><p>datetime.datetime常用函数（datetime.date datetime.time通用）</p>
+</li>
+<li><p>datetime.datetime.today() 默认返回当前日期和时间的对象，也可以自定义日期和时间</p>
+</li>
 </ul>
-<p><img src="/images/pasted-23.png" alt="upload successful"></p>
-<h3 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h3><p>DFS算法框架<br>深度优先搜索（Depth-First-Search）<br>可以用栈的方法实现<br><img src="/images/pasted-22.png" alt="upload successful"></p>
-<p>深度优先搜索可以解决很多问题，比如八皇后、数独、LCA问题（Tarjan算法）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Graph</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,*args,**kwargs)</span>:</span></span><br><span class="line">        self.node_neighbors = &#123;&#125;</span><br><span class="line">        self.visited = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_nodes</span><span class="params">(self,nodelist)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> nodelist:</span><br><span class="line">            self.add_node(node)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_node</span><span class="params">(self,node)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> node <span class="keyword">in</span> self.nodes():</span><br><span class="line">            self.node_neighbors[node] = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_edge</span><span class="params">(self,edge)</span>:</span></span><br><span class="line">        u,v = edge</span><br><span class="line">        <span class="keyword">if</span>(v <span class="keyword">not</span> <span class="keyword">in</span> self.node_neighbors[u]) <span class="keyword">and</span> ( u <span class="keyword">not</span> <span class="keyword">in</span> self.node_neighbors[v]):</span><br><span class="line">            self.node_neighbors[u].append(v)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(u!=v):</span><br><span class="line">                self.node_neighbors[v].append(u)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">nodes</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.node_neighbors.keys()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">depth_first_search</span><span class="params">(self,root=None)</span>:</span></span><br><span class="line">        order = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(node)</span>:</span></span><br><span class="line">            self.visited[node] = <span class="keyword">True</span></span><br><span class="line">            order.append(node)</span><br><span class="line">            <span class="keyword">for</span> n <span class="keyword">in</span> self.node_neighbors[node]:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> n <span class="keyword">in</span> self.visited:</span><br><span class="line">                    dfs(n)</span><br><span class="line">        <span class="keyword">if</span> root:</span><br><span class="line">            dfs(root)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> self.nodes():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node <span class="keyword">in</span> self.visited:</span><br><span class="line">                dfs(node)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">print</span> (order)</span><br><span class="line">        <span class="keyword">return</span> order</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">breadth_first_search</span><span class="params">(self,root=None)</span>:</span></span><br><span class="line">        queue = []</span><br><span class="line">        order = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">bfs</span><span class="params">()</span>:</span></span><br><span class="line">            <span class="keyword">while</span> len(queue)&gt; <span class="number">0</span>:</span><br><span class="line">                node  = queue.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">                self.visited[node] = <span class="keyword">True</span></span><br><span class="line">                <span class="keyword">for</span> n <span class="keyword">in</span> self.node_neighbors[node]:</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">not</span> n <span class="keyword">in</span> self.visited) <span class="keyword">and</span> (<span class="keyword">not</span> n <span class="keyword">in</span> queue):</span><br><span class="line">                        queue.append(n)</span><br><span class="line">                        order.append(n)</span><br><span class="line">        <span class="keyword">if</span> root:</span><br><span class="line">            queue.append(root)</span><br><span class="line">            order.append(root)</span><br><span class="line">            bfs()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> self.nodes():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node <span class="keyword">in</span> self.visited:</span><br><span class="line">                queue.append(node)</span><br><span class="line">                order.append(node)</span><br><span class="line">                bfs()</span><br><span class="line">        <span class="keyword">print</span> (order)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> order</span><br><span class="line">g = Graph()</span><br><span class="line">g.add_nodes([i+<span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>)])</span><br><span class="line">g.add_edge((<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">g.add_edge((<span class="number">1</span>, <span class="number">3</span>))</span><br><span class="line">g.add_edge((<span class="number">2</span>, <span class="number">4</span>))</span><br><span class="line">g.add_edge((<span class="number">2</span>, <span class="number">5</span>))</span><br><span class="line">g.add_edge((<span class="number">4</span>, <span class="number">8</span>))</span><br><span class="line">g.add_edge((<span class="number">5</span>, <span class="number">8</span>))</span><br><span class="line">g.add_edge((<span class="number">3</span>, <span class="number">6</span>))</span><br><span class="line">g.add_edge((<span class="number">3</span>, <span class="number">7</span>))</span><br><span class="line">g.add_edge((<span class="number">6</span>, <span class="number">7</span>))</span><br><span class="line"><span class="keyword">print</span> (<span class="string">"nodes:"</span>, g.nodes())</span><br><span class="line"></span><br><span class="line">order = g.breadth_first_search(<span class="number">1</span>)</span><br><span class="line">order = g.depth_first_search(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="最短路径"><a href="#最短路径" class="headerlink" title="最短路径"></a>最短路径</h2><h3 id="Dijkstra算法"><a href="#Dijkstra算法" class="headerlink" title="Dijkstra算法"></a>Dijkstra算法</h3><p>是一种贪心算法，求出某点到所有点的最短路径，这样问题就解决。可以解决带权最短路径的问题，权值不能为负值。<br>优化：启发式A*算法、GIS</p>
-<h3 id="Floyd算法"><a href="#Floyd算法" class="headerlink" title="Floyd算法"></a>Floyd算法</h3><p>又叫做插点法，用于寻找给定过的加权图中多源点之间最短路径算法。Floyd算法的权值是可以为负值的。 </p>
-<h3 id="Bellman-ford算法"><a href="#Bellman-ford算法" class="headerlink" title="Bellman-ford算法"></a>Bellman-ford算法</h3><p>适用于单源节点到其他所有节点的最短路径。</p>
-<h2 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h2><h3 id="Prim算法"><a href="#Prim算法" class="headerlink" title="Prim算法"></a>Prim算法</h3><p>以一个节点作为最小生成树的初始节点，然后以迭代的方式找出与最小生成树中各节点权重最小的边，加入到最小生成树汇总。如果加入后缠身回路，则跳过这条边，选择下一个节点。最终将所有节点都加入到生成树停止。小树–&gt;大数</p>
-<h3 id="Kruskal算法"><a href="#Kruskal算法" class="headerlink" title="Kruskal算法"></a>Kruskal算法</h3><p>与Prim不同，Kruskal算法在找最小生成树结点前，对所有有权重边从小到大排序，将排序好的权重依次加入到最小生成树种，如果加入产生回路则跳过。最终将所有节点都加入到生成树停止。森林–&gt;大树</p>
-<p>为了加快判断候选边e的加入是否形成环，可以考虑用并查集的方法：把当前状态的每个连通子图保存在各自的集合中，候选边是否可以加入，转化成两个顶点是否位于同一集合中。</p>
-<p>Kruskal算法可以解决MST问题。</p>
-<h2 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h2><p>对一个有向无环图（Directed Acyclic Graph）G进行拓扑排序，将G中所有顶点排成线性序列，使得图中任意一对顶点u和v，若边(u,v)∈E(G)，则u在现行排序中出现在v之前。<br>相互关系不变形。拓扑排序是一种偏序的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>today = datetime.datetime.today()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(today)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = datetime.datetime(<span class="number">2016</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)  ＃注意此处表示日期只能是实际月份，不能带<span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">2016</span><span class="number">-05</span><span class="number">-08</span> <span class="number">11</span>:<span class="number">23</span>:<span class="number">55</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">                    ^</span><br><span class="line">SyntaxError: invalid token</span><br></pre></td></tr></table></figure>
+<ul>
+<li>datetime.datetime.now() 返回当前时间</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>datetime.datetime.now()</span><br><span class="line">datetime.datetime(<span class="number">2016</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">44</span>, <span class="number">29</span>, <span class="number">694398</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>datetime.strftime(format)  ＃自定义格式化时间</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>today.strftime(<span class="string">"%I:%M:%S %p %d/%m/%Y"</span>)</span><br><span class="line"> <span class="string">'04:34:08 PM 08/06/2016'</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>datetime.datetime.timple() 将时间转换为struct_time 格式</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;today.timetuple()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">16</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">8</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>datetime.replace（）返回一个替换后的date对象</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;last = today.replace(<span class="number">1949</span>,<span class="number">10</span>,<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">1949</span><span class="number">-10</span><span class="number">-01</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = today.replace(year=<span class="number">1919</span>,month=<span class="number">3</span>,day=<span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">1919</span><span class="number">-03</span><span class="number">-02</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>datetime.datetime.strptime  将字符串转换为日志格式对象</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">"2016-06-08 17:18:19"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = datetime.datetime.strptime(a,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">17</span>:<span class="number">18</span>:<span class="number">19</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(b)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">17</span>:<span class="number">18</span>:<span class="number">19</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(type(a))</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">print</span><span class="params">(type<span class="params">(b)</span>)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">datetime</span>.<span class="title">datetime</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>datetime.timedelta 时间运算<ul>
+<li>可用参数：days seconds microseconds milliseconds minutes hours weeks</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">today = datetime.datetime.now()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(today)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">16</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>yesterday = today - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(yesterday)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-07</span> <span class="number">16</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last_hour = today - datetime.timedelta(hours=<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last_hour)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">15</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/python基础//" class="article-tag-list-link color4">python基础</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/08/time和datetime模块/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-动态规划" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/30/动态规划/">动态规划</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/30/动态规划/" class="archive-article-date">
+  	<time datetime="2018-03-30T02:42:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="认识论"><a href="#认识论" class="headerlink" title="认识论"></a>认识论</h2><ul>
+<li><strong>认识事物的方法</strong>概念、判断、推理  </li>
+<li><strong>推理</strong>分为归纳、演绎  <ul>
+<li><strong>基本归纳法</strong>常常称之为马尔科夫模型，特点是只要状态$A_i$确定，那么计算$A_{i+1}$时不需要考察更新序的状态$A_1…A_{i-1}$的状态。计算机算法中叫做贪心算法。</li>
+<li><strong>高阶归纳法</strong>称之为高阶马尔科夫模型，对于$A_{i+1}$需考察前i个状态集$A_1…A_{i-1}$的状态才可完成整个推理过程。计算机算法中叫做动态规划算法。</li>
+<li><strong>无后效性</strong>对于$A_{i+1}$以后的节点来说，是不会影响到前面的节点的，一旦计算完成，前面的节点不会改变。</li>
+</ul>
+</li>
+</ul>
+<h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><h3 id="硬币问题的求解"><a href="#硬币问题的求解" class="headerlink" title="硬币问题的求解"></a>硬币问题的求解</h3><p>现有不限数量的面额分别为1元，2元，5元，10元的货币，如果要用这些货币组合成x元，求一共有多少种组合方式？</p>
+<h4 id="暴力求解法"><a href="#暴力求解法" class="headerlink" title="暴力求解法"></a>暴力求解法</h4><p>从第一个硬币开始，用0个第一个硬币，求解剩余硬币组合成x元的方法，用1个第一个硬币，求解剩余硬币组合成x-1元的方法，……<br>最终求得结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">coins = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">10</span>]</span><br><span class="line">N = <span class="number">100</span></span><br><span class="line">array = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solution_digui</span><span class="params">(price, coin, result)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> price &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> price == <span class="number">0</span>:</span><br><span class="line">        array.append(result)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">if</span> len(coin) &gt; <span class="number">0</span>:</span><br><span class="line">        cur = coin[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(int(N / cur) + <span class="number">1</span>):</span><br><span class="line">            solution_digui(price - i * cur, coin[<span class="number">1</span>:], result + [cur] * i)</span><br><span class="line">solution_digui(N, coins, [])</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">coins = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">10</span>]</span><br><span class="line">N = <span class="number">100</span></span><br><span class="line">array = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solution_digui</span><span class="params">(price, coin, result)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> price &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> price == <span class="number">0</span>:</span><br><span class="line">        array.append(result)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">if</span> len(coin) &gt; <span class="number">0</span>:</span><br><span class="line">        cur = coin[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(int(N / cur) + <span class="number">1</span>):</span><br><span class="line">            solution_digui(price - i * cur, coin[<span class="number">1</span>:], result + [cur] * i)</span><br><span class="line">solution_digui(N, coins, [])</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure>
+<h4 id="记忆搜索法"><a href="#记忆搜索法" class="headerlink" title="记忆搜索法"></a>记忆搜索法</h4><p>递归的方法会有大量的重复计算，记忆搜索算法会将结果组成key：value放入到一个map中，进入递归过程前，查询是否存在value，如果存在，则直接取值，这样就减少了递归的次数。</p>
 
       
 
@@ -337,7 +1158,7 @@ F -&gt; C
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/20/图/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/03/30/动态规划/">展开全文 >></a>
         </p>
       
 
@@ -367,51 +1188,93 @@ F -&gt; C
 
 
   
-    <article id="post-KNN" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-集成学习" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/19/KNN/">KNN</a>
+      <a class="article-title" href="/2018/03/26/集成学习/">集成学习</a>
     </h1>
   
 
         
-        <a href="/2018/05/19/KNN/" class="archive-article-date">
-  	<time datetime="2018-05-19T10:14:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-19</time>
+        <a href="/2018/03/26/集成学习/" class="archive-article-date">
+  	<time datetime="2018-03-26T07:33:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="K邻近学习"><a href="#K邻近学习" class="headerlink" title="K邻近学习"></a>K邻近学习</h2><p>k近邻学习是一种监督学习算法，lazy-learning算法。训练复杂度为0。在给定的训练样本集中，基于某种距离度量，找出与训练集最靠近的k个训练样本，然后基于这k个邻居信息来进行预测。<br><strong>投票法：</strong>通常在分类任务中使用，判别方法是选择这k个样本中出现最多的雷冰标记作为预测结果。（所以k值取值一般为奇数，以便可以得到有偏向的投票结果）<br><strong>平均法：</strong>通常在回归任务中使用，判别方法是将这k个样本的实值输出标记的平均值最为预测结果。<br><strong>加权平均或加权投票：</strong>根据距离远近来决定权重，距离越近，权重越大。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526725719271s4cfc85r.png?imageslim" alt="paste image"><br>增加权重后，就可以避免由于密集的样本造成的影响。</p>
-<h3 id="KNN算法主要过程"><a href="#KNN算法主要过程" class="headerlink" title="KNN算法主要过程"></a>KNN算法主要过程</h3><ol>
-<li>计算训练样本和测试样本中每个样本点的距离（常见的距离度量有欧式距离，马氏距离等）；</li>
-<li>对上面所有的距离值进行排序；</li>
-<li>选前k个最小距离的样本；</li>
-<li>根据这k个样本的标签进行投票，得到最后的分类类别；</li>
+        <h2 id="个体与集成"><a href="#个体与集成" class="headerlink" title="个体与集成"></a>个体与集成</h2><p>“同质”：由类型相同的学习器组合而成的集成学习器，每个学习器可称为基学习器<br>“异质”：由类型不相同的学习器组合而成的集成学习器，每个学习器可称为“组件学习器”<br>集成学习通过将多个学习器进行结合，常常可以获得比单一学习器具有显著优越的泛化性能。这个对于弱学习器尤为明显。<br>如何获得一个好的集成学习器呢？每个个体学习器具有一定的准确性（每个学习器不能太坏）和多样性（每个学习器之间存在差异）<br>集成学习方法可以分为两大类：一是个体学习器间存在强依赖关系、必须串行生成序列化方法，代表有Boosting算法，二是个体学习器之间不存在强依赖关系、可同时生成的并行化方法，代表有Bagging和随机森林（Random Forest）</p>
+<h2 id="Bagging与随机森林"><a href="#Bagging与随机森林" class="headerlink" title="Bagging与随机森林"></a>Bagging与随机森林</h2><h3 id="Bagging算法"><a href="#Bagging算法" class="headerlink" title="Bagging算法"></a>Bagging算法</h3><p>Bagging算法基本流程：采用自助采样法，可以采用出 个含 个训练样本的采样集，然后基于每个采样集训练出一个基学习器，再将这些基学习器进行结合。 </p>
+<h3 id="随机森林（Random-Forest）"><a href="#随机森林（Random-Forest）" class="headerlink" title="随机森林（Random Forest）"></a>随机森林（Random Forest）</h3><p>随机森林是Bagging的一个扩展变体，随机森林是在以决策树为基学习器构建Bagging集成的基础上，进一步在决策树的训练过程中引入了随机属性选择。具体的说，传统决策树在选择划分属性时是在当前结点的属性集合（假定有 个属性）中选择一个最优属性；而在随机森林（RF）中，对基决策树的每个结点，先从该结点的属性集合中随机选择一个包含 个属性的子集，然后再从这个子集中选择一个最优属性用于划分。<br>可以参阅：<a href="http://www.cnblogs.com/hrlnw/p/3850459.html" target="_blank" rel="noopener">http://www.cnblogs.com/hrlnw/p/3850459.html</a></p>
+<h4 id="采样方式"><a href="#采样方式" class="headerlink" title="采样方式"></a>采样方式</h4><ul>
+<li>随机森林的集成学习方法是Bagging， Bagging的采样方式为：<ul>
+<li><strong>Bootstraping：</strong>有放回的采样</li>
+</ul>
+</li>
+<li>随机森林即随机采样样本，也随机选择特征，因此防止过拟合能力更强，降低方差。</li>
+</ul>
+<h4 id="构建方法"><a href="#构建方法" class="headerlink" title="构建方法"></a>构建方法</h4><p>构建多颗决策树，结果是所有的决策树共同决定的。对于分类任务可以取出现最多，回归操作可以取均值。</p>
+<h3 id="随机性的体现"><a href="#随机性的体现" class="headerlink" title="随机性的体现"></a>随机性的体现</h3><ol>
+<li>数据选择随机性：n个样本中，采集60%的样本个数的集合作为数据，去除异常样本影响。</li>
+<li>特征随机性：在d个特种中，随机选择其中一些特征。</li>
 </ol>
-<p>如何选择一个最佳的K值，这取决于数据。一般情况下，在分类时较大的K值能够减小噪声的影响。但会使类别之间的界限变得模糊。一个较好的K值可通过各种启发式技术来获取，比如，交叉验证。另外噪声和非相关性特征向量的存在会使K近邻算法的准确性减小。<br>近邻算法具有较强的一致性结果。随着数据趋于无限，算法保证错误率不会超过贝叶斯算法错误率的两倍。对于一些好的K值，K近邻保证错误率不会超过贝叶斯理论误差率。</p>
-<h3 id="距离衡量方法"><a href="#距离衡量方法" class="headerlink" title="距离衡量方法"></a>距离衡量方法</h3><h4 id="Euclidean-Distance"><a href="#Euclidean-Distance" class="headerlink" title="Euclidean Distance"></a>Euclidean Distance</h4><p>$D=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}$</p>
-<h4 id="余弦（cos）"><a href="#余弦（cos）" class="headerlink" title="余弦（cos）"></a>余弦（cos）</h4><h4 id="相关度-correlation"><a href="#相关度-correlation" class="headerlink" title="相关度(correlation)"></a>相关度(correlation)</h4><p>$$cos(θ)=\frac{A·B}{||A||×||B||}$$</p>
-<h4 id="曼哈顿距离-Manhattan-distance"><a href="#曼哈顿距离-Manhattan-distance" class="headerlink" title="曼哈顿距离(Manhattan distance)"></a>曼哈顿距离(Manhattan distance)</h4><p>走过的街区数。</p>
-<h3 id="KNN算法的优缺点"><a href="#KNN算法的优缺点" class="headerlink" title="KNN算法的优缺点"></a>KNN算法的优缺点</h3><p><strong>优点：</strong>  </p>
+<h3 id="随机森林的推广-Extra-Trees"><a href="#随机森林的推广-Extra-Trees" class="headerlink" title="随机森林的推广(Extra Trees)"></a><a href="http://www.cnblogs.com/sarahp/p/6900572.html" target="_blank" rel="noopener">随机森林的推广(Extra Trees)</a></h3><p>extra trees是RF的一个变种, 原理几乎和RF一模一样，仅有区别有：</p>
+<p>1） 对于每个决策树的训练集，RF采用的是随机采样bootstrap来选择采样集作为每个决策树的训练集，而extra trees一般不采用随机采样，即每个决策树采用原始训练集。</p>
+<p>2） 在选定了划分特征后，RF的决策树会基于信息增益，基尼系数，均方差之类的原则，选择一个最优的特征值划分点，这和传统的决策树相同。但是extra trees比较的激进，他会随机的选择一个特征值来划分决策树。</p>
+<p>从第二点可以看出，由于随机选择了特征值的划分点位，而不是最优点位，这样会导致生成的决策树的规模一般会大于RF所生成的决策树。也就是说，模型的方差相对于RF进一步减少，但是bias相对于RF进一步增大。在某些时候，extra trees的泛化能力比RF更好</p>
+<h3 id="GBDT-Gradient-Boosting-Decision-Tree"><a href="#GBDT-Gradient-Boosting-Decision-Tree" class="headerlink" title="GBDT (Gradient Boosting Decision Tree)"></a>GBDT (Gradient Boosting Decision Tree)</h3><p>gbdt的基本原理是boost 里面的 boosting tree（提升树），并使用 gradient boost。<br>GBDT中的树都是回归树，不是分类树 ，因为gradient boost 需要按照损失函数的梯度近似的拟合残差，这样拟合的是连续数值，因此只有回归树。</p>
+<p>　GB算法中最典型的基学习器是决策树，尤其是CART，正如名字的含义，GBDT是GB和DT的结合。要注意的是这里的决策树是回归树，GBDT中的决策树是个弱模型，深度较小一般不会超过5，叶子节点的数量也不会超过10，对于生成的每棵决策树乘上比较小的缩减系数（学习率&lt;0.1），有些GBDT的实现加入了随机抽样$（subsample 0.5&lt;=f &lt;=0.8）$提高模型的泛化能力。通过交叉验证的方法选择最优的参数。因此GBDT实际的核心问题变成怎么基于${(x_i, r_{im})}_{i=1}^n$使用CART回归树生成$! h_m(x)？$</p>
+<p>CART分类树在很多书籍和资料中介绍比较多，但是再次强调GDBT中使用的是回归树。作为对比，先说分类树，我们知道CART是二叉树，CART分类树在每次分枝时，是穷举每一个feature的每一个阈值，根据GINI系数找到使不纯性降低最大的的feature以及其阀值，然后按照feature&lt;=阈值，和feature&gt;阈值分成的两个分枝，每个分支包含符合分支条件的样本。用同样方法继续分枝直到该分支下的所有样本都属于统一类别，或达到预设的终止条件，若最终叶子节点中的类别不唯一，则以多数人的类别作为该叶子节点的性别。回归树总体流程也是类似，不过在每个节点（不一定是叶子节点）都会得一个预测值，以年龄为例，该预测值等于属于这个节点的所有人年龄的平均值。分枝时穷举每一个feature的每个阈值找最好的分割点，但衡量最好的标准不再是GINI系数，而是最小化均方差–即（每个人的年龄-预测年龄）^2 的总和 / N，或者说是每个人的预测误差平方和 除以 N。这很好理解，被预测出错的人数越多，错的越离谱，均方差就越大，通过最小化均方差能够找到最靠谱的分枝依据。分枝直到每个叶子节点上人的年龄都唯一（这太难了）或者达到预设的终止条件（如叶子个数上限），若最终叶子节点上人的年龄不唯一，则以该节点上所有人的平均年龄做为该叶子节点的预测年龄。</p>
+<h3 id="xgboost"><a href="#xgboost" class="headerlink" title="xgboost"></a>xgboost</h3><p>XGBoost比GBDT好的地方：<br>二阶泰勒展开<br>节点分数惩罚正则<br>增益计算不同，GBDT是gini，xgb是优化推导公式<br><a href="http://www.cnblogs.com/wxquare/p/5541414.html" target="_blank" rel="noopener">一步一步理解GB、GBDT、xgboost</a><br><img src="/images/pasted-86.png" alt="upload successful"><br><img src="/images/pasted-87.png" alt="upload successful"><br><img src="/images/pasted-88.png" alt="upload successful"><br><img src="/images/pasted-89.png" alt="upload successful"></p>
+<h2 id="Boosting"><a href="#Boosting" class="headerlink" title="Boosting"></a>Boosting</h2><p>Boosting算法是一族可以将弱学习器提升为强学习器的算法。<br>Boosting工作原理：先从初始训练集中训练出一个基学习器，再根据基学习器的表现对训练样本分布进行调整，使得先前基学习器做错的的训练样本在后续受到更多的关注，然后基于调整后的样本分布训练下一个基学习器，如此重复进行，知道基学习器数目达到事先指定的值 ，最终将这 个基学习器进行加权结合。这种算法最具有代表的是AdaBoost算法。<br>AdaBoost算法可以理解是基于“加性模型”，即基学习器的线性组合。 </p>
+<h3 id="Adaboost"><a href="#Adaboost" class="headerlink" title="Adaboost"></a>Adaboost</h3><p>（Adaptive Boosting自适应增强）适应性在于：前一个基本分类器的赝本会得到加强，加权后全体样本再次被用来训练下一个基本分类器。同时，在每一轮中加入一个新的弱分类器，直到达到每个预定的足够小的错误率或者达到预先设定的最大迭代次数。<br><img src="/images/pasted-85.png" alt="upload successful"><br>从图中可以看到，在训练过程中我们需要训练出多个弱分类器（图中为3个），每个弱分类器是由不同权重的样本（图中为5个训练样本）训练得到（其中第一个弱分类器对应输入样本的权值是一样的），而每个弱分类器对最终分类结果的作用也不同，是通过加权平均输出的，权值见上图中三角形里面的数值。那么这些弱分类器和其对应的权值是怎样训练出来的呢？<br>下面通过一个例子来简单说明。<br>书中（machine learning in action）假设的是5个训练样本，每个训练样本的维度为2，在训练第一个分类器时5个样本的权重各为0.2. 注意这里样本的权值和最终训练的弱分类器组对应的权值α是不同的，样本的权重只在训练过程中用到，而α在训练过程和测试过程都有用到。<br>现在假设弱分类器是带一个节点的简单决策树，该决策树会选择2个属性（假设只有2个属性）的一个，然后计算出这个属性中的最佳值用来分类。损失函数中正则化项为$Ω(f_t)=γT+\frac{λ}{2}\sum_{j=1}^Tω_i^2$，叶子的个数+w的L2模平方<br>Adaboost的简单版本训练过程如下：</p>
 <ol>
-<li>思想简单，理论成熟，既可以用来做分类也可以用来做回归；</li>
-<li>可用于非线性分类；</li>
-<li>训练时间复杂度为O(n)；</li>
-<li>准确度高，对数据没有假设，对outlier不敏感；</li>
+<li>训练第一个分类器，样本的权值D为相同的均值。通过一个弱分类器，得到这5个样本（请对应书中的例子来看，依旧是machine learning in action）的分类预测标签。与给出的样本真实标签对比，就可能出现误差(即错误)。如果某个样本预测错误，则它对应的错误值为该样本的权重，如果分类正确，则错误值为0. 最后累加5个样本的错误率之和，记为ε。</li>
+<li>通过ε来计算该弱分类器的权重α，公式如下：<br>$α=\frac{1}{2}ln(\frac{1-ε}{ε})$</li>
+<li>通过α来计算训练下一个弱分类器样本的权重D，如果对应样本分类正确，则减小该样本的权重，公式为：<br>$D_i^{t+1}=\frac{D_i^{(t)}e^{-α}}{Sum(D)}$<br>如果样本分类错误，则增加该样本的权重，公式为：<br>$D_i^{t+1}=\frac{D_i^{(t)}e^α}{Sum(D)}$</li>
+<li>循环步骤1,2,3来继续训练多个分类器，只是其D值不同而已。<br>测试过程如下：<br>输入一个样本到训练好的每个弱分类中，则每个弱分类都对应一个输出标签，然后该标签乘以对应的α，最后求和得到值的符号即为预测标签值。</li>
 </ol>
-<p><strong>缺点：</strong>  </p>
-<ol>
-<li>计算量大；</li>
-<li>样本不平衡问题（即有些类别的样本数量很多，而其它样本的数量很少）；</li>
-<li>需要大量的内存；</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> neighbors,datasets</span><br><span class="line">knn=neighbors.KNeighborsClassifier()</span><br><span class="line">iris=datasets.load_iris()</span><br><span class="line">knn.fit(iris.data,iris.target)</span><br><span class="line">predictedLabel=knn.predict([[<span class="number">0.1</span>,<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.4</span>]])</span><br><span class="line">print(predictedLabel)</span><br></pre></td></tr></table></figure>
+<h3 id="结合策略"><a href="#结合策略" class="headerlink" title="结合策略"></a>结合策略</h3><p>如何使结合后的集成算法明显的优势呢？也就是说如何将训练出来的多个基学习器如何很好的结合在一起呢形成新的集成算法呢？主要有平均法、投票法、学习法三种结合策略。</p>
+<h4 id="Voting"><a href="#Voting" class="headerlink" title="Voting"></a>Voting</h4><p>投票制即为，投票多者为最终的结果。例如一个分类问题，多个模型投票（当然可以设置权重）。最终投票数最多的类为最终被预测的类。</p>
+<h4 id="Averaging"><a href="#Averaging" class="headerlink" title="Averaging"></a>Averaging</h4><p>Averaging即所有预测器的结果平均。<br>回归问题，直接取平均值作为最终的预测值。（也可以使用加权平均）<br>分类问题，直接将模型的预测概率做平均。（or 加权）<br>加权平均，其公式如下：<br>$$\sum_{i=1}^n Weight_i∗P_i$$<br>其中nn表示模型的个数， $Weight_i$表示该模型权重，$P_i$表示模型i的预测概率值。<br>例如两个分类器，XGBoost（权重0.4）和LightGBM（权重0.6），其预测概率分别为：0.75、0.5，那么最终的预测概率，(0.4 <em> 0.75+0.6 </em> 0.5)/(0.4+0.6)=0.6<br>模型权重也可以通过机器学习模型学习得到</p>
+<h4 id="Ranking"><a href="#Ranking" class="headerlink" title="Ranking"></a>Ranking</h4><p>Rank的思想其实和Averaging一致，但Rank是把排名做平均，对于AUC指标比较有效。<br>个人认为其实就是Learning to rank的思想，可以来优化搜索排名。具体公式如下：<br>$$\sum_{i=1}^n \frac{Weight_i}{Rank_i}$$<br>其中nn表示模型的个数， WeightiWeighti表示该模型权重，所有权重相同表示平均融合。RankiRanki表示样本在第i个模型中的升序排名。它可以较快的利用排名融合多个模型之间的差异，而不需要加权融合概率。</p>
+<h4 id="Binning"><a href="#Binning" class="headerlink" title="Binning"></a>Binning</h4><p>将单个模型的输出放到一个桶中。参考<a href="http://cseweb.ucsd.edu/~elkan/254spring01/jdrishrep.pdf" target="_blank" rel="noopener">pdf paper</a></p>
+<h4 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h4><p>使用训练数据的不同随机子集来训练每个 Base Model，最后每个 Base Model 权重相同，分类问题进行投票，回归问题平均。<br>随机森林就用到了Bagging，并且具有天然的并行性。</p>
+<h4 id="Boosting-1"><a href="#Boosting-1" class="headerlink" title="Boosting"></a>Boosting</h4><p>Boosting是一种迭代的方法，每一次训练会更关心上一次被分错的样本，比如改变被错分的样本的权重的Adaboost方法。还有许多都是基于这种思想，比如Gradient Boosting等。</p>
+<h4 id="Stacking"><a href="#Stacking" class="headerlink" title="Stacking"></a>Stacking</h4><p><img src="/images/pasted-90.png" alt="upload successful"><br>从上图可以看出，类似交叉验证。</p>
+<ul>
+<li>将数据集分为K个部分，共有n个模型。</li>
+<li>for i in xrange(n):<br>for i in xrange(k):<br>用第i个部分作为预测，剩余的部分来训练模型，获得其预测的输出作为第i部分的新特征。<br>对于测试集，直接用这k个模型的预测值均值作为新的特征。</li>
+<li>这样k次下来，整个数据集都获得了这个模型构建的New Feature。n个模型训练下来，这个模型就有n个New Features。</li>
+<li>把New Features和label作为新的分类器的输入进行训练。然后输入测试集的New Features输入模型获得最终的预测结果。</li>
+</ul>
+<h4 id="Blending"><a href="#Blending" class="headerlink" title="Blending"></a>Blending</h4><p>Blending直接用不相交的数据集用于不同层的训练。</p>
+<p>以两层的Blending为例，训练集划分为两部分（d1，d2），测试集为test。</p>
+<ul>
+<li>第一层：用d1训练多个模型，讲其对d2和test的预测结果作为第二层的New Features。</li>
+<li>第二层：用d2的New Features和标签训练新的分类器，然后把test的New Features输入作为最终的预测值。</li>
+</ul>
+<h3 id="融合的条件"><a href="#融合的条件" class="headerlink" title="融合的条件"></a>融合的条件</h3><p>Base Model 之间的相关性要尽可能的小。这就是为什么非 Tree-based Model 往往表现不是最好但还是要将它们包括在 Ensemble 里面的原因。Ensemble 的 Diversity 越大，最终 Model 的 Bias 就越低。<br>Base Model 之间的性能表现不能差距太大。这其实是一个 Trade-off，在实际中很有可能表现相近的 Model 只有寥寥几个而且它们之间相关性还不低。但是实践告诉我们即使在这种情况下 Ensemble 还是能大幅提高成绩。</p>
+<h3 id="多样性"><a href="#多样性" class="headerlink" title="多样性"></a>多样性</h3><p>多样性，在前面已经提到过，一个好集成算法，需要训练出来的基学习器具有很强的多样性。 </p>
+<ul>
+<li>误差-分歧分解</li>
+<li>多样性度量</li>
+<li>多样性增强</li>
+</ul>
+<p>在集成学习中需要有效地生成多样性大的个体学习器。如果增强多样性呢？一般思路是在学习过程中引入随机性，常见的做法是对数据样本、输入属性、输出表示、算法参数进行扰动。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>低泛化误差；</li>
+<li>容易实现，分类准确率较高，没有太多参数可以调；</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>对outlier（离群值）比较敏感。</li>
+</ul>
+
       
 
       
@@ -445,7 +1308,7 @@ F -&gt; C
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/19/KNN/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/03/26/集成学习/">展开全文 >></a>
         </p>
       
 
@@ -475,55 +1338,105 @@ F -&gt; C
 
 
   
-    <article id="post-排序和查找" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-线性回归" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/18/排序和查找/">排序和查找</a>
+      <a class="article-title" href="/2018/03/24/线性回归/">线性模型</a>
     </h1>
   
 
         
-        <a href="/2018/05/18/排序和查找/" class="archive-article-date">
-  	<time datetime="2018-05-18T13:28:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-18</time>
+        <a href="/2018/03/24/线性回归/" class="archive-article-date">
+  	<time datetime="2018-03-24T01:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-24</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><p>时间复杂度：$O(n^2)$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526650653105c9q9t5q9.png?imageslim" alt="paste image"><br>从开始两个比较，将大值向后移动，直到吧最大值移到了最后的位置。再将第二大数移动到倒数第二个位置，直到完成。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">array = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    array=list.copy()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(array)-i<span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> array[j]&gt;array[j+<span class="number">1</span>]:</span><br><span class="line">                array[j+<span class="number">1</span>],array[j]=array[j],array[j+<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">print(bubble_sort(array))</span><br></pre></td></tr></table></figure></p>
-<h3 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h3><p>时间复杂度：$O(n^2)$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526651186781qx8kk0oc.png?imageslim" alt="paste image"><br>将最小值移动到第一个位置，然后第二小值移动到第二个位置，直到最后。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">select_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    array=list.copy()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i,len(array)):</span><br><span class="line">            <span class="keyword">if</span> array[i]&gt;array[j]:</span><br><span class="line">                array[i],array[j]=array[j],array[i]</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">print(select_sort(array))</span><br></pre></td></tr></table></figure></p>
-<h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><p>时间复杂度：$O(n^2)$<br><img src="http://p8cigu7up.bkt.clouddn.com/15266515054520au94k4p.png?imageslim" alt="paste image"><br>将第一个与第二个比较，将小的放在前面，然后将第三放在对应有序的位置，直至最后都变有序。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inser_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    array=list.copy()</span><br><span class="line">    print(array)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> array[i]&lt;array[j]:</span><br><span class="line">                array[i],array[j]=array[j],array[i]</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">print(inser_sort(array))</span><br></pre></td></tr></table></figure></p>
-<h3 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526694242004ao197dyn.png?imageslim" alt="paste image"><br>首先归并排序使用了二分法，归根到底的思想还是分而治之。拿到一个长数组，将其不停的分为左边和右边两份，然后以此递归分下去。然后再将她们按照两个有序数组的样子合并起来。<br><img src="http://p8cigu7up.bkt.clouddn.com/15266957258474xkl1upc.png?imageslim" alt="paste image"><br>这里显示了归并排序的第一步，将数组按照middle进行递归拆分，最后分到最细之后再将其使用对两个有序数组进行排序的方法对其进行排序。</p>
-<p>两个有序数组排序的方法则非常简单，同时对两个数组的第一个位置进行比大小，将小的放入一个空数组，然后被放入空数组的那个位置的指针往后 移一个，然后继续和另外一个数组的上一个位置进行比较，以此类推。到最后任何一个数组先出栈完，就将另外i一个数组里的所有元素追加到新数组后面。</p>
-<p>由于递归拆分的时间复杂度是logN 然而，进行两个有序数组排序的方法复杂度是N该算法的时间复杂度是N*logN 所以是NlogN。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    i=j=<span class="number">0</span></span><br><span class="line">    c=[]</span><br><span class="line">    <span class="keyword">while</span> i&lt;len(a) <span class="keyword">and</span> j&lt;len(b):</span><br><span class="line">        <span class="keyword">if</span> a[i]&lt;=b[j]:</span><br><span class="line">            c.append(a[i])</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> i==len(a):</span><br><span class="line">                c+=b[j:]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            c.append(b[j])</span><br><span class="line">            j+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> j==len(b):</span><br><span class="line">                c+=a[i:]</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line">        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(list)&lt;=<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> list</span><br><span class="line">    mid=int(len(list)/<span class="number">2</span>)</span><br><span class="line">    left=merge_sort(list[:mid])</span><br><span class="line">    right=merge_sort(list[mid:])</span><br><span class="line">    <span class="keyword">return</span> merge(left,right)</span><br><span class="line"></span><br><span class="line">array=[<span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br><span class="line">print(merge_sort(array))</span><br></pre></td></tr></table></figure>
-<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526697530070bvq8x58w.png?imageslim" alt="paste image"></p>
-<ol>
-<li>选取一个数字作为基准，可选取末位数字</li>
-<li>将数列第一位开始，依次与此数字比较，如果小于此数，将小数交换到左边，最后达到小于基准数的在左边，大于基准数的在右边，分为两个数组</li>
-<li>分别对两个数组重复上述步骤<br><img src="http://p8cigu7up.bkt.clouddn.com/15266976047924jrijd0i.png?imageslim" alt="paste image"><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def quick_sort(list):</span><br><span class="line">    if len(list)&lt;=1:</span><br><span class="line">        return list</span><br><span class="line">    left=[]</span><br><span class="line">    right=[]</span><br><span class="line">    for i in list[1:]:</span><br><span class="line">        if i&lt;=list[0]:</span><br><span class="line">            left.append(i)</span><br><span class="line">        else:</span><br><span class="line">            right.append(i)</span><br><span class="line">    return quick_sort(left)+[list[0]]+quick_sort(right)</span><br><span class="line">quick_sort(array)</span><br></pre></td></tr></table></figure>
+        <p>线性模型是机器学习里面最基础的一个模型，也是比较简单的，主要用于属于线性关系的模型，像y=wx+b，就是只有一个属性x表示的y值的变化规律，也称做单属性线性回归。</p>
+<h2 id="基本形式"><a href="#基本形式" class="headerlink" title="基本形式"></a>基本形式</h2><p>当给定d个属性示例$x=[x_1;x_2….x_d]$，线性模型视图学得一个属性的线性组合来进行预测：$f(x)=w_1x_1+w_2x_2+w_3x_4+…w_dx_d+b=w^T+b$，w和b确认后，模型即可确认。<br>线性模型形式简单、易于建模，却蕴涵着机器学习中的一些重要的基本思想。许多功能更为强大的非线性模型（nonlinear model）可以在线性模型的基础上通过引入层级结构或者高维映射而得。</p>
+<h2 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h2><h3 id="度量指标"><a href="#度量指标" class="headerlink" title="度量指标"></a>度量指标</h3><ul>
+<li><p>集中趋势的衡量</p>
+<ul>
+<li>均值：$\overline {x}=\frac{\sum{i=1}^nx_i}{n}$；</li>
+<li>中位数：大小排序后，中间位置的数；</li>
+<li>众数：出现最多的数；</li>
+</ul>
 </li>
-</ol>
-<p>可以用一行实现快速排序：<code>quick_sort = lambda array: array if len(array)&lt;=1 else quick_sort([item for item in array[1:] if item&lt;=array[0]]) + [array[0]] +quick_sort([item for item in array[1:] if item&gt;array[0]])</code></p>
-<p><strong>用栈实现非递归的快排程序</strong><br>需要考虑两个问题:<br>1）栈里边保存什么？<br>2）迭代结束的条件是什么？<br>栈里边保存的当然是需要迭代的函数参数，结束条件也是跟需要迭代的参数有关。对于快速排序来说，迭代的参数是数组的上边界low和下边界high，迭代结束的条件是low == high。</p>
-<p>由于通过切片传递列表会对列表进行复制，所以需要传递索引，传入原列表，这样在执行操作时就可以改变原始列表了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort_stack</span><span class="params">(list,l=None,r=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> l==<span class="keyword">None</span>:</span><br><span class="line">        l=<span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> r==<span class="keyword">None</span>:</span><br><span class="line">        r=len(list)<span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> l&gt;=r:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack=[(l,r)]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        left,right = stack.pop(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span> right-left&lt;=<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        x=list[left]</span><br><span class="line">        left_index=left+<span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(left+<span class="number">1</span>,right+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> list[i]&lt;x:</span><br><span class="line">                list[left_index],list[i]=list[i],list[left_index]</span><br><span class="line">                left_index+=<span class="number">1</span></span><br><span class="line">        list[left_index<span class="number">-1</span>],list[left]=list[left],list[left_index<span class="number">-1</span>]</span><br><span class="line">        <span class="keyword">if</span> left&lt;left_index<span class="number">-1</span>:</span><br><span class="line">            stack.insert(<span class="number">0</span>,(left,left_index<span class="number">-2</span>))</span><br><span class="line">        <span class="keyword">if</span> left_index+<span class="number">1</span>&lt;right:</span><br><span class="line">            stack.insert(<span class="number">0</span>,(left_index,right))</span><br><span class="line">        print(stack)</span><br><span class="line">        print(<span class="string">'list'</span>,list,list[left:left_index],list[left_index+<span class="number">1</span>:right+<span class="number">1</span>])</span><br><span class="line">array=[<span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br><span class="line">quick_sort_stack(array)</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure></p>
-<h3 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="http://p8cigu7up.bkt.clouddn.com/15267101496640wgoaq7w.png?imageslim" alt="paste image">  </p>
-<p><a href="https://www.cnblogs.com/chengxiao/p/6129630.html" target="_blank" rel="noopener">这篇文章讲解的比较清楚</a><br>建立大小为n的大根堆，堆顶元素是这个元素的最大值。将堆顶值与最后一个元素交换，然后将最大值脱离堆结构，放在数组的最后的位置。再将n-1的元素构成大根堆。直到元素全部有序。</p>
-<p>在这里首先要先解释一下什么是堆，堆栈是计算机的两种最基本的数据结构。堆的特点就是FIFO(first in first out)先进先出，这里的话我觉得可以理解成树的结构。堆在接收数据的时候先接收的数据会被先弹出。<br>栈的特性正好与堆相反，是属于FILO(first in/last out)先进后出的类型。栈处于一级缓存而堆处于二级缓存中。这个不是本文重点所以不做过多展开。<br><img src="http://p8cigu7up.bkt.clouddn.com/20160707112601875.gif" alt="堆排序"><br>堆可以分为大根堆和小根堆，这里用最大堆的情况来定义操作: </p>
-<ol>
-<li>最大堆调整(MAX_Heapify):将堆的末端子节点作调整，使得子节点永远小于父节点。这是核心步骤，在建堆和堆排序都会用到。比较i的根节点和与其所对应i的孩子节点的值。当i根节点的值比左孩子节点的值要小的时候，就把i根节点和左孩子节点所对应的值交换，当i根节点的值比右孩子的节点所对应的值要小的时候，就把i根节点和右孩子节点所对应的值交换。然后再调用堆调整这个过程，可见这是一个递归的过程。 </li>
-<li>建立最大堆(Build_Max_Heap):将堆所有数据重新排序。建堆的过程其实就是不断做最大堆调整的过程，从len/2出开始调整，一直比到第一个节点。 </li>
-<li>堆排序(HeapSort):移除位在第一个数据的根节点，并做最大堆调整的递归运算。堆排序是利用建堆和堆调整来进行的。首先先建堆，然后将堆的根节点选出与最后一个节点进行交换，然后将前面len-1个节点继续做堆调整的过程。直到将所有的节点取出，对于n个数我们只需要做n-1次操作。<br><a href="https://zh.wikipedia.org/zh/%E5%A0%86%E6%8E%92%E5%BA%8F#Python" target="_blank" rel="noopener">参考代码</a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap_adjust</span><span class="params">(list,start,end)</span>:</span></span><br><span class="line">   root=start</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">       child=<span class="number">2</span>*root+<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> child&gt;end:</span><br><span class="line">           <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> child+<span class="number">1</span>&lt;end <span class="keyword">and</span> list[child]&lt;list[child+<span class="number">1</span>]:</span><br><span class="line">           child+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> list[root]&lt;list[child]:</span><br><span class="line">           list[root],list[child]=list[child],list[root]</span><br><span class="line">            root=child</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">           <span class="keyword">break</span>      </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">   <span class="comment"># 创建最大堆</span></span><br><span class="line">    <span class="keyword">for</span> start <span class="keyword">in</span> range((len(list) - <span class="number">2</span>) // <span class="number">2</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">       heap_adjust(list,start, len(list) - <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 堆排序</span></span><br><span class="line">    <span class="keyword">for</span> end <span class="keyword">in</span> range(len(list) - <span class="number">1</span>, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">       list[<span class="number">0</span>], list[end] = list[end], list[<span class="number">0</span>]</span><br><span class="line">        heap_adjust(list,<span class="number">0</span>, end - <span class="number">1</span>)</span><br><span class="line">array=[<span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br><span class="line">heap_sort(array)</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure>
+<li><p>离散程度的衡量</p>
+<ul>
+<li>方差：$s^2=\frac{\sum{i=1}^n(x_i-\overlinex)^2} {n-1}$</li>
+<li>标准差：s</li>
+</ul>
 </li>
+</ul>
+<h3 id="单属性线性回归"><a href="#单属性线性回归" class="headerlink" title="单属性线性回归"></a>单属性线性回归</h3><p>先研究单属性线性回归问题，也即： </p>
+<ol>
+<li>训练集只有一个属性 </li>
+<li>给定数据集$D={(x_i,y_i)}m_i=1$ </li>
+<li>线性预测表示为：$f(x_i=wx_i+b)$</li>
+<li>通过训练集得到w和b的值，使得$f(x_i)≈y_i$</li>
 </ol>
-<h3 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h3><p>时间复杂度：$O(n·\log_ n)$<br>希尔排序是插入排序的一个调整，步长是可变的。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526722476067snttsu9u.png?imageslim" alt="paste image"><br>首先看步长为3，查找如果小于前面的第3个数，则交换，然后再查找前面的第3个数，如果不小于则停止。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526722455119oo5klc3p.png?imageslim" alt="paste image"><br>整个数组排序完成后，再用步长为2的排序，再用步长为1的排序。<br><a href="https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F#Python" target="_blank" rel="noopener">参考代码</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shell_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    n = len(list)</span><br><span class="line">    <span class="comment"># 初始步长</span></span><br><span class="line">    gap = n // <span class="number">2</span></span><br><span class="line">    <span class="keyword">while</span> gap &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(gap, n):</span><br><span class="line">            <span class="comment"># 每个步长进行插入排序</span></span><br><span class="line">            temp = list[i]</span><br><span class="line">            j = i</span><br><span class="line">            <span class="comment"># 插入排序</span></span><br><span class="line">            <span class="keyword">while</span> j &gt;= gap <span class="keyword">and</span> list[j - gap] &gt; temp:</span><br><span class="line">                list[j] = list[j - gap]</span><br><span class="line">                j -= gap</span><br><span class="line">            list[j] = temp</span><br><span class="line">        <span class="comment"># 得到新的步长</span></span><br><span class="line">        gap = gap // <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> list</span><br></pre></td></tr></table></figure></p>
-<h3 id="锦标赛排序"><a href="#锦标赛排序" class="headerlink" title="锦标赛排序"></a>锦标赛排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526715354948mthyueis.png?imageslim" alt="paste image"></p>
-<h3 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h3><p>桶排序是一种思想，比较常规的是计数排序和基数排序。桶排序的速度非常之快，比其他排序算法快非常多，但是需要占用大量空间。<br><a href="http://code.py40.com/1766.html" target="_blank" rel="noopener">代码参考</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bucket</span><span class="params">(list)</span>:</span></span><br><span class="line">    bucket_list=[<span class="number">0</span>]*(max(list)-min(list)+<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> list:</span><br><span class="line">        bucket_list[i]+=<span class="number">1</span></span><br><span class="line">    ret=[]</span><br><span class="line">    <span class="keyword">for</span> i,val <span class="keyword">in</span> enumerate(bucket_list):</span><br><span class="line">        <span class="keyword">if</span> val:</span><br><span class="line">            ret+=[i <span class="keyword">for</span> j <span class="keyword">in</span> range(val)]</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">a =[<span class="number">12</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">56</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">0</span>]</span><br><span class="line">b = bucket(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure></p>
+<p>均方差是常用的性能度量指标：<br><img src="/images/pasted-67.png" alt="upload successful"><br>只需针对w和b分别求偏导即可得到最优解（闭式close-form解）w和b。<br>基于均方误差最小化来进行模型求解的方法也称为最小二乘法。在线性回归中，最小二乘法可以找到一条这样的直线，使得所有样本到直线上的欧氏距离之和最小。<br>$$w=\frac{\sum (x_i-\overline x)(y_i-\overline y)}{\sum (x_i-\overline x)^2}$$<br>$$b=\overline y -w\overline x$$</p>
+<h3 id="多属性线性回归"><a href="#多属性线性回归" class="headerlink" title="多属性线性回归"></a>多属性线性回归</h3><p>多元线性回归也就是有d个属性，建立矩阵方程。</p>
+<h3 id="线性回归与最小二乘"><a href="#线性回归与最小二乘" class="headerlink" title="线性回归与最小二乘"></a>线性回归与最小二乘</h3><p>$$y=w^Tx+ε$$<br>假设ε满足独立同分布，服从均值0方差$θ^2$的高斯分布。所以ε表示为：$p(ε)=\frac{1}{\sqrt{2π}}e^{(-\frac{ε^2}{2σ^2})}$<br>由于$ε=y-w^Tx$，带入到上式：$$p(y|x;w)=\frac{1}{\sqrt{2π}}e^{(-\frac{(y-w^Tx)^2}{2σ^2})}$$<br>其中$p(y|x;w)$表示w能够最大y的概率的取值，可以用似然函数求解。<br>$$L(θ)=\prod_{i=1}{m}p(y|x;w)$$<br>通过取对数，化简得到目标函数：求取J(θ)的最小值<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>最小值可以通过凸函数的导数为零的解，由于X和θ是矩阵，求导要符合矩阵求导的公式。求导公式，可参照<a href="https://en.wikipedia.org/wiki/Matrix_calculus#Scalar-by-vector_identities" target="_blank" rel="noopener">wiki百科</a><br><img src="/images/pasted-71.png" alt="upload successful"></p>
+<h3 id="岭回归"><a href="#岭回归" class="headerlink" title="岭回归"></a><a href="https://zhuanlan.zhihu.com/p/30535220" target="_blank" rel="noopener">岭回归</a></h3><p><img src="/images/pasted-93.png" alt="upload successful"><br>岭回归和Lasso是两种线性回归的缩减(shrinkage)方法。<br>标准最小二乘法优化问题:<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>可以表示为：<br>$$J(θ)=\frac{1}{2} (h_θ(x)-y)^T(h_θ(x)-y)$$<br>回归系数为：<br>$$θ=(X^TX)^{-1}X^Ty$$<br>这个问题解存在且唯一的条件就是XX列满秩: rank(X) = dim(X)。但即使 X 列满秩，但是当数据特征中存在共线性，即相关性比较大的时候，会使得标准最小二乘求解不稳定, $X^TX$的行列式接近零，计算$X^TX$的时候误差会很大。这个时候我们需要在cost function上添加一个惩罚项 $\lambda\sum_{i=1}^{n}θ_{i}^2$，称为L2正则化。<br>这个时候的cost function的形式就为:</p>
+<p>$$f(θ) = \sum_{i=1}^{m} (y_i - x_{i}^{T}θ)^2 + \lambda\sum_{i=1}^{n}θ_{i}^{2}$$</p>
+<p>通过加入此惩罚项进行优化后，限制了回归系数$wiwi$的绝对值，数学上可以证明上式的等价形式如下:</p>
+<p>$$f(θ) = \sum_{i=1}^{m} (y_i - x_{i}^{T}θ)^2 $$</p>
+<p>$$s.t. \sum_{i=1}^{n}θ_{j}^2 \le t$$</p>
+<p>其中t为某个阈值。</p>
+<p>将岭回归系数用矩阵的形式表示:</p>
+<p>$$\hat{θ} = (X^{T}X + \lambda I)^{-1}X^{T}y$$</p>
+<p>可以看到，就是通过将 $X^TX$ 加上一个单位矩阵是的矩阵变成非奇异矩阵并可以进行求逆运算。</p>
+<p><img src="\images\pasted-94.png" alt="upload successful"></p>
+<p><strong>岭回归的一些性质</strong></p>
+<p>当岭参数 $\lambda = 0 $时，得到的解是最小二乘解<br>当岭参数 $\lambda$ 趋向更大时，岭回归系数 $θ_i $趋向于0，约束项 t 很小</p>
+<h3 id="Lasso"><a href="#Lasso" class="headerlink" title="Lasso"></a>Lasso</h3><p>岭回归限定了所有回归系数的平方和不大于 t , 在使用普通最小二乘法回归的时候当两个变量具有相关性的时候，可能会使得其中一个系数是个很大正数，另一个系数是很大的负数。通过岭回归的  $\sum_{i=1}^{n} θ_i \le t $的限制，可以避免这个问题。</p>
+<p>LASSO(The Least Absolute Shrinkage and Selection Operator)是另一种缩减方法，将回归系数收缩在一定的区域内。LASSO的主要思想是构造一个一阶惩罚函数获得一个精炼的模型, 通过最终确定一些变量的系数为0进行特征筛选。</p>
+<p>LASSO的惩罚项为:</p>
+<p>$$\sum_{i=1}^{n} \vert θ_i \vert \le t$$</p>
+<p>与岭回归的不同在于，此约束条件使用了绝对值的一阶惩罚函数代替了平方和的二阶函数。虽然只是形式稍有不同，但是得到的结果却又很大差别。在LASSO中，当λ很小的时候，一些系数会随着变为0而岭回归却很难使得某个系数恰好缩减为0. 我们可以通过几何解释看到LASSO与岭回归之间的不同。</p>
+<p><img src="\images\pasted-95.png" alt="upload successful"><br>虽然惩罚函数只是做了细微的变化，但是相比岭回归可以直接通过矩阵运算得到回归系数相比，LASSO的计算变得相对复杂。</p>
+<h3 id="Kernel-Regression-and-RBFs"><a href="#Kernel-Regression-and-RBFs" class="headerlink" title="Kernel Regression and RBFs"></a>Kernel Regression and RBFs</h3><p><strong>径向基函数</strong></p>
+<p>我们可以用核函数线性组合来表示线性回归模型：<br>$$Φ(x)=[κ(x,μ_1,λ),…,κ(x,μ_d,λ)]，e.g. 高斯核函数：κ(x,μ,λ)=e^{-\frac{1}{2}||x-μ_i||^2}$$</p>
+<ul>
+<li>d的确定可以指定，这个可以使用x的个数，但是如果x个数太多，那么会导致很复杂。第二个方法可以通过Kmeans聚类。</li>
+<li>超参数的确定，λ取0.1，μ取在x聚类后的均值。（还没验证…）</li>
+</ul>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="广义线性回归"><a href="#广义线性回归" class="headerlink" title="广义线性回归"></a>广义线性回归</h3><p>线性回归模型$y=w^Tx+b$，如果将y表示为在指数尺度上的变化，则：$\ln y=w^Tx+b$称为对数线性回归。$y=e^{w^Tx+b}$，实质上是在求输入空间到输出空间的非线性函数的映射（欧拉公式）。<br><img src="/images/pasted-68.png" alt="upload successful"><br>对更一般的单调可微函数g(x)，$y=g^{-1}(w^Tx+b)$这样的模型成为广义线性模型。g(x)称为联系函数（link function）</p>
+<h3 id="对数几率函数（逻辑回归）"><a href="#对数几率函数（逻辑回归）" class="headerlink" title="对数几率函数（逻辑回归）"></a>对数几率函数（逻辑回归）</h3><p>之前讨论的是使用线性模型进行回归学习，如果要应用到分类中，思路就是利用广义线性模型，找一单调可微函数将分类任务的真实标记y与线性回归模型的预测值对应起来即可。<br>设$z=w^Tx+b$，单位阶跃函数（unit-step function）表示为：<br>$y=\begin{cases}<br>0,z&lt;0;<br>0.5,z=0;<br>1z&gt;0<br>\end{cases}$<br>可以表征二分类任务，z大于零为正例，小于零为负例，临界值可任意。但是单位阶跃不连续，固需利用类似的替代函数（surrogate function）：对数几率函数（logistic function）$y=\frac{1}{1+\exp{-z}}$</p>
+<p>目前使用比较广泛的是对数几率函数logistic function，它是Sigmoid函数的一种。它的好处在于： </p>
+<ol>
+<li>单调可微 </li>
+<li>在0处变化陡峭，最接近阶跃函数，适合二分类。</li>
+</ol>
+<p>$y=\frac{1}{1+\exp{-(w^Tx+b)}}$，$\ln \frac{y}{1-y}=w^Tx+b$，$\frac{y}{1-y}$含义就是比率，为正例的可能性与为反例的可能性比值。<br>从本质上讲，对数几率回归模型logistic regression就是在用线性回归模型的预测结果去逼近真实标记的对数几率。</p>
+<p>确定模型之后，接下来自然要做的就是确定w和b。这里要使用到的方法是极大似然法（maximum likelihood method）。<br>给定数据集{$(x_i,y_i)$}i=1~m，对率回归模型最大化就是要把所有样本概率预测之和最大化，也就是$l(w,b)=\sum{i=1}^m \ln p(y_i|x_i;w,b)$。为方便讨论，令β=(w;b),x̂ =(x;1),wT+x=βTx̂ ，再令$l(β)=\sum{i=1}^m -y_iβ^Tx_i\ln (1+\exp{β^Tx_i})$这样，最大化原概率和公式等价于最小化。上式为关于β的高阶可导连续凸函数，根据凸优化理论，利用经典的数值优化算法如梯度下降法、牛顿法都可求得最优解。</p>
+<h3 id="logistic回归求解"><a href="#logistic回归求解" class="headerlink" title="logistic回归求解"></a>logistic回归求解</h3><p>回归的方程表达式为：<br>$$h_θ(x)=g(θ^Tx)=\frac{1}{1+e^(-θ^Tx)}$$<br>$h_θ(x)$可以进行概率表示：<br>$$P(y=1|x;θ)=h_θ(x)$$<br>$$P(y=0|x;θ)=1-h_θ(x)$$<br>结合到一起可以写为：<br>$$P(y|x;θ)=(h_θ(x))^y(1-h_θ(x))^{1-y}$$<br>是不是很巧妙。<br>然后找到最大似然估计：<br>$$log L(θ)=\sum_{i=1}^my\log h(x)+(1-y)\log(1-h(x))$$<br>$$J(θ)=-\frac{1}{2m}log L(θ)$$<br>由于是非线性方程找不到驻点，所以只能用梯度下降法，求导方向下降最大的点移动。<br><img src="/images/pasted-72.png" alt="upload successful"></p>
+<h2 id="线性判别分析"><a href="#线性判别分析" class="headerlink" title="线性判别分析"></a>线性判别分析</h2><p>线性判别分析Linear Discriminant Analysis是一种经典的线性学习方法，应用于分类任务中。<br>LDA的思想非常简单，将训练集的样本投影到一条直线上，同一类的尽量互相靠近，而不同类之间尽可能相隔的远。使用数学语言，投影即是向量乘积， 同一类尽量靠近，就是协方差要小，不同类相隔远，就是类中心距离远，也就是均值投影的差要大。<br><img src="/images/pasted-69.png" alt="upload successful"></p>
+<ol>
+<li>从贝叶斯决策理论的角度可以证明LDA在两类数据同先验、满足高斯分布且协方差相等时，LDA可达到最优分类。 </li>
+<li>LDA核心是投影，这样往往实现了降维，因而LDA也常被视为一种经典的监督降维技术。<br><img src="/images/pasted-70.png" alt="upload successful"></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model</span><br><span class="line">train_data=pd.read_csv(<span class="string">'./data/linear3.csv'</span>,index_col=<span class="number">0</span>)</span><br><span class="line">x=train_data.iloc[:,<span class="number">0</span>:<span class="number">5</span>]</span><br><span class="line">y=train_data.iloc[:,<span class="number">5</span>]</span><br><span class="line">clf = linear_model.LinearRegression()</span><br><span class="line">clf.fit(x,y)</span><br><span class="line">print(clf.coef_) <span class="comment"># 斜率</span></span><br><span class="line">print(clf.intercept_) <span class="comment"># 截距</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最小二乘法</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinearRegression</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.w=<span class="keyword">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self,x,y)</span>:</span></span><br><span class="line">        x=np.insert(x,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>)</span><br><span class="line">        x_=np.linalg.inv(x.T.dot(x))</span><br><span class="line">        self.w=x_.dot(x.T).dot(y)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        x=np.insert(x,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>) <span class="comment"># 插入了b</span></span><br><span class="line">        y_pred=x.dot(self.w)</span><br><span class="line">        <span class="keyword">return</span> y_pred</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_squared_error</span><span class="params">(y_true,y_pred)</span>:</span></span><br><span class="line">    mse=np.mean(np.power(y_true-y_pred,<span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> mse</span><br><span class="line">diabetes=datasets.load_diabetes()</span><br><span class="line">x=diabetes.data[:,np.newaxis,<span class="number">2</span>]</span><br><span class="line">print(x.shape)</span><br><span class="line">x_train,x_test=x[:<span class="number">-20</span>],x[<span class="number">-20</span>:]</span><br><span class="line">y_train,y_test=diabetes.target[:<span class="number">-20</span>],diabetes.target[<span class="number">-20</span>:]</span><br><span class="line">clf=LinearRegression()</span><br><span class="line">clf.fit(x_train,y_train)</span><br><span class="line">y_pred=clf.predict(x_test)</span><br><span class="line">print(<span class="string">'MSE'</span>,mean_squared_error(y_test,y_pred))</span><br><span class="line">plt.scatter(x_test[:,<span class="number">0</span>],y_test,color=<span class="string">'black'</span>)</span><br><span class="line">plt.plot(x_test[:,<span class="number">0</span>],y_pred,color=<span class="string">'blue'</span>,linewidth=<span class="number">3</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradientDescent</span><span class="params">(x,y,theta,alpha,m,numIterations)</span>:</span></span><br><span class="line">    xTrans=x.transpose()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numIterations):</span><br><span class="line">        hypothesis=np.dot(x,theta)</span><br><span class="line">        loss=hypothesis-y</span><br><span class="line">        cost=np.sum(loss**<span class="number">2</span>)/(<span class="number">2</span>*m)</span><br><span class="line">        gradient=np.dot(xTrans,loss)/m</span><br><span class="line">        theta=theta-alpha*gradient</span><br><span class="line">    <span class="keyword">return</span> theta</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">genData</span><span class="params">(numPoints,bias,variance)</span>:</span></span><br><span class="line">    x=np.zeros(shape=(numPoints,<span class="number">2</span>))</span><br><span class="line">    y=np.zeros(shape=numPoints)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numPoints):</span><br><span class="line">        x[i][<span class="number">0</span>]=<span class="number">1</span></span><br><span class="line">        x[i][<span class="number">1</span>]=i</span><br><span class="line">        y[i]=(i+bias)+random.uniform(<span class="number">0</span>,<span class="number">1</span>)*variance</span><br><span class="line">    <span class="keyword">return</span> x,y</span><br><span class="line">x,y=genData(<span class="number">100</span>,<span class="number">25</span>,<span class="number">10</span>)</span><br><span class="line"><span class="comment"># print(x,y)</span></span><br><span class="line">m,n=np.shape(x)  <span class="comment"># m代表多少个实例</span></span><br><span class="line">numIterations=<span class="number">100000</span>  <span class="comment"># 循环次数</span></span><br><span class="line">alpha=<span class="number">0.0005</span>  <span class="comment">#学习率</span></span><br><span class="line">theta=np.ones(n)  <span class="comment"># 要求得的参数值</span></span><br><span class="line">theta=gradientDescent(x,y,theta,alpha,m,numIterations)</span><br><span class="line">print(theta)</span><br></pre></td></tr></table></figure>
+<h3 id="回归中的相关度和R平方值"><a href="#回归中的相关度和R平方值" class="headerlink" title="回归中的相关度和R平方值"></a>回归中的相关度和R平方值</h3><ul>
+<li><p>相关度<br><img src="/images/pasted-73.png" alt="upload successful"><br>相关系数：-1负相关，0不相关，1正相关。</p>
+</li>
+<li><p>R平方值<br>决定系数，反应因变量的全部变异能通过回归关系被自变量解释的比例。</p>
+<ul>
+<li>简单线性回归：$R^2=r^2$相关度</li>
+<li>多远线性回归：$r^2=\frac{SSR}{SSt}=\frac{\sum {(\widehat y_i-\overline y)^2}}{(y_i-\oveline y)^2}$<br><img src="/images/pasted-74.png" alt="upload successful"><br>R随着自变量数量增加而增大，R平方跟样本量是有关系的。因此做了一下修正：<br><img src="/images/pasted-75.png" alt="upload successful"></li>
+</ul>
+</li>
+</ul>
 
       
 
@@ -537,7 +1450,7 @@ F -&gt; C
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
         		</li>
       		
 		</ul>
@@ -549,7 +1462,7 @@ F -&gt; C
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
         		</li>
       		
 		</ul>
@@ -558,391 +1471,7 @@ F -&gt; C
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/18/排序和查找/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-python的垃圾回收" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/16/python的垃圾回收/">python的垃圾回收</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/16/python的垃圾回收/" class="archive-article-date">
-  	<time datetime="2018-05-16T12:48:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>现在的高级语言如java，c#等，都采用了垃圾收集机制，而不再是c，c++里用户自己管理维护内存的方式。自己管理内存极其自由，可以任意申请内存，但如同一把双刃剑，为大量内存泄露，悬空指针等bug埋下隐患。</p>
-<p>python里每一个东西都是对象，它们的核心就是一个结构体：PyObject<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef struct_object &#123;</span><br><span class="line">int ob_refcnt;</span><br><span class="line">struct_typeobject *ob_type;</span><br><span class="line">&#125;PyObject;</span><br></pre></td></tr></table></figure></p>
-<h2 id="引用计数机制"><a href="#引用计数机制" class="headerlink" title="引用计数机制"></a>引用计数机制</h2><p>PyObject是每个对象必有的内容，其中ob_refcnt就是做为引用计数。当一个对象有新的引用时，它的ob_refcnt就会增加，当引用它的对象被删除，它的ob_refcnt就会减少</p>
-<p>引用计数为0时，该对象生命就结束了。</p>
-<p>引用计数机制的优点：</p>
-<ol>
-<li>简单</li>
-<li>实时性：一旦没有引用，内存就直接释放了。不用像其他机制等到特定时机。实时性还带来一个好处：处理回收内存的时间分摊到了平时。        </li>
-</ol>
-<p>引用计数机制的缺点： </p>
-<ol>
-<li>维护引用计数消耗资源 </li>
-<li>如果出现循环引用的话，引用计数机制就不在起有效作用了。</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list1 = []</span><br><span class="line">list2 = []</span><br><span class="line">list1.append(list2)</span><br><span class="line">list2.append(list1)</span><br></pre></td></tr></table></figure>
-<p>list1与list2相互引用，如果不存在其他对象对它们的引用，list1与list2的引用计数也仍然为1，所占用的内存永远无法被回收，这将是致命的。</p>
-<p>对于如今的强大硬件，缺点1尚可接受，但是循环引用导致内存泄露，注定python还将引入新的回收机制。</p>
-<h2 id="标记-清除机制"><a href="#标记-清除机制" class="headerlink" title="标记-清除机制"></a>标记-清除机制</h2><p>如果两个对象的引用计数都为1，但是仅仅存在她们之间的循环引用，那么这两个对象都是需要被回收的，也就是说他们的引用计数虽然表现为非0，但实际有效的引用计数为0。所以现将循环引用摘掉，就会得出对象的有用计数。</p>
-<p>缺点：该机制所带来的额外操作和需要回收的内存块成正比。</p>
-<h2 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h2><p>从“标记-清除”的垃圾回收机制来看，当需要回收的内存块较多时，垃圾检测带来的额外操作会增多，而垃圾回收带来的额外操作就越少。反之，内存块较多时，垃圾检测就比垃圾回收带来更少的额外操作。</p>
-<h3 id="内存池"><a href="#内存池" class="headerlink" title="内存池"></a>内存池</h3><ol>
-<li>Python的内存机制呈现金字塔形状，-1，-2层主要有操作系统进行操作；</li>
-<li>第0层是C中的malloc,free等内存分配和释放函数进行操作；</li>
-<li>第1层和第2层是内存池，有Python的接口函数PyMem_Malloc函数实现，当对象小于256K时有该层直接分配内存；</li>
-<li>第3层是最上层，也就是我们对Python对象的直接操作；</li>
-</ol>
-<p>Python在运行期间会大量地执行malloc和free的操作，频繁地在用户态和核心态之间进行切换，这将严重影响Python的执行效率。为了加速Python的执行效率，Python引入了一个内存池机制，用于管理对小块内存的申请和释放。</p>
-<p>Python内部默认的小块内存与大块内存的分界点定在256个字节，当申请的内存小于256字节时，PyObject_Malloc会在内存池中申请内存；当申请的内存大于256字节时，PyObject_Malloc的行为将蜕化为malloc的行为。</p>
-<p>当然，通过修改Python源代码，我们可以改变这个默认值，从而改变Python的默认内存管理行为。有时间可以仔细看看<a href="https://www.jianshu.com/p/1e375fb40506" target="_blank" rel="noopener">一篇垃圾回收讲解比较详细文章</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/16/python的垃圾回收/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-python的命名空间" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/16/python的命名空间/">python的命名空间</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/16/python的命名空间/" class="archive-article-date">
-  	<time datetime="2018-05-16T11:51:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="命名空间的概念"><a href="#命名空间的概念" class="headerlink" title="命名空间的概念"></a>命名空间的概念</h2><p>C++会用到<code>std::cout</code>这样的用法，定义cout的命名空间，使用<code>using namespace std;</code>可以简化std::cout的写法，命名空间的使用可以避免不同的作用域之间函数重名的冲突问题。</p>
-<h2 id="python的命名空间"><a href="#python的命名空间" class="headerlink" title="python的命名空间"></a>python的命名空间</h2><p>python中也有命名空间，是用来记录变量轨迹的。命名空间是一个 字典，它的键就是变量名，它的值就是那些变量的值。<br>在一个 Python 程序中的任何一个地方，都存在几个可用的命名空间。这四类命名空间可以简记为 LEGB:  </p>
-<ol>
-<li><strong>局部命名空间（local）：</strong>指的是一个函数或者一个类所定义的名称空间；包括函数的参数、局部变量、类的属性等。</li>
-<li><strong>闭包命名空间（enclosing function）：</strong>闭包函数 的名称空间（Python 3 引入）。</li>
-<li><strong>全局命名空间（global）：</strong>读入一个模块（也即一个.py文档）后产生的名称空间。</li>
-<li><strong>内建命名空间（builtin）：</strong>Python 解释器启动时自动载入<strong>built</strong>模块后所形成的名称空间；诸如 str/list/dict…等内置对象的名称就处于这里。</li>
-</ol>
-<h2 id="命名空间查找顺序"><a href="#命名空间查找顺序" class="headerlink" title="命名空间查找顺序"></a>命名空间查找顺序</h2><p>同样的标识符在各层命名空间中可以被重复使用而不会发生冲突，但 Python 寻找一个标识符的过程总是从当前层开始逐层往上找，直到首次找到这个标识符为止：</p>
-<ol>
-<li>局部命名空间：特指当前函数或类的方法。如果函数定义了一个局部变量 x，或一个参数 x，Python 将使用它，然后停止搜索。</li>
-<li>全局命名空间：特指当前的模块。如果模块定义了一个名为 x 的变量，函数或类，Python 将使用它然后停止搜索。</li>
-<li>内置命名空间：对每个模块都是全局的。作为最后的尝试，Python 将假设 x 是内置函数或变量。</li>
-<li>如果 Python 在这些名字空间找不到 x，它将放弃查找并引发一个 NameError 异常，如，NameError: name ‘aa’ is not defined。</li>
-</ol>
-<h2 id="命名空间的生命周期"><a href="#命名空间的生命周期" class="headerlink" title="命名空间的生命周期"></a>命名空间的生命周期</h2><p>不同的命名空间在不同的时刻创建，有不同的生存期。</p>
-<ol>
-<li>内置命名空间在 Python 解释器启动时创建，会一直保留，不被删除。</li>
-<li>模块的全局命名空间在模块定义被读入时创建，通常模块命名空间也会一直保存到解释器退出。</li>
-<li>当函数被调用时创建一个局部命名空间，当函数返回结果 或 抛出异常时，被删除。每一个递归调用的函数都拥有自己的命名空间。</li>
-</ol>
-<h2 id="global-和-nonlocal-语句"><a href="#global-和-nonlocal-语句" class="headerlink" title="global 和 nonlocal 语句"></a>global 和 nonlocal 语句</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#e.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv <span class="comment">#UnboundLocalError:local variable 'gv' referenced before assignment</span></span><br><span class="line">    lv = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv = lv + [v]  <span class="comment">#UnboundLocalError:local variable 'lv' referenced before assignment</span></span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure>
-<p><strong>为什么使用global</strong>  </p>
-<pre><code>Python 在执行函数前，会首先生成各层命名空间和作用域，因此 Python 在执行赋值前会将func 内的 &apos;gv&apos; &apos;lv&apos; 写入局部命名空间和闭包命名空间，当 Python 执行赋值时会在局部作用域、闭包作用域内发现局部命名空间和闭包命名空间内已经具有&apos;gv&apos; 和 &apos;lv&apos; 标识符，但这两个非全局标识符在该赋值语句执行之前并没有被赋值，也即没有对象与标识符关联，因此无法参与四则运算，从而引发错误；
-</code></pre><p>局部空间无法获得，Python 便引入了 global、nonlocal 语句就来说明所修饰的 gv、lv 分别来自全局命名空间和局部命名空间，声明之后，就可以在 func 和 inn_func 内直接改写上层命名空间内 gv 和 lv 的值：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#f.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> gv</span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> lv</span><br><span class="line">        lv = lv + [v]</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
-<h2 id="借壳"><a href="#借壳" class="headerlink" title="借壳"></a>借壳</h2><p>那么是不是不使用 global 和 nonlocal 就不能达到上面的目的呢？来看看这段程序：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#g.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv.insert(<span class="number">0</span>, <span class="string">'gv'</span>)</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv.append(v)</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
-<p>我们改写的不是 gv 和 lv ,而是 gv 和 lv 的元素 gv[0:0] 和 lv[:] 。因此，不需要 global 和 nonlocal 修饰就可以直接改写，这就是“借壳”。修改 gv 和 lv实际上是在父函数作用域内，子函数调用只能读取而不能直接改写 gv 和 lv。<br>在 nonlocal 尚未引入 Python 中，比如 Python 2.x 若要在子函数中改写父函数变量的值就得通过这种方法。</p>
-<h2 id="命名空间的访问"><a href="#命名空间的访问" class="headerlink" title="命名空间的访问"></a>命名空间的访问</h2><ul>
-<li>局部命名空间可以 locals()  BIF来访问。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'1233'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, str )</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span> , <span class="string">"first"</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'str'</span>: <span class="string">'first'</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>全局 (模块级别)命名空间可以通过 globals() BIF来访问。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gstr = <span class="string">"global string"</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span>,<span class="string">'first'</span>)</span><br><span class="line">print(globals())</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br><span class="line">&#123;<span class="string">'__name__'</span>: <span class="string">'__main__'</span>, ....<span class="string">'func1'</span>: &lt;function func1 at <span class="number">0x000002A7BF382D90</span>&gt;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>locals 与 globals 之间的一个重要的区别<br>locals 是只读的，globals 可以改写</li>
-</ul>
-<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span>
-    x = <span class="number">12345</span>
-    print(locals())
-    locals()[<span class="string">"x"</span>]= <span class="number">6789</span>
-    print(<span class="string">"x="</span>,x)
-
-y=<span class="number">54321</span>
-func1(<span class="number">1</span> , <span class="string">"first"</span>)
-globals()[<span class="string">"y"</span>]= <span class="number">9876</span>
-print( <span class="string">"y="</span>,y)
-&gt;&gt;&gt;{<span class="string">'i'</span>: <span class="number">1</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>}
-x= <span class="number">12345</span>
-y= <span class="number">9876</span>
-</code></pre>
-<p>locals 实际上没有返回局部名字空间，它返回的是一个拷贝。所以对它进行改变对局部名字空间中的变量值并无影响。<br>globals 返回实际的全局名字空间，而不是一个拷贝。所以对 globals 所返回的 dictionary 的任何的改动都会直接影响到全局变量。（<a href="http://www.cnblogs.com/windlaughing/archive/2013/05/26/3100362.html" target="_blank" rel="noopener">原文解释连接</a>）</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/16/python的命名空间/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-人工智能基本概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/15/人工智能基本概念/">人工智能——决策树算法</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/15/人工智能基本概念/" class="archive-article-date">
-  	<time datetime="2018-05-15T06:19:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p>决策树（decision tree）是什么?要想解决这个问题，首先要弄明白的就是计算机中的树是什么。树，我们在计算机中很常见了，有二叉树，哈夫曼树等等，总结一下共同点的时候就是，对一个当前节点而言，下一个个节点有多个节点可以选择的结构。简单的说就是有分叉的结构就是树（可能这样说也不严谨）。而决策树就是利用了这种分叉来判断的树。<br>决策树以树状结构表示数据分类结果。包含</p>
-<ul>
-<li>一个根节点</li>
-<li>若干个非叶子节点（决策点、测试条件）</li>
-<li>若干个叶子结点（分类后所得的分类标记）</li>
-<li>分支（测试结果）<br><img src="/images/pasted-4.png" alt="upload successful"></li>
-</ul>
-<h3 id="信息论"><a href="#信息论" class="headerlink" title="信息论"></a>信息论</h3><h4 id="熵的概念"><a href="#熵的概念" class="headerlink" title="熵的概念"></a>熵的概念</h4><p>几个重要的概念：</p>
-<ul>
-<li>由$P(X,Y)=P(X)*P(Y)$事件X和Y相互独立的特性，可以得知：$$\log_{}(XY)=\log_{}(X)+\log_{}(Y)$$  </li>
-<li>$H(X)$：事件X发生的不确定性。$P(X)$越小，$H(X)$越小，$P(X)$越大，$H(X)$越大。<br>信息量的大小和它的不确定性有直接的关系，要搞清楚意见非常不确定的事情，就需要大量的信息。<br>香农布朗就用比特（bit）来衡量信息量的多少<br>$$ H(X)=-\sum_{i} p_i \log_{2}p_i$$<br><strong>熵的计算公式</strong><br>熵：表征一个物体内部的混乱程度。<br>$$Entropy=-\sum_{i=1}^n p_i \ln_{p_i}$$<br>Gini系数：$$Gini(p)=\sum_{k=1}^K p_k(1-p_k)=1-\sum_{k=1}^K p_k^2$$<br>决策树划分节点的规则：节点熵迅速降低。熵降低的速度越快越好。将熵值最大的当做根节点，分类后，再继续判断下一层的熵值。<h4 id="KL散度-相对熵"><a href="#KL散度-相对熵" class="headerlink" title="KL散度-相对熵"></a>KL散度-相对熵</h4>Kullback-Leibler(KL)divergence<br>$$D_{KL}(P||Q)=\Bbb{E}_{x~P}[\log \frac{P(x)}{Q(x)}]$$<br>KL散度性质：</li>
-<li>非负性：KL散度为0当且仅当P和Q同分布。</li>
-<li>非对称性：$D_{KL}(P||Q)\neq D_{KL}(Q||P)=$</li>
-</ul>
-<h4 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h4><p>cross-entropy<br>$$H(P,Q)=H(P)+D_{KL}(P||Q)$$</p>
-<h3 id="归纳算法"><a href="#归纳算法" class="headerlink" title="归纳算法"></a>归纳算法</h3><h4 id="ID3"><a href="#ID3" class="headerlink" title="ID3"></a>ID3</h4><p>度量方法：信息获取量（information Gain）纯度差，也称为信息增益。例如通过A作为节点分类获取了多少信息 ：<br>$$Gain(D,a)=Ent(D)-\sum_{v=1}^V \frac{|D^v|}{D}Ent(D^v)$$<br>Ent(D)代表不纯度</p>
-<p><img src="/images/pasted-5.png" alt="upload successful"></p>
-<p>例如按照年龄区分时，得到信息获取量：</p>
-<p><img src="/images/pasted-12.png" alt="upload successful"></p>
-<p>然后按照收入、是否是学生、信用率求得对应的值，用信息量最大的参数当做当前节点划分的依据。不断重复这个步骤，直到满足停止条件停止。</p>
-<p>这个就是ID3算法的大致步骤。</p>
-<h4 id="C4-5"><a href="#C4-5" class="headerlink" title="C4.5"></a>C4.5</h4><p>度量方法：Gain Ration<br>现在有一个极端的例子，给每个样本进行编号，然后按照编号弄一个决策树可不可以呢？答案当然是不可以。因为每个编号都是一类，这样无疑是最准确的，但是有一个问题就是泛化能力远远不够啊。这样做了是毫无意义的。由于ID3对于信息中类似索引的数值特别的敏感，这个属性会将决策树过分的划分出很多分支，造成模型效果性能较差。<br>C4.5是ID3算法的拓展，引入了增益率，比上自身的熵值。 因此我们用增益率来防止这个事情的发生。<br>$$Gain-ratio(D,a)=\frac{Gain(D,a)}{IV(a)}其中IV(a)=-\sum_{v=1}^V \frac{|D^v|}{|D|}\log_{2}\frac{|D^v|}{|D|}$$<br>属性A的可能取值数目越多，则IV(A)的值通常会较大。增益率会对取值数目较少的属性有所偏好，C4.5算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
-<h4 id="CART"><a href="#CART" class="headerlink" title="CART"></a>CART</h4><p>Classification and Regression Trees<br>度量方法：Gini系数<br>$$Gain-index(D,a)=\sum_{v=1}^V \frac{|D^v|}{|D|}Gini(D^v)$$</p>
-<h3 id="评价函数"><a href="#评价函数" class="headerlink" title="评价函数"></a>评价函数</h3><p>评价函数是评估所有叶子节点的纯度很大，所以定义评价函数C(T)。<br>$$C(T)=\sum_{t∈leaf}N_t·H(t)$$<br>$N_t$表示叶子结点的个数（相当于权重值），乘上熵值。评价决策树的优劣，C(T)的值越小越好。</p>
-<h3 id="停止条件"><a href="#停止条件" class="headerlink" title="停止条件"></a>停止条件</h3><p>决策树的构建过程是一个递归的过程，所以需要确定停止条件，否则过程将不会结束。</p>
-<ul>
-<li>一般一种最直观的方式是当每个子节点只有一种类型的记录时停止，但是这样往往会使得树的节点过多，导致过拟合问题（Overfitting）。</li>
-<li>另一种可行的方法是当前节点中的记录数低于一个最小的阀值，那么就停止分割，将max(P(i))对应的分类作为当前叶节点的分类。</li>
-</ul>
-<h3 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h3><p>策树高度过高，会导致模型的过拟合。这样如果存在错误样本，会导致模型性能下降。一般通过预剪枝、后剪枝优化决策树。</p>
-<ul>
-<li><strong>预剪枝：</strong>首先设定决策树最大深度，在决预剪枝在构建过程中，如果查过了最大深度则提前停止。</li>
-<li><strong>后剪枝：</strong>当构建完成决策树后，根据<strong>评价函数</strong>$$C_{\alpha}(T)=C(T)+\alpha|T_{leaf}|$$不光看$C(T)$损失函数，还要看叶子结点的个数越多，也要进行剪枝。$\alpha$是可以指定的。<br>参数α≥0控制两者之间的影响，较大的α促使选择较简单的模型，较小的α促使选择较复杂的模型。剪枝就是当α确定时，选择损失函数最小的模型，子树越大，往往与训练数据的拟合越好，但是模型的复杂度就越高；相反，子树越小，模型的复杂度就越低，但是往往与训练数据的拟合不好，损失函数正好表示了对两者的平衡。</li>
-</ul>
-<h3 id="连续与缺失值"><a href="#连续与缺失值" class="headerlink" title="连续与缺失值"></a>连续与缺失值</h3><p><strong>连续值处理</strong><br>由于连续属性的可取值数目不再有限，因此不能直接根据连续属性的可取值来对接点进行划分，此时，连续属性离散化技术可派上用场，最简单的策略是采用二分法对连续属性进行处理。给定样本集D和连续属性A，假定A在D上出现了n个不同的取值，将这些值从小到大进行排序，记为${a_1,a_2…a_n}$，对相邻属性取值来说，在区间$(a_i,a_{i+1})$中取任意值所产生的划分结果相同，因此对连续属性A，可以考察包含n-1个元素的候选划分点集合。</p>
-<pre><code>需要注意，与离散属性不同，划分节点时，若当前节点划分属性为连续属性，该属性还可以作为其后代节点的划分属性。
-</code></pre><p><strong>缺失值处理</strong><br>有时候会遇到不完整样本，某些属性值缺失，如果简单放弃不完整样本，显然是对数据的浪费。使用则需要解决两个问题：(1) 如何在属性值缺失的情况下进行划分属性选择？(2) 给定划分属性，若样本在该属性上的值缺失，如何对样本进行划分？<br>对问题一：令$\tilde{D}$表示在a上没有缺失值的样本子集。假定a有V个可能取值。 $\tilde{D}^v$表示a取$a^v$的样本子集。假定每个样本x赋予一个权重$w_x$，并定义:<br>$$\rho=\frac{\sum_{x∈\tilde{D}}w_x}{\sum_{x∈D}w_x}$$</p>
-<p>$$\tilde{p_k}=\frac{\sum_{x∈\tilde{D}_k}w_x}{\sum_{x∈\tilde{D}}w_x}(1≤k≤|\upsilon|)$$</p>
-<p>$$\tilde{r_v}=\frac{\sum_{x∈\tilde{D}^v}w_x}{\sum_{x∈\tilde{D}}w_x} (1≤v≤V)$$<br>a、ρ表示无缺失样本值所占比例。 表示第k类所占比例，$\tilde{r_v}$表示无缺失样本在属性a上取值$a^v$所占比例。固将增益计算式推广为：<br>$$Gain(D,a)=\rho \times Gain(\tilde{D},a)=\rho*\Bigl(Ent(\tilde{D})-\sum_{v=1}^V \tilde{r_v}Ent(\tilde{D^v})\Bigr)$$</p>
-<p>对问题二：简单说就是让没有取值的x划入所有子节点，属性值调整为$\tilde{r_v}·w_x$ </p>
-<h2 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h2><p>决策树由于容易产生过拟合，出现了随机森林，减小了过拟合现象。<br>随机森林是通过多个决策树进行组合生成的。</p>
-<h2 id="python实现"><a href="#python实现" class="headerlink" title="python实现"></a>python实现</h2><p>数据是这样的，根据年龄、收入、是否是学生、信用数据构建决策树：<br><img src="/images/pasted-15.png" alt="upload successful"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing,tree</span><br><span class="line"><span class="keyword">from</span> sklearn.externals.six <span class="keyword">import</span> StringIO</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd_data = pd.read_csv(<span class="string">'data/tree.csv'</span>)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line">f= open(<span class="string">'data/tree.csv'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf8'</span>)</span><br><span class="line">reader = csv.reader(f)</span><br><span class="line">labelList=[]</span><br><span class="line">featureList=[]</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    labelList.append(row[len(row)<span class="number">-1</span>])</span><br><span class="line">    rowDict=&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(row)<span class="number">-1</span>):</span><br><span class="line">        rowDict[pd_data.columns[i]]=row[i]</span><br><span class="line">    featureList.append(rowDict)</span><br><span class="line">featureList.pop(<span class="number">0</span>)</span><br><span class="line">labelList.pop(<span class="number">0</span>)</span><br><span class="line">vec=DictVectorizer()</span><br><span class="line">dummyX=vec.fit_transform(featureList).toarray()</span><br><span class="line">lb=preprocessing.LabelBinarizer()</span><br><span class="line">dummyY=lb.fit_transform(labelList)</span><br><span class="line">clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART</span></span><br><span class="line">clf=clf.fit(dummyX,dummyY)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'data/tree.dot'</span>,<span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f=tree.export_graphviz(clf,feature_names=vec.get_feature_names(),out_file=f)</span><br></pre></td></tr></table></figure>
-<p>windows中，可以安装<a href="http://www.graphviz.org" target="_blank" rel="noopener">Graphviz</a>将dot文件转为pdf，可视化决策树。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dot -Tpdf tree.dot -o tree.pdf</span><br></pre></td></tr></table></figure>
-<p><img src="/images/pasted-14.png" alt="upload successful"></p>
-<p>样本数据进行交叉验证：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">(training_inputs,</span><br><span class="line"> testing_inputs,</span><br><span class="line"> training_classes,</span><br><span class="line"> testing_classes) = train_test_split(dummyX, dummyY, train_size=<span class="number">0.75</span>, random_state=<span class="number">1</span>)</span><br><span class="line"> clf=tree.DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>)  <span class="comment"># 默认为CART，设置为ID3</span></span><br><span class="line">clf=clf.fit(training_inputs,training_classes)</span><br><span class="line">clf.score(testing_inputs, testing_classes)</span><br></pre></td></tr></table></figure></p>
-<p>可以看出，这个决策树的得分是0.5，是个很低的预测结果，原因可能是数据太少了，交叉验证后供决策树提供训练的数据不足。可以调整参数，尝试使用Gini系数得分也一样。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor </span><br><span class="line">rf=RandomForestRegressor()  </span><br><span class="line">rf.fit(training_inputs,training_classes)</span><br><span class="line">rf.score(testing_inputs, testing_classes)</span><br></pre></td></tr></table></figure>
-<p>随机森林由于随机性，每次得出的结果不一定相同。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">人工智能</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/人工智能//" class="article-tag-list-link color5">人工智能</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/15/人工智能基本概念/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/03/24/线性回归/">展开全文 >></a>
         </p>
       
 
@@ -979,13 +1508,13 @@ y= <span class="number">9876</span>
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/14/url去重/">url去重</a>
+      <a class="article-title" href="/2018/03/14/url去重/">url去重</a>
     </h1>
   
 
         
-        <a href="/2018/05/14/url去重/" class="archive-article-date">
-  	<time datetime="2018-05-14T03:09:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-14</time>
+        <a href="/2018/03/14/url去重/" class="archive-article-date">
+  	<time datetime="2018-03-14T03:09:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-14</time>
 </a>
         
       </header>
@@ -1016,7 +1545,7 @@ y= <span class="number">9876</span>
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/14/url去重/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/03/14/url去重/">展开全文 >></a>
         </p>
       
 
@@ -1048,7 +1577,7 @@ y= <span class="number">9876</span>
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2018/">&laquo; Prev</a><a class="page-number" href="/archives/2018/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2018/page/3/">3</a><a class="page-number" href="/archives/2018/page/4/">4</a><a class="page-number" href="/archives/2018/page/5/">5</a><a class="extend next" rel="next" href="/archives/2018/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/archives/2018/">&laquo; Prev</a><a class="page-number" href="/archives/2018/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2018/page/3/">3</a><a class="page-number" href="/archives/2018/page/4/">4</a><a class="extend next" rel="next" href="/archives/2018/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1179,11 +1708,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
+                <a href="javascript:void(0)" class="js-tag color3">数据结构与算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数据结构与算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">算法题</a>
               </li>
             
             <div class="clearfix"></div>
