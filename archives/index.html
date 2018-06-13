@@ -243,108 +243,6 @@
 
 
   
-    <article id="post-GMM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/04/GMM/">GMM</a>
-    </h1>
-  
-
-        
-        <a href="/2018/06/04/GMM/" class="archive-article-date">
-  	<time datetime="2018-06-04T08:43:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-04</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="信息论"><a href="#信息论" class="headerlink" title="信息论"></a>信息论</h2><h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><ul>
-<li>自信息：$I(x)=l\log p(x)$</li>
-<li>互信息：已知x，y不确定度的减少量取值可正可负。$I(x;y)= \log \frac{p(x|y)}{p(x)}=\log \frac{p(xy)}{p(x)p(y)}=\log \frac{p(y|x)}{p(y)}=I(y;x)$</li>
-</ul>
-<h3 id="熵"><a href="#熵" class="headerlink" title="熵"></a>熵</h3><p>在决策树中已经了解了熵是什么：<br>$H(X)=\sum_{x}p(x)I(x)=-\sum_{x}p(x)\log p(x)$<br>单位为比特，表示信息的不确定度。</p>
-<h3 id="联合熵"><a href="#联合熵" class="headerlink" title="联合熵"></a>联合熵</h3><p>$H(XY)=\sum_{x,y}p(x,y)I(xy)=-\sum_{x,y}p(x,y)\log p(x,y)$<br>联合熵是XY上每个元素x，y的自信息量概率加权平均。<br>条件熵与联合熵的关系为：<br>$H(XY)=H(X)+H(Y|X)=H(Y)+H(X|Y)$</p>
-<h3 id="最大熵原理"><a href="#最大熵原理" class="headerlink" title="最大熵原理"></a>最大熵原理</h3><h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>若概率模型的变量都是观测变量，则可以直接使用极大似然估计。但是大部分应用中，含有隐变量，不能直接使用极大似然。EM算法就是针对隐变量模型参数的极大似然的估计方法。</p>
-<h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p><img src="/images/pasted-83.png" alt="upload successful">定义很好理解，高斯混合模型是一种混合模型，混合的基本分布是高斯分布而已。<br><img src="/images/pasted-84.png" alt="upload successful"><br>这图显示了拥有三个高斯分量的一个维度的GMM是如何由其高斯分量叠加而成。<br><strong>GMM的各个高斯分量的系数之和必须为1</strong><br>      GMM的定义本质上是一个概率密度函数。而概率密度函数在其作用域内的积分之和必然为1。GMM整体的概率密度函数是由若干个高斯分量的概率密度函数线性叠加而成的，而每一个高斯分量的概率密度函数的积分必然也是1，所以，要想GMM整体的概率密度积分为1，就必须对每一个高斯分量赋予一个其值不大于1的权重，并且权重之和为1。<br><strong>求解GMM的EM算法隐变量的理解：</strong><br>      使用EM算法必须明确隐变量。求解GMM的时候设想观测数据x是这样产生的：首选依赖GMM的某个高斯分量的系数概率（因为系数取值在0~1之间，因此可以看做是一个概率取值）选择到这个高斯分量，然后根据这个被选择的高斯分量生成观测数据。然后隐变量就是某个高斯分量是否被选中：选中就为1，否则为0。<br>      按照这样的设想：隐变量是一个向量，并且这个向量中只有一个元素取值为1，其它的都是0。因为假设只有一个高斯分量被选中并产生观测数据。然而我们的GMM的一个观测数据在直观上应该是每个高斯分量都有产生，而不是由一个高斯分量单独生成，只是重要性不同（由系数控制）。<br>      接着，现在我们不知道GMM具体的参数值，想要根据观测数据去求解其参数。而GMM的参数是由各个高斯分量的参数再加上权值系数组成的。那么我们就先假定，如果这个观测值只是由其中一个高斯分量产生，去求解其中一个高斯分量的参数。我们假设不同的观测值都有一个产生自己的唯一归宿，就像K-means算法一样。然后在后面的迭代过程中，根据数据整体似然函数的优化过程，逐渐找到一个最优的分配方案。然而，不同于K-means算法的是，我们最终给出的只是某一个观测是由某一个高斯分量唯一生成的概率值，而不是确定下来的属于某一类。每个高斯分量其实都可以产生这个观测数据只是输出不同而已，即产生观测数据的概率不同。最后，根据每个高斯分量产生观测数据的可能性不同，结合其权值汇总出整个GMM产生这个观测数据的概率值。</p>
-<ul>
-<li>EM算法<br>如果训练样本的属性“不完整”，因此在这种存在“未观测”变量（隐变量）的情形下，如何进行模型参数估计呢？EM算法就是常用的估计参数隐变量的利器。<br>X表示已观测变量集，Z表示隐变量集，θ表示模型参数，对θ求极大似然估计，最大化对数似然为：$LL(Θ|X,Z)=lnP(X,Z|Θ)$。由于Z是隐变量，无法直接求解，此时需求通过Z计算期望，来最大化以观测数据的对数边际似然（marginal likelihood） $LL(Θ|X)=lnP(X|Θ)=ln\sum_{Z}P(X,Z|Θ)$<br>EM 算法 简单来说，使用两个步骤交替计算。不取Z的期望，而是基于$Θ^t$计算隐变量Z的概率分布$P(Z|X,Θ^t)$：期望（E）步，利用当前估计的参数值来计算对数似然的期望值；二是最大化（M）步，寻找能使E步产生的似然期望最大化的参数值。然后，新得到的参数值重新被用于 步，……直至收敛到局部最优解。</li>
-</ul>
-<ol>
-<li>定义隐变量<br>我们引入隐变量γjk，它的取值只能是1或者0。<br>取值为1：第j个观测变量来自第k个高斯分量<br>取值为0：第j个观测变量不是来自第k个高斯分量<br>那么对于每一个观测数据yj都会对应于一个向量变量Γj={γj1,…,γjK}，那么有：<br>∑k=1Kγjk=1<br>p(Γj)=∏k=1Kαkγjk<br>其中，K为GMM高斯分量的个数，αk为第k个高斯分量的权值。因为观测数据来自GMM的各个高斯分量相互独立，而αk刚好可以看做是观测数据来自第k个高斯分量的概率，因此可以直接通过连乘得到整个隐变量Γj的先验分布概率。</li>
-<li>得到完全数据的似然函数<br>对于观测数据yj,当已知其是哪个高斯分量生成的之后，其服从的概率分布为：<br>p(yj|γjk=1;Θ)=N(yj|μk,Σk)<br>由于观测数据从哪个高斯分量生成这个事件之间的相互独立的，因此可以写为：<br>p(yj|Γj;Θ)=∏k=1KN(yj|μk,Σk)γjk<br>这样我们就得到了已知Γj的情况下单个观测数据的后验概率分布。结合之前得到的Γj的先验分布，则我们可以写出单个完全观测数据的似然函数为：<br>p(yj,Γj;Θ)=∏k=1KαkγjkN(yj|μk,Σk)γjk<br>最终得到所有观测数据的完全数据似然函数为：<br>p(y,Γj;Θ)=∏j=1N∏k=1KαkγjkN(yj|μk,Σk)γjk<br>取对数，得到对数似然函数为：<br>lnp(y,Γj;Θ)=∑j=1N∑k=1K(γjklnαk+γjklnN(yj|μk,Σk))</li>
-<li>得到各个高斯分量的参数计算公式<br>首先，我们将上式中的lnN(yj|μk,Σk)根据单高斯的向量形式的概率密度函数的表达形式展开：<br>lnN(yj|μk,Σk)=−D2ln(2π)−12ln|Σk|−12(yj−μk)TΣ−1k(yj−μk)<br>假设我们已经知道隐变量γjk的取值，对上面得到的似然函数分别对αk和Σk求偏导并且偏导结果为零，可以得到：<br>μk=∑Nj=1∑Kk=1γjkyj∑Nj=1∑Kk=1γjk<br>Σk=∑Nj=1∑Kk=1γjk(yj−μk)(yj−μk)T∑Nj=1∑Kk=1γjk<br>由于在上面两式的第二个求和符号是对k=1…K求和，而在求和过程中γjk只有以此取到1，其它都是0，因此上面两式可以简化为：<br>μk=∑Nj=1γjkyj∑Nj=1γjk<br>Σk=∑Nj=1γjk(yj−μk)(yj−μk)T∑Nj=1γjk<br>现在参数空间中剩下一个αk还没有求。这是一个约束满足问题，因为必须满足约束ΣKk=1αk=1。我们使用拉格朗日乘子法结合似然函数和约束条件对αk求偏导，可以得到：<br>αk=∑Nj=1γjk−λ<br>将上式的左右两边分别对k=1…K求和，可以得到：<br>λ=−N<br>将λ代入，最终得到：<br>αk=∑Nj=1γjkN<br>至此，我们在隐变量已知的情况下得到了GMM的三种类型参数的求解公式。</li>
-<li>得到隐变量的估计公式<br>根据EM算法，现在我们需要通过当前参数的取值得到隐变量的估计公式也就是说隐变量的期望的表达形式。即如何求解E{γjk|y,Θ}。<br>E{γjk|y,Θ}=P(γjk=1|y,Θ)<br>=P(γjk=1,yj|Θ)∑Kk=1P(γjk=1,yj|Θ)<br>=P(yj|γjk=1,Θ)P(γjk=1|Θ)∑Kk=1P(yj|γjk=1,Θ)P(γjk=1|Θ)<br>=αkN(yj|μk,Σk)∑Kk=1αkN(yj|μk,Σk)</li>
-<li>使用EM算法迭代进行参数求解<br>熟悉EM算法的朋友应该已经可以从上面的推导中找到EM算法的E步和M步。</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/06/04/GMM/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-神经网络" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -716,6 +614,14 @@
 <li>学习向量量化</li>
 <li><a href="http://www.cnblogs.com/mmziscoming/p/5750849.html" target="_blank" rel="noopener">高斯混合聚类(GMM)</a></li>
 </ul>
+<p><a href="http://www.cnblogs.com/kemaswill/archive/2013/01/26/2877434.html" target="_blank" rel="noopener">K值的确定</a>：<br><a href="https://www.zhihu.com/question/29208148/answer/141482198" target="_blank" rel="noopener">知乎的回答</a></p>
+<ul>
+<li>数据的先验知识，或者数据进行简单分析能得到</li>
+<li>基于变化的算法：即定义一个函数，随着K的改变，认为在正确的K时会产生极值。如Gap Statistic（Estimating the number of clusters in a data set via the gap statistic, Tibshirani, Walther, and Hastie 2001），Jump Statistic （finding the number of clusters in a data set, Sugar and James 2003）</li>
+<li>基于结构的算法：即比较类内距离、类间距离以确定K。这个也是最常用的办法，如使用平均轮廓系数，越趋近1聚类效果越好；如计算类内距离/类间距离，值越小越好；等。</li>
+<li>基于一致性矩阵的算法：即认为在正确的K时，不同次聚类的结果会更加相似，以此确定K。基于层次聚类：即基于合并或分裂的思想，在一定情况下停止从而获得K。</li>
+<li>基于采样的算法：即对样本采样，分别做聚类；根据这些结果的相似性确定K。如，将样本分为训练与测试样本；对训练样本训练分类器，用于预测测试样本类别，并与聚类的类别比较。</li>
+</ul>
 <h2 id="密度聚类"><a href="#密度聚类" class="headerlink" title="密度聚类"></a>密度聚类</h2><p>基于密度的聚类算法主要的目标是寻找被低密度区域分离的高密度区域。与基于距离的聚类算法不同的是，基于距离的聚类算法的聚类结果是球状的簇，而基于密度的聚类算法可以发现任意形状的聚类，这对于带有噪音点的数据起着重要的作用。 </p>
 <h2 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h2><p>层次聚类也叫连通聚类方法，有两个基本方法：自顶而下和自底而上。自顶而将所有样本看做是同一簇，然后进行分裂。自底而上将初所有样本看做不同的簇，然后进行凝聚。这种聚类的中心思想是：离观测点较近的点相比离观测点较远的点更可能是一类。<br>过程如下：</p>
 <ol>
@@ -1058,9 +964,133 @@
 
 
   
+    <article id="post-MongoDB的基本使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/08/MongoDB的基本使用/">MongoDB的基本使用</a>
+    </h1>
+  
+
+        
+        <a href="/2018/04/08/MongoDB的基本使用/" class="archive-article-date">
+  	<time datetime="2018-04-08T09:28:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://docs.mongodb.com/manual/introduction/" target="_blank" rel="noopener">官方文档链接</a></p>
+<h2 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h2><h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><ol>
+<li><p>下载完安装包，并解压 tgz（以下演示的是 64 位 Linux上的安装）。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.6.tgz # 下载</span><br><span class="line">tar -zxvf mongodb-linux-x86_64-3.0.6.tgz # 解压</span><br><span class="line">mv  mongodb-linux-x86_64-3.0.6/ /usr/local/mongodb # 将解压包拷贝到指定目录</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MongoDB 的可执行文件位于 bin 目录下，所以可以将其添加到 PATH 路径中：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&lt;mongodb-install-directory&gt;/bin:$PATH</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>mongodb-install-directory 为 MongoDB 的安装路径。如本文的 /usr/local/mongodb 。  </p>
+<ol start="3">
+<li><p>创建数据库目录<br>MongoDB的数据存储在data目录的db目录下，但是这个目录在安装过程不会自动创建，所以你需要手动创建data目录，并在data目录中创建db目录。以下实例中我们将data目录创建于根目录下(/)。<br><strong>注意：</strong>/data/db 是 MongoDB 默认的启动的数据库路径(–dbpath)。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /data/db</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令行中运行 MongoDB 服务</p>
+<ul>
+<li><p>可以在 /usr/local/mongodb/bin/ 目录下使用命令：　　</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mongod</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 /usr/local/mongodb/ 下添加conf目录，并添加mongodb.conf配置文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./mongod -f /usr/local/mongodb/conf/mongodb.conf 　　或者</span><br><span class="line">./mongod --config /usr/local/mongodb/conf/mongodb.conf</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<p>mongodb.conf配置文件内容如下：</p>
+<pre><code class="shelldbpath=/data/db">bind_ip=127.0.0.1
+port=27017
+fork=true
+logappend=true
+shardsvr=true
+pidfilepath=/usr/local/mongodb/mongo.pid
+logpath=/usr/local/mongodb/log/mongodb.log
+</code></pre>
+<ol start="5">
+<li>设置开机启动mongo  <ul>
+<li>将/usr/local/mongodb/bin/mongod<br>–dbpath /data/db<br>–fork<br>–port 27017 –logpath=/usr/local/mongodb/log/mongodb.log<br>–logappend<br>添加到 /etc/rc.local 中。</li>
+</ul>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">MongoDB</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据库//" class="article-tag-list-link color4">数据库</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/08/MongoDB的基本使用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1179,11 +1209,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">

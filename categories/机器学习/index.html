@@ -243,108 +243,6 @@
 
 
   
-    <article id="post-GMM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/04/GMM/">GMM</a>
-    </h1>
-  
-
-        
-        <a href="/2018/06/04/GMM/" class="archive-article-date">
-  	<time datetime="2018-06-04T08:43:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-04</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="信息论"><a href="#信息论" class="headerlink" title="信息论"></a>信息论</h2><h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><ul>
-<li>自信息：$I(x)=l\log p(x)$</li>
-<li>互信息：已知x，y不确定度的减少量取值可正可负。$I(x;y)= \log \frac{p(x|y)}{p(x)}=\log \frac{p(xy)}{p(x)p(y)}=\log \frac{p(y|x)}{p(y)}=I(y;x)$</li>
-</ul>
-<h3 id="熵"><a href="#熵" class="headerlink" title="熵"></a>熵</h3><p>在决策树中已经了解了熵是什么：<br>$H(X)=\sum_{x}p(x)I(x)=-\sum_{x}p(x)\log p(x)$<br>单位为比特，表示信息的不确定度。</p>
-<h3 id="联合熵"><a href="#联合熵" class="headerlink" title="联合熵"></a>联合熵</h3><p>$H(XY)=\sum_{x,y}p(x,y)I(xy)=-\sum_{x,y}p(x,y)\log p(x,y)$<br>联合熵是XY上每个元素x，y的自信息量概率加权平均。<br>条件熵与联合熵的关系为：<br>$H(XY)=H(X)+H(Y|X)=H(Y)+H(X|Y)$</p>
-<h3 id="最大熵原理"><a href="#最大熵原理" class="headerlink" title="最大熵原理"></a>最大熵原理</h3><h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>若概率模型的变量都是观测变量，则可以直接使用极大似然估计。但是大部分应用中，含有隐变量，不能直接使用极大似然。EM算法就是针对隐变量模型参数的极大似然的估计方法。</p>
-<h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p><img src="/images/pasted-83.png" alt="upload successful">定义很好理解，高斯混合模型是一种混合模型，混合的基本分布是高斯分布而已。<br><img src="/images/pasted-84.png" alt="upload successful"><br>这图显示了拥有三个高斯分量的一个维度的GMM是如何由其高斯分量叠加而成。<br><strong>GMM的各个高斯分量的系数之和必须为1</strong><br>      GMM的定义本质上是一个概率密度函数。而概率密度函数在其作用域内的积分之和必然为1。GMM整体的概率密度函数是由若干个高斯分量的概率密度函数线性叠加而成的，而每一个高斯分量的概率密度函数的积分必然也是1，所以，要想GMM整体的概率密度积分为1，就必须对每一个高斯分量赋予一个其值不大于1的权重，并且权重之和为1。<br><strong>求解GMM的EM算法隐变量的理解：</strong><br>      使用EM算法必须明确隐变量。求解GMM的时候设想观测数据x是这样产生的：首选依赖GMM的某个高斯分量的系数概率（因为系数取值在0~1之间，因此可以看做是一个概率取值）选择到这个高斯分量，然后根据这个被选择的高斯分量生成观测数据。然后隐变量就是某个高斯分量是否被选中：选中就为1，否则为0。<br>      按照这样的设想：隐变量是一个向量，并且这个向量中只有一个元素取值为1，其它的都是0。因为假设只有一个高斯分量被选中并产生观测数据。然而我们的GMM的一个观测数据在直观上应该是每个高斯分量都有产生，而不是由一个高斯分量单独生成，只是重要性不同（由系数控制）。<br>      接着，现在我们不知道GMM具体的参数值，想要根据观测数据去求解其参数。而GMM的参数是由各个高斯分量的参数再加上权值系数组成的。那么我们就先假定，如果这个观测值只是由其中一个高斯分量产生，去求解其中一个高斯分量的参数。我们假设不同的观测值都有一个产生自己的唯一归宿，就像K-means算法一样。然后在后面的迭代过程中，根据数据整体似然函数的优化过程，逐渐找到一个最优的分配方案。然而，不同于K-means算法的是，我们最终给出的只是某一个观测是由某一个高斯分量唯一生成的概率值，而不是确定下来的属于某一类。每个高斯分量其实都可以产生这个观测数据只是输出不同而已，即产生观测数据的概率不同。最后，根据每个高斯分量产生观测数据的可能性不同，结合其权值汇总出整个GMM产生这个观测数据的概率值。</p>
-<ul>
-<li>EM算法<br>如果训练样本的属性“不完整”，因此在这种存在“未观测”变量（隐变量）的情形下，如何进行模型参数估计呢？EM算法就是常用的估计参数隐变量的利器。<br>X表示已观测变量集，Z表示隐变量集，θ表示模型参数，对θ求极大似然估计，最大化对数似然为：$LL(Θ|X,Z)=lnP(X,Z|Θ)$。由于Z是隐变量，无法直接求解，此时需求通过Z计算期望，来最大化以观测数据的对数边际似然（marginal likelihood） $LL(Θ|X)=lnP(X|Θ)=ln\sum_{Z}P(X,Z|Θ)$<br>EM 算法 简单来说，使用两个步骤交替计算。不取Z的期望，而是基于$Θ^t$计算隐变量Z的概率分布$P(Z|X,Θ^t)$：期望（E）步，利用当前估计的参数值来计算对数似然的期望值；二是最大化（M）步，寻找能使E步产生的似然期望最大化的参数值。然后，新得到的参数值重新被用于 步，……直至收敛到局部最优解。</li>
-</ul>
-<ol>
-<li>定义隐变量<br>我们引入隐变量γjk，它的取值只能是1或者0。<br>取值为1：第j个观测变量来自第k个高斯分量<br>取值为0：第j个观测变量不是来自第k个高斯分量<br>那么对于每一个观测数据yj都会对应于一个向量变量Γj={γj1,…,γjK}，那么有：<br>∑k=1Kγjk=1<br>p(Γj)=∏k=1Kαkγjk<br>其中，K为GMM高斯分量的个数，αk为第k个高斯分量的权值。因为观测数据来自GMM的各个高斯分量相互独立，而αk刚好可以看做是观测数据来自第k个高斯分量的概率，因此可以直接通过连乘得到整个隐变量Γj的先验分布概率。</li>
-<li>得到完全数据的似然函数<br>对于观测数据yj,当已知其是哪个高斯分量生成的之后，其服从的概率分布为：<br>p(yj|γjk=1;Θ)=N(yj|μk,Σk)<br>由于观测数据从哪个高斯分量生成这个事件之间的相互独立的，因此可以写为：<br>p(yj|Γj;Θ)=∏k=1KN(yj|μk,Σk)γjk<br>这样我们就得到了已知Γj的情况下单个观测数据的后验概率分布。结合之前得到的Γj的先验分布，则我们可以写出单个完全观测数据的似然函数为：<br>p(yj,Γj;Θ)=∏k=1KαkγjkN(yj|μk,Σk)γjk<br>最终得到所有观测数据的完全数据似然函数为：<br>p(y,Γj;Θ)=∏j=1N∏k=1KαkγjkN(yj|μk,Σk)γjk<br>取对数，得到对数似然函数为：<br>lnp(y,Γj;Θ)=∑j=1N∑k=1K(γjklnαk+γjklnN(yj|μk,Σk))</li>
-<li>得到各个高斯分量的参数计算公式<br>首先，我们将上式中的lnN(yj|μk,Σk)根据单高斯的向量形式的概率密度函数的表达形式展开：<br>lnN(yj|μk,Σk)=−D2ln(2π)−12ln|Σk|−12(yj−μk)TΣ−1k(yj−μk)<br>假设我们已经知道隐变量γjk的取值，对上面得到的似然函数分别对αk和Σk求偏导并且偏导结果为零，可以得到：<br>μk=∑Nj=1∑Kk=1γjkyj∑Nj=1∑Kk=1γjk<br>Σk=∑Nj=1∑Kk=1γjk(yj−μk)(yj−μk)T∑Nj=1∑Kk=1γjk<br>由于在上面两式的第二个求和符号是对k=1…K求和，而在求和过程中γjk只有以此取到1，其它都是0，因此上面两式可以简化为：<br>μk=∑Nj=1γjkyj∑Nj=1γjk<br>Σk=∑Nj=1γjk(yj−μk)(yj−μk)T∑Nj=1γjk<br>现在参数空间中剩下一个αk还没有求。这是一个约束满足问题，因为必须满足约束ΣKk=1αk=1。我们使用拉格朗日乘子法结合似然函数和约束条件对αk求偏导，可以得到：<br>αk=∑Nj=1γjk−λ<br>将上式的左右两边分别对k=1…K求和，可以得到：<br>λ=−N<br>将λ代入，最终得到：<br>αk=∑Nj=1γjkN<br>至此，我们在隐变量已知的情况下得到了GMM的三种类型参数的求解公式。</li>
-<li>得到隐变量的估计公式<br>根据EM算法，现在我们需要通过当前参数的取值得到隐变量的估计公式也就是说隐变量的期望的表达形式。即如何求解E{γjk|y,Θ}。<br>E{γjk|y,Θ}=P(γjk=1|y,Θ)<br>=P(γjk=1,yj|Θ)∑Kk=1P(γjk=1,yj|Θ)<br>=P(yj|γjk=1,Θ)P(γjk=1|Θ)∑Kk=1P(yj|γjk=1,Θ)P(γjk=1|Θ)<br>=αkN(yj|μk,Σk)∑Kk=1αkN(yj|μk,Σk)</li>
-<li>使用EM算法迭代进行参数求解<br>熟悉EM算法的朋友应该已经可以从上面的推导中找到EM算法的E步和M步。</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/06/04/GMM/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-神经网络" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -716,6 +614,14 @@
 <li>学习向量量化</li>
 <li><a href="http://www.cnblogs.com/mmziscoming/p/5750849.html" target="_blank" rel="noopener">高斯混合聚类(GMM)</a></li>
 </ul>
+<p><a href="http://www.cnblogs.com/kemaswill/archive/2013/01/26/2877434.html" target="_blank" rel="noopener">K值的确定</a>：<br><a href="https://www.zhihu.com/question/29208148/answer/141482198" target="_blank" rel="noopener">知乎的回答</a></p>
+<ul>
+<li>数据的先验知识，或者数据进行简单分析能得到</li>
+<li>基于变化的算法：即定义一个函数，随着K的改变，认为在正确的K时会产生极值。如Gap Statistic（Estimating the number of clusters in a data set via the gap statistic, Tibshirani, Walther, and Hastie 2001），Jump Statistic （finding the number of clusters in a data set, Sugar and James 2003）</li>
+<li>基于结构的算法：即比较类内距离、类间距离以确定K。这个也是最常用的办法，如使用平均轮廓系数，越趋近1聚类效果越好；如计算类内距离/类间距离，值越小越好；等。</li>
+<li>基于一致性矩阵的算法：即认为在正确的K时，不同次聚类的结果会更加相似，以此确定K。基于层次聚类：即基于合并或分裂的思想，在一定情况下停止从而获得K。</li>
+<li>基于采样的算法：即对样本采样，分别做聚类；根据这些结果的相似性确定K。如，将样本分为训练与测试样本；对训练样本训练分类器，用于预测测试样本类别，并与聚类的类别比较。</li>
+</ul>
 <h2 id="密度聚类"><a href="#密度聚类" class="headerlink" title="密度聚类"></a>密度聚类</h2><p>基于密度的聚类算法主要的目标是寻找被低密度区域分离的高密度区域。与基于距离的聚类算法不同的是，基于距离的聚类算法的聚类结果是球状的簇，而基于密度的聚类算法可以发现任意形状的聚类，这对于带有噪音点的数据起着重要的作用。 </p>
 <h2 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h2><p>层次聚类也叫连通聚类方法，有两个基本方法：自顶而下和自底而上。自顶而将所有样本看做是同一簇，然后进行分裂。自底而上将初所有样本看做不同的簇，然后进行凝聚。这种聚类的中心思想是：离观测点较近的点相比离观测点较远的点更可能是一类。<br>过程如下：</p>
 <ol>
@@ -924,55 +830,92 @@
 
 
   
-    <article id="post-人工智能数学基础-1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-集成学习" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/11/人工智能数学基础-1/">数学基础</a>
+      <a class="article-title" href="/2018/03/26/集成学习/">集成学习</a>
     </h1>
   
 
         
-        <a href="/2018/04/11/人工智能数学基础-1/" class="archive-article-date">
-  	<time datetime="2018-04-11T13:46:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-11</time>
+        <a href="/2018/03/26/集成学习/" class="archive-article-date">
+  	<time datetime="2018-03-26T07:33:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="微积分"><a href="#微积分" class="headerlink" title="微积分"></a>微积分</h2><p><strong>夹逼定理：</strong>$g(x)&lt;=f(x)&lt;=h(x)$成立，且$\lim_{x\to0}g(x)=A$<br>$\lim_{x\to0}h(x)=A$,则$\lim_{x\to0}f(x)=A$<br><strong>极限的定义：</strong>$\lim_{x\to0}sinx/x=1$,<br><img src="http://p8cigu7up.bkt.clouddn.com/1526046740175opawbglw.png?imageslim" alt="paste image"><br><strong>分步积分</strong><br><img src="http://p8cigu7up.bkt.clouddn.com/1526046782042q7n1b2rc.png?imageslim" alt="paste image"><br>应用：例如：求$f(x)最小值$<br><img src="http://p8cigu7up.bkt.clouddn.com/1526046811476uagtkvuy.png?imageslim" alt="paste image"></p>
-<p><img src="http://p8cigu7up.bkt.clouddn.com/15260468682169yoeit5n.png?imageslim" alt="paste image"></p>
-<h2 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h2><p><strong>方向导数：</strong><img src="http://p8cigu7up.bkt.clouddn.com/1526046905297mbojtto7.png?imageslim" alt="paste image"></p>
-<p>φ为x轴到方向L的转角</p>
-<p><strong>梯度：</strong><img src="http://p8cigu7up.bkt.clouddn.com/1526047051671cujiauam.png?imageslim" alt="paste image"><br>梯度方向是函数在该点变化最快的方向。</p>
-<h2 id="Jensen不等式"><a href="#Jensen不等式" class="headerlink" title="Jensen不等式"></a>Jensen不等式</h2><p><strong>凸函数：</strong><img src="http://p8cigu7up.bkt.clouddn.com/1526047197413vo87brcr.png?imageslim" alt="paste image"><br><img src="http://p8cigu7up.bkt.clouddn.com/1526047219531agv1nvou.png?imageslim" alt="paste image"><br><strong>一阶可微</strong><br>凸函数的切线，一定位于函数图像的下方。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526047331546ayoqpcus.png?imageslim" alt="paste image"><br><strong>二阶可微</strong><br>函数满足二阶可微，则为凸函数的条件表示为<img src="http://p8cigu7up.bkt.clouddn.com/1526047415799hmcryljw.png?imageslim" alt="paste image"><br><img src="http://p8cigu7up.bkt.clouddn.com/1526047424737iw8g1sbd.png?imageslim" alt="paste image"><br>常见的凸函数<br><img src="http://p8cigu7up.bkt.clouddn.com/1526047472799y6c896ka.png?imageslim" alt="paste image"><br><strong>Jensen不等式</strong><br><img src="http://p8cigu7up.bkt.clouddn.com/1526047508849usc7kybd.png?imageslim" alt="paste image"><br>表示凸函数，如果做一个推广：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526047561126kgkoyamk.png?imageslim" alt="paste image"><br>表示的是x1~xk的线性加权，小于函数值的线性加权。<br>如果θ表示的概率分布的话，得到下面的结论：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526047656173g0pa24l9.png?imageslim" alt="paste image"><br>期望的函数&lt;=函数的期望</p>
-<p>Jesen不等式非常重要，几乎是所有不等式的基础。</p>
-<h3 id="共轭函数"><a href="#共轭函数" class="headerlink" title="共轭函数"></a>共轭函数</h3><p>f是$\Bbb{R}^n–&gt;\Bbb{R}$是一个函数，那么f的共轭函数<br>$$f^*(y)=\sup {x∈dom f}(x^Tx-f(x))$$<br>以x为斜率，f(x)为截距。<br>共轭函数是描述在x点处，函数的斜率和截距之间的全体。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526730911799r042hrac.png?imageslim" alt="paste image"><br><strong>共轭函数的性质</strong>  </p>
-<ul>
-<li>共轭函数$f^*$是一个凸函数</li>
-<li>如果g是f的凸闭，那么$g^<em>=f^</em>$</li>
-<li>如果f是一个凸函数，那么$f^{**}=f$</li>
+        <h2 id="个体与集成"><a href="#个体与集成" class="headerlink" title="个体与集成"></a>个体与集成</h2><p>“同质”：由类型相同的学习器组合而成的集成学习器，每个学习器可称为基学习器<br>“异质”：由类型不相同的学习器组合而成的集成学习器，每个学习器可称为“组件学习器”<br>集成学习通过将多个学习器进行结合，常常可以获得比单一学习器具有显著优越的泛化性能。这个对于弱学习器尤为明显。<br>如何获得一个好的集成学习器呢？每个个体学习器具有一定的准确性（每个学习器不能太坏）和多样性（每个学习器之间存在差异）<br>集成学习方法可以分为两大类：一是个体学习器间存在强依赖关系、必须串行生成序列化方法，代表有Boosting算法，二是个体学习器之间不存在强依赖关系、可同时生成的并行化方法，代表有Bagging和随机森林（Random Forest）</p>
+<h2 id="Bagging与随机森林"><a href="#Bagging与随机森林" class="headerlink" title="Bagging与随机森林"></a>Bagging与随机森林</h2><h3 id="Bagging算法"><a href="#Bagging算法" class="headerlink" title="Bagging算法"></a>Bagging算法</h3><p>Bagging算法基本流程：采用自助采样法，可以采用出 个含 个训练样本的采样集，然后基于每个采样集训练出一个基学习器，再将这些基学习器进行结合。 </p>
+<h3 id="随机森林（Random-Forest）"><a href="#随机森林（Random-Forest）" class="headerlink" title="随机森林（Random Forest）"></a>随机森林（Random Forest）</h3><p>随机森林是Bagging的一个扩展变体，随机森林是在以决策树为基学习器构建Bagging集成的基础上，进一步在决策树的训练过程中引入了随机属性选择。具体的说，传统决策树在选择划分属性时是在当前结点的属性集合（假定有 个属性）中选择一个最优属性；而在随机森林（RF）中，对基决策树的每个结点，先从该结点的属性集合中随机选择一个包含 个属性的子集，然后再从这个子集中选择一个最优属性用于划分。<br>可以参阅：<a href="http://www.cnblogs.com/hrlnw/p/3850459.html" target="_blank" rel="noopener">http://www.cnblogs.com/hrlnw/p/3850459.html</a></p>
+<h4 id="采样方式"><a href="#采样方式" class="headerlink" title="采样方式"></a>采样方式</h4><ul>
+<li>随机森林的集成学习方法是Bagging， Bagging的采样方式为：<ul>
+<li><strong>Bootstraping：</strong>有放回的采样</li>
 </ul>
-<p><img src="/images/pasted-13.png" alt="upload successful"></p>
-<h3 id="拉格朗日对偶函数"><a href="#拉格朗日对偶函数" class="headerlink" title="拉格朗日对偶函数"></a>拉格朗日对偶函数</h3><p><img src="/images/pasted-16.png" alt="upload successful"><br><img src="/images/pasted-17.png" alt="upload successful"><br><img src="/images/pasted-18.png" alt="upload successful"><br><img src="/images/pasted-19.png" alt="upload successful"><br><img src="/images/pasted-20.png" alt="upload successful"></p>
-<h2 id="Taylor展开式"><a href="#Taylor展开式" class="headerlink" title="Taylor展开式"></a>Taylor展开式</h2><p>$$f(x)=f(x_0)+f’(x_0)(x-x_0)+\frac{f’’(x_0)}{2!}(x-x_0)^2+…+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+R_n(x)$$<br>在$x=0$对$f(x)$进行Taylor展开就是Maclaurin公式<br>$$f(x)=f(0)+f’(0)x+\frac{f’’(0)}{2!}x^2+…+\frac{f^{(n)}(x)}{n!}x^n+o(x^{n})$$</p>
-<h3 id="计算函数值"><a href="#计算函数值" class="headerlink" title="计算函数值"></a>计算函数值</h3><p>Taylor公式的应用首先可以计算初等函数值，一般在远点展开<br>$$\sin x=x-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!}+\frac{x^9}{9!}-…+(-1)^{m-1}\frac{x^{2m-1}}{(2m-1)!}+R_{2m}$$<br>$$e^x=1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+…+\frac{x^n}{n!}+R_n$$<br>通过泰勒展开，可以对函数值最近似求解。例如下题<br><img src="http://p8cigu7up.bkt.clouddn.com/1526176929364zt7rzxq6.png?imageslim" alt="paste image"><br>k是整数，$2^k$比较好求，$e^r$就可以通过Taylor展开近似的求解</p>
-<h3 id="Gini系数公式"><a href="#Gini系数公式" class="headerlink" title="Gini系数公式"></a>Gini系数公式</h3><p>Gini系数、熵、分类误差率有下图显示的关系：<br><img src="http://p8cigu7up.bkt.clouddn.com/15261766665534b21yx3j.png?imageslim" alt="paste image"><br>熵的定义为：$H(x)=-\sum_{k=1}^K p_k·\ln p_k$<br>Gini系数利用了$f(x)=-\ln x$在$x=1$处的一阶展开，忽略高阶无穷小，近似得到$f(x)\approx 1-x$，熵就可以近似求解为：$H(x)\approx \sum_{k=1}^K p_k·(1-p_k)$</p>
-<h3 id="平方根公式"><a href="#平方根公式" class="headerlink" title="平方根公式"></a>平方根公式</h3><p>Taylor公式的另一个应用，可以求解平方根，例如一个数a的平方根的值，$a=x^2$，令$f(x)=x^2-a$，即$f(x)=0$<br>$$ f(x)=f(x_0)+f’(x_0)(x-x_0)+o(x)$$<br>在任意点$x_0$做Taylor展开可得：$f(x)=0\approx f(x_0)+f’(x_0)(x-x_0)$—-&gt;$x-x_0=\frac{f(x_0)}{f’(x_0)}$—-&gt;$x=x_0+\frac{f(x_0)}{f’(x_0)}$  </p>
-<p>由于$f(x_0)=x_0^2-a$，$f’(x_0)=2x_0$，所以可得$x=\frac{1}{2}(x_0+\frac{a}{x_0})$，$f(x_0)≠0$，给定任意一个x0，求解x1，然后将x1再带入公式求解x2，直到xn-xn+1足够小的时候，作为平方根的解，一般5至6次就可以得到很好的解了。</p>
-<h2 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h2><h3 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h3><p>如果要估计θ，而且已经建立了目标函数J(θ)，例如最小二乘法建立的目标函数（损失函数）：$$J(\theta)=\frac{1}{2}\sum_{i=1}^m(h_{\theta}(x^{(i)})-y^{(i)})^2$$，想计算一个$θ^*$，可以使得$J(θ)$最小。计算方法：随机或者先验的给定$θ$初值，然后沿着负梯度方向迭代，更新$θ$使得$J(θ)$减小，$\theta_j=\theta_j-\alpha·\frac{\partial J(\theta)}{\partial \theta}$，$\alpha$是学习率。  </p>
-<h3 id="拟牛顿法"><a href="#拟牛顿法" class="headerlink" title="拟牛顿法"></a>拟牛顿法</h3><p><strong>牛顿法</strong><br>通过Taylor展开可不可以做一些处理呢？若$f(x)$二阶导连续，那么$f(x)$在$x_k$处做Taylor展开：<br>$$\phi(x)=f(x_k)+f’(x_k)(x-x_k)+\frac{1}{2}f’’(x_k)(x-x_k)^2+R_2(x)$$<br>$$\approx f(x_k)+f’(x_k)(x-x_k)+\frac{1}{2}f’’(x_k)(x-x_k)^2=0$$<br>$$x_{k+1}=x_k-\frac{f’(x_k)}{f’’(x_k)}$$<br>这个公式就是牛顿法，本质上是用二次函数做近似，求解二次函数的极值点，而梯度下降法师用一次函数做近似，学习率控制步长。所以二阶收敛性，可以使得目标函数（线性回归、Logistic回归）的问题中收敛速度快。<br>但是牛顿法要求初始点尽量靠近极小点，否则有可能不收敛。原因：</p>
-<ol>
-<li>Hessian矩阵奇异，也就是二阶导数为零，牛顿方向不存在；</li>
-<li>Hessian非正定，牛顿方向可能是反方向。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526182698594tz1oorv4.png?imageslim" alt="paste image"><br><strong>拟牛顿法</strong><br>拟牛顿法的思路，通过近似矩阵代替Hessian矩阵，只要满足矩阵正定，容易求逆。<br>DFP和BFGS是两种拟牛顿的方法。<h2 id="概率论"><a href="#概率论" class="headerlink" title="概率论"></a>概率论</h2>概率$P(x)$<br>分布函数$\Phi(x)=P(x&lt;=x_0)$<h3 id="概率公式"><a href="#概率公式" class="headerlink" title="概率公式"></a>概率公式</h3><strong>条件概率：</strong>$P(A|B)=\frac{P(AB)}{P(B)}$<br><strong>条件概率的链式法则：</strong>$P(a,b,c)=P(a|b,c)P(b,c)=P(a|b,c)P(b|c)P(c)$<br><strong>全概率公式：</strong>$P(A)=\sum_{i} P(A|B_i)P(B_i)$<br><strong>贝叶斯（Bayes）公式：</strong>$P(B_i|A)=\frac{P(A|B_i)P(B_i)}{\sum_{j}P(A|B_j)P(B_j)}$<br>对于求解<a href="http://www.cnblogs.com/AndyJee/p/4714781.html" target="_blank" rel="noopener">碰面问题</a>的概率，可以通过画出x和y所有可能的区域，再求出碰面的范围，再计算面积得到。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526188781608ucrz546h.png?imageslim" alt="paste image"><br>如果使用积分，需要考虑两种情况，一个是x&lt;=3,x可以等1个小时，另一个是x&gt;3，x只能等4-x小时。计算稍微复杂一些。<br><strong>事件独立：</strong>$P(AB)=P(A)P(B)$事件A⊥B正交。<br><strong>条件独立：</strong>A⊥B|Z，$P(A,B|Z)=P(A|Z)P(B|Z)$<br><strong>期望：</strong>1、离散型：$E(x)=\sum_{i}x_ip_i$；2、连续型：$E(x)=\int_\infty^{-\infty} xf(x)$(概率加权的平均值)<br>期望的性质：$E(kX)=kE(X)$，$E(X+Y)=E(X)+E(Y)$，若X和Y相互独立$E(XY)+E(X)E(Y)$<br><strong>方差：</strong>$Var(X)=E{[X-E(X)]^2}=E(X^2)-E^2(X)$<br>方差的性质：$Var(c)=0$，$Var(X+c)=Var(X)$，$Var(kX)=k^2Var(X)$，若X和Y相互独立$Var(X+Y)=Var(X)+Var(Y)$<br><strong>协方差：</strong>$Cov(X,Y)=E(XY)-E(X)E(Y)$，当X和Y独立时，$Cov(X,Y)=0$。协方差表示两个随机变量变化趋势的度量，大于零表示趋势相同，小于零趋势相反，等于零表示不相关。<br>协方差的性质：若$Var(X)=\sigma_1^2$；$Var(Y)=\sigma_2^2$，则$|Cov(X,Y)|&lt;=\sigma_1\sigma_2$。当X和Y之间有线性关系时，等号成立。例如：X=aY+b。<br><strong>相关系数：</strong>$\rho_{XY}=\frac{Cov(X,Y)}{Var(X)Var(Y)}$<br>相关系数的性质：$|\rho_|&lt;=1$<br><strong>协方差矩阵：</strong>当有多个随机向量，每两个随机向量间都可以得到一个协方差，从而组成了协方差矩阵，协方差矩阵时对称阵。$$<br>\begin{bmatrix}<br>c_{11} &amp; c_{12} &amp; \cdots &amp; c_{1n} \\<br>c_{21} &amp; c_{22} &amp; \cdots &amp; c_{2n} \\<br>\vdots &amp; \vdots &amp; \ddots  &amp; \vdots \\<br>c_{n1} &amp; c_{n2} &amp; \cdots &amp; c_{nn} \\<br>\end{bmatrix}<br>$$<h3 id="矩"><a href="#矩" class="headerlink" title="矩"></a>矩</h3>k阶原点矩$E(X^k)$<br>k阶中心距$E { [X-E(X)]^k } $<br>通过矩的定义可以看出，期望是1阶原点矩，方差是2阶中心距。三阶的统计量偏度，四阶统计量是峰度。<br>偏的方向尾巴更长。<br>左偏（负偏）|右偏（正偏）<br><img src="http://p8cigu7up.bkt.clouddn.com/1526195691472ao96bwj9.png?imageslim" alt="paste image"><br>峰度度量的是峰的陡峭程度。通常定义四阶中心矩除以方差的平方减3。减3为了让正态分布的峰度为0，超值峰度为正，称为尖峰态，负为低峰态。它是反应陡峭程度，但需要跟其他结合分析。<br><strong>契比雪夫不等式：</strong>随机变量X的期望$\mu$和方差$\sigma^2$，对于任意正数$\epsilion$$P({|X-\mu|&gt;=\epsilon})&lt;=\frac{\sigma^2}{\epsilon^2}$<br><strong>大数定理：</strong>随机变量X1~Xn相互独立，并且具有相同的期望$\mu$和方差$\sigma^2$，$Y_n=\frac{1}{n}\sum_{i=1}^nX_i$，对于任意正整数$\epsilon$<br>$\lim_{n\to\infty}P({|Y_n-\mu|&lt;\epsilon})=1$<br>大数定理为实际应用中频率来估计概率提供了理论依据。正态分布的参数估计，朴素贝叶斯做垃圾邮件分类，隐马尔科夫模型有监督参数学习等。<br><strong>伯努利定理：</strong>是大数定理最早的形式，表争了事件A发生的频率收敛于事件A发生的概率P。</li>
+</li>
+<li>随机森林即随机采样样本，也随机选择特征，因此防止过拟合能力更强，降低方差。</li>
+</ul>
+<h4 id="构建方法"><a href="#构建方法" class="headerlink" title="构建方法"></a>构建方法</h4><p>构建多颗决策树，结果是所有的决策树共同决定的。对于分类任务可以取出现最多，回归操作可以取均值。</p>
+<h3 id="随机性的体现"><a href="#随机性的体现" class="headerlink" title="随机性的体现"></a>随机性的体现</h3><ol>
+<li>数据选择随机性：n个样本中，采集60%的样本个数的集合作为数据，去除异常样本影响。</li>
+<li>特征随机性：在d个特种中，随机选择其中一些特征。</li>
 </ol>
-<h2 id="统计学"><a href="#统计学" class="headerlink" title="统计学"></a>统计学</h2><h3 id="统计量"><a href="#统计量" class="headerlink" title="统计量"></a>统计量</h3><p><strong>样本：</strong>$X_1，X_1，…X_n$<br><strong>样本均值：</strong>$\overline{X}=/frac{1}{n}/sum_{i=1}^n(X_i-\overline{X})^2$<br><strong>样本方差：</strong>$S^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\overline{X})^2$（n-1保证无偏）<br><strong>k阶样本原点矩：</strong>$A_k=\frac{1}{n}\sum_{i=1}^nX_i^k$<br><strong>k阶样本中心矩：</strong>$M_k=\frac{1}{n}\sum_{i=1}^n(X_i-\overline{X})^k$</p>
-<h3 id="矩估计"><a href="#矩估计" class="headerlink" title="矩估计"></a>矩估计</h3><p>有一些独立同分布的样本，待求均值$\mu$和方差$\sigma^2$，有原点矩表达式是这样的：<br>$$\begin{cases}<br>E(X)=\mu \\<br>E(X^2)=Var(X)+[E(X)]^2=\sigma^2+\mu^2 \\<br>\end{cases}<br>$$<br>根据样本可以求得原点矩：<br>$$\begin{cases}<br>A_1=\frac{1}{n} \sum_{i=1}^n X_i \\<br>A_2=\frac{1}{n} \sum_{i=1}^n X_i^2 \\<br>\end{cases}<br>$$<br>这样就可以求出矩估计的均值$\widehat{\mu}$和方差$\widehat{\sigma}^2$。求得最终的表达式为：<br>$$\begin{cases}<br>\widehat{\mu}=\overline{X} \\<br>\widehat{\sigma}^2=\frac{1}{n} \sum_{i=1}^n (X_i-\overline{X})^2 \\<br>\end{cases}<br>$$</p>
-<h3 id="极大似然估计"><a href="#极大似然估计" class="headerlink" title="极大似然估计"></a>极大似然估计</h3><p>以后完善</p>
+<h3 id="随机森林的推广-Extra-Trees"><a href="#随机森林的推广-Extra-Trees" class="headerlink" title="随机森林的推广(Extra Trees)"></a><a href="http://www.cnblogs.com/sarahp/p/6900572.html" target="_blank" rel="noopener">随机森林的推广(Extra Trees)</a></h3><p>extra trees是RF的一个变种, 原理几乎和RF一模一样，仅有区别有：</p>
+<p>1） 对于每个决策树的训练集，RF采用的是随机采样bootstrap来选择采样集作为每个决策树的训练集，而extra trees一般不采用随机采样，即每个决策树采用原始训练集。</p>
+<p>2） 在选定了划分特征后，RF的决策树会基于信息增益，基尼系数，均方差之类的原则，选择一个最优的特征值划分点，这和传统的决策树相同。但是extra trees比较的激进，他会随机的选择一个特征值来划分决策树。</p>
+<p>从第二点可以看出，由于随机选择了特征值的划分点位，而不是最优点位，这样会导致生成的决策树的规模一般会大于RF所生成的决策树。也就是说，模型的方差相对于RF进一步减少，但是bias相对于RF进一步增大。在某些时候，extra trees的泛化能力比RF更好</p>
+<h3 id="GBDT-Gradient-Boosting-Decision-Tree"><a href="#GBDT-Gradient-Boosting-Decision-Tree" class="headerlink" title="GBDT (Gradient Boosting Decision Tree)"></a>GBDT (Gradient Boosting Decision Tree)</h3><p>gbdt的基本原理是boost 里面的 boosting tree（提升树），并使用 gradient boost。<br>GBDT中的树都是回归树，不是分类树 ，因为gradient boost 需要按照损失函数的梯度近似的拟合残差，这样拟合的是连续数值，因此只有回归树。</p>
+<p>　GB算法中最典型的基学习器是决策树，尤其是CART，正如名字的含义，GBDT是GB和DT的结合。要注意的是这里的决策树是回归树，GBDT中的决策树是个弱模型，深度较小一般不会超过5，叶子节点的数量也不会超过10，对于生成的每棵决策树乘上比较小的缩减系数（学习率&lt;0.1），有些GBDT的实现加入了随机抽样$（subsample 0.5&lt;=f &lt;=0.8）$提高模型的泛化能力。通过交叉验证的方法选择最优的参数。因此GBDT实际的核心问题变成怎么基于${(x_i, r_{im})}_{i=1}^n$使用CART回归树生成$! h_m(x)？$</p>
+<p>CART分类树在很多书籍和资料中介绍比较多，但是再次强调GDBT中使用的是回归树。作为对比，先说分类树，我们知道CART是二叉树，CART分类树在每次分枝时，是穷举每一个feature的每一个阈值，根据GINI系数找到使不纯性降低最大的的feature以及其阀值，然后按照feature&lt;=阈值，和feature&gt;阈值分成的两个分枝，每个分支包含符合分支条件的样本。用同样方法继续分枝直到该分支下的所有样本都属于统一类别，或达到预设的终止条件，若最终叶子节点中的类别不唯一，则以多数人的类别作为该叶子节点的性别。回归树总体流程也是类似，不过在每个节点（不一定是叶子节点）都会得一个预测值，以年龄为例，该预测值等于属于这个节点的所有人年龄的平均值。分枝时穷举每一个feature的每个阈值找最好的分割点，但衡量最好的标准不再是GINI系数，而是最小化均方差–即（每个人的年龄-预测年龄）^2 的总和 / N，或者说是每个人的预测误差平方和 除以 N。这很好理解，被预测出错的人数越多，错的越离谱，均方差就越大，通过最小化均方差能够找到最靠谱的分枝依据。分枝直到每个叶子节点上人的年龄都唯一（这太难了）或者达到预设的终止条件（如叶子个数上限），若最终叶子节点上人的年龄不唯一，则以该节点上所有人的平均年龄做为该叶子节点的预测年龄。</p>
+<h3 id="xgboost"><a href="#xgboost" class="headerlink" title="xgboost"></a>xgboost</h3><p>XGBoost比GBDT好的地方：<br>二阶泰勒展开<br>节点分数惩罚正则<br>增益计算不同，GBDT是gini，xgb是优化推导公式<br><a href="http://www.cnblogs.com/wxquare/p/5541414.html" target="_blank" rel="noopener">一步一步理解GB、GBDT、xgboost</a><br><img src="/images/pasted-86.png" alt="upload successful"><br><img src="/images/pasted-87.png" alt="upload successful"><br><img src="/images/pasted-88.png" alt="upload successful"><br><img src="/images/pasted-89.png" alt="upload successful"></p>
+<h2 id="Boosting"><a href="#Boosting" class="headerlink" title="Boosting"></a>Boosting</h2><p>Boosting算法是一族可以将弱学习器提升为强学习器的算法。<br>Boosting工作原理：先从初始训练集中训练出一个基学习器，再根据基学习器的表现对训练样本分布进行调整，使得先前基学习器做错的的训练样本在后续受到更多的关注，然后基于调整后的样本分布训练下一个基学习器，如此重复进行，知道基学习器数目达到事先指定的值 ，最终将这 个基学习器进行加权结合。这种算法最具有代表的是AdaBoost算法。<br>AdaBoost算法可以理解是基于“加性模型”，即基学习器的线性组合。 </p>
+<h3 id="Adaboost"><a href="#Adaboost" class="headerlink" title="Adaboost"></a>Adaboost</h3><p>（Adaptive Boosting自适应增强）适应性在于：前一个基本分类器的赝本会得到加强，加权后全体样本再次被用来训练下一个基本分类器。同时，在每一轮中加入一个新的弱分类器，直到达到每个预定的足够小的错误率或者达到预先设定的最大迭代次数。<br><img src="/images/pasted-85.png" alt="upload successful"><br>从图中可以看到，在训练过程中我们需要训练出多个弱分类器（图中为3个），每个弱分类器是由不同权重的样本（图中为5个训练样本）训练得到（其中第一个弱分类器对应输入样本的权值是一样的），而每个弱分类器对最终分类结果的作用也不同，是通过加权平均输出的，权值见上图中三角形里面的数值。那么这些弱分类器和其对应的权值是怎样训练出来的呢？<br>下面通过一个例子来简单说明。<br>书中（machine learning in action）假设的是5个训练样本，每个训练样本的维度为2，在训练第一个分类器时5个样本的权重各为0.2. 注意这里样本的权值和最终训练的弱分类器组对应的权值α是不同的，样本的权重只在训练过程中用到，而α在训练过程和测试过程都有用到。<br>现在假设弱分类器是带一个节点的简单决策树，该决策树会选择2个属性（假设只有2个属性）的一个，然后计算出这个属性中的最佳值用来分类。损失函数中正则化项为$Ω(f_t)=γT+\frac{λ}{2}\sum_{j=1}^Tω_i^2$，叶子的个数+w的L2模平方<br>Adaboost的简单版本训练过程如下：</p>
+<ol>
+<li>训练第一个分类器，样本的权值D为相同的均值。通过一个弱分类器，得到这5个样本（请对应书中的例子来看，依旧是machine learning in action）的分类预测标签。与给出的样本真实标签对比，就可能出现误差(即错误)。如果某个样本预测错误，则它对应的错误值为该样本的权重，如果分类正确，则错误值为0. 最后累加5个样本的错误率之和，记为ε。</li>
+<li>通过ε来计算该弱分类器的权重α，公式如下：<br>$α=\frac{1}{2}ln(\frac{1-ε}{ε})$</li>
+<li>通过α来计算训练下一个弱分类器样本的权重D，如果对应样本分类正确，则减小该样本的权重，公式为：<br>$D_i^{t+1}=\frac{D_i^{(t)}e^{-α}}{Sum(D)}$<br>如果样本分类错误，则增加该样本的权重，公式为：<br>$D_i^{t+1}=\frac{D_i^{(t)}e^α}{Sum(D)}$</li>
+<li>循环步骤1,2,3来继续训练多个分类器，只是其D值不同而已。<br>测试过程如下：<br>输入一个样本到训练好的每个弱分类中，则每个弱分类都对应一个输出标签，然后该标签乘以对应的α，最后求和得到值的符号即为预测标签值。</li>
+</ol>
+<h3 id="结合策略"><a href="#结合策略" class="headerlink" title="结合策略"></a>结合策略</h3><p>如何使结合后的集成算法明显的优势呢？也就是说如何将训练出来的多个基学习器如何很好的结合在一起呢形成新的集成算法呢？主要有平均法、投票法、学习法三种结合策略。</p>
+<h4 id="Voting"><a href="#Voting" class="headerlink" title="Voting"></a>Voting</h4><p>投票制即为，投票多者为最终的结果。例如一个分类问题，多个模型投票（当然可以设置权重）。最终投票数最多的类为最终被预测的类。</p>
+<h4 id="Averaging"><a href="#Averaging" class="headerlink" title="Averaging"></a>Averaging</h4><p>Averaging即所有预测器的结果平均。<br>回归问题，直接取平均值作为最终的预测值。（也可以使用加权平均）<br>分类问题，直接将模型的预测概率做平均。（or 加权）<br>加权平均，其公式如下：<br>$$\sum_{i=1}^n Weight_i∗P_i$$<br>其中nn表示模型的个数， $Weight_i$表示该模型权重，$P_i$表示模型i的预测概率值。<br>例如两个分类器，XGBoost（权重0.4）和LightGBM（权重0.6），其预测概率分别为：0.75、0.5，那么最终的预测概率，(0.4 <em> 0.75+0.6 </em> 0.5)/(0.4+0.6)=0.6<br>模型权重也可以通过机器学习模型学习得到</p>
+<h4 id="Ranking"><a href="#Ranking" class="headerlink" title="Ranking"></a>Ranking</h4><p>Rank的思想其实和Averaging一致，但Rank是把排名做平均，对于AUC指标比较有效。<br>个人认为其实就是Learning to rank的思想，可以来优化搜索排名。具体公式如下：<br>$$\sum_{i=1}^n \frac{Weight_i}{Rank_i}$$<br>其中nn表示模型的个数， WeightiWeighti表示该模型权重，所有权重相同表示平均融合。RankiRanki表示样本在第i个模型中的升序排名。它可以较快的利用排名融合多个模型之间的差异，而不需要加权融合概率。</p>
+<h4 id="Binning"><a href="#Binning" class="headerlink" title="Binning"></a>Binning</h4><p>将单个模型的输出放到一个桶中。参考<a href="http://cseweb.ucsd.edu/~elkan/254spring01/jdrishrep.pdf" target="_blank" rel="noopener">pdf paper</a></p>
+<h4 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h4><p>使用训练数据的不同随机子集来训练每个 Base Model，最后每个 Base Model 权重相同，分类问题进行投票，回归问题平均。<br>随机森林就用到了Bagging，并且具有天然的并行性。</p>
+<h4 id="Boosting-1"><a href="#Boosting-1" class="headerlink" title="Boosting"></a>Boosting</h4><p>Boosting是一种迭代的方法，每一次训练会更关心上一次被分错的样本，比如改变被错分的样本的权重的Adaboost方法。还有许多都是基于这种思想，比如Gradient Boosting等。</p>
+<h4 id="Stacking"><a href="#Stacking" class="headerlink" title="Stacking"></a>Stacking</h4><p><img src="/images/pasted-90.png" alt="upload successful"><br>从上图可以看出，类似交叉验证。</p>
+<ul>
+<li>将数据集分为K个部分，共有n个模型。</li>
+<li>for i in xrange(n):<br>for i in xrange(k):<br>用第i个部分作为预测，剩余的部分来训练模型，获得其预测的输出作为第i部分的新特征。<br>对于测试集，直接用这k个模型的预测值均值作为新的特征。</li>
+<li>这样k次下来，整个数据集都获得了这个模型构建的New Feature。n个模型训练下来，这个模型就有n个New Features。</li>
+<li>把New Features和label作为新的分类器的输入进行训练。然后输入测试集的New Features输入模型获得最终的预测结果。</li>
+</ul>
+<h4 id="Blending"><a href="#Blending" class="headerlink" title="Blending"></a>Blending</h4><p>Blending直接用不相交的数据集用于不同层的训练。</p>
+<p>以两层的Blending为例，训练集划分为两部分（d1，d2），测试集为test。</p>
+<ul>
+<li>第一层：用d1训练多个模型，讲其对d2和test的预测结果作为第二层的New Features。</li>
+<li>第二层：用d2的New Features和标签训练新的分类器，然后把test的New Features输入作为最终的预测值。</li>
+</ul>
+<h3 id="融合的条件"><a href="#融合的条件" class="headerlink" title="融合的条件"></a>融合的条件</h3><p>Base Model 之间的相关性要尽可能的小。这就是为什么非 Tree-based Model 往往表现不是最好但还是要将它们包括在 Ensemble 里面的原因。Ensemble 的 Diversity 越大，最终 Model 的 Bias 就越低。<br>Base Model 之间的性能表现不能差距太大。这其实是一个 Trade-off，在实际中很有可能表现相近的 Model 只有寥寥几个而且它们之间相关性还不低。但是实践告诉我们即使在这种情况下 Ensemble 还是能大幅提高成绩。</p>
+<h3 id="多样性"><a href="#多样性" class="headerlink" title="多样性"></a>多样性</h3><p>多样性，在前面已经提到过，一个好集成算法，需要训练出来的基学习器具有很强的多样性。 </p>
+<ul>
+<li>误差-分歧分解</li>
+<li>多样性度量</li>
+<li>多样性增强</li>
+</ul>
+<p>在集成学习中需要有效地生成多样性大的个体学习器。如果增强多样性呢？一般思路是在学习过程中引入随机性，常见的做法是对数据样本、输入属性、输出表示、算法参数进行扰动。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>低泛化误差；</li>
+<li>容易实现，分类准确率较高，没有太多参数可以调；</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>对outlier（离群值）比较敏感。</li>
+</ul>
 
       
 
@@ -1007,7 +950,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/11/人工智能数学基础-1/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/03/26/集成学习/">展开全文 >></a>
         </p>
       
 
@@ -1037,10 +980,169 @@
 
 
   
+    <article id="post-线性回归" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/categories/机器学习/page/2/">2</a><a class="extend next" rel="next" href="/categories/机器学习/page/2/">Next &raquo;</a>
-    </nav>
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/24/线性回归/">线性模型</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/24/线性回归/" class="archive-article-date">
+  	<time datetime="2018-03-24T01:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>线性模型是机器学习里面最基础的一个模型，也是比较简单的，主要用于属于线性关系的模型，像y=wx+b，就是只有一个属性x表示的y值的变化规律，也称做单属性线性回归。</p>
+<h2 id="基本形式"><a href="#基本形式" class="headerlink" title="基本形式"></a>基本形式</h2><p>当给定d个属性示例$x=[x_1;x_2….x_d]$，线性模型视图学得一个属性的线性组合来进行预测：$f(x)=w_1x_1+w_2x_2+w_3x_4+…w_dx_d+b=w^T+b$，w和b确认后，模型即可确认。<br>线性模型形式简单、易于建模，却蕴涵着机器学习中的一些重要的基本思想。许多功能更为强大的非线性模型（nonlinear model）可以在线性模型的基础上通过引入层级结构或者高维映射而得。</p>
+<h2 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h2><h3 id="度量指标"><a href="#度量指标" class="headerlink" title="度量指标"></a>度量指标</h3><ul>
+<li><p>集中趋势的衡量</p>
+<ul>
+<li>均值：$\overline {x}=\frac{\sum{i=1}^nx_i}{n}$；</li>
+<li>中位数：大小排序后，中间位置的数；</li>
+<li>众数：出现最多的数；</li>
+</ul>
+</li>
+<li><p>离散程度的衡量</p>
+<ul>
+<li>方差：$s^2=\frac{\sum{i=1}^n(x_i-\overlinex)^2} {n-1}$</li>
+<li>标准差：s</li>
+</ul>
+</li>
+</ul>
+<h3 id="单属性线性回归"><a href="#单属性线性回归" class="headerlink" title="单属性线性回归"></a>单属性线性回归</h3><p>先研究单属性线性回归问题，也即： </p>
+<ol>
+<li>训练集只有一个属性 </li>
+<li>给定数据集$D={(x_i,y_i)}m_i=1$ </li>
+<li>线性预测表示为：$f(x_i=wx_i+b)$</li>
+<li>通过训练集得到w和b的值，使得$f(x_i)≈y_i$</li>
+</ol>
+<p>均方差是常用的性能度量指标：<br><img src="/images/pasted-67.png" alt="upload successful"><br>只需针对w和b分别求偏导即可得到最优解（闭式close-form解）w和b。<br>基于均方误差最小化来进行模型求解的方法也称为最小二乘法。在线性回归中，最小二乘法可以找到一条这样的直线，使得所有样本到直线上的欧氏距离之和最小。<br>$$w=\frac{\sum (x_i-\overline x)(y_i-\overline y)}{\sum (x_i-\overline x)^2}$$<br>$$b=\overline y -w\overline x$$</p>
+<h3 id="多属性线性回归"><a href="#多属性线性回归" class="headerlink" title="多属性线性回归"></a>多属性线性回归</h3><p>多元线性回归也就是有d个属性，建立矩阵方程。</p>
+<h3 id="线性回归与最小二乘"><a href="#线性回归与最小二乘" class="headerlink" title="线性回归与最小二乘"></a>线性回归与最小二乘</h3><p>$$y=w^Tx+ε$$<br>假设ε满足独立同分布，服从均值0方差$θ^2$的高斯分布。所以ε表示为：$p(ε)=\frac{1}{\sqrt{2π}}e^{(-\frac{ε^2}{2σ^2})}$<br>由于$ε=y-w^Tx$，带入到上式：$$p(y|x;w)=\frac{1}{\sqrt{2π}}e^{(-\frac{(y-w^Tx)^2}{2σ^2})}$$<br>其中$p(y|x;w)$表示w能够最大y的概率的取值，可以用似然函数求解。<br>$$L(θ)=\prod_{i=1}{m}p(y|x;w)$$<br>通过取对数，化简得到目标函数：求取J(θ)的最小值<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>最小值可以通过凸函数的导数为零的解，由于X和θ是矩阵，求导要符合矩阵求导的公式。求导公式，可参照<a href="https://en.wikipedia.org/wiki/Matrix_calculus#Scalar-by-vector_identities" target="_blank" rel="noopener">wiki百科</a><br><img src="/images/pasted-71.png" alt="upload successful"></p>
+<h3 id="岭回归"><a href="#岭回归" class="headerlink" title="岭回归"></a><a href="https://zhuanlan.zhihu.com/p/30535220" target="_blank" rel="noopener">岭回归</a></h3><p><img src="/images/pasted-93.png" alt="upload successful"><br>岭回归和Lasso是两种线性回归的缩减(shrinkage)方法。<br>标准最小二乘法优化问题:<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>可以表示为：<br>$$J(θ)=\frac{1}{2} (h_θ(x)-y)^T(h_θ(x)-y)$$<br>回归系数为：<br>$$θ=(X^TX)^{-1}X^Ty$$<br>这个问题解存在且唯一的条件就是XX列满秩: rank(X) = dim(X)。但即使 X 列满秩，但是当数据特征中存在共线性，即相关性比较大的时候，会使得标准最小二乘求解不稳定, $X^TX$的行列式接近零，计算$X^TX$的时候误差会很大。这个时候我们需要在cost function上添加一个惩罚项 $\lambda\sum_{i=1}^{n}θ_{i}^2$，称为L2正则化。<br>这个时候的cost function的形式就为:</p>
+<p>$$f(θ) = \sum_{i=1}^{m} (y_i - x_{i}^{T}θ)^2 + \lambda\sum_{i=1}^{n}θ_{i}^{2}$$</p>
+<p>通过加入此惩罚项进行优化后，限制了回归系数$wiwi$的绝对值，数学上可以证明上式的等价形式如下:</p>
+<p>$$f(θ) = \sum_{i=1}^{m} (y_i - x_{i}^{T}θ)^2 $$</p>
+<p>$$s.t. \sum_{i=1}^{n}θ_{j}^2 \le t$$</p>
+<p>其中t为某个阈值。</p>
+<p>将岭回归系数用矩阵的形式表示:</p>
+<p>$$\hat{θ} = (X^{T}X + \lambda I)^{-1}X^{T}y$$</p>
+<p>可以看到，就是通过将 $X^TX$ 加上一个单位矩阵是的矩阵变成非奇异矩阵并可以进行求逆运算。</p>
+<p><img src="\images\pasted-94.png" alt="upload successful"></p>
+<p><strong>岭回归的一些性质</strong></p>
+<p>当岭参数 $\lambda = 0 $时，得到的解是最小二乘解<br>当岭参数 $\lambda$ 趋向更大时，岭回归系数 $θ_i $趋向于0，约束项 t 很小</p>
+<h3 id="Lasso"><a href="#Lasso" class="headerlink" title="Lasso"></a>Lasso</h3><p>岭回归限定了所有回归系数的平方和不大于 t , 在使用普通最小二乘法回归的时候当两个变量具有相关性的时候，可能会使得其中一个系数是个很大正数，另一个系数是很大的负数。通过岭回归的  $\sum_{i=1}^{n} θ_i \le t $的限制，可以避免这个问题。</p>
+<p>LASSO(The Least Absolute Shrinkage and Selection Operator)是另一种缩减方法，将回归系数收缩在一定的区域内。LASSO的主要思想是构造一个一阶惩罚函数获得一个精炼的模型, 通过最终确定一些变量的系数为0进行特征筛选。</p>
+<p>LASSO的惩罚项为:</p>
+<p>$$\sum_{i=1}^{n} \vert θ_i \vert \le t$$</p>
+<p>与岭回归的不同在于，此约束条件使用了绝对值的一阶惩罚函数代替了平方和的二阶函数。虽然只是形式稍有不同，但是得到的结果却又很大差别。在LASSO中，当λ很小的时候，一些系数会随着变为0而岭回归却很难使得某个系数恰好缩减为0. 我们可以通过几何解释看到LASSO与岭回归之间的不同。</p>
+<p><img src="\images\pasted-95.png" alt="upload successful"><br>虽然惩罚函数只是做了细微的变化，但是相比岭回归可以直接通过矩阵运算得到回归系数相比，LASSO的计算变得相对复杂。</p>
+<h3 id="Kernel-Regression-and-RBFs"><a href="#Kernel-Regression-and-RBFs" class="headerlink" title="Kernel Regression and RBFs"></a>Kernel Regression and RBFs</h3><p><strong>径向基函数</strong></p>
+<p>我们可以用核函数线性组合来表示线性回归模型：<br>$$Φ(x)=[κ(x,μ_1,λ),…,κ(x,μ_d,λ)]，e.g. 高斯核函数：κ(x,μ,λ)=e^{-\frac{1}{2}||x-μ_i||^2}$$</p>
+<ul>
+<li>d的确定可以指定，这个可以使用x的个数，但是如果x个数太多，那么会导致很复杂。第二个方法可以通过Kmeans聚类。</li>
+<li>超参数的确定，λ取0.1，μ取在x聚类后的均值。（还没验证…）</li>
+</ul>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="广义线性回归"><a href="#广义线性回归" class="headerlink" title="广义线性回归"></a>广义线性回归</h3><p>线性回归模型$y=w^Tx+b$，如果将y表示为在指数尺度上的变化，则：$\ln y=w^Tx+b$称为对数线性回归。$y=e^{w^Tx+b}$，实质上是在求输入空间到输出空间的非线性函数的映射（欧拉公式）。<br><img src="/images/pasted-68.png" alt="upload successful"><br>对更一般的单调可微函数g(x)，$y=g^{-1}(w^Tx+b)$这样的模型成为广义线性模型。g(x)称为联系函数（link function）</p>
+<h3 id="对数几率函数（逻辑回归）"><a href="#对数几率函数（逻辑回归）" class="headerlink" title="对数几率函数（逻辑回归）"></a>对数几率函数（逻辑回归）</h3><p>之前讨论的是使用线性模型进行回归学习，如果要应用到分类中，思路就是利用广义线性模型，找一单调可微函数将分类任务的真实标记y与线性回归模型的预测值对应起来即可。<br>设$z=w^Tx+b$，单位阶跃函数（unit-step function）表示为：<br>$y=\begin{cases}<br>0,z&lt;0;<br>0.5,z=0;<br>1z&gt;0<br>\end{cases}$<br>可以表征二分类任务，z大于零为正例，小于零为负例，临界值可任意。但是单位阶跃不连续，固需利用类似的替代函数（surrogate function）：对数几率函数（logistic function）$y=\frac{1}{1+\exp{-z}}$</p>
+<p>目前使用比较广泛的是对数几率函数logistic function，它是Sigmoid函数的一种。它的好处在于： </p>
+<ol>
+<li>单调可微 </li>
+<li>在0处变化陡峭，最接近阶跃函数，适合二分类。</li>
+</ol>
+<p>$y=\frac{1}{1+\exp{-(w^Tx+b)}}$，$\ln \frac{y}{1-y}=w^Tx+b$，$\frac{y}{1-y}$含义就是比率，为正例的可能性与为反例的可能性比值。<br>从本质上讲，对数几率回归模型logistic regression就是在用线性回归模型的预测结果去逼近真实标记的对数几率。</p>
+<p>确定模型之后，接下来自然要做的就是确定w和b。这里要使用到的方法是极大似然法（maximum likelihood method）。<br>给定数据集{$(x_i,y_i)$}i=1~m，对率回归模型最大化就是要把所有样本概率预测之和最大化，也就是$l(w,b)=\sum{i=1}^m \ln p(y_i|x_i;w,b)$。为方便讨论，令β=(w;b),x̂ =(x;1),wT+x=βTx̂ ，再令$l(β)=\sum{i=1}^m -y_iβ^Tx_i\ln (1+\exp{β^Tx_i})$这样，最大化原概率和公式等价于最小化。上式为关于β的高阶可导连续凸函数，根据凸优化理论，利用经典的数值优化算法如梯度下降法、牛顿法都可求得最优解。</p>
+<h3 id="logistic回归求解"><a href="#logistic回归求解" class="headerlink" title="logistic回归求解"></a>logistic回归求解</h3><p>回归的方程表达式为：<br>$$h_θ(x)=g(θ^Tx)=\frac{1}{1+e^(-θ^Tx)}$$<br>$h_θ(x)$可以进行概率表示：<br>$$P(y=1|x;θ)=h_θ(x)$$<br>$$P(y=0|x;θ)=1-h_θ(x)$$<br>结合到一起可以写为：<br>$$P(y|x;θ)=(h_θ(x))^y(1-h_θ(x))^{1-y}$$<br>是不是很巧妙。<br>然后找到最大似然估计：<br>$$log L(θ)=\sum_{i=1}^my\log h(x)+(1-y)\log(1-h(x))$$<br>$$J(θ)=-\frac{1}{2m}log L(θ)$$<br>由于是非线性方程找不到驻点，所以只能用梯度下降法，求导方向下降最大的点移动。<br><img src="/images/pasted-72.png" alt="upload successful"></p>
+<h2 id="线性判别分析"><a href="#线性判别分析" class="headerlink" title="线性判别分析"></a>线性判别分析</h2><p>线性判别分析Linear Discriminant Analysis是一种经典的线性学习方法，应用于分类任务中。<br>LDA的思想非常简单，将训练集的样本投影到一条直线上，同一类的尽量互相靠近，而不同类之间尽可能相隔的远。使用数学语言，投影即是向量乘积， 同一类尽量靠近，就是协方差要小，不同类相隔远，就是类中心距离远，也就是均值投影的差要大。<br><img src="/images/pasted-69.png" alt="upload successful"></p>
+<ol>
+<li>从贝叶斯决策理论的角度可以证明LDA在两类数据同先验、满足高斯分布且协方差相等时，LDA可达到最优分类。 </li>
+<li>LDA核心是投影，这样往往实现了降维，因而LDA也常被视为一种经典的监督降维技术。<br><img src="/images/pasted-70.png" alt="upload successful"></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model</span><br><span class="line">train_data=pd.read_csv(<span class="string">'./data/linear3.csv'</span>,index_col=<span class="number">0</span>)</span><br><span class="line">x=train_data.iloc[:,<span class="number">0</span>:<span class="number">5</span>]</span><br><span class="line">y=train_data.iloc[:,<span class="number">5</span>]</span><br><span class="line">clf = linear_model.LinearRegression()</span><br><span class="line">clf.fit(x,y)</span><br><span class="line">print(clf.coef_) <span class="comment"># 斜率</span></span><br><span class="line">print(clf.intercept_) <span class="comment"># 截距</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最小二乘法</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinearRegression</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.w=<span class="keyword">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self,x,y)</span>:</span></span><br><span class="line">        x=np.insert(x,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>)</span><br><span class="line">        x_=np.linalg.inv(x.T.dot(x))</span><br><span class="line">        self.w=x_.dot(x.T).dot(y)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        x=np.insert(x,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>) <span class="comment"># 插入了b</span></span><br><span class="line">        y_pred=x.dot(self.w)</span><br><span class="line">        <span class="keyword">return</span> y_pred</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_squared_error</span><span class="params">(y_true,y_pred)</span>:</span></span><br><span class="line">    mse=np.mean(np.power(y_true-y_pred,<span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> mse</span><br><span class="line">diabetes=datasets.load_diabetes()</span><br><span class="line">x=diabetes.data[:,np.newaxis,<span class="number">2</span>]</span><br><span class="line">print(x.shape)</span><br><span class="line">x_train,x_test=x[:<span class="number">-20</span>],x[<span class="number">-20</span>:]</span><br><span class="line">y_train,y_test=diabetes.target[:<span class="number">-20</span>],diabetes.target[<span class="number">-20</span>:]</span><br><span class="line">clf=LinearRegression()</span><br><span class="line">clf.fit(x_train,y_train)</span><br><span class="line">y_pred=clf.predict(x_test)</span><br><span class="line">print(<span class="string">'MSE'</span>,mean_squared_error(y_test,y_pred))</span><br><span class="line">plt.scatter(x_test[:,<span class="number">0</span>],y_test,color=<span class="string">'black'</span>)</span><br><span class="line">plt.plot(x_test[:,<span class="number">0</span>],y_pred,color=<span class="string">'blue'</span>,linewidth=<span class="number">3</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradientDescent</span><span class="params">(x,y,theta,alpha,m,numIterations)</span>:</span></span><br><span class="line">    xTrans=x.transpose()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numIterations):</span><br><span class="line">        hypothesis=np.dot(x,theta)</span><br><span class="line">        loss=hypothesis-y</span><br><span class="line">        cost=np.sum(loss**<span class="number">2</span>)/(<span class="number">2</span>*m)</span><br><span class="line">        gradient=np.dot(xTrans,loss)/m</span><br><span class="line">        theta=theta-alpha*gradient</span><br><span class="line">    <span class="keyword">return</span> theta</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">genData</span><span class="params">(numPoints,bias,variance)</span>:</span></span><br><span class="line">    x=np.zeros(shape=(numPoints,<span class="number">2</span>))</span><br><span class="line">    y=np.zeros(shape=numPoints)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numPoints):</span><br><span class="line">        x[i][<span class="number">0</span>]=<span class="number">1</span></span><br><span class="line">        x[i][<span class="number">1</span>]=i</span><br><span class="line">        y[i]=(i+bias)+random.uniform(<span class="number">0</span>,<span class="number">1</span>)*variance</span><br><span class="line">    <span class="keyword">return</span> x,y</span><br><span class="line">x,y=genData(<span class="number">100</span>,<span class="number">25</span>,<span class="number">10</span>)</span><br><span class="line"><span class="comment"># print(x,y)</span></span><br><span class="line">m,n=np.shape(x)  <span class="comment"># m代表多少个实例</span></span><br><span class="line">numIterations=<span class="number">100000</span>  <span class="comment"># 循环次数</span></span><br><span class="line">alpha=<span class="number">0.0005</span>  <span class="comment">#学习率</span></span><br><span class="line">theta=np.ones(n)  <span class="comment"># 要求得的参数值</span></span><br><span class="line">theta=gradientDescent(x,y,theta,alpha,m,numIterations)</span><br><span class="line">print(theta)</span><br></pre></td></tr></table></figure>
+<h3 id="回归中的相关度和R平方值"><a href="#回归中的相关度和R平方值" class="headerlink" title="回归中的相关度和R平方值"></a>回归中的相关度和R平方值</h3><ul>
+<li><p>相关度<br><img src="/images/pasted-73.png" alt="upload successful"><br>相关系数：-1负相关，0不相关，1正相关。</p>
+</li>
+<li><p>R平方值<br>决定系数，反应因变量的全部变异能通过回归关系被自变量解释的比例。</p>
+<ul>
+<li>简单线性回归：$R^2=r^2$相关度</li>
+<li>多远线性回归：$r^2=\frac{SSR}{SSt}=\frac{\sum {(\widehat y_i-\overline y)^2}}{(y_i-\oveline y)^2}$<br><img src="/images/pasted-74.png" alt="upload successful"><br>R随着自变量数量增加而增大，R平方跟样本量是有关系的。因此做了一下修正：<br><img src="/images/pasted-75.png" alt="upload successful"></li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/24/线性回归/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
 
           </div>
@@ -1158,11 +1260,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">

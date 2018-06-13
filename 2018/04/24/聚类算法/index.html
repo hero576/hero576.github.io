@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://yoursite.com/images/pasted-76.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-77.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-78.png">
-<meta property="og:updated_time" content="2018-06-08T07:24:40.202Z">
+<meta property="og:updated_time" content="2018-06-13T05:41:03.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聚类算法">
 <meta name="twitter:description" content="聚类可以说是一种无监督的学习，也就是说在训练样本中对应的标记信息是没有的，目标是通过对无标记训练样本的学习来揭示数据内在性质和规律，为进一步的数据分析提供基础。 聚类的任务聚类试图将数据集中的样本划分为若干个通常是不相交的子集，每个子集称为一个“簇”。 性能度量簇内相似度高，簇间相似度低。   外部指标：是将聚类结果与某个“参考模型”进行比较  内部指标：直接考察聚类结果而不利用任何参考模型。">
@@ -191,6 +191,14 @@
 <li>K均值聚类(Kmeans)</li>
 <li>学习向量量化</li>
 <li><a href="http://www.cnblogs.com/mmziscoming/p/5750849.html" target="_blank" rel="noopener">高斯混合聚类(GMM)</a></li>
+</ul>
+<p><a href="http://www.cnblogs.com/kemaswill/archive/2013/01/26/2877434.html" target="_blank" rel="noopener">K值的确定</a>：<br><a href="https://www.zhihu.com/question/29208148/answer/141482198" target="_blank" rel="noopener">知乎的回答</a></p>
+<ul>
+<li>数据的先验知识，或者数据进行简单分析能得到</li>
+<li>基于变化的算法：即定义一个函数，随着K的改变，认为在正确的K时会产生极值。如Gap Statistic（Estimating the number of clusters in a data set via the gap statistic, Tibshirani, Walther, and Hastie 2001），Jump Statistic （finding the number of clusters in a data set, Sugar and James 2003）</li>
+<li>基于结构的算法：即比较类内距离、类间距离以确定K。这个也是最常用的办法，如使用平均轮廓系数，越趋近1聚类效果越好；如计算类内距离/类间距离，值越小越好；等。</li>
+<li>基于一致性矩阵的算法：即认为在正确的K时，不同次聚类的结果会更加相似，以此确定K。基于层次聚类：即基于合并或分裂的思想，在一定情况下停止从而获得K。</li>
+<li>基于采样的算法：即对样本采样，分别做聚类；根据这些结果的相似性确定K。如，将样本分为训练与测试样本；对训练样本训练分类器，用于预测测试样本类别，并与聚类的类别比较。</li>
 </ul>
 <h2 id="密度聚类"><a href="#密度聚类" class="headerlink" title="密度聚类"></a>密度聚类</h2><p>基于密度的聚类算法主要的目标是寻找被低密度区域分离的高密度区域。与基于距离的聚类算法不同的是，基于距离的聚类算法的聚类结果是球状的簇，而基于密度的聚类算法可以发现任意形状的聚类，这对于带有噪音点的数据起着重要的作用。 </p>
 <h2 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h2><p>层次聚类也叫连通聚类方法，有两个基本方法：自顶而下和自底而上。自顶而将所有样本看做是同一簇，然后进行分裂。自底而上将初所有样本看做不同的簇，然后进行凝聚。这种聚类的中心思想是：离观测点较近的点相比离观测点较远的点更可能是一类。<br>过程如下：</p>
@@ -513,11 +521,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
