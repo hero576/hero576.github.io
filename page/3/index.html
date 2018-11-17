@@ -146,6 +146,262 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-算法题——832-Flipping-an-Image" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/13/算法题——832-Flipping-an-Image/">算法题——832 Flipping an Image</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/13/算法题——832-Flipping-an-Image/" class="archive-article-date">
+  	<time datetime="2018-02-13T09:15:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><p>Given a binary matrix A, we want to flip the image horizontally, then invert it, and return the resulting image.</p>
+<p>To flip an image horizontally means that each row of the image is reversed.  For example, flipping [1, 1, 0] horizontally results in [0, 1, 1].</p>
+<p>To invert an image means that each 0 is replaced by 1, and each 1 is replaced by 0. For example, inverting [0, 1, 1] results in [1, 0, 0].<br><strong>Example 1:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line">Output: [[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]</span><br><span class="line">Explanation: First reverse each row: [[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]].</span><br><span class="line">Then, invert the image: [[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]</span><br></pre></td></tr></table></figure></p>
+<p><strong>Example 2:</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]]</span><br><span class="line">Output: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]]</span><br><span class="line">Explanation: First reverse each row: [[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>]].</span><br><span class="line">Then invert the image: [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]]</span><br></pre></td></tr></table></figure></p>
+<p>难度级别：简单</p>
+<p>这个题比较简单，用列表的方法就可以了。我的答案：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">flipAndInvertImage</span><span class="params">(self, A)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> A:</span><br><span class="line">            line.reverse()</span><br><span class="line">            <span class="keyword">for</span> i,val <span class="keyword">in</span> enumerate(line):</span><br><span class="line">                line[i]=<span class="number">0</span> <span class="keyword">if</span> val==<span class="number">1</span> <span class="keyword">else</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/13/算法题——832-Flipping-an-Image/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-数据结构——树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/13/数据结构——树/">数据结构——树</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/13/数据结构——树/" class="archive-article-date">
+  	<time datetime="2018-02-13T08:57:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><p>树是一种重要的非线性数据结构，主要的用途是用来提高查找效率，对于要重复查找的情况效果更佳，如二叉排序树、FP-树。另外可以用来提高编码效率，如哈弗曼树。一切具有层次关系的问题都可用树来描述。<br>树结构的特点是：</p>
+<ul>
+<li>它的每一个结点都可以有不止一个直接后继</li>
+<li>除根结点外的所有结点都有且只有一个直接前驱。<br>树的递归定义如下：</li>
+</ul>
+<ol>
+<li>至少有一个结点（称为根）</li>
+<li>其它是互不相交的子树</li>
+</ol>
+<h3 id="二叉树结构"><a href="#二叉树结构" class="headerlink" title="二叉树结构"></a>二叉树结构</h3><ul>
+<li>节点值</li>
+<li>左孩子</li>
+<li>右孩子<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span>:</span></span><br><span class="line">    <span class="comment"># 创建节点类，包含左右两个指针，一个节点</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,elem=None)</span>:</span></span><br><span class="line">        self.elem=elem</span><br><span class="line">        self.right=<span class="keyword">None</span></span><br><span class="line">        self.left=<span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="二叉树遍历"><a href="#二叉树遍历" class="headerlink" title="二叉树遍历"></a>二叉树遍历</h3><p><img src="http://p8cigu7up.bkt.clouddn.com/1526286772063isf9jqp4.png?imageslim" alt="paste image"><br><strong>先序遍历：</strong>1,2,4,5,3,6,7<br><strong>中序遍历：</strong>4,2,5,1,6,3,7<br><strong>后序遍历：</strong>4,5,2,6,7,3,1<br>还有：中右左、右中左、右左中三中不常见的遍历<br><strong>层序遍历：</strong>1,2,3,4,5,6,7<br>按层遍历二叉树实际上是宽度优先搜索的应用。</p>
+<p>使用递归实现二叉树的遍历：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">printTree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.root = Node()</span><br><span class="line">        self.myQueue = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, elem)</span>:</span>  <span class="comment"># 采用一个堆栈实现</span></span><br><span class="line">        node = Node(elem)</span><br><span class="line">        <span class="keyword">if</span> self.root.elem == <span class="keyword">None</span>:</span><br><span class="line">            self.root = node</span><br><span class="line">            self.myQueue.append(self.root)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cur = self.myQueue[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">if</span> cur.left == <span class="keyword">None</span>:</span><br><span class="line">                cur.left = node</span><br><span class="line">                self.myQueue.append(cur.left)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur.right = node</span><br><span class="line">                self.myQueue.append(cur.right)</span><br><span class="line">                self.myQueue.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pre_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#前序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br><span class="line">        self.pre_order(root.left)</span><br><span class="line">        self.pre_order(root.right)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mid_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#中序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.mid_order(root.left)</span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br><span class="line">        self.mid_order(root.right)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#后序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.post_order(root.left)</span><br><span class="line">        self.post_order(root.right)</span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
+<p>非递归实现二叉树的遍历：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pre_stack</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        node = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(node.elem, end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> node.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, node.right)</span><br><span class="line">        <span class="keyword">if</span> node.left:</span><br><span class="line">            stack.insert(<span class="number">0</span>, node.left)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mid_stack</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = []</span><br><span class="line">    cur = root</span><br><span class="line">    <span class="keyword">while</span> stack <span class="keyword">or</span> cur:</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            stack.insert(<span class="number">0</span>, cur)</span><br><span class="line">            cur = cur.left</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line">        cur = cur.right</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_stack</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现方法一</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack1 = [root]</span><br><span class="line">    stack2 = []</span><br><span class="line">    <span class="keyword">while</span> stack1:</span><br><span class="line">        cur = stack1.pop()</span><br><span class="line">        stack2.insert(<span class="number">0</span>, cur)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack1.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack1.append(cur.right)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> stack2:</span><br><span class="line">        print(i.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_stack2</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现方法二</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    h = root  <span class="comment"># 最近一次弹出并打印的节点</span></span><br><span class="line">    c = <span class="keyword">None</span>  <span class="comment"># 当前stack的栈顶节点</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        c = stack[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> c.left <span class="keyword">and</span> h != c.left <span class="keyword">and</span> h != c.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, c.left)</span><br><span class="line">        <span class="keyword">elif</span> c.right <span class="keyword">and</span> h != c.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, c.right)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            h = stack.pop(<span class="number">0</span>)</span><br><span class="line">            print(h.elem, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
+<p>递归和非递归的方法时间复杂度都是O(N)，N为二叉树节点数，额外空间复杂度为O(L)，L为二叉树的层数。</p>
+<p>实现二叉树的层序遍历：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack=[root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur=stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem,end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue_enter</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现换行</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    last = root  <span class="comment"># 表示正在打印的当前行的最右节点</span></span><br><span class="line">    nlast = <span class="keyword">None</span>  <span class="comment"># 表示下一行的最右节点</span></span><br><span class="line">    stack = [last]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">            nlast = cur.left</span><br><span class="line">        <span class="keyword">if</span> nlast.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line">            nlast = cur.right</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> last == cur:</span><br><span class="line">            print()</span><br><span class="line">            last = nlast</span><br></pre></td></tr></table></figure>
+<h4 id="根据遍历顺序还原二叉树"><a href="#根据遍历顺序还原二叉树" class="headerlink" title="根据遍历顺序还原二叉树"></a>根据遍历顺序还原二叉树</h4><p>例如给定前序和中序的打印顺序，求后续遍历。<br>前序遍历有个特点，第一个肯定为根。然后根据根，在中序遍历可以区分出来左子树和右子树。递归的查找，就可以还原了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">permid_post</span><span class="params">(perstr, midstr)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> perstr <span class="keyword">or</span> <span class="keyword">not</span> midstr:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    val = perstr[<span class="number">0</span>]</span><br><span class="line">    node = Node(val)</span><br><span class="line">    index = midstr.find(val)</span><br><span class="line">    permid_post(perstr[<span class="number">1</span>:index+<span class="number">1</span>],midstr[:index])</span><br><span class="line">    permid_post(perstr[index+<span class="number">1</span>:],midstr[index+<span class="number">1</span>:])</span><br><span class="line">    print(node.elem,end=<span class="string">' '</span>)</span><br><span class="line">perstr = <span class="string">'GDAFEMHZ'</span></span><br><span class="line">midstr = <span class="string">'ADEFGHMZ'</span></span><br><span class="line">permid_post(perstr,midstr)</span><br></pre></td></tr></table></figure></p>
+<h3 id="二叉树序列化和反序列化"><a href="#二叉树序列化和反序列化" class="headerlink" title="二叉树序列化和反序列化"></a>二叉树序列化和反序列化</h3><p>有时我们需要用文件的形式将二叉树记录下来，下次要重构二叉树的时候只需将按照文件重新建立二叉树即可。这个过程叫做序列化过程，也叫持久化过程。<br>序列化方式：</p>
+<ul>
+<li>先序遍历序列化</li>
+<li>中序遍历序列化</li>
+<li>后序遍历序列化</li>
+<li>按层序列化</li>
+</ul>
+<p>先序遍历二叉树过程与中序后序相同，步骤如下：</p>
+<ul>
+<li>假设序列化结果为str，初始时str为空字符串</li>
+<li>先序遍历二叉树时如果遇到空节点，在str末尾加上“#！”</li>
+<li>如果遇到不为空的节点，假设节点值为3，就在str末尾增加‘3！’<br>先序遍历反序列化过程：</li>
+<li>按照！分割字符串</li>
+<li>按照先序遍历的顺序构建二叉树，遇到#设置为空节点</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Serialize</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 把对象转换为字节序列的过程称为对象的序列化</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Per_order</span><span class="params">(root)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            result.append(<span class="string">'#!'</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        result.append(str(root.elem) + <span class="string">'!'</span>)</span><br><span class="line">        Per_order(root.left)</span><br><span class="line">        Per_order(root.right)</span><br><span class="line"></span><br><span class="line">    result = []</span><br><span class="line">    Per_order(root)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(result)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Deserialize2</span><span class="params">(self, s)</span>:</span>  <span class="comment"># 把字节序列恢复为对象的过程称为对象的反序列化</span></span><br><span class="line">    s = s.split(<span class="string">"!"</span>)</span><br><span class="line">    self.myroot=<span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(index)</span>:</span></span><br><span class="line">        index[<span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> index[<span class="number">0</span>] &gt;= len(s):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> s[index[<span class="number">0</span>]] == <span class="string">'#'</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        node = Node()</span><br><span class="line">        node.elem = s[index[<span class="number">0</span>]]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.myroot:</span><br><span class="line">            self.myroot = node</span><br><span class="line">        node.left = change(index)</span><br><span class="line">        node.right = change(index)</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">    index = [<span class="number">-1</span>]</span><br><span class="line">    change(index)</span><br><span class="line">    <span class="keyword">return</span> self.myroot</span><br></pre></td></tr></table></figure>
+<p>当然，用什么方法序列化，要用同样的方法反序列化才行。</p>
+<h3 id="二叉树的一些概念"><a href="#二叉树的一些概念" class="headerlink" title="二叉树的一些概念"></a>二叉树的一些概念</h3><h4 id="二叉的子树"><a href="#二叉的子树" class="headerlink" title="二叉的子树"></a>二叉的子树</h4><p>在二叉树中以任何一个节点为头部的整棵树称为二叉树的子树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526449053269984bqugc.png?imageslim" alt="paste image"><br>上图不是子树，因为不是整棵树。只是一个联通的子结构</p>
+<h4 id="平衡二叉树（AVL树）"><a href="#平衡二叉树（AVL树）" class="headerlink" title="平衡二叉树（AVL树）"></a>平衡二叉树（AVL树）</h4><ul>
+<li>空树是平衡二叉树</li>
+<li>一棵树不为空，并且其中所有子树都满足各自的左子树与有字数的高度差都不超过1。<br><img src="http://p8cigu7up.bkt.clouddn.com/15264502137521q7nmg1y.png?imageslim" alt="paste image"><br>这不是一颗平衡二叉树，以②为节点划分，左子树高度为2，右子树高度为0，高度差超过了1。</li>
+</ul>
+<p>判断一个树是否是平衡二叉树，采用递归的后续遍历：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526449320079uu0a5qv0.png?imageslim" alt="paste image"></p>
+<ol>
+<li>首先判断左子树是否为平衡二叉树返回false，则结束。</li>
+<li>计算左子树最深到哪一层，LH</li>
+<li>判断右子树是否为平衡二叉树返回false，则结束。</li>
+<li>计算右子树最深到哪一层，RH</li>
+<li>判断LH和RH是否相等。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_balanced2</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:<span class="comment">#空树是平衡二叉树</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span>,<span class="number">0</span></span><br><span class="line">    left_info=self.is_balanced(root.left)</span><br><span class="line">    right_info=self.is_balanced(root.right)</span><br><span class="line">    <span class="keyword">if</span> left_info[<span class="number">0</span>] <span class="keyword">and</span> right_info[<span class="number">0</span>]:</span><br><span class="line">        diff=left_info[<span class="number">1</span>]-right_info[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="number">-1</span>&lt;=diff&lt;=<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">False</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>不平衡二叉树旋转</strong><br>首先旋转的二叉树是二叉查找树，讨论的是其平衡问题。这样很好的解决了二叉查找树退化成链表的问题。使得插入、查找删除的最好最坏时间复杂度都为O(logN)。<br>左左或者右右，可以使用单旋转：<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456177997sm3ap9gg.png?imageslim" alt="paste image"></p>
+<p>左右或者右左，可以使用双旋转<br><img src="http://p8cigu7up.bkt.clouddn.com/1526456468138w779bb24.png?imageslim" alt="paste image"></p>
+<p><strong>平衡二叉树查找</strong><br><strong>平衡二叉树插入</strong><br><strong>平衡二叉树删除</strong> </p>
+<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>是满足以下条件的二叉树：</p>
+<ul>
+<li>左子树上所有节点值均小于根节点值</li>
+<li>右子树上所有节点值均不小于根节点值 </li>
+<li>左右子树也满足上述两个条件<br><img src="http://p8cigu7up.bkt.clouddn.com/1526202114625uqdqohku.png?imageslim" alt="paste image"></li>
+</ul>
+<p><strong>二叉查找树的查找过程</strong></p>
+<ul>
+<li>若当前节点cur的值小于p的值，查找cur的左子树</li>
+<li>若当前节点cur的值不小于p的值，查找cur的右子树</li>
+<li>递归上述过程，直到cur==p或者cur为空</li>
+</ul>
+<p><strong>二叉查找树的插入</strong></p>
+<p><strong>二叉查找树的删除</strong></p>
+<h4 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h4><p>除了最后一层的节点无任何子节点外，剩下的每一层节点都有两个子节点。</p>
+<pre><code>满二叉树层数为L，节点数为N，则$N=2^L-1$，$L=\log_2^{(N+1)}$
+</code></pre><h4 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h4><p>除了最后一层外，其他的每一层节点都是满的。最后一层慢了那就是满二叉树。最后一层不满，缺少的节点也全部集中在右边，那也是完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452010331fujrxunj.png?imageslim" alt="paste image"><img src="http://p8cigu7up.bkt.clouddn.com/1526452023806sp4w4qbd.png?imageslim" alt="paste image"><br>上面两个图均为完全二叉树。<br><img src="http://p8cigu7up.bkt.clouddn.com/1526452115869iru3yarm.png?imageslim" alt="paste image"><br>这就不是一个完全二叉树。</p>
+<p><strong>判断是否完全二叉树</strong></p>
+<ul>
+<li>采用按层遍历二叉树的方式，从每层左边向右边一次遍历所有节点。</li>
+<li>如果当前节点有右孩子，但没有左海子，直接返回False.</li>
+<li>如果当前节点不是左右孩子全有，那之后节点必须都为叶节点，否则返回False。</li>
+<li>遍历过程中如果不返回False，遍历结束后返回True。<h4 id="后继与前驱"><a href="#后继与前驱" class="headerlink" title="后继与前驱"></a>后继与前驱</h4><strong>后继节点：</strong>这个节点在中序遍历序列中的下一个节点。<br><strong>前驱结点：</strong>这个节点在中序遍历序列中的前一个节点。 </li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/13/数据结构——树/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-算法题——NO39 组合总和" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -963,259 +1219,9 @@ HEAP_SIZE(A)：堆A当前的元素数目
 
 
   
-    <article id="post-python的垃圾回收" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/16/python的垃圾回收/">python的垃圾回收</a>
-    </h1>
-  
-
-        
-        <a href="/2017/10/16/python的垃圾回收/" class="archive-article-date">
-  	<time datetime="2017-10-16T12:48:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>现在的高级语言如java，c#等，都采用了垃圾收集机制，而不再是c，c++里用户自己管理维护内存的方式。自己管理内存极其自由，可以任意申请内存，但如同一把双刃剑，为大量内存泄露，悬空指针等bug埋下隐患。</p>
-<p>python里每一个东西都是对象，它们的核心就是一个结构体：PyObject<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef struct_object &#123;</span><br><span class="line">int ob_refcnt;</span><br><span class="line">struct_typeobject *ob_type;</span><br><span class="line">&#125;PyObject;</span><br></pre></td></tr></table></figure></p>
-<h2 id="引用计数机制"><a href="#引用计数机制" class="headerlink" title="引用计数机制"></a>引用计数机制</h2><p>PyObject是每个对象必有的内容，其中ob_refcnt就是做为引用计数。当一个对象有新的引用时，它的ob_refcnt就会增加，当引用它的对象被删除，它的ob_refcnt就会减少</p>
-<p>引用计数为0时，该对象生命就结束了。</p>
-<p>引用计数机制的优点：</p>
-<ol>
-<li>简单</li>
-<li>实时性：一旦没有引用，内存就直接释放了。不用像其他机制等到特定时机。实时性还带来一个好处：处理回收内存的时间分摊到了平时。        </li>
-</ol>
-<p>引用计数机制的缺点： </p>
-<ol>
-<li>维护引用计数消耗资源 </li>
-<li>如果出现循环引用的话，引用计数机制就不在起有效作用了。</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list1 = []</span><br><span class="line">list2 = []</span><br><span class="line">list1.append(list2)</span><br><span class="line">list2.append(list1)</span><br></pre></td></tr></table></figure>
-<p>list1与list2相互引用，如果不存在其他对象对它们的引用，list1与list2的引用计数也仍然为1，所占用的内存永远无法被回收，这将是致命的。</p>
-<p>对于如今的强大硬件，缺点1尚可接受，但是循环引用导致内存泄露，注定python还将引入新的回收机制。</p>
-<h2 id="标记-清除机制"><a href="#标记-清除机制" class="headerlink" title="标记-清除机制"></a>标记-清除机制</h2><p>如果两个对象的引用计数都为1，但是仅仅存在她们之间的循环引用，那么这两个对象都是需要被回收的，也就是说他们的引用计数虽然表现为非0，但实际有效的引用计数为0。所以现将循环引用摘掉，就会得出对象的有用计数。</p>
-<p>缺点：该机制所带来的额外操作和需要回收的内存块成正比。</p>
-<h2 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h2><p>从“标记-清除”的垃圾回收机制来看，当需要回收的内存块较多时，垃圾检测带来的额外操作会增多，而垃圾回收带来的额外操作就越少。反之，内存块较多时，垃圾检测就比垃圾回收带来更少的额外操作。</p>
-<h3 id="内存池"><a href="#内存池" class="headerlink" title="内存池"></a>内存池</h3><ol>
-<li>Python的内存机制呈现金字塔形状，-1，-2层主要有操作系统进行操作；</li>
-<li>第0层是C中的malloc,free等内存分配和释放函数进行操作；</li>
-<li>第1层和第2层是内存池，有Python的接口函数PyMem_Malloc函数实现，当对象小于256K时有该层直接分配内存；</li>
-<li>第3层是最上层，也就是我们对Python对象的直接操作；</li>
-</ol>
-<p>Python在运行期间会大量地执行malloc和free的操作，频繁地在用户态和核心态之间进行切换，这将严重影响Python的执行效率。为了加速Python的执行效率，Python引入了一个内存池机制，用于管理对小块内存的申请和释放。</p>
-<p>Python内部默认的小块内存与大块内存的分界点定在256个字节，当申请的内存小于256字节时，PyObject_Malloc会在内存池中申请内存；当申请的内存大于256字节时，PyObject_Malloc的行为将蜕化为malloc的行为。</p>
-<p>当然，通过修改Python源代码，我们可以改变这个默认值，从而改变Python的默认内存管理行为。有时间可以仔细看看<a href="https://www.jianshu.com/p/1e375fb40506" target="_blank" rel="noopener">一篇垃圾回收讲解比较详细文章</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/16/python的垃圾回收/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-python的命名空间" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/16/python的命名空间/">python的命名空间</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/16/python的命名空间/" class="archive-article-date">
-  	<time datetime="2017-08-16T11:51:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="命名空间的概念"><a href="#命名空间的概念" class="headerlink" title="命名空间的概念"></a>命名空间的概念</h2><p>C++会用到<code>std::cout</code>这样的用法，定义cout的命名空间，使用<code>using namespace std;</code>可以简化std::cout的写法，命名空间的使用可以避免不同的作用域之间函数重名的冲突问题。</p>
-<h2 id="python的命名空间"><a href="#python的命名空间" class="headerlink" title="python的命名空间"></a>python的命名空间</h2><p>python中也有命名空间，是用来记录变量轨迹的。命名空间是一个 字典，它的键就是变量名，它的值就是那些变量的值。<br>在一个 Python 程序中的任何一个地方，都存在几个可用的命名空间。这四类命名空间可以简记为 LEGB:  </p>
-<ol>
-<li><strong>局部命名空间（local）：</strong>指的是一个函数或者一个类所定义的名称空间；包括函数的参数、局部变量、类的属性等。</li>
-<li><strong>闭包命名空间（enclosing function）：</strong>闭包函数 的名称空间（Python 3 引入）。</li>
-<li><strong>全局命名空间（global）：</strong>读入一个模块（也即一个.py文档）后产生的名称空间。</li>
-<li><strong>内建命名空间（builtin）：</strong>Python 解释器启动时自动载入<strong>built</strong>模块后所形成的名称空间；诸如 str/list/dict…等内置对象的名称就处于这里。</li>
-</ol>
-<h2 id="命名空间查找顺序"><a href="#命名空间查找顺序" class="headerlink" title="命名空间查找顺序"></a>命名空间查找顺序</h2><p>同样的标识符在各层命名空间中可以被重复使用而不会发生冲突，但 Python 寻找一个标识符的过程总是从当前层开始逐层往上找，直到首次找到这个标识符为止：</p>
-<ol>
-<li>局部命名空间：特指当前函数或类的方法。如果函数定义了一个局部变量 x，或一个参数 x，Python 将使用它，然后停止搜索。</li>
-<li>全局命名空间：特指当前的模块。如果模块定义了一个名为 x 的变量，函数或类，Python 将使用它然后停止搜索。</li>
-<li>内置命名空间：对每个模块都是全局的。作为最后的尝试，Python 将假设 x 是内置函数或变量。</li>
-<li>如果 Python 在这些名字空间找不到 x，它将放弃查找并引发一个 NameError 异常，如，NameError: name ‘aa’ is not defined。</li>
-</ol>
-<h2 id="命名空间的生命周期"><a href="#命名空间的生命周期" class="headerlink" title="命名空间的生命周期"></a>命名空间的生命周期</h2><p>不同的命名空间在不同的时刻创建，有不同的生存期。</p>
-<ol>
-<li>内置命名空间在 Python 解释器启动时创建，会一直保留，不被删除。</li>
-<li>模块的全局命名空间在模块定义被读入时创建，通常模块命名空间也会一直保存到解释器退出。</li>
-<li>当函数被调用时创建一个局部命名空间，当函数返回结果 或 抛出异常时，被删除。每一个递归调用的函数都拥有自己的命名空间。</li>
-</ol>
-<h2 id="global-和-nonlocal-语句"><a href="#global-和-nonlocal-语句" class="headerlink" title="global 和 nonlocal 语句"></a>global 和 nonlocal 语句</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#e.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv <span class="comment">#UnboundLocalError:local variable 'gv' referenced before assignment</span></span><br><span class="line">    lv = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv = lv + [v]  <span class="comment">#UnboundLocalError:local variable 'lv' referenced before assignment</span></span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure>
-<p><strong>为什么使用global</strong>  </p>
-<pre><code>Python 在执行函数前，会首先生成各层命名空间和作用域，因此 Python 在执行赋值前会将func 内的 &apos;gv&apos; &apos;lv&apos; 写入局部命名空间和闭包命名空间，当 Python 执行赋值时会在局部作用域、闭包作用域内发现局部命名空间和闭包命名空间内已经具有&apos;gv&apos; 和 &apos;lv&apos; 标识符，但这两个非全局标识符在该赋值语句执行之前并没有被赋值，也即没有对象与标识符关联，因此无法参与四则运算，从而引发错误；
-</code></pre><p>局部空间无法获得，Python 便引入了 global、nonlocal 语句就来说明所修饰的 gv、lv 分别来自全局命名空间和局部命名空间，声明之后，就可以在 func 和 inn_func 内直接改写上层命名空间内 gv 和 lv 的值：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#f.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> gv</span><br><span class="line">    gv = [<span class="string">'gv'</span>] + gv</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> lv</span><br><span class="line">        lv = lv + [v]</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
-<h2 id="借壳"><a href="#借壳" class="headerlink" title="借壳"></a>借壳</h2><p>那么是不是不使用 global 和 nonlocal 就不能达到上面的目的呢？来看看这段程序：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#g.py</span></span><br><span class="line">gv = [<span class="string">'a'</span>, <span class="string">'global'</span>, <span class="string">'var'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(v)</span>:</span></span><br><span class="line">    gv.insert(<span class="number">0</span>, <span class="string">'gv'</span>)</span><br><span class="line">    lv = []</span><br><span class="line">    print(id(lv))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inn_func</span><span class="params">()</span>:</span></span><br><span class="line">        lv.append(v)</span><br><span class="line">        print(id(lv))</span><br><span class="line">        gv.insert(<span class="number">1</span>, lv[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> gv</span><br><span class="line">    <span class="keyword">return</span> inn_func</span><br></pre></td></tr></table></figure></p>
-<p>我们改写的不是 gv 和 lv ,而是 gv 和 lv 的元素 gv[0:0] 和 lv[:] 。因此，不需要 global 和 nonlocal 修饰就可以直接改写，这就是“借壳”。修改 gv 和 lv实际上是在父函数作用域内，子函数调用只能读取而不能直接改写 gv 和 lv。<br>在 nonlocal 尚未引入 Python 中，比如 Python 2.x 若要在子函数中改写父函数变量的值就得通过这种方法。</p>
-<h2 id="命名空间的访问"><a href="#命名空间的访问" class="headerlink" title="命名空间的访问"></a>命名空间的访问</h2><ul>
-<li>局部命名空间可以 locals()  BIF来访问。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'1233'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, str )</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span> , <span class="string">"first"</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'str'</span>: <span class="string">'first'</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>全局 (模块级别)命名空间可以通过 globals() BIF来访问。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gstr = <span class="string">"global string"</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span></span><br><span class="line">    x = <span class="number">12345</span></span><br><span class="line">    print(locals())</span><br><span class="line">func1(<span class="number">1</span>,<span class="string">'first'</span>)</span><br><span class="line">print(globals())</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&#123;<span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>, <span class="string">'i'</span>: <span class="number">1</span>&#125;</span><br><span class="line">&#123;<span class="string">'__name__'</span>: <span class="string">'__main__'</span>, ....<span class="string">'func1'</span>: &lt;function func1 at <span class="number">0x000002A7BF382D90</span>&gt;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>locals 与 globals 之间的一个重要的区别<br>locals 是只读的，globals 可以改写</li>
-</ul>
-<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">(i, info)</span>:</span>
-    x = <span class="number">12345</span>
-    print(locals())
-    locals()[<span class="string">"x"</span>]= <span class="number">6789</span>
-    print(<span class="string">"x="</span>,x)
-
-y=<span class="number">54321</span>
-func1(<span class="number">1</span> , <span class="string">"first"</span>)
-globals()[<span class="string">"y"</span>]= <span class="number">9876</span>
-print( <span class="string">"y="</span>,y)
-&gt;&gt;&gt;{<span class="string">'i'</span>: <span class="number">1</span>, <span class="string">'x'</span>: <span class="number">12345</span>, <span class="string">'info'</span>: <span class="string">'first'</span>}
-x= <span class="number">12345</span>
-y= <span class="number">9876</span>
-</code></pre>
-<p>locals 实际上没有返回局部名字空间，它返回的是一个拷贝。所以对它进行改变对局部名字空间中的变量值并无影响。<br>globals 返回实际的全局名字空间，而不是一个拷贝。所以对 globals 所返回的 dictionary 的任何的改动都会直接影响到全局变量。（<a href="http://www.cnblogs.com/windlaughing/archive/2013/05/26/3100362.html" target="_blank" rel="noopener">原文解释连接</a>）</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/16/python的命名空间/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 
@@ -1315,6 +1321,14 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
@@ -1323,15 +1337,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
