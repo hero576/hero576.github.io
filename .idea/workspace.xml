@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c4fce1f9-483b-47fa-9a38-f2d1540f811f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/themes/yilia/_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/themes/yilia/_config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/themes/yilia/layout/_partial/post/gitment.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/themes/yilia/layout/_partial/post/gitment.ejs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" path="D:/Projecttools/golang" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.deploy_git" />
+  </component>
+  <component name="ProjectId" id="1cXMBw7WrkwSD3tgLdUCqiQds64" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="867" y="144" key="#Deployment" timestamp="1590670410228">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="867" y="144" key="#Deployment/0.0.1920.1040/160.1080.1600.860@0.0.1920.1040" timestamp="1590670410228" />
+  </component>
+</project>
