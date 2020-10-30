@@ -6,6 +6,10 @@ categories:
   - python
 date: 2017-08-16 19:51:00
 ---
+> 
+<!-- more -->
+
+
 ## 命名空间的概念
 
 C++会用到`std::cout`这样的用法，定义cout的命名空间，使用`using namespace std;`可以简化std::cout的写法，命名空间的使用可以避免不同的作用域之间函数重名的冲突问题。

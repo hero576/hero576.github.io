@@ -6,6 +6,10 @@ categories:
   - 数据结构与算法
 date: 2018-02-13 18:52:00
 ---
+> 
+<!-- more -->
+
+
 ## 题目要求
 To some string S, we will perform some replacement operations that replace groups of letters with new ones (not necessarily the same size).
 

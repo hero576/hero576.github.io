@@ -6,6 +6,10 @@ categories:
   - 数据结构与算法
 date: 2018-02-13 17:15:00
 ---
+> 
+<!-- more -->
+
+
 ## 题目要求
 Given a binary matrix A, we want to flip the image horizontally, then invert it, and return the resulting image.
 

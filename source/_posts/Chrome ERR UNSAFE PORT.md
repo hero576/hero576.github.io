@@ -7,6 +7,10 @@ categories:
 date: 2018-03-11 13:26:00
 toc: true
 ---
+> 
+<!-- more -->
+
+
 在开启flask项目时候使用了6000端口，谷歌就一直不能访问，出现下面的问题：
 
 ![upload successful](/images/pasted-7.png)

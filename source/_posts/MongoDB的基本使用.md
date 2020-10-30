@@ -7,6 +7,10 @@ categories:
   - 数据库
 date: 2018-04-08 17:28:00
 ---
+> 
+<!-- more -->
+
+
 [官方文档链接](https://docs.mongodb.com/manual/introduction/)
 ## 安装和配置
 ### linux
