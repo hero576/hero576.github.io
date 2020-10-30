@@ -89,7 +89,7 @@ theme: yilia
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:hero576/hero576.github.io.git
+  repo: https://github.com/hero576/hero576.github.io
   branch: master
 
 jsonContent:
