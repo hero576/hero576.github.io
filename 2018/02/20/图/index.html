@@ -8,21 +8,18 @@
   <link rel="dns-prefetch" href="http://guoming576.cn">
   <title>图 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="图的表示邻接矩阵n*n的矩阵，有边是1，无边是0 1234567891011a, b, c, d, e, f, g, h = range(8)N =[  [0, 1, 1, 1, 1, 1, 0, 0],  [0, 0, 1, 0, 1, 0, 0, 0],  [0, 0, 0, 1, 0, 0, 0, 0],  [0, 0, 0, 0, 1, 0, 0, 0],  [0, 0, 0, 0, 0,">
-<meta name="keywords" content="数据结构与算法">
+  <meta name="keywords" content="数据结构与算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="图">
 <meta property="og:url" content="http://guoming576.cn/2018/02/20/图/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="图的表示邻接矩阵n*n的矩阵，有边是1，无边是0 1234567891011a, b, c, d, e, f, g, h = range(8)N =[  [0, 1, 1, 1, 1, 1, 0, 0],  [0, 0, 1, 0, 1, 0, 0, 0],  [0, 0, 0, 1, 0, 0, 0, 0],  [0, 0, 0, 0, 1, 0, 0, 0],  [0, 0, 0, 0, 0,">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-91.png">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-23.png">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-22.png">
-<meta property="og:updated_time" content="2018-06-08T07:23:36.550Z">
+<meta property="og:updated_time" content="2020-10-30T12:08:51.695Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图">
-<meta name="twitter:description" content="图的表示邻接矩阵n*n的矩阵，有边是1，无边是0 1234567891011a, b, c, d, e, f, g, h = range(8)N =[  [0, 1, 1, 1, 1, 1, 0, 0],  [0, 0, 1, 0, 1, 0, 0, 0],  [0, 0, 0, 1, 0, 0, 0, 0],  [0, 0, 0, 0, 1, 0, 0, 0],  [0, 0, 0, 0, 0,">
 <meta name="twitter:image" content="http://guoming576.cn/images/pasted-91.png">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
@@ -169,7 +166,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="图的表示"><a href="#图的表示" class="headerlink" title="图的表示"></a>图的表示</h2><h3 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h3><p>n*n的矩阵，有边是1，无边是0</p>
+        <blockquote>
+</blockquote>
+<a id="more"></a>
+<h2 id="图的表示"><a href="#图的表示" class="headerlink" title="图的表示"></a>图的表示</h2><h3 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h3><p>n*n的矩阵，有边是1，无边是0</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a, b, c, d, e, f, g, h = range(<span class="number">8</span>)</span><br><span class="line">N =[</span><br><span class="line">  [<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <p>关于邻接矩阵：</p>
 <ol>
@@ -490,11 +490,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -502,11 +502,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">

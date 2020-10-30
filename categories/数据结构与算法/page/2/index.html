@@ -166,39 +166,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="字符串循环左移"><a href="#字符串循环左移" class="headerlink" title="字符串循环左移"></a>字符串循环左移</h3><p>例如‘abcdef’，左移两个字符串，变成‘cdefab’。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'abcdef'</span></span><br><span class="line">k=<span class="number">100</span>   <span class="comment"># 任意指定</span></span><br><span class="line">x=k%len(str)</span><br><span class="line">str1=str[<span class="number">0</span>:x]</span><br><span class="line">str2=str[x:]</span><br><span class="line">str3=str2+str1</span><br></pre></td></tr></table></figure></p>
-<p>如果有对空间的限制，这道题就需要通过逆序的方法了。过程如下：<br><img src="/images/pasted-26.png" alt="upload successful"></p>
-<h3 id="字符串全排列"><a href="#字符串全排列" class="headerlink" title="字符串全排列"></a>字符串全排列</h3><p>S=[0….N-1]，枚举S的全排列<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'1234'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">swap</span><span class="params">(a,i,foo)</span>:</span></span><br><span class="line">    tmp=a[<span class="number">0</span>:i]+a[foo]</span><br><span class="line">    <span class="keyword">if</span> i!=len(a):</span><br><span class="line">        tmp+=a[i+<span class="number">1</span>:]</span><br><span class="line">    str=tmp[<span class="number">0</span>:foo]+a[i]</span><br><span class="line">    <span class="keyword">if</span> foo!=len(a):</span><br><span class="line">        str+=tmp[foo+<span class="number">1</span>:]</span><br><span class="line">    <span class="keyword">return</span> str</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Permutation</span><span class="params">(str,foo,to)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> foo==to:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,to):</span><br><span class="line">            print(str[i],end=<span class="string">''</span>)</span><br><span class="line">        print()</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(foo,to):</span><br><span class="line">        x = swap(str,i,foo)</span><br><span class="line">        Permutation(x,foo+<span class="number">1</span>,to)</span><br><span class="line">Permutation(str,<span class="number">0</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure></p>
-<h3 id="KMP"><a href="#KMP" class="headerlink" title="KMP"></a><a href="https://news.cnblogs.com/n/176771/" target="_blank" rel="noopener">KMP</a></h3><p>给定文本串text和模式串pattern，从文本串中找出模式串第一次出现的位置。<br>例如  甲：abbaabbaaba，乙：abbaaba。查找乙在甲什么位置。<br>假定文本串长度是N，模式串长度为M，普通模式<a href="http://www.cnblogs.com/dolphin0520/archive/2011/08/24/2151846.html" target="_blank" rel="noopener">匹配算法（BF）</a>时间复杂度：O(M*N)，空间复杂度O(1)。而KMP算法可以用闲心时间算法求解匹配字符串问题的方法，时间复杂度：O(M+N)，空间复杂度O(M)。<br>BF方法从两个字符串头开始，若遇到不匹配的字符，模式串回溯到开始位置，文本串回溯到头结点+1。然后继续匹配，如果模式串中字符两两不相等，那么这样会造成很多没必要的匹配过程。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">'abbaabbaaba'</span></span><br><span class="line">str2 = <span class="string">'abbaaba'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BF</span><span class="params">(str1,str2)</span>:</span></span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i &lt;len(str1):</span><br><span class="line">        j=<span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> j &lt;len(str2) <span class="keyword">and</span> str1[i]==str2[j]:</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">            j+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> j==len(str2):</span><br><span class="line">            print(<span class="string">'success'</span>)</span><br><span class="line">            <span class="keyword">return</span> i-len(str2)</span><br><span class="line">        i=i-j+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure></p>
-<p><img src="/images/1526032977782d9b8gt3o.png?imageslim" alt="paste image"><br>KMP方法的思路是，尽量减少指针回溯，当出现不匹配字符时，前六个字符已经知道了，如果模式串不回溯到开始位置，而是移动到后面的匹配的位置，这样就提高了效率。<br>怎么做到这一点呢？可以针对搜索词，算出一张《部分匹配表》（Partial Match Table）。<br><img src="/images/1526033744135rjttlw64.png?imageslim" alt="paste image"></p>
-<p><img src="/images/1526032977782d9b8gt3o.png?imageslim" alt="paste image"><br>已知空格与D不匹配时，可以根据公式：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">移动位数 = 已匹配的字符数 - 对应的部分匹配值</span><br></pre></td></tr></table></figure></p>
-<p>计算得出文本串最后一个字符与模式串部分匹配值为2，已匹配的字符为6个，所以模式串要后移6-2=4位。<br><img src="/images/1526033355329r4g8a62r.png?imageslim" alt="paste image"><br>此时再判断C与空格不匹配，这时部分匹配值为0，移动位移数为2，也就从头匹配了。<br>然后继续比较，直到完全匹配，或者文本串结尾。</p>
-<p>然后就是部分匹配值的算法，首先要了解两个概念：”前缀”和”后缀”。 “前缀”指除了最后一个字符以外，一个字符串的全部头部组合；”后缀”指除了第一个字符以外，一个字符串的全部尾部组合。”部分匹配值”就是”前缀”和”后缀”的最长的共有元素的长度。以”ABCDABD”为例，</p>
-<ul>
-<li>“A”的前缀和后缀都为空集，共有元素的长度为0；</li>
-<li>“AB”的前缀为[A]，后缀为[B]，共有元素的长度为0；</li>
-<li>“ABC”的前缀为[A, AB]，后缀为[BC, C]，共有元素的长度0；</li>
-<li>“ABCD”的前缀为[A, AB, ABC]，后缀为[BCD, CD, D]，共有元素的长度为0；</li>
-<li>“ABCDA”的前缀为[A, AB, ABC, ABCD]，后缀为[BCDA, CDA, DA, A]，共有元素为”A”，长度为1；</li>
-<li>“ABCDAB”的前缀为[A, AB, ABC, ABCD, ABCDA]，后缀为[BCDAB, CDAB, DAB, AB, B]，共有元素为”AB”，长度为2；</li>
-<li>“ABCDABD”的前缀为[A, AB, ABC, ABCD, ABCDA, ABCDAB]，后缀为[BCDABD, CDABD, DABD, ABD, BD, D]，共有元素的长度为0。</li>
-</ul>
-<p>“部分匹配”的实质是，有时候，字符串头部和尾部会有重复。比如，”ABCDAB”之中有两个”AB”，那么它的”部分匹配值”就是2（”AB”的长度）。搜索词移动的时候，第一个”AB”向后移动 4 位（字符串长度-部分匹配值），就可以来到第二个”AB”的位置。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">'abbaabbaaba'</span></span><br><span class="line">str2 = <span class="string">'abbaaba'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#返回索引</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_index</span><span class="params">(str,i)</span>:</span></span><br><span class="line">    j=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> str[j]==str[i-j]:</span><br><span class="line">        j+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> j</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">KMP</span><span class="params">(str1,str2)</span>:</span></span><br><span class="line">    i,j=<span class="number">0</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i &lt;len(str1):</span><br><span class="line">        j=next_index(str2,j)</span><br><span class="line">        <span class="keyword">while</span> j &lt;len(str2) <span class="keyword">and</span> str1[i]==str2[j]:</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">            j+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> j==len(str2):</span><br><span class="line">            print(<span class="string">'success'</span>)</span><br><span class="line">            <span class="keyword">return</span> i-len(str2)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">print(KMP(str1,str2))</span><br></pre></td></tr></table></figure></p>
-<p>BF算法循环了14次，KMP循环11次，不算计算next_index的次数的话，减少了迭代次数。如果第一字符跟后面都不同，则KMP算法next总返回开始。</p>
-<h3 id="Manacher算法"><a href="#Manacher算法" class="headerlink" title="Manacher算法"></a>Manacher算法</h3><p><a href="https://segmentfault.com/a/1190000003914228" target="_blank" rel="noopener">最长回文子串问题</a>：给定一个字符串，求它的最长回文子串长度。<br>对于最长回文子串问题，最简单粗暴的办法是：找到字符串的所有子串，遍历每一个子串以验证它们是否为回文串。一个子串由子串的起点和终点确定，因此对于一个长度为n的字符串，共有n^2个子串。这些子串的平均长度大约是n/2，因此这个解法的时间复杂度是O(n^3)。<br>希望能提高算法的效率。Manacher正是针对这些问题改进算法。</p>
-<ol>
-<li>解决长度奇偶性带来的对称轴位置问题<br>Manacher算法首先对字符串做一个预处理，在所有的空隙位置(包括首尾)插入同样的符号，要求这个符号是不会在原串中出现的。这样会使得所有的串都是奇数长度的。以插入#号为例：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aba  ———&gt;  #a#b#a#</span><br><span class="line">abba ———&gt;  #a#b#b#a#</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>插入的是同样的符号，且符号不存在于原串，因此子串的回文性不受影响，原来是回文的串，插完之后还是回文的，原来不是回文的，依然不会是回文。</p>
-<ol start="2">
-<li>解决重复访问的问题<br>我们把一个回文串中最左或最右位置的字符与其对称轴的距离称为回文半径。Manacher定义了一个回文半径数组RL，用RL[i]表示以第i个字符为对称轴的回文串的回文半径。我们一般对字符串从左往右处理，因此这里定义RL[i]为第i个字符为对称轴的回文串的最右一个字符与字符i的距离。对于上面插入分隔符之后的两个串，可以得到RL数组：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">char:    # a # b # a #</span><br><span class="line"> RL :    1 2 1 4 1 2 1</span><br><span class="line">RL-1:    0 1 0 3 0 1 0</span><br><span class="line">  i :    0 1 2 3 4 5 6</span><br><span class="line">char:    # a # b # b # a #</span><br><span class="line"> RL :    1 2 1 2 5 2 1 2 1</span><br><span class="line">RL-1:    0 1 0 1 4 1 0 1 0</span><br><span class="line">  i :    0 1 2 3 4 5 6 7 8</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>上面我们还求了一下RL[i]-1。通过观察可以发现，RL[i]-1的值，正是在原本那个没有插入过分隔符的串中，以位置i为对称轴的最长回文串的长度。那么只要我们求出了RL数组，就能得到最长回文子串的长度。<br>于是问题变成了，怎样高效地求的RL数组。基本思路是利用回文串的对称性，扩展回文串。<br>我们再引入一个辅助变量MaxRight，表示当前访问到的所有回文子串，所能触及的最右一个字符的位置。另外还要记录下MaxRight对应的回文串的对称轴所在的位置，记为pos，它们的位置关系如下。<br><img src="/images/1526040211815q9okvyr6.png?imageslim" alt="paste image"><br>我们从左往右地访问字符串来求RL，假设当前访问到的位置为i，即要求RL[i]，在对应上图，i必然是在po右边的(obviously)。但我们更关注的是，i是在MaxRight的左边还是右边。我们分情况来讨论。<br>1）当i在MaxRight的左边<br>情况1)可以用下图来刻画：<br><img src="/images/1526042921144inzh65zt.png?imageslim" alt="paste image"><br>我们知道，图中两个红色块之间（包括红色块）的串是回文的；并且以i为对称轴的回文串，是与红色块间的回文串有所重叠的。我们找到i关于pos的对称位置j，这个j对应的RL[j]我们是已经算过的。根据回文串的对称性，以i为对称轴的回文串和以j为对称轴的回文串，有一部分是相同的。这里又有两种细分的情况。<br>以j为对称轴的回文串比较短，短到像下图这样。<br><img src="/images/1526042933581cjh9tqgn.png?imageslim" alt="paste image"><br>这时我们知道RL[i]至少不会小于RL[j]，并且已经知道了部分的以i为中心的回文串，于是可以令RL[i]=RL[j]。但是以i为对称轴的回文串可能实际上更长，因此我们试着以i为对称轴，继续往左右两边扩展，直到左右两边字符不同，或者到达边界。<br>以j为对称轴的回文串很长，这么长：<br><img src="/images/15260429479493wv8ybrc.png?imageslim" alt="paste image"><br>这时，我们只能确定，两条蓝线之间的部分（即不超过MaxRight的部分）是回文的，于是从这个长度开始，尝试以i为中心向左右两边扩展，，直到左右两边字符不同，或者到达边界。<br>不论以上哪种情况，之后都要尝试更新MaxRight和pos，因为有可能得到更大的MaxRight。<br>具体操作如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">step 1: 令RL[i]=min(RL[2*pos-i], MaxRight-i)</span><br><span class="line">step 2: 以i为中心扩展回文串，直到左右两边字符不同，或者到达边界。</span><br><span class="line">step 3: 更新MaxRight和pos</span><br></pre></td></tr></table></figure></p>
-<p>2）当i在MaxRight的右边<br><img src="/images/1526042956122emfn81n7.png?imageslim" alt="paste image"><br>遇到这种情况，说明以i为对称轴的回文串还没有任何一个部分被访问过，于是只能从i的左右两边开始尝试扩展了，当左右两边字符不同，或者到达字符串边界时停止。然后更新MaxRight和pos。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">manacher</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="comment">#预处理</span></span><br><span class="line">    s1=<span class="string">'#'</span>+<span class="string">'#'</span>.join(s)+<span class="string">'#'</span></span><br><span class="line">    p=[<span class="number">0</span>]*len(s1) <span class="comment"># 回文半径列表</span></span><br><span class="line">    mx=<span class="number">0</span> <span class="comment"># 当前索引回文串最远的索引值</span></span><br><span class="line">    id=<span class="number">0</span> <span class="comment"># 当前指向探测最远的索引</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(p)):</span><br><span class="line">        <span class="keyword">if</span> mx&gt;i:</span><br><span class="line">            p[i]=min(p[<span class="number">2</span>*id-i],mx-i) <span class="comment"># 两种情况，取最小的哪一种，利用已知条件确定p[i]的值</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            p[i]=<span class="number">1</span>  <span class="comment"># 无法从已知条件找到，先赋值为1</span></span><br><span class="line">        <span class="keyword">while</span> (i+p[i])&lt;len(s1) <span class="keyword">and</span> s1[i+p[i]]==s1[i-p[i]] :</span><br><span class="line">            p[i]+=<span class="number">1</span>  <span class="comment"># 更新p[i]，向外探索回文的范围</span></span><br><span class="line">        <span class="keyword">if</span> mx&lt;i+p[i]: <span class="comment">#更新mx和id</span></span><br><span class="line">            mx=i+p[i]</span><br><span class="line">            id=i</span><br><span class="line">    <span class="keyword">return</span> max(p)<span class="number">-1</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="BM算法"><a href="#BM算法" class="headerlink" title="BM算法"></a>BM算法</h3><p>KMP在实际中并不是很快，BM算法相比较效率会更高一些，而且算法也更巧妙。<br>具体方法：坏字符原则、好后缀。</p>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/11/字符串算法/#more">more >></a>
+        
       
 
       
@@ -282,30 +254,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="5、堆"><a href="#5、堆" class="headerlink" title="5、堆"></a>5、堆</h2><h6 id="什么是堆"><a href="#什么是堆" class="headerlink" title="什么是堆"></a>什么是堆</h6><p>一种特殊的队列，队列中元素出栈的顺序是按照元素的优先权大小，而不是元素入队的先后顺序。</p>
-<p><img src="/images/pasted-0.png" alt="heap"></p>
-<h6 id="堆的特性："><a href="#堆的特性：" class="headerlink" title="堆的特性："></a>堆的特性：</h6><ul>
-<li>必须是完全二叉树</li>
-<li>用数组实现</li>
-<li>任一结点的值是其子树所有结点的最大值或最小值<ul>
-<li>最大值时，称为“最大堆”，也称大顶堆；</li>
-<li>最小值时，称为“最小堆”，也称小顶堆。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/pasted-1.png" alt="最大堆"></p>
-<p><img src="/images/pasted-2.png" alt="最小堆"><br>可以看到，对于堆（Heap）这种数据结构，从根节点到任意结点路径上所有的结点都是有序的。</p>
-<h6 id="堆的基本操作"><a href="#堆的基本操作" class="headerlink" title="堆的基本操作"></a>堆的基本操作</h6><p>堆是一棵完全二叉树，高度为O（lg n），其基本操作至多与树的高度成正比。在介绍堆的基本操作之前，先介绍几个基本术语：</p>
-<pre><code>A：用于表示堆的数组，下标从1开始，一直到n
-PARENT(t)：节点t的父节点，即floor(t/2)
-RIGHT(t)：节点t的左孩子节点，即:2*t
-LEFT(t)：节点t的右孩子节点，即:2*t+1
-HEAP_SIZE(A)：堆A当前的元素数目
-</code></pre><p>保持堆的性质 Heapify(A,n,t)</p>
-<pre><code>该操作主要用于维持堆的基本性质。假定以RIGHT(t)和LEFT(t)为根的子树都已经是堆，然后调整以t为根的子树，使之成为堆。
-</code></pre><p>建堆 BuildHeap(A,n)</p>
-<pre><code>操作主要是将数组A转化成一个大顶堆。思想是，先找到堆的最后一个非叶子节点（即为第n/2个节点），然后从该节点开始，从后往前逐个调整每个子树，使之称为堆，最终整个数组便是一个堆。子数组A[(n/2)+1..n]中的元素都是树中的叶子，因此都可以看作是只含有一个元素的堆。
-</code></pre>
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/07/数据结构——基本线性数据结构——堆/#more">more >></a>
+        
       
 
       
@@ -369,126 +322,6 @@ HEAP_SIZE(A)：堆A当前的元素数目
 
 
   
-    <article id="post-数据结构——链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/07/数据结构——链表/">数据结构——链表</a>
-    </h1>
-  
-
-        
-        <a href="/2018/02/07/数据结构——链表/" class="archive-article-date">
-  	<time datetime="2018-02-07T12:34:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h3 id="什么是链表"><a href="#什么是链表" class="headerlink" title="什么是链表"></a>什么是链表</h3><p>链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)。由于不必须按顺序存储，链表在插入的时候可以达到O(1)的复杂度，比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要O(n)的时间，而顺序表相应的时间复杂度分别是O(logn)和O(1)。<br>链表的分类：</p>
-<ul>
-<li>按照连接方向分类<ul>
-<li>单链表</li>
-<li>双链表</li>
-</ul>
-</li>
-<li>按照有环和无环<ul>
-<li>普通链表</li>
-<li>循环链表</li>
-</ul>
-</li>
-</ul>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>使用链表结构可以克服数组链表需要预先知道数据大小的缺点，链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。</p>
-<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><ul>
-<li>init():初始化</li>
-<li>insert(): 插入</li>
-<li>trave(): 遍历</li>
-<li>delete(): 删除</li>
-<li>find(): 查找</li>
-</ul>
-<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">link</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,val)</span>:</span></span><br><span class="line">        self.elem=val</span><br><span class="line">        self.next=<span class="keyword">None</span></span><br></pre></td></tr></table></figure>
-<h2 id="常见操作"><a href="#常见操作" class="headerlink" title="常见操作"></a>常见操作</h2><ol>
-<li>给定一个整数num，如何在节点值有序的环形链表中插入一个节点值为num的节点，并且保证这个环形单链表依然有序。</li>
-<li>给定一个链表中的节点node，但是不给定整个链表的头结点。如何在链表中删除node。要求时间复杂度为O(1)。</li>
-<li>给定一个链表的头节点head，在给定一个数num，把链表调整成节点值小于num的节点都在链表的左边，等于num的放在中间，大于num放在右边。</li>
-<li>给定两个有序链表头结点head1和head2，打印公共部分。<br><img src="/images/pasted-25.png" alt="upload successful"></li>
-<li>给定一个单链表的头节点head，实现一个吊证单链表的函数，使得每k个节点之间逆序，如果最后不够k个节点一组，则不调整最后几个节点。<br><img src="/images/1526460109134k2s3tag1.png?imageslim" alt="paste image"></li>
-<li>给定单链表的头节点head，链表中每个节点保存一个整数，再给定一个值val，把所有等于val的节点删掉。</li>
-<li>判断链表是否是回文的。</li>
-<li>一个链表结构中，每个节点不仅含有一条指向下一个节点的next指针，同时含有一条rand指针，指向任意一个节点。复制这种含有rand指针节点的链表。<br><img src="/images/1526460604747l3tqxivj.png?imageslim" alt="paste image"></li>
-<li>判断单链表是否有环。有环返回进入的第一个节点。无环返回空。保证时间复杂度为O(N)，空间复杂度为O(1)。<br><img src="/images/15264607548471fkwegu1.png?imageslim" alt="paste image"></li>
-<li>判断无环单链表是否相交。相交返回第一个相交节点，否则返回空。保证时间复杂度为O(N+M)，空间复杂度为O(1)。<br><img src="/images/1526460879877rdkos969.png?imageslim" alt="paste image"></li>
-<li>判断有环单链表是否相交。相交返回第一个相交节点，否则返回空。保证时间复杂度为O(N+M)，空间复杂度为O(1)。</li>
-<li>给定两个单链表头节点head1和head2，判断两个链表是否相交。相交返回第一个相交节点。否则返回空。</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/02/07/数据结构——链表/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-数据结构——基本线性数据结构——队列" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -509,10 +342,11 @@ HEAP_SIZE(A)：堆A当前的元素数目
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="3、队列"><a href="#3、队列" class="headerlink" title="3、队列"></a>3、队列</h2><h6 id="什么是队列"><a href="#什么是队列" class="headerlink" title="什么是队列"></a>什么是队列</h6><p>和堆栈类似，唯一的区别是队列只能在队头进行出队操作，所以队列是是先进先出（FIFO, First-In-First-Out）的线性表</p>
-<h6 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h6><p>先入先出,后入后出<br>除尾节点外,每个节点有一个后继<br>（可选）除头节点外,每个节点有一个前驱</p>
-<h6 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h6><p>push（）:入队<br>pop（）：出队</p>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/07/数据结构——基本线性数据结构——队列/#more">more >></a>
+        
       
 
       
@@ -576,6 +410,94 @@ HEAP_SIZE(A)：堆A当前的元素数目
 
 
   
+    <article id="post-数据结构——链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/07/数据结构——链表/">数据结构——链表</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/07/数据结构——链表/" class="archive-article-date">
+  	<time datetime="2018-02-07T12:34:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/07/数据结构——链表/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/07/数据结构——链表/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-数据结构——基本线性数据结构——堆栈" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -596,20 +518,11 @@ HEAP_SIZE(A)：堆A当前的元素数目
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="2、堆栈"><a href="#2、堆栈" class="headerlink" title="2、堆栈"></a>2、堆栈</h2><h6 id="什么是堆栈"><a href="#什么是堆栈" class="headerlink" title="什么是堆栈"></a>什么是堆栈</h6><p>堆栈（英语：stack），也可直接称栈，在计算机科学中，是一种特殊的串列形式的数据结构，它的特殊之处在于只能允许在链接串列或阵列的一端（称为堆叠顶端指标，英语：top）进行加入资料（英语：push）和输出资料（英语：pop）的运算。另外堆叠也可以用一维阵列或连结串列的形式来完成。堆叠的另外一个相对的操作方式称为伫列。</p>
-<p>由于堆叠数据结构只允许在一端进行操作，因而按照后进先出（LIFO, Last In First Out）的原理运作。</p>
-<p><img src="/images/pasted-3.png" alt="upload successful"></p>
-<h6 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h6><ul>
-<li>先入后出，后入先出。</li>
-<li>除头尾节点之外，每个元素有一个前驱，一个后继。</li>
-</ul>
-<h6 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h6><p>从原理可知，对堆栈(栈)可以进行的操作有:</p>
-<ul>
-<li>top():获取堆栈顶端对象</li>
-<li>push():向栈里添加一个对象</li>
-<li>pop():从栈里推出一个对象</li>
-</ul>
-<h6 id="堆栈的实现"><a href="#堆栈的实现" class="headerlink" title="堆栈的实现"></a>堆栈的实现</h6>
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/07/数据结构——基本线性数据结构——堆栈/#more">more >></a>
+        
       
 
       
@@ -693,17 +606,11 @@ HEAP_SIZE(A)：堆A当前的元素数目
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="1、数组"><a href="#1、数组" class="headerlink" title="1、数组"></a>1、数组</h2><h6 id="数组的设计"><a href="#数组的设计" class="headerlink" title="数组的设计"></a>数组的设计</h6><p>数组设计之初是在形式上依赖内存分配而成的，所以必须在使用前预先请求空间。这使得数组有以下特性：</p>
-<ol>
-<li>请求空间以后大小固定，不能再改变（数据溢出问题）；</li>
-<li>在内存中有空间连续性的表现，中间不会存在其他程序需要调用的数据，为此数组的专用内存空间；</li>
-<li>在旧式编程语言中（如有中阶语言之称的C），程序不会对数组的操作做下界判断，也就有潜在的越界操作的风险（比如会把数据写在运行中程序需要调用的核心部分的内存上）。</li>
-</ol>
-<p>因为简单数组强烈倚赖电脑硬件之内存，所以不适用于现代的程序设计。欲使用可变大小、硬件无关性的数据类型，Java等程序设计语言均提供了更高级的数据结构：ArrayList、Vector等动态数组。</p>
-<h6 id="python数组的实现"><a href="#python数组的实现" class="headerlink" title="python数组的实现"></a>python数组的实现</h6><p>首先来一个错误的实现方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list=[[]]*<span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[], [], []]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[<span class="number">3</span>], [<span class="number">3</span>], [<span class="number">3</span>]]</span><br></pre></td></tr></table></figure></p>
-<p>*号运算只是对原来数据的多次引用，也就是说实际上，我们用*号创建的二位数组其实只是将原来的一位数组复制了多次，我们并不能用其实现二维数组的功能。<br>官方推荐使用列表生成式：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list=[[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list</span><br><span class="line">[[<span class="number">3</span>], [], []]</span><br></pre></td></tr></table></figure></p>
-<p>所以，二维数组可以这样实现：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>array=[[<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>)] <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>array</span><br><span class="line">[[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]]</span><br></pre></td></tr></table></figure></p>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/07/hello-world/#more">more >></a>
+        
       
 
       
@@ -876,11 +783,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -888,11 +795,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -8,18 +8,15 @@
   <link rel="dns-prefetch" href="http://guoming576.cn">
   <title>python的垃圾回收 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="现在的高级语言如java，c#等，都采用了垃圾收集机制，而不再是c，c++里用户自己管理维护内存的方式。自己管理内存极其自由，可以任意申请内存，但如同一把双刃剑，为大量内存泄露，悬空指针等bug埋下隐患。 python里每一个东西都是对象，它们的核心就是一个结构体：PyObject1234typedef struct_object &amp;#123;int ob_refcnt;struct_typeob">
-<meta name="keywords" content="python">
+  <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python的垃圾回收">
 <meta property="og:url" content="http://guoming576.cn/2017/10/16/python的垃圾回收/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="现在的高级语言如java，c#等，都采用了垃圾收集机制，而不再是c，c++里用户自己管理维护内存的方式。自己管理内存极其自由，可以任意申请内存，但如同一把双刃剑，为大量内存泄露，悬空指针等bug埋下隐患。 python里每一个东西都是对象，它们的核心就是一个结构体：PyObject1234typedef struct_object &amp;#123;int ob_refcnt;struct_typeob">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-08T07:22:14.865Z">
+<meta property="og:updated_time" content="2020-10-30T12:09:15.489Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python的垃圾回收">
-<meta name="twitter:description" content="现在的高级语言如java，c#等，都采用了垃圾收集机制，而不再是c，c++里用户自己管理维护内存的方式。自己管理内存极其自由，可以任意申请内存，但如同一把双刃剑，为大量内存泄露，悬空指针等bug埋下隐患。 python里每一个东西都是对象，它们的核心就是一个结构体：PyObject1234typedef struct_object &amp;#123;int ob_refcnt;struct_typeob">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
   
@@ -165,7 +162,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>现在的高级语言如java，c#等，都采用了垃圾收集机制，而不再是c，c++里用户自己管理维护内存的方式。自己管理内存极其自由，可以任意申请内存，但如同一把双刃剑，为大量内存泄露，悬空指针等bug埋下隐患。</p>
+        <blockquote>
+</blockquote>
+<a id="more"></a>
+<p>现在的高级语言如java，c#等，都采用了垃圾收集机制，而不再是c，c++里用户自己管理维护内存的方式。自己管理内存极其自由，可以任意申请内存，但如同一把双刃剑，为大量内存泄露，悬空指针等bug埋下隐患。</p>
 <p>python里每一个东西都是对象，它们的核心就是一个结构体：PyObject<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef struct_object &#123;</span><br><span class="line">int ob_refcnt;</span><br><span class="line">struct_typeobject *ob_type;</span><br><span class="line">&#125;PyObject;</span><br></pre></td></tr></table></figure></p>
 <h2 id="引用计数机制"><a href="#引用计数机制" class="headerlink" title="引用计数机制"></a>引用计数机制</h2><p>PyObject是每个对象必有的内容，其中ob_refcnt就是做为引用计数。当一个对象有新的引用时，它的ob_refcnt就会增加，当引用它的对象被删除，它的ob_refcnt就会减少</p>
 <p>引用计数为0时，该对象生命就结束了。</p>
@@ -467,11 +467,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -479,11 +479,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">

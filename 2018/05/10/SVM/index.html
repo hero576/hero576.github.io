@@ -8,13 +8,11 @@
   <link rel="dns-prefetch" href="http://guoming576.cn">
   <title>SVM | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="支持向量机间隔与支持间隔分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。在样本空间中，划分超平面可通过以下线性方程来描述$$ω^Tx+b=0$$样本空间中任意点 x 到超平面 (w,b) 的距离可以写成$$r=\frac{|w^Tx">
-<meta name="keywords" content="机器学习">
+  <meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SVM">
 <meta property="og:url" content="http://guoming576.cn/2018/05/10/SVM/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="支持向量机间隔与支持间隔分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。在样本空间中，划分超平面可通过以下线性方程来描述$$ω^Tx+b=0$$样本空间中任意点 x 到超平面 (w,b) 的距离可以写成$$r=\frac{|w^Tx">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-27.png">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-28.png">
@@ -27,10 +25,9 @@
 <meta property="og:image" content="http://guoming576.cn/images/pasted-33.png">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-34.png">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-35.png">
-<meta property="og:updated_time" content="2018-06-08T07:21:44.839Z">
+<meta property="og:updated_time" content="2020-10-30T12:09:20.826Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SVM">
-<meta name="twitter:description" content="支持向量机间隔与支持间隔分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。在样本空间中，划分超平面可通过以下线性方程来描述$$ω^Tx+b=0$$样本空间中任意点 x 到超平面 (w,b) 的距离可以写成$$r=\frac{|w^Tx">
 <meta name="twitter:image" content="http://guoming576.cn/images/pasted-27.png">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
@@ -177,7 +174,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h2><h3 id="间隔与支持间隔"><a href="#间隔与支持间隔" class="headerlink" title="间隔与支持间隔"></a>间隔与支持间隔</h3><p>分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。<br>能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。<br>在样本空间中，划分超平面可通过以下线性方程来描述<br>$$ω^Tx+b=0$$<br>样本空间中任意点 x 到超平面 (w,b) 的距离可以写成<br>$$r=\frac{|w^Tx+b|}{||w||}$$<br>假设超平面能够正确分类样本，则可以通过对 ω 缩放可以使得下式成立<br>\begin{cases}<br>|w^Tx+b|&gt;=1,y_i=+1<br>|w^Tx+b|&lt;=-1,y_i=-1<br>\end{cases}<br>距离超平面最近的几个样本点使得上式等号成立，称作“支持向量”。两个异类支持向量到超平面的距离之和称为“间隔”，$γ=\frac{2}{||w||}$。所有位于最大边界上的点称作支持向量。撑起了边界的宽度，其中$||w||$是向量的范数（norm）：<br>$$\if W = {w_1,w_2,….w_n}then\sqrt{W·W}=\sqrt{w_1^2,w_2^2,….w_n^2}$$<br><img src="/images/pasted-27.png" alt="upload successful"><br>距离是x和x’在w上的投影：<br><img src="/images/pasted-28.png" alt="upload successful"><br>欲最大化间隔，等价于最小化$||w||^2$ , 这就是支持向量机的基本型。<br>$$\min{w,b} \frac{1}{2} ||w||^2$$<br>$$s.t. y_i(w^Tx_i+b)≥1，i=1,2,…,m$$<br><img src="/images/pasted-29.png" alt="upload successful"></p>
+        <blockquote>
+</blockquote>
+<a id="more"></a>
+<h2 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h2><h3 id="间隔与支持间隔"><a href="#间隔与支持间隔" class="headerlink" title="间隔与支持间隔"></a>间隔与支持间隔</h3><p>分类学习的最基本想法就是基于训练集D在样本空间中找到一个划分超平面，将不同类别的样本分开。<br>能将训练样本划分开的平面可能有很多个，选择位于两类训练样本正中间的划分超平面，原因是这个超平面的分类结果最鲁棒，泛化能力最强。<br>在样本空间中，划分超平面可通过以下线性方程来描述<br>$$ω^Tx+b=0$$<br>样本空间中任意点 x 到超平面 (w,b) 的距离可以写成<br>$$r=\frac{|w^Tx+b|}{||w||}$$<br>假设超平面能够正确分类样本，则可以通过对 ω 缩放可以使得下式成立<br>\begin{cases}<br>|w^Tx+b|&gt;=1,y_i=+1<br>|w^Tx+b|&lt;=-1,y_i=-1<br>\end{cases}<br>距离超平面最近的几个样本点使得上式等号成立，称作“支持向量”。两个异类支持向量到超平面的距离之和称为“间隔”，$γ=\frac{2}{||w||}$。所有位于最大边界上的点称作支持向量。撑起了边界的宽度，其中$||w||$是向量的范数（norm）：<br>$$\if W = {w_1,w_2,….w_n}then\sqrt{W·W}=\sqrt{w_1^2,w_2^2,….w_n^2}$$<br><img src="/images/pasted-27.png" alt="upload successful"><br>距离是x和x’在w上的投影：<br><img src="/images/pasted-28.png" alt="upload successful"><br>欲最大化间隔，等价于最小化$||w||^2$ , 这就是支持向量机的基本型。<br>$$\min{w,b} \frac{1}{2} ||w||^2$$<br>$$s.t. y_i(w^Tx_i+b)≥1，i=1,2,…,m$$<br><img src="/images/pasted-29.png" alt="upload successful"></p>
 <h2 id="对偶问题"><a href="#对偶问题" class="headerlink" title="对偶问题"></a>对偶问题</h2><p>上述问题是一个凸二次规划问题，能直接用现成的优化计算包求解。但是通过拉格朗日乘子法变换到对偶变量的优化问题之后，可以找到一种更加有效的方法来进行求解。<br>原问题的拉格朗日函数为<br>$$L(w,b,α)=\frac{1}{2}||w||^2+\sum{i=1}^m α_i(1-y_i(w^Tx_i+b))$$<br>求偏导为零可以得到<br>$$w=\sum{i=1}^m α_iy_ix_i$$<br>$$0=\sum{i=1}^mα_iy_i$$<br>对偶问题，将最大最小互换：<br>$$\min{w,b}\max{α}L(w,b,α)-&gt;\max{α}\min{w,b}L(w,b,α)$$<br>$$\max{α} \sum{i=1}{m}α_i-\frac{1}{2}\sum{i=1}^m\sum{j=1}^mα_iα_jy_iy_jx_i^Tx_j{}$$<br>$$s.t. \sum{i=1}^mα_iy_i=0,α_i≥0，i=1,2,…,m$$<br>于是可以得到模型为<br>$$f(x)=w^Tx+b=\sum{i=1}^mα_iy_ix_i^Tx+b$$<br>上述过程需要满足KKT(Karush-Kuhn-Tucker)条件，即<br>\begin{cases}<br>α_i≥0<br>y_if(x_i)-1≥0<br>α_i(y_if(x_i)-1)=0<br>\end{cases}<br>对任意训练样本 $(x_i,y_i)$ ，总有 $α_i=0$ 或 $y_if(x_i)=1$ 。因此训练完成后，大部分的样本都不需要保留，最终模型仅与支持向量有关。<br>如果用二次规划算法求解对偶问题，则问题的规模正比于训练样本数，这会在实际任务中造成很大开销，为此提出SMO(Sequential Minimal Optimization)算法。</p>
 <h4 id="SMO算法"><a href="#SMO算法" class="headerlink" title="SMO算法"></a>SMO算法</h4><p>SMO将比较大的问题拆解为比较小的问题，多个变量不好求，先求两个。<br>步骤：不断执行以下两个步骤直到收敛<br>1、选取一对需要更新的变量 αi 和 αj<br>2、固定 αi 和 αj 以外的参数，求解对偶问题更新后的 αi 和 αj<br>只要选取的 αi 和 αj 中有一个不满足KKT条件， 目标函数就会在迭代后减小。KKT条件违背的程度越大，变量更新后可能导致的目标函数值减幅越大。<br>使选取的两变量所对应样本之间的间隔最大（两个变量有很大的差别，对它们进行更新会带给目标函数值更大的变化）。</p>
 <h3 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h3><p>原始样本空间线性不可分：将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分。如果原始空间是有限维，那么一定存在一个高维特征空间使样本可分。<br>模型变成：$ω^Tϕ(x)+b=0 $<br>$$\min{w,b}\frac{1}{2}||w||^2$$<br>$$s.t. y_i(w^Tϕ(x_i)+b)≥1，i=1,2,…m$$<br>对偶问题为：<br>$$\max{α} \sum{i=1}{m}α_i-\frac{1}{2}\sum{i=1}^m\sum{j=1}^mα_iα_jy_iy_jx_i^Tx_j{}$$<br>$$s.t. \sum{i=1}^mα_iy_i=0,α_i≥0，i=1,2,…,m$$<br>由于特征空间维数可能很高，直接计算 $ϕ(x_i)^Tϕ(x_j)$通常是困难的。设想函数$k(x_i,x_j)=ϕ(x_i)Tϕ(x_j)$,$x_ixi$与$x_jxj$在特征空间的内积<strong>等于</strong>它们在原始样本空间中通过核函数计算的结果。<br>核函数选择成为支持向量机的最大变数，若核函数选择不合适，则意味着将样本映射到了一个不合适的特征空间，很可能导致性能不佳。比如图像分类，一般使用高斯径向基核函数，因为需要超平面要非常的平滑。<br>常用核函数：<br><img src="/images/pasted-30.png" alt="upload successful"></p>
@@ -455,11 +455,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -467,11 +467,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">

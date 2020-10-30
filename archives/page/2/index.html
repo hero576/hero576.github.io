@@ -166,47 +166,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://docs.mongodb.com/manual/introduction/" target="_blank" rel="noopener">官方文档链接</a></p>
-<h2 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h2><h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><ol>
-<li><p>下载完安装包，并解压 tgz（以下演示的是 64 位 Linux上的安装）。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.6.tgz # 下载</span><br><span class="line">tar -zxvf mongodb-linux-x86_64-3.0.6.tgz # 解压</span><br><span class="line">mv  mongodb-linux-x86_64-3.0.6/ /usr/local/mongodb # 将解压包拷贝到指定目录</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>MongoDB 的可执行文件位于 bin 目录下，所以可以将其添加到 PATH 路径中：  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&lt;mongodb-install-directory&gt;/bin:$PATH</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>mongodb-install-directory 为 MongoDB 的安装路径。如本文的 /usr/local/mongodb 。  </p>
-<ol start="3">
-<li><p>创建数据库目录<br>MongoDB的数据存储在data目录的db目录下，但是这个目录在安装过程不会自动创建，所以你需要手动创建data目录，并在data目录中创建db目录。以下实例中我们将data目录创建于根目录下(/)。<br><strong>注意：</strong>/data/db 是 MongoDB 默认的启动的数据库路径(–dbpath)。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /data/db</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>命令行中运行 MongoDB 服务</p>
-<ul>
-<li><p>可以在 /usr/local/mongodb/bin/ 目录下使用命令：　　</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mongod</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在 /usr/local/mongodb/ 下添加conf目录，并添加mongodb.conf配置文件。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./mongod -f /usr/local/mongodb/conf/mongodb.conf 　　或者</span><br><span class="line">./mongod --config /usr/local/mongodb/conf/mongodb.conf</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ol>
-<p>mongodb.conf配置文件内容如下：</p>
-<pre><code class="shelldbpath=/data/db">bind_ip=127.0.0.1
-port=27017
-fork=true
-logappend=true
-shardsvr=true
-pidfilepath=/usr/local/mongodb/mongo.pid
-logpath=/usr/local/mongodb/log/mongodb.log
-</code></pre>
-<ol start="5">
-<li>设置开机启动mongo  <ul>
-<li>将/usr/local/mongodb/bin/mongod<br>–dbpath /data/db<br>–fork<br>–port 27017 –logpath=/usr/local/mongodb/log/mongodb.log<br>–logappend<br>添加到 /etc/rc.local 中。</li>
-</ul>
-</li>
-</ol>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/04/08/MongoDB的基本使用/#more">more >></a>
+        
       
 
       
@@ -290,186 +254,11 @@ logpath=/usr/local/mongodb/log/mongodb.log
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="时间模块"><a href="#时间模块" class="headerlink" title="时间模块"></a>时间模块</h2><p>python 中时间表示方法有：时间戳，即从1975年1月1日00:00:00到现在的秒数；格式化后的时间字符串；时间struct_time 元组。</p>
-<p>struct_time元组中元素主要包括：</p>
-<ul>
-<li>tm_year（年）、tm_mon（月）、tm_mday（日）、tm_hour（时）、tm_min（分）、tm_sec（秒）、tm_wday（weekday0 - 6（0表示周日））、tm_yday（一年中的第几天1 - 366）、tm_isdst（是否是夏令时）</li>
-</ul>
-<h2 id="time"><a href="#time" class="headerlink" title="time"></a>time</h2><h3 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h3><ul>
-<li>time.time()返回当前时间戳</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.time()</span><br><span class="line"><span class="number">1465370844.096474</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.ctime() 返回这种格式的时间字符’Wed Jun 8 15:27:48 2016’，显示当前时间.同时也可以转换时间戳</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.ctime()</span><br><span class="line"><span class="string">'Wed Jun  8 15:27:48 2016'</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.ctime(time.time()<span class="number">-86400</span>)</span><br><span class="line"><span class="string">'Tue Jun  7 15:29:36 2016'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.gmtime 将时间戳转换成struct_time格式，此显示的是格林威治0时区的时间</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.gmtime()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">7</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.gmtime(time.time() - <span class="number">86400</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">7</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">41</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.localtime 将当前系统时间戳转化为struct_time格式 </li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.localtime()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">35</span>, tm_sec=<span class="number">33</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.localtime(time.time() - <span class="number">86400</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">37</span>, tm_sec=<span class="number">10</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.mktime 将struct_time格式转回成时间戳</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>now = time.localtime()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>now</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">38</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.mktime(now)</span><br><span class="line"><span class="number">1465371508.0</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.strftime 将struct_time格式转成指定的字符串格式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>now = time.localtime()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>now</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">38</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = time.localtime(time.time() - <span class="number">86400</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">40</span>, tm_sec=<span class="number">23</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,last)</span><br><span class="line"><span class="string">'2016-06-07 15:40:23'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,now)</span><br><span class="line"><span class="string">'2016-06-08 15:38:28'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.strptime 将自定义时间格式的字符串转换为struct_time格式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strptime(<span class="string">"2016-06-08"</span>,<span class="string">"%Y-%m-%d"</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">0</span>, tm_min=<span class="number">0</span>, tm_sec=<span class="number">0</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strptime(<span class="string">"2016-06-08 15:50:44"</span>,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">50</span>, tm_sec=<span class="number">44</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>time.sleep 暂停时间，类似于shell的sleep()</p>
-</li>
-<li><p>其他</p>
-<ul>
-<li>时间格式：</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>格式</th>
-<th style="text-align:center">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>%a</td>
-<td style="text-align:center">显示简化星期名称</td>
-</tr>
-<tr>
-<td>%A</td>
-<td style="text-align:center">显示完整星期名称</td>
-</tr>
-<tr>
-<td>%b</td>
-<td style="text-align:center">显示简化月份名称</td>
-</tr>
-<tr>
-<td>%B</td>
-<td style="text-align:center">显示完整月份名称</td>
-</tr>
-<tr>
-<td>%c</td>
-<td style="text-align:center">本地相应的日期和时间表示</td>
-</tr>
-<tr>
-<td>%d</td>
-<td style="text-align:center">显示当月第几天</td>
-</tr>
-<tr>
-<td>%H</td>
-<td style="text-align:center">按24小时制显示小时</td>
-</tr>
-<tr>
-<td>%I</td>
-<td style="text-align:center">按12小时制显示小时</td>
-</tr>
-<tr>
-<td>%j</td>
-<td style="text-align:center">显示当年第几天</td>
-</tr>
-<tr>
-<td>%m</td>
-<td style="text-align:center">显示月份</td>
-</tr>
-<tr>
-<td>%M</td>
-<td style="text-align:center">显示分钟数）</td>
-</tr>
-<tr>
-<td>%p</td>
-<td style="text-align:center">本地am或者pm的相应符</td>
-</tr>
-<tr>
-<td>%S</td>
-<td style="text-align:center">显示秒数）</td>
-</tr>
-<tr>
-<td>%U</td>
-<td style="text-align:center">一年中的星期数</td>
-</tr>
-<tr>
-<td>%w</td>
-<td style="text-align:center">显示在星期中的第几天，默认从0开始表示周一</td>
-</tr>
-<tr>
-<td>%W</td>
-<td style="text-align:center">和%U基本相同</td>
-</tr>
-<tr>
-<td>%x</td>
-<td style="text-align:center">本地相应日期</td>
-</tr>
-<tr>
-<td>%X</td>
-<td style="text-align:center">本地相应时间</td>
-</tr>
-<tr>
-<td>%y</td>
-<td style="text-align:center">去掉世纪的年份（00 - 99）</td>
-</tr>
-<tr>
-<td>%Y</td>
-<td style="text-align:center">完整的年份</td>
-</tr>
-<tr>
-<td>%Z</td>
-<td style="text-align:center">时区的名字（如果不存在为空字符）</td>
-</tr>
-<tr>
-<td>%%</td>
-<td style="text-align:center">‘%’字符</td>
-</tr>
-<tr>
-<td>o</td>
-<td style="text-align:center">时间函数之间转换关系</td>
-</tr>
-</tbody>
-</table>
-<p> ￼</p>
-<h2 id="datetime"><a href="#datetime" class="headerlink" title="datetime"></a>datetime</h2><p>datime是time的升级版，可以对date(日期)、time(时间)、datetime（日期时间）等三种单独管理。主要是由下面四个类组成</p>
-<ul>
-<li><p>datetime.datetime常用函数（datetime.date datetime.time通用）</p>
-</li>
-<li><p>datetime.datetime.today() 默认返回当前日期和时间的对象，也可以自定义日期和时间</p>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>today = datetime.datetime.today()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(today)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = datetime.datetime(<span class="number">2016</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)  ＃注意此处表示日期只能是实际月份，不能带<span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">2016</span><span class="number">-05</span><span class="number">-08</span> <span class="number">11</span>:<span class="number">23</span>:<span class="number">55</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">                    ^</span><br><span class="line">SyntaxError: invalid token</span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.datetime.now() 返回当前时间</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>datetime.datetime.now()</span><br><span class="line">datetime.datetime(<span class="number">2016</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">44</span>, <span class="number">29</span>, <span class="number">694398</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.strftime(format)  ＃自定义格式化时间</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>today.strftime(<span class="string">"%I:%M:%S %p %d/%m/%Y"</span>)</span><br><span class="line"> <span class="string">'04:34:08 PM 08/06/2016'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.datetime.timple() 将时间转换为struct_time 格式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;today.timetuple()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">16</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">8</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.replace（）返回一个替换后的date对象</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;last = today.replace(<span class="number">1949</span>,<span class="number">10</span>,<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">1949</span><span class="number">-10</span><span class="number">-01</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = today.replace(year=<span class="number">1919</span>,month=<span class="number">3</span>,day=<span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">1919</span><span class="number">-03</span><span class="number">-02</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.datetime.strptime  将字符串转换为日志格式对象</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">"2016-06-08 17:18:19"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = datetime.datetime.strptime(a,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">17</span>:<span class="number">18</span>:<span class="number">19</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(b)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">17</span>:<span class="number">18</span>:<span class="number">19</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(type(a))</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">print</span><span class="params">(type<span class="params">(b)</span>)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">datetime</span>.<span class="title">datetime</span>'&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.timedelta 时间运算<ul>
-<li>可用参数：days seconds microseconds milliseconds minutes hours weeks</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">today = datetime.datetime.now()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(today)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">16</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>yesterday = today - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(yesterday)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-07</span> <span class="number">16</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last_hour = today - datetime.timedelta(hours=<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last_hour)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">15</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br></pre></td></tr></table></figure>
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/04/08/time和datetime模块/#more">more >></a>
+        
       
 
       
@@ -553,21 +342,11 @@ logpath=/usr/local/mongodb/log/mongodb.log
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="认识论"><a href="#认识论" class="headerlink" title="认识论"></a>认识论</h2><ul>
-<li><strong>认识事物的方法</strong>概念、判断、推理  </li>
-<li><strong>推理</strong>分为归纳、演绎  <ul>
-<li><strong>基本归纳法</strong>常常称之为马尔科夫模型，特点是只要状态$A_i$确定，那么计算$A_{i+1}$时不需要考察更新序的状态$A_1…A_{i-1}$的状态。计算机算法中叫做贪心算法。</li>
-<li><strong>高阶归纳法</strong>称之为高阶马尔科夫模型，对于$A_{i+1}$需考察前i个状态集$A_1…A_{i-1}$的状态才可完成整个推理过程。计算机算法中叫做动态规划算法。</li>
-<li><strong>无后效性</strong>对于$A_{i+1}$以后的节点来说，是不会影响到前面的节点的，一旦计算完成，前面的节点不会改变。</li>
-</ul>
-</li>
-</ul>
-<h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><h3 id="硬币问题的求解"><a href="#硬币问题的求解" class="headerlink" title="硬币问题的求解"></a>硬币问题的求解</h3><p>现有不限数量的面额分别为1元，2元，5元，10元的货币，如果要用这些货币组合成x元，求一共有多少种组合方式？</p>
-<h4 id="暴力求解法"><a href="#暴力求解法" class="headerlink" title="暴力求解法"></a>暴力求解法</h4><p>从第一个硬币开始，用0个第一个硬币，求解剩余硬币组合成x元的方法，用1个第一个硬币，求解剩余硬币组合成x-1元的方法，……<br>最终求得结果。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">coins = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">10</span>]</span><br><span class="line">N = <span class="number">100</span></span><br><span class="line">array = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solution_digui</span><span class="params">(price, coin, result)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> price &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> price == <span class="number">0</span>:</span><br><span class="line">        array.append(result)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">if</span> len(coin) &gt; <span class="number">0</span>:</span><br><span class="line">        cur = coin[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(int(N / cur) + <span class="number">1</span>):</span><br><span class="line">            solution_digui(price - i * cur, coin[<span class="number">1</span>:], result + [cur] * i)</span><br><span class="line">solution_digui(N, coins, [])</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">coins = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">10</span>]</span><br><span class="line">N = <span class="number">100</span></span><br><span class="line">array = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solution_digui</span><span class="params">(price, coin, result)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> price &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> price == <span class="number">0</span>:</span><br><span class="line">        array.append(result)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">if</span> len(coin) &gt; <span class="number">0</span>:</span><br><span class="line">        cur = coin[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(int(N / cur) + <span class="number">1</span>):</span><br><span class="line">            solution_digui(price - i * cur, coin[<span class="number">1</span>:], result + [cur] * i)</span><br><span class="line">solution_digui(N, coins, [])</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure>
-<h4 id="记忆搜索法"><a href="#记忆搜索法" class="headerlink" title="记忆搜索法"></a>记忆搜索法</h4><p>递归的方法会有大量的重复计算，记忆搜索算法会将结果组成key：value放入到一个map中，进入递归过程前，查询是否存在value，如果存在，则直接取值，这样就减少了递归的次数。</p>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/03/30/动态规划/#more">more >></a>
+        
       
 
       
@@ -651,73 +430,11 @@ logpath=/usr/local/mongodb/log/mongodb.log
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="个体与集成"><a href="#个体与集成" class="headerlink" title="个体与集成"></a>个体与集成</h2><p>“同质”：由类型相同的学习器组合而成的集成学习器，每个学习器可称为基学习器<br>“异质”：由类型不相同的学习器组合而成的集成学习器，每个学习器可称为“组件学习器”<br>集成学习通过将多个学习器进行结合，常常可以获得比单一学习器具有显著优越的泛化性能。这个对于弱学习器尤为明显。<br>如何获得一个好的集成学习器呢？每个个体学习器具有一定的准确性（每个学习器不能太坏）和多样性（每个学习器之间存在差异）<br>集成学习方法可以分为两大类：一是个体学习器间存在强依赖关系、必须串行生成序列化方法，代表有Boosting算法，二是个体学习器之间不存在强依赖关系、可同时生成的并行化方法，代表有Bagging和随机森林（Random Forest）</p>
-<h2 id="Bagging与随机森林"><a href="#Bagging与随机森林" class="headerlink" title="Bagging与随机森林"></a>Bagging与随机森林</h2><h3 id="Bagging算法"><a href="#Bagging算法" class="headerlink" title="Bagging算法"></a>Bagging算法</h3><p>Bagging算法基本流程：采用自助采样法，可以采用出 个含 个训练样本的采样集，然后基于每个采样集训练出一个基学习器，再将这些基学习器进行结合。 </p>
-<h3 id="随机森林（Random-Forest）"><a href="#随机森林（Random-Forest）" class="headerlink" title="随机森林（Random Forest）"></a>随机森林（Random Forest）</h3><p>随机森林是Bagging的一个扩展变体，随机森林是在以决策树为基学习器构建Bagging集成的基础上，进一步在决策树的训练过程中引入了随机属性选择。具体的说，传统决策树在选择划分属性时是在当前结点的属性集合（假定有 个属性）中选择一个最优属性；而在随机森林（RF）中，对基决策树的每个结点，先从该结点的属性集合中随机选择一个包含 个属性的子集，然后再从这个子集中选择一个最优属性用于划分。<br>可以参阅：<a href="http://www.cnblogs.com/hrlnw/p/3850459.html" target="_blank" rel="noopener">http://www.cnblogs.com/hrlnw/p/3850459.html</a></p>
-<h4 id="采样方式"><a href="#采样方式" class="headerlink" title="采样方式"></a>采样方式</h4><ul>
-<li>随机森林的集成学习方法是Bagging， Bagging的采样方式为：<ul>
-<li><strong>Bootstraping：</strong>有放回的采样</li>
-</ul>
-</li>
-<li>随机森林即随机采样样本，也随机选择特征，因此防止过拟合能力更强，降低方差。</li>
-</ul>
-<h4 id="构建方法"><a href="#构建方法" class="headerlink" title="构建方法"></a>构建方法</h4><p>构建多颗决策树，结果是所有的决策树共同决定的。对于分类任务可以取出现最多，回归操作可以取均值。</p>
-<h3 id="随机性的体现"><a href="#随机性的体现" class="headerlink" title="随机性的体现"></a>随机性的体现</h3><ol>
-<li>数据选择随机性：n个样本中，采集60%的样本个数的集合作为数据，去除异常样本影响。</li>
-<li>特征随机性：在d个特种中，随机选择其中一些特征。</li>
-</ol>
-<h3 id="随机森林的推广-Extra-Trees"><a href="#随机森林的推广-Extra-Trees" class="headerlink" title="随机森林的推广(Extra Trees)"></a><a href="http://www.cnblogs.com/sarahp/p/6900572.html" target="_blank" rel="noopener">随机森林的推广(Extra Trees)</a></h3><p>extra trees是RF的一个变种, 原理几乎和RF一模一样，仅有区别有：</p>
-<p>1） 对于每个决策树的训练集，RF采用的是随机采样bootstrap来选择采样集作为每个决策树的训练集，而extra trees一般不采用随机采样，即每个决策树采用原始训练集。</p>
-<p>2） 在选定了划分特征后，RF的决策树会基于信息增益，基尼系数，均方差之类的原则，选择一个最优的特征值划分点，这和传统的决策树相同。但是extra trees比较的激进，他会随机的选择一个特征值来划分决策树。</p>
-<p>从第二点可以看出，由于随机选择了特征值的划分点位，而不是最优点位，这样会导致生成的决策树的规模一般会大于RF所生成的决策树。也就是说，模型的方差相对于RF进一步减少，但是bias相对于RF进一步增大。在某些时候，extra trees的泛化能力比RF更好</p>
-<h3 id="GBDT-Gradient-Boosting-Decision-Tree"><a href="#GBDT-Gradient-Boosting-Decision-Tree" class="headerlink" title="GBDT (Gradient Boosting Decision Tree)"></a>GBDT (Gradient Boosting Decision Tree)</h3><p>gbdt的基本原理是boost 里面的 boosting tree（提升树），并使用 gradient boost。<br>GBDT中的树都是回归树，不是分类树 ，因为gradient boost 需要按照损失函数的梯度近似的拟合残差，这样拟合的是连续数值，因此只有回归树。</p>
-<p>　GB算法中最典型的基学习器是决策树，尤其是CART，正如名字的含义，GBDT是GB和DT的结合。要注意的是这里的决策树是回归树，GBDT中的决策树是个弱模型，深度较小一般不会超过5，叶子节点的数量也不会超过10，对于生成的每棵决策树乘上比较小的缩减系数（学习率&lt;0.1），有些GBDT的实现加入了随机抽样$（subsample 0.5&lt;=f &lt;=0.8）$提高模型的泛化能力。通过交叉验证的方法选择最优的参数。因此GBDT实际的核心问题变成怎么基于${(x_i, r_{im})}_{i=1}^n$使用CART回归树生成$! h_m(x)？$</p>
-<p>CART分类树在很多书籍和资料中介绍比较多，但是再次强调GDBT中使用的是回归树。作为对比，先说分类树，我们知道CART是二叉树，CART分类树在每次分枝时，是穷举每一个feature的每一个阈值，根据GINI系数找到使不纯性降低最大的的feature以及其阀值，然后按照feature&lt;=阈值，和feature&gt;阈值分成的两个分枝，每个分支包含符合分支条件的样本。用同样方法继续分枝直到该分支下的所有样本都属于统一类别，或达到预设的终止条件，若最终叶子节点中的类别不唯一，则以多数人的类别作为该叶子节点的性别。回归树总体流程也是类似，不过在每个节点（不一定是叶子节点）都会得一个预测值，以年龄为例，该预测值等于属于这个节点的所有人年龄的平均值。分枝时穷举每一个feature的每个阈值找最好的分割点，但衡量最好的标准不再是GINI系数，而是最小化均方差–即（每个人的年龄-预测年龄）^2 的总和 / N，或者说是每个人的预测误差平方和 除以 N。这很好理解，被预测出错的人数越多，错的越离谱，均方差就越大，通过最小化均方差能够找到最靠谱的分枝依据。分枝直到每个叶子节点上人的年龄都唯一（这太难了）或者达到预设的终止条件（如叶子个数上限），若最终叶子节点上人的年龄不唯一，则以该节点上所有人的平均年龄做为该叶子节点的预测年龄。</p>
-<h3 id="xgboost"><a href="#xgboost" class="headerlink" title="xgboost"></a>xgboost</h3><p>XGBoost比GBDT好的地方：<br>二阶泰勒展开<br>节点分数惩罚正则<br>增益计算不同，GBDT是gini，xgb是优化推导公式<br><a href="http://www.cnblogs.com/wxquare/p/5541414.html" target="_blank" rel="noopener">一步一步理解GB、GBDT、xgboost</a><br><img src="/images/pasted-86.png" alt="upload successful"><br><img src="/images/pasted-87.png" alt="upload successful"><br><img src="/images/pasted-88.png" alt="upload successful"><br><img src="/images/pasted-89.png" alt="upload successful"></p>
-<h2 id="Boosting"><a href="#Boosting" class="headerlink" title="Boosting"></a>Boosting</h2><p>Boosting算法是一族可以将弱学习器提升为强学习器的算法。<br>Boosting工作原理：先从初始训练集中训练出一个基学习器，再根据基学习器的表现对训练样本分布进行调整，使得先前基学习器做错的的训练样本在后续受到更多的关注，然后基于调整后的样本分布训练下一个基学习器，如此重复进行，知道基学习器数目达到事先指定的值 ，最终将这 个基学习器进行加权结合。这种算法最具有代表的是AdaBoost算法。<br>AdaBoost算法可以理解是基于“加性模型”，即基学习器的线性组合。 </p>
-<h3 id="Adaboost"><a href="#Adaboost" class="headerlink" title="Adaboost"></a>Adaboost</h3><p>（Adaptive Boosting自适应增强）适应性在于：前一个基本分类器的赝本会得到加强，加权后全体样本再次被用来训练下一个基本分类器。同时，在每一轮中加入一个新的弱分类器，直到达到每个预定的足够小的错误率或者达到预先设定的最大迭代次数。<br><img src="/images/pasted-85.png" alt="upload successful"><br>从图中可以看到，在训练过程中我们需要训练出多个弱分类器（图中为3个），每个弱分类器是由不同权重的样本（图中为5个训练样本）训练得到（其中第一个弱分类器对应输入样本的权值是一样的），而每个弱分类器对最终分类结果的作用也不同，是通过加权平均输出的，权值见上图中三角形里面的数值。那么这些弱分类器和其对应的权值是怎样训练出来的呢？<br>下面通过一个例子来简单说明。<br>书中（machine learning in action）假设的是5个训练样本，每个训练样本的维度为2，在训练第一个分类器时5个样本的权重各为0.2. 注意这里样本的权值和最终训练的弱分类器组对应的权值α是不同的，样本的权重只在训练过程中用到，而α在训练过程和测试过程都有用到。<br>现在假设弱分类器是带一个节点的简单决策树，该决策树会选择2个属性（假设只有2个属性）的一个，然后计算出这个属性中的最佳值用来分类。损失函数中正则化项为$Ω(f_t)=γT+\frac{λ}{2}\sum_{j=1}^Tω_i^2$，叶子的个数+w的L2模平方<br>Adaboost的简单版本训练过程如下：</p>
-<ol>
-<li>训练第一个分类器，样本的权值D为相同的均值。通过一个弱分类器，得到这5个样本（请对应书中的例子来看，依旧是machine learning in action）的分类预测标签。与给出的样本真实标签对比，就可能出现误差(即错误)。如果某个样本预测错误，则它对应的错误值为该样本的权重，如果分类正确，则错误值为0. 最后累加5个样本的错误率之和，记为ε。</li>
-<li>通过ε来计算该弱分类器的权重α，公式如下：<br>$α=\frac{1}{2}ln(\frac{1-ε}{ε})$</li>
-<li>通过α来计算训练下一个弱分类器样本的权重D，如果对应样本分类正确，则减小该样本的权重，公式为：<br>$D_i^{t+1}=\frac{D_i^{(t)}e^{-α}}{Sum(D)}$<br>如果样本分类错误，则增加该样本的权重，公式为：<br>$D_i^{t+1}=\frac{D_i^{(t)}e^α}{Sum(D)}$</li>
-<li>循环步骤1,2,3来继续训练多个分类器，只是其D值不同而已。<br>测试过程如下：<br>输入一个样本到训练好的每个弱分类中，则每个弱分类都对应一个输出标签，然后该标签乘以对应的α，最后求和得到值的符号即为预测标签值。</li>
-</ol>
-<h3 id="结合策略"><a href="#结合策略" class="headerlink" title="结合策略"></a>结合策略</h3><p>如何使结合后的集成算法明显的优势呢？也就是说如何将训练出来的多个基学习器如何很好的结合在一起呢形成新的集成算法呢？主要有平均法、投票法、学习法三种结合策略。</p>
-<h4 id="Voting"><a href="#Voting" class="headerlink" title="Voting"></a>Voting</h4><p>投票制即为，投票多者为最终的结果。例如一个分类问题，多个模型投票（当然可以设置权重）。最终投票数最多的类为最终被预测的类。</p>
-<h4 id="Averaging"><a href="#Averaging" class="headerlink" title="Averaging"></a>Averaging</h4><p>Averaging即所有预测器的结果平均。<br>回归问题，直接取平均值作为最终的预测值。（也可以使用加权平均）<br>分类问题，直接将模型的预测概率做平均。（or 加权）<br>加权平均，其公式如下：<br>$$\sum_{i=1}^n Weight_i∗P_i$$<br>其中nn表示模型的个数， $Weight_i$表示该模型权重，$P_i$表示模型i的预测概率值。<br>例如两个分类器，XGBoost（权重0.4）和LightGBM（权重0.6），其预测概率分别为：0.75、0.5，那么最终的预测概率，(0.4 <em> 0.75+0.6 </em> 0.5)/(0.4+0.6)=0.6<br>模型权重也可以通过机器学习模型学习得到</p>
-<h4 id="Ranking"><a href="#Ranking" class="headerlink" title="Ranking"></a>Ranking</h4><p>Rank的思想其实和Averaging一致，但Rank是把排名做平均，对于AUC指标比较有效。<br>个人认为其实就是Learning to rank的思想，可以来优化搜索排名。具体公式如下：<br>$$\sum_{i=1}^n \frac{Weight_i}{Rank_i}$$<br>其中nn表示模型的个数， WeightiWeighti表示该模型权重，所有权重相同表示平均融合。RankiRanki表示样本在第i个模型中的升序排名。它可以较快的利用排名融合多个模型之间的差异，而不需要加权融合概率。</p>
-<h4 id="Binning"><a href="#Binning" class="headerlink" title="Binning"></a>Binning</h4><p>将单个模型的输出放到一个桶中。参考<a href="http://cseweb.ucsd.edu/~elkan/254spring01/jdrishrep.pdf" target="_blank" rel="noopener">pdf paper</a></p>
-<h4 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h4><p>使用训练数据的不同随机子集来训练每个 Base Model，最后每个 Base Model 权重相同，分类问题进行投票，回归问题平均。<br>随机森林就用到了Bagging，并且具有天然的并行性。</p>
-<h4 id="Boosting-1"><a href="#Boosting-1" class="headerlink" title="Boosting"></a>Boosting</h4><p>Boosting是一种迭代的方法，每一次训练会更关心上一次被分错的样本，比如改变被错分的样本的权重的Adaboost方法。还有许多都是基于这种思想，比如Gradient Boosting等。</p>
-<h4 id="Stacking"><a href="#Stacking" class="headerlink" title="Stacking"></a>Stacking</h4><p><img src="/images/pasted-90.png" alt="upload successful"><br>从上图可以看出，类似交叉验证。</p>
-<ul>
-<li>将数据集分为K个部分，共有n个模型。</li>
-<li>for i in xrange(n):<br>for i in xrange(k):<br>用第i个部分作为预测，剩余的部分来训练模型，获得其预测的输出作为第i部分的新特征。<br>对于测试集，直接用这k个模型的预测值均值作为新的特征。</li>
-<li>这样k次下来，整个数据集都获得了这个模型构建的New Feature。n个模型训练下来，这个模型就有n个New Features。</li>
-<li>把New Features和label作为新的分类器的输入进行训练。然后输入测试集的New Features输入模型获得最终的预测结果。</li>
-</ul>
-<h4 id="Blending"><a href="#Blending" class="headerlink" title="Blending"></a>Blending</h4><p>Blending直接用不相交的数据集用于不同层的训练。</p>
-<p>以两层的Blending为例，训练集划分为两部分（d1，d2），测试集为test。</p>
-<ul>
-<li>第一层：用d1训练多个模型，讲其对d2和test的预测结果作为第二层的New Features。</li>
-<li>第二层：用d2的New Features和标签训练新的分类器，然后把test的New Features输入作为最终的预测值。</li>
-</ul>
-<h3 id="融合的条件"><a href="#融合的条件" class="headerlink" title="融合的条件"></a>融合的条件</h3><p>Base Model 之间的相关性要尽可能的小。这就是为什么非 Tree-based Model 往往表现不是最好但还是要将它们包括在 Ensemble 里面的原因。Ensemble 的 Diversity 越大，最终 Model 的 Bias 就越低。<br>Base Model 之间的性能表现不能差距太大。这其实是一个 Trade-off，在实际中很有可能表现相近的 Model 只有寥寥几个而且它们之间相关性还不低。但是实践告诉我们即使在这种情况下 Ensemble 还是能大幅提高成绩。</p>
-<h3 id="多样性"><a href="#多样性" class="headerlink" title="多样性"></a>多样性</h3><p>多样性，在前面已经提到过，一个好集成算法，需要训练出来的基学习器具有很强的多样性。 </p>
-<ul>
-<li>误差-分歧分解</li>
-<li>多样性度量</li>
-<li>多样性增强</li>
-</ul>
-<p>在集成学习中需要有效地生成多样性大的个体学习器。如果增强多样性呢？一般思路是在学习过程中引入随机性，常见的做法是对数据样本、输入属性、输出表示、算法参数进行扰动。</p>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>低泛化误差；</li>
-<li>容易实现，分类准确率较高，没有太多参数可以调；</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>对outlier（离群值）比较敏感。</li>
-</ul>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/03/26/集成学习/#more">more >></a>
+        
       
 
       
@@ -801,86 +518,11 @@ logpath=/usr/local/mongodb/log/mongodb.log
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>线性模型是机器学习里面最基础的一个模型，也是比较简单的，主要用于属于线性关系的模型，像y=wx+b，就是只有一个属性x表示的y值的变化规律，也称做单属性线性回归。</p>
-<h2 id="基本形式"><a href="#基本形式" class="headerlink" title="基本形式"></a>基本形式</h2><p>当给定d个属性示例$x=[x_1;x_2….x_d]$，线性模型视图学得一个属性的线性组合来进行预测：$f(x)=w_1x_1+w_2x_2+w_3x_4+…w_dx_d+b=w^T+b$，w和b确认后，模型即可确认。<br>线性模型形式简单、易于建模，却蕴涵着机器学习中的一些重要的基本思想。许多功能更为强大的非线性模型（nonlinear model）可以在线性模型的基础上通过引入层级结构或者高维映射而得。</p>
-<h2 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h2><h3 id="度量指标"><a href="#度量指标" class="headerlink" title="度量指标"></a>度量指标</h3><ul>
-<li><p>集中趋势的衡量</p>
-<ul>
-<li>均值：$\overline {x}=\frac{\sum{i=1}^nx_i}{n}$；</li>
-<li>中位数：大小排序后，中间位置的数；</li>
-<li>众数：出现最多的数；</li>
-</ul>
-</li>
-<li><p>离散程度的衡量</p>
-<ul>
-<li>方差：$s^2=\frac{\sum{i=1}^n(x_i-\overlinex)^2} {n-1}$</li>
-<li>标准差：s</li>
-</ul>
-</li>
-</ul>
-<h3 id="单属性线性回归"><a href="#单属性线性回归" class="headerlink" title="单属性线性回归"></a>单属性线性回归</h3><p>先研究单属性线性回归问题，也即： </p>
-<ol>
-<li>训练集只有一个属性 </li>
-<li>给定数据集$D={(x_i,y_i)}m_i=1$ </li>
-<li>线性预测表示为：$f(x_i=wx_i+b)$</li>
-<li>通过训练集得到w和b的值，使得$f(x_i)≈y_i$</li>
-</ol>
-<p>均方差是常用的性能度量指标：<br><img src="/images/pasted-67.png" alt="upload successful"><br>只需针对w和b分别求偏导即可得到最优解（闭式close-form解）w和b。<br>基于均方误差最小化来进行模型求解的方法也称为最小二乘法。在线性回归中，最小二乘法可以找到一条这样的直线，使得所有样本到直线上的欧氏距离之和最小。<br>$$w=\frac{\sum (x_i-\overline x)(y_i-\overline y)}{\sum (x_i-\overline x)^2}$$<br>$$b=\overline y -w\overline x$$</p>
-<h3 id="多属性线性回归"><a href="#多属性线性回归" class="headerlink" title="多属性线性回归"></a>多属性线性回归</h3><p>多元线性回归也就是有d个属性，建立矩阵方程。</p>
-<h3 id="线性回归与最小二乘"><a href="#线性回归与最小二乘" class="headerlink" title="线性回归与最小二乘"></a>线性回归与最小二乘</h3><p>$$y=w^Tx+ε$$<br>假设ε满足独立同分布，服从均值0方差$θ^2$的高斯分布。所以ε表示为：$p(ε)=\frac{1}{\sqrt{2π}}e^{(-\frac{ε^2}{2σ^2})}$<br>由于$ε=y-w^Tx$，带入到上式：$$p(y|x;w)=\frac{1}{\sqrt{2π}}e^{(-\frac{(y-w^Tx)^2}{2σ^2})}$$<br>其中$p(y|x;w)$表示w能够最大y的概率的取值，可以用似然函数求解。<br>$$L(θ)=\prod_{i=1}{m}p(y|x;w)$$<br>通过取对数，化简得到目标函数：求取J(θ)的最小值<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>最小值可以通过凸函数的导数为零的解，由于X和θ是矩阵，求导要符合矩阵求导的公式。求导公式，可参照<a href="https://en.wikipedia.org/wiki/Matrix_calculus#Scalar-by-vector_identities" target="_blank" rel="noopener">wiki百科</a><br><img src="/images/pasted-71.png" alt="upload successful"></p>
-<h3 id="岭回归"><a href="#岭回归" class="headerlink" title="岭回归"></a><a href="https://zhuanlan.zhihu.com/p/30535220" target="_blank" rel="noopener">岭回归</a></h3><p><img src="/images/pasted-93.png" alt="upload successful"><br>岭回归和Lasso是两种线性回归的缩减(shrinkage)方法。<br>标准最小二乘法优化问题:<br>$$J(θ)=\frac{1}{2}\sum_{i=1}^m (h_θ(x)-y)^2$$<br>可以表示为：<br>$$J(θ)=\frac{1}{2} (h_θ(x)-y)^T(h_θ(x)-y)$$<br>回归系数为：<br>$$θ=(X^TX)^{-1}X^Ty$$<br>这个问题解存在且唯一的条件就是XX列满秩: rank(X) = dim(X)。但即使 X 列满秩，但是当数据特征中存在共线性，即相关性比较大的时候，会使得标准最小二乘求解不稳定, $X^TX$的行列式接近零，计算$X^TX$的时候误差会很大。这个时候我们需要在cost function上添加一个惩罚项 $\lambda\sum_{i=1}^{n}θ_{i}^2$，称为L2正则化。<br>这个时候的cost function的形式就为:</p>
-<p>$$f(θ) = \sum_{i=1}^{m} (y_i - x_{i}^{T}θ)^2 + \lambda\sum_{i=1}^{n}θ_{i}^{2}$$</p>
-<p>通过加入此惩罚项进行优化后，限制了回归系数$wiwi$的绝对值，数学上可以证明上式的等价形式如下:</p>
-<p>$$f(θ) = \sum_{i=1}^{m} (y_i - x_{i}^{T}θ)^2 $$</p>
-<p>$$s.t. \sum_{i=1}^{n}θ_{j}^2 \le t$$</p>
-<p>其中t为某个阈值。</p>
-<p>将岭回归系数用矩阵的形式表示:</p>
-<p>$$\hat{θ} = (X^{T}X + \lambda I)^{-1}X^{T}y$$</p>
-<p>可以看到，就是通过将 $X^TX$ 加上一个单位矩阵是的矩阵变成非奇异矩阵并可以进行求逆运算。</p>
-<p><img src="\images\pasted-94.png" alt="upload successful"></p>
-<p><strong>岭回归的一些性质</strong></p>
-<p>当岭参数 $\lambda = 0 $时，得到的解是最小二乘解<br>当岭参数 $\lambda$ 趋向更大时，岭回归系数 $θ_i $趋向于0，约束项 t 很小</p>
-<h3 id="Lasso"><a href="#Lasso" class="headerlink" title="Lasso"></a>Lasso</h3><p>岭回归限定了所有回归系数的平方和不大于 t , 在使用普通最小二乘法回归的时候当两个变量具有相关性的时候，可能会使得其中一个系数是个很大正数，另一个系数是很大的负数。通过岭回归的  $\sum_{i=1}^{n} θ_i \le t $的限制，可以避免这个问题。</p>
-<p>LASSO(The Least Absolute Shrinkage and Selection Operator)是另一种缩减方法，将回归系数收缩在一定的区域内。LASSO的主要思想是构造一个一阶惩罚函数获得一个精炼的模型, 通过最终确定一些变量的系数为0进行特征筛选。</p>
-<p>LASSO的惩罚项为:</p>
-<p>$$\sum_{i=1}^{n} \vert θ_i \vert \le t$$</p>
-<p>与岭回归的不同在于，此约束条件使用了绝对值的一阶惩罚函数代替了平方和的二阶函数。虽然只是形式稍有不同，但是得到的结果却又很大差别。在LASSO中，当λ很小的时候，一些系数会随着变为0而岭回归却很难使得某个系数恰好缩减为0. 我们可以通过几何解释看到LASSO与岭回归之间的不同。</p>
-<p><img src="\images\pasted-95.png" alt="upload successful"><br>虽然惩罚函数只是做了细微的变化，但是相比岭回归可以直接通过矩阵运算得到回归系数相比，LASSO的计算变得相对复杂。</p>
-<h3 id="Kernel-Regression-and-RBFs"><a href="#Kernel-Regression-and-RBFs" class="headerlink" title="Kernel Regression and RBFs"></a>Kernel Regression and RBFs</h3><p><strong>径向基函数</strong></p>
-<p>我们可以用核函数线性组合来表示线性回归模型：<br>$$Φ(x)=[κ(x,μ_1,λ),…,κ(x,μ_d,λ)]，e.g. 高斯核函数：κ(x,μ,λ)=e^{-\frac{1}{2}||x-μ_i||^2}$$</p>
-<ul>
-<li>d的确定可以指定，这个可以使用x的个数，但是如果x个数太多，那么会导致很复杂。第二个方法可以通过Kmeans聚类。</li>
-<li>超参数的确定，λ取0.1，μ取在x聚类后的均值。（还没验证…）</li>
-</ul>
-<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><h3 id="广义线性回归"><a href="#广义线性回归" class="headerlink" title="广义线性回归"></a>广义线性回归</h3><p>线性回归模型$y=w^Tx+b$，如果将y表示为在指数尺度上的变化，则：$\ln y=w^Tx+b$称为对数线性回归。$y=e^{w^Tx+b}$，实质上是在求输入空间到输出空间的非线性函数的映射（欧拉公式）。<br><img src="/images/pasted-68.png" alt="upload successful"><br>对更一般的单调可微函数g(x)，$y=g^{-1}(w^Tx+b)$这样的模型成为广义线性模型。g(x)称为联系函数（link function）</p>
-<h3 id="对数几率函数（逻辑回归）"><a href="#对数几率函数（逻辑回归）" class="headerlink" title="对数几率函数（逻辑回归）"></a>对数几率函数（逻辑回归）</h3><p>之前讨论的是使用线性模型进行回归学习，如果要应用到分类中，思路就是利用广义线性模型，找一单调可微函数将分类任务的真实标记y与线性回归模型的预测值对应起来即可。<br>设$z=w^Tx+b$，单位阶跃函数（unit-step function）表示为：<br>$y=\begin{cases}<br>0,z&lt;0;<br>0.5,z=0;<br>1z&gt;0<br>\end{cases}$<br>可以表征二分类任务，z大于零为正例，小于零为负例，临界值可任意。但是单位阶跃不连续，固需利用类似的替代函数（surrogate function）：对数几率函数（logistic function）$y=\frac{1}{1+\exp{-z}}$</p>
-<p>目前使用比较广泛的是对数几率函数logistic function，它是Sigmoid函数的一种。它的好处在于： </p>
-<ol>
-<li>单调可微 </li>
-<li>在0处变化陡峭，最接近阶跃函数，适合二分类。</li>
-</ol>
-<p>$y=\frac{1}{1+\exp{-(w^Tx+b)}}$，$\ln \frac{y}{1-y}=w^Tx+b$，$\frac{y}{1-y}$含义就是比率，为正例的可能性与为反例的可能性比值。<br>从本质上讲，对数几率回归模型logistic regression就是在用线性回归模型的预测结果去逼近真实标记的对数几率。</p>
-<p>确定模型之后，接下来自然要做的就是确定w和b。这里要使用到的方法是极大似然法（maximum likelihood method）。<br>给定数据集{$(x_i,y_i)$}i=1~m，对率回归模型最大化就是要把所有样本概率预测之和最大化，也就是$l(w,b)=\sum{i=1}^m \ln p(y_i|x_i;w,b)$。为方便讨论，令β=(w;b),x̂ =(x;1),wT+x=βTx̂ ，再令$l(β)=\sum{i=1}^m -y_iβ^Tx_i\ln (1+\exp{β^Tx_i})$这样，最大化原概率和公式等价于最小化。上式为关于β的高阶可导连续凸函数，根据凸优化理论，利用经典的数值优化算法如梯度下降法、牛顿法都可求得最优解。</p>
-<h3 id="logistic回归求解"><a href="#logistic回归求解" class="headerlink" title="logistic回归求解"></a>logistic回归求解</h3><p>回归的方程表达式为：<br>$$h_θ(x)=g(θ^Tx)=\frac{1}{1+e^(-θ^Tx)}$$<br>$h_θ(x)$可以进行概率表示：<br>$$P(y=1|x;θ)=h_θ(x)$$<br>$$P(y=0|x;θ)=1-h_θ(x)$$<br>结合到一起可以写为：<br>$$P(y|x;θ)=(h_θ(x))^y(1-h_θ(x))^{1-y}$$<br>是不是很巧妙。<br>然后找到最大似然估计：<br>$$log L(θ)=\sum_{i=1}^my\log h(x)+(1-y)\log(1-h(x))$$<br>$$J(θ)=-\frac{1}{2m}log L(θ)$$<br>由于是非线性方程找不到驻点，所以只能用梯度下降法，求导方向下降最大的点移动。<br><img src="/images/pasted-72.png" alt="upload successful"></p>
-<h2 id="线性判别分析"><a href="#线性判别分析" class="headerlink" title="线性判别分析"></a>线性判别分析</h2><p>线性判别分析Linear Discriminant Analysis是一种经典的线性学习方法，应用于分类任务中。<br>LDA的思想非常简单，将训练集的样本投影到一条直线上，同一类的尽量互相靠近，而不同类之间尽可能相隔的远。使用数学语言，投影即是向量乘积， 同一类尽量靠近，就是协方差要小，不同类相隔远，就是类中心距离远，也就是均值投影的差要大。<br><img src="/images/pasted-69.png" alt="upload successful"></p>
-<ol>
-<li>从贝叶斯决策理论的角度可以证明LDA在两类数据同先验、满足高斯分布且协方差相等时，LDA可达到最优分类。 </li>
-<li>LDA核心是投影，这样往往实现了降维，因而LDA也常被视为一种经典的监督降维技术。<br><img src="/images/pasted-70.png" alt="upload successful"></li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model</span><br><span class="line">train_data=pd.read_csv(<span class="string">'./data/linear3.csv'</span>,index_col=<span class="number">0</span>)</span><br><span class="line">x=train_data.iloc[:,<span class="number">0</span>:<span class="number">5</span>]</span><br><span class="line">y=train_data.iloc[:,<span class="number">5</span>]</span><br><span class="line">clf = linear_model.LinearRegression()</span><br><span class="line">clf.fit(x,y)</span><br><span class="line">print(clf.coef_) <span class="comment"># 斜率</span></span><br><span class="line">print(clf.intercept_) <span class="comment"># 截距</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最小二乘法</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinearRegression</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.w=<span class="keyword">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self,x,y)</span>:</span></span><br><span class="line">        x=np.insert(x,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>)</span><br><span class="line">        x_=np.linalg.inv(x.T.dot(x))</span><br><span class="line">        self.w=x_.dot(x.T).dot(y)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        x=np.insert(x,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>) <span class="comment"># 插入了b</span></span><br><span class="line">        y_pred=x.dot(self.w)</span><br><span class="line">        <span class="keyword">return</span> y_pred</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_squared_error</span><span class="params">(y_true,y_pred)</span>:</span></span><br><span class="line">    mse=np.mean(np.power(y_true-y_pred,<span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> mse</span><br><span class="line">diabetes=datasets.load_diabetes()</span><br><span class="line">x=diabetes.data[:,np.newaxis,<span class="number">2</span>]</span><br><span class="line">print(x.shape)</span><br><span class="line">x_train,x_test=x[:<span class="number">-20</span>],x[<span class="number">-20</span>:]</span><br><span class="line">y_train,y_test=diabetes.target[:<span class="number">-20</span>],diabetes.target[<span class="number">-20</span>:]</span><br><span class="line">clf=LinearRegression()</span><br><span class="line">clf.fit(x_train,y_train)</span><br><span class="line">y_pred=clf.predict(x_test)</span><br><span class="line">print(<span class="string">'MSE'</span>,mean_squared_error(y_test,y_pred))</span><br><span class="line">plt.scatter(x_test[:,<span class="number">0</span>],y_test,color=<span class="string">'black'</span>)</span><br><span class="line">plt.plot(x_test[:,<span class="number">0</span>],y_pred,color=<span class="string">'blue'</span>,linewidth=<span class="number">3</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradientDescent</span><span class="params">(x,y,theta,alpha,m,numIterations)</span>:</span></span><br><span class="line">    xTrans=x.transpose()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numIterations):</span><br><span class="line">        hypothesis=np.dot(x,theta)</span><br><span class="line">        loss=hypothesis-y</span><br><span class="line">        cost=np.sum(loss**<span class="number">2</span>)/(<span class="number">2</span>*m)</span><br><span class="line">        gradient=np.dot(xTrans,loss)/m</span><br><span class="line">        theta=theta-alpha*gradient</span><br><span class="line">    <span class="keyword">return</span> theta</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">genData</span><span class="params">(numPoints,bias,variance)</span>:</span></span><br><span class="line">    x=np.zeros(shape=(numPoints,<span class="number">2</span>))</span><br><span class="line">    y=np.zeros(shape=numPoints)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,numPoints):</span><br><span class="line">        x[i][<span class="number">0</span>]=<span class="number">1</span></span><br><span class="line">        x[i][<span class="number">1</span>]=i</span><br><span class="line">        y[i]=(i+bias)+random.uniform(<span class="number">0</span>,<span class="number">1</span>)*variance</span><br><span class="line">    <span class="keyword">return</span> x,y</span><br><span class="line">x,y=genData(<span class="number">100</span>,<span class="number">25</span>,<span class="number">10</span>)</span><br><span class="line"><span class="comment"># print(x,y)</span></span><br><span class="line">m,n=np.shape(x)  <span class="comment"># m代表多少个实例</span></span><br><span class="line">numIterations=<span class="number">100000</span>  <span class="comment"># 循环次数</span></span><br><span class="line">alpha=<span class="number">0.0005</span>  <span class="comment">#学习率</span></span><br><span class="line">theta=np.ones(n)  <span class="comment"># 要求得的参数值</span></span><br><span class="line">theta=gradientDescent(x,y,theta,alpha,m,numIterations)</span><br><span class="line">print(theta)</span><br></pre></td></tr></table></figure>
-<h3 id="回归中的相关度和R平方值"><a href="#回归中的相关度和R平方值" class="headerlink" title="回归中的相关度和R平方值"></a>回归中的相关度和R平方值</h3><ul>
-<li><p>相关度<br><img src="/images/pasted-73.png" alt="upload successful"><br>相关系数：-1负相关，0不相关，1正相关。</p>
-</li>
-<li><p>R平方值<br>决定系数，反应因变量的全部变异能通过回归关系被自变量解释的比例。</p>
-<ul>
-<li>简单线性回归：$R^2=r^2$相关度</li>
-<li>多远线性回归：$r^2=\frac{SSR}{SSt}=\frac{\sum {(\widehat y_i-\overline y)^2}}{(y_i-\oveline y)^2}$<br><img src="/images/pasted-74.png" alt="upload successful"><br>R随着自变量数量增加而增大，R平方跟样本量是有关系的。因此做了一下修正：<br><img src="/images/pasted-75.png" alt="upload successful"></li>
-</ul>
-</li>
-</ul>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/03/24/线性回归/#more">more >></a>
+        
       
 
       
@@ -964,19 +606,11 @@ logpath=/usr/local/mongodb/log/mongodb.log
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://blog.csdn.net/a1368783069/article/details/52137417" target="_blank" rel="noopener">连接</a></p>
-<h2 id="加密后存储"><a href="#加密后存储" class="headerlink" title="加密后存储"></a>加密后存储</h2><p>hashlib.sha1</p>
-<h2 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h2><p>布隆过滤器的应用场景：</p>
-<ol>
-<li>网页黑名单系统</li>
-<li>垃圾邮件过滤系统</li>
-<li>爬虫网址的去重<br>对空间要求比严格，同时能够容忍一定程度的失误率。</li>
-</ol>
-<p>布隆过滤器可以精确的代表一个集合，可以精确的判断某一元素是否在此集合中。而精确程度取决于具体的设计，100%精确是不可能的，能够在0.01%错误率是可以接受的。</p>
-<p>布隆过滤器的优势是利用很少的空间就可以将正确率做到很高。</p>
-<p><img src="/images/pasted-24.png" alt="upload successful"><br>建立k个满足独立的hash函数，将所有的url的值对m取余，再将对应二进制数组位置涂黑。当一个新的url进行同样操作时，如果发现数组中有一个非黑的值即可认为是不在排除的名单中的。<br>误判的产生主要原因是，二进制数组比较小，基本都被涂黑了。一个新的url生成的哈希对应的二进制值都已经被涂黑，这样就会误判为已经访问的。</p>
-<h3 id="二进制数组大小的确定"><a href="#二进制数组大小的确定" class="headerlink" title="二进制数组大小的确定"></a>二进制数组大小的确定</h3><p>大小为m，样本数量为n，失误率为p。<br>$$m=-\frac{n×\ln p}{(\ln 2)^2}$$<br>$$k=\ln 2×\frac{m}{n}$$<br>真实的失误率是：<br>$$(1-\exp^{\frac-{nk}{m}})^k$$</p>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/03/14/url去重/#more">more >></a>
+        
       
 
       
@@ -1038,13 +672,11 @@ logpath=/usr/local/mongodb/log/mongodb.log
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>爬虫的时候经常会碰到这个错误，列一个我解决的方法，要再遇到在补充。  </p>
-<p><img src="/images/pasted-8.png" alt="upload successful">  </p>
-<p>关闭代理</p>
-<p><img src="/images/pasted-9.png" alt="upload successful"></p>
-<p>如果仍不能连接</p>
-<p><img src="/images/pasted-6.png" alt="upload successful"><br>这样就可以了</p>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/03/11/由于目标计算机积极拒绝/#more">more >></a>
+        
       
 
       
@@ -1128,276 +760,11 @@ logpath=/usr/local/mongodb/log/mongodb.log
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在开启flask项目时候使用了6000端口，谷歌就一直不能访问，出现下面的问题：</p>
-<p><img src="/images/pasted-7.png" alt="upload successful"></p>
-<p>下面是Google Chrome 默认非安全端口列表，建议尽量避免以下端口：</p>
-<table>
-<thead>
-<tr>
-<th>端口号</th>
-<th style="text-align:left">功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td style="text-align:left">tcpmux</td>
-</tr>
-<tr>
-<td>7</td>
-<td style="text-align:left">echo</td>
-</tr>
-<tr>
-<td>9</td>
-<td style="text-align:left">discard</td>
-</tr>
-<tr>
-<td>11</td>
-<td style="text-align:left">systat</td>
-</tr>
-<tr>
-<td>13</td>
-<td style="text-align:left">daytime</td>
-</tr>
-<tr>
-<td>15</td>
-<td style="text-align:left">netstat</td>
-</tr>
-<tr>
-<td>17</td>
-<td style="text-align:left">qotd</td>
-</tr>
-<tr>
-<td>19</td>
-<td style="text-align:left">chargen</td>
-</tr>
-<tr>
-<td>20</td>
-<td style="text-align:left">ftp data</td>
-</tr>
-<tr>
-<td>21</td>
-<td style="text-align:left">ftp access</td>
-</tr>
-<tr>
-<td>22</td>
-<td style="text-align:left">ssh</td>
-</tr>
-<tr>
-<td>23</td>
-<td style="text-align:left">telnet</td>
-</tr>
-<tr>
-<td>25</td>
-<td style="text-align:left">smtp</td>
-</tr>
-<tr>
-<td>37</td>
-<td style="text-align:left">time</td>
-</tr>
-<tr>
-<td>42</td>
-<td style="text-align:left">name</td>
-</tr>
-<tr>
-<td>43</td>
-<td style="text-align:left">nicname</td>
-</tr>
-<tr>
-<td>53</td>
-<td style="text-align:left">domain</td>
-</tr>
-<tr>
-<td>77</td>
-<td style="text-align:left">priv-rjs</td>
-</tr>
-<tr>
-<td>79</td>
-<td style="text-align:left">finger</td>
-</tr>
-<tr>
-<td>87</td>
-<td style="text-align:left">ttylink</td>
-</tr>
-<tr>
-<td>95</td>
-<td style="text-align:left">supdup</td>
-</tr>
-<tr>
-<td>101</td>
-<td style="text-align:left">hostriame</td>
-</tr>
-<tr>
-<td>102</td>
-<td style="text-align:left">iso-tsap</td>
-</tr>
-<tr>
-<td>103</td>
-<td style="text-align:left">gppitnp</td>
-</tr>
-<tr>
-<td>104</td>
-<td style="text-align:left">acr-nema</td>
-</tr>
-<tr>
-<td>109</td>
-<td style="text-align:left">pop2</td>
-</tr>
-<tr>
-<td>110</td>
-<td style="text-align:left">pop3</td>
-</tr>
-<tr>
-<td>111</td>
-<td style="text-align:left">sunrpc</td>
-</tr>
-<tr>
-<td>113</td>
-<td style="text-align:left">auth</td>
-</tr>
-<tr>
-<td>115</td>
-<td style="text-align:left">sftp</td>
-</tr>
-<tr>
-<td>117</td>
-<td style="text-align:left">uucp-path</td>
-</tr>
-<tr>
-<td>119</td>
-<td style="text-align:left">nntp</td>
-</tr>
-<tr>
-<td>123</td>
-<td style="text-align:left">NTP</td>
-</tr>
-<tr>
-<td>135</td>
-<td style="text-align:left">loc-srv /epmap</td>
-</tr>
-<tr>
-<td>139</td>
-<td style="text-align:left">netbios</td>
-</tr>
-<tr>
-<td>143</td>
-<td style="text-align:left">imap2</td>
-</tr>
-<tr>
-<td>179</td>
-<td style="text-align:left">BGP</td>
-</tr>
-<tr>
-<td>389</td>
-<td style="text-align:left">ldap</td>
-</tr>
-<tr>
-<td>465</td>
-<td style="text-align:left">smtp+ssl</td>
-</tr>
-<tr>
-<td>512</td>
-<td style="text-align:left">print / exec</td>
-</tr>
-<tr>
-<td>513</td>
-<td style="text-align:left">login</td>
-</tr>
-<tr>
-<td>514</td>
-<td style="text-align:left">shell</td>
-</tr>
-<tr>
-<td>515</td>
-<td style="text-align:left">printer</td>
-</tr>
-<tr>
-<td>526</td>
-<td style="text-align:left">tempo</td>
-</tr>
-<tr>
-<td>530</td>
-<td style="text-align:left">courier</td>
-</tr>
-<tr>
-<td>531</td>
-<td style="text-align:left">chat</td>
-</tr>
-<tr>
-<td>532</td>
-<td style="text-align:left">netnews</td>
-</tr>
-<tr>
-<td>540</td>
-<td style="text-align:left">uucp</td>
-</tr>
-<tr>
-<td>556</td>
-<td style="text-align:left">remotefs</td>
-</tr>
-<tr>
-<td>563</td>
-<td style="text-align:left">nntp+ssl</td>
-</tr>
-<tr>
-<td>587</td>
-<td style="text-align:left">stmp?</td>
-</tr>
-<tr>
-<td>601</td>
-<td style="text-align:left">??</td>
-</tr>
-<tr>
-<td>636</td>
-<td style="text-align:left">ldap+ssl</td>
-</tr>
-<tr>
-<td>993</td>
-<td style="text-align:left">ldap+ssl</td>
-</tr>
-<tr>
-<td>995</td>
-<td style="text-align:left">pop3+ssl</td>
-</tr>
-<tr>
-<td>2049</td>
-<td style="text-align:left">nfs</td>
-</tr>
-<tr>
-<td>3659</td>
-<td style="text-align:left">apple-sasl / PasswordServer</td>
-</tr>
-<tr>
-<td>4045</td>
-<td style="text-align:left">lockd</td>
-</tr>
-<tr>
-<td>6000</td>
-<td style="text-align:left">X11</td>
-</tr>
-<tr>
-<td>6665</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6666</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6667</td>
-<td style="text-align:left">Standard IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6668</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-<tr>
-<td>6669</td>
-<td style="text-align:left">Alternate IRC [Apple addition]</td>
-</tr>
-</tbody>
-</table>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/03/11/Chrome ERR UNSAFE PORT/#more">more >></a>
+        
       
 
       
@@ -1570,11 +937,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1582,11 +949,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">

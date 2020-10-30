@@ -8,13 +8,11 @@
   <link rel="dns-prefetch" href="http://guoming576.cn">
   <title>集成学习 | hero576的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="个体与集成“同质”：由类型相同的学习器组合而成的集成学习器，每个学习器可称为基学习器“异质”：由类型不相同的学习器组合而成的集成学习器，每个学习器可称为“组件学习器”集成学习通过将多个学习器进行结合，常常可以获得比单一学习器具有显著优越的泛化性能。这个对于弱学习器尤为明显。如何获得一个好的集成学习器呢？每个个体学习器具有一定的准确性（每个学习器不能太坏）和多样性（每个学习器之间存在差异）集成学习方">
-<meta name="keywords" content="机器学习">
+  <meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集成学习">
 <meta property="og:url" content="http://guoming576.cn/2018/03/26/集成学习/index.html">
 <meta property="og:site_name" content="hero576的博客">
-<meta property="og:description" content="个体与集成“同质”：由类型相同的学习器组合而成的集成学习器，每个学习器可称为基学习器“异质”：由类型不相同的学习器组合而成的集成学习器，每个学习器可称为“组件学习器”集成学习通过将多个学习器进行结合，常常可以获得比单一学习器具有显著优越的泛化性能。这个对于弱学习器尤为明显。如何获得一个好的集成学习器呢？每个个体学习器具有一定的准确性（每个学习器不能太坏）和多样性（每个学习器之间存在差异）集成学习方">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-86.png">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-87.png">
@@ -22,10 +20,9 @@
 <meta property="og:image" content="http://guoming576.cn/images/pasted-89.png">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-85.png">
 <meta property="og:image" content="http://guoming576.cn/images/pasted-90.png">
-<meta property="og:updated_time" content="2018-06-08T07:21:11.485Z">
+<meta property="og:updated_time" content="2020-10-30T12:08:03.324Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="集成学习">
-<meta name="twitter:description" content="个体与集成“同质”：由类型相同的学习器组合而成的集成学习器，每个学习器可称为基学习器“异质”：由类型不相同的学习器组合而成的集成学习器，每个学习器可称为“组件学习器”集成学习通过将多个学习器进行结合，常常可以获得比单一学习器具有显著优越的泛化性能。这个对于弱学习器尤为明显。如何获得一个好的集成学习器呢？每个个体学习器具有一定的准确性（每个学习器不能太坏）和多样性（每个学习器之间存在差异）集成学习方">
 <meta name="twitter:image" content="http://guoming576.cn/images/pasted-86.png">
   
     <link rel="alternative" href="/atom.xml" title="hero576的博客" type="application/atom+xml">
@@ -172,7 +169,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="个体与集成"><a href="#个体与集成" class="headerlink" title="个体与集成"></a>个体与集成</h2><p>“同质”：由类型相同的学习器组合而成的集成学习器，每个学习器可称为基学习器<br>“异质”：由类型不相同的学习器组合而成的集成学习器，每个学习器可称为“组件学习器”<br>集成学习通过将多个学习器进行结合，常常可以获得比单一学习器具有显著优越的泛化性能。这个对于弱学习器尤为明显。<br>如何获得一个好的集成学习器呢？每个个体学习器具有一定的准确性（每个学习器不能太坏）和多样性（每个学习器之间存在差异）<br>集成学习方法可以分为两大类：一是个体学习器间存在强依赖关系、必须串行生成序列化方法，代表有Boosting算法，二是个体学习器之间不存在强依赖关系、可同时生成的并行化方法，代表有Bagging和随机森林（Random Forest）</p>
+        <blockquote>
+</blockquote>
+<a id="more"></a>
+<h2 id="个体与集成"><a href="#个体与集成" class="headerlink" title="个体与集成"></a>个体与集成</h2><p>“同质”：由类型相同的学习器组合而成的集成学习器，每个学习器可称为基学习器<br>“异质”：由类型不相同的学习器组合而成的集成学习器，每个学习器可称为“组件学习器”<br>集成学习通过将多个学习器进行结合，常常可以获得比单一学习器具有显著优越的泛化性能。这个对于弱学习器尤为明显。<br>如何获得一个好的集成学习器呢？每个个体学习器具有一定的准确性（每个学习器不能太坏）和多样性（每个学习器之间存在差异）<br>集成学习方法可以分为两大类：一是个体学习器间存在强依赖关系、必须串行生成序列化方法，代表有Boosting算法，二是个体学习器之间不存在强依赖关系、可同时生成的并行化方法，代表有Bagging和随机森林（Random Forest）</p>
 <h2 id="Bagging与随机森林"><a href="#Bagging与随机森林" class="headerlink" title="Bagging与随机森林"></a>Bagging与随机森林</h2><h3 id="Bagging算法"><a href="#Bagging算法" class="headerlink" title="Bagging算法"></a>Bagging算法</h3><p>Bagging算法基本流程：采用自助采样法，可以采用出 个含 个训练样本的采样集，然后基于每个采样集训练出一个基学习器，再将这些基学习器进行结合。 </p>
 <h3 id="随机森林（Random-Forest）"><a href="#随机森林（Random-Forest）" class="headerlink" title="随机森林（Random Forest）"></a>随机森林（Random Forest）</h3><p>随机森林是Bagging的一个扩展变体，随机森林是在以决策树为基学习器构建Bagging集成的基础上，进一步在决策树的训练过程中引入了随机属性选择。具体的说，传统决策树在选择划分属性时是在当前结点的属性集合（假定有 个属性）中选择一个最优属性；而在随机森林（RF）中，对基决策树的每个结点，先从该结点的属性集合中随机选择一个包含 个属性的子集，然后再从这个子集中选择一个最优属性用于划分。<br>可以参阅：<a href="http://www.cnblogs.com/hrlnw/p/3850459.html" target="_blank" rel="noopener">http://www.cnblogs.com/hrlnw/p/3850459.html</a></p>
 <h4 id="采样方式"><a href="#采样方式" class="headerlink" title="采样方式"></a>采样方式</h4><ul>
@@ -511,11 +511,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -523,11 +523,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">

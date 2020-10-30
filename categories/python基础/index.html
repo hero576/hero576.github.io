@@ -166,186 +166,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="时间模块"><a href="#时间模块" class="headerlink" title="时间模块"></a>时间模块</h2><p>python 中时间表示方法有：时间戳，即从1975年1月1日00:00:00到现在的秒数；格式化后的时间字符串；时间struct_time 元组。</p>
-<p>struct_time元组中元素主要包括：</p>
-<ul>
-<li>tm_year（年）、tm_mon（月）、tm_mday（日）、tm_hour（时）、tm_min（分）、tm_sec（秒）、tm_wday（weekday0 - 6（0表示周日））、tm_yday（一年中的第几天1 - 366）、tm_isdst（是否是夏令时）</li>
-</ul>
-<h2 id="time"><a href="#time" class="headerlink" title="time"></a>time</h2><h3 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h3><ul>
-<li>time.time()返回当前时间戳</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.time()</span><br><span class="line"><span class="number">1465370844.096474</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.ctime() 返回这种格式的时间字符’Wed Jun 8 15:27:48 2016’，显示当前时间.同时也可以转换时间戳</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.ctime()</span><br><span class="line"><span class="string">'Wed Jun  8 15:27:48 2016'</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.ctime(time.time()<span class="number">-86400</span>)</span><br><span class="line"><span class="string">'Tue Jun  7 15:29:36 2016'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.gmtime 将时间戳转换成struct_time格式，此显示的是格林威治0时区的时间</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.gmtime()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">7</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.gmtime(time.time() - <span class="number">86400</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">7</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">41</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.localtime 将当前系统时间戳转化为struct_time格式 </li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.localtime()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">35</span>, tm_sec=<span class="number">33</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.localtime(time.time() - <span class="number">86400</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">37</span>, tm_sec=<span class="number">10</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.mktime 将struct_time格式转回成时间戳</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>now = time.localtime()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>now</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">38</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.mktime(now)</span><br><span class="line"><span class="number">1465371508.0</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.strftime 将struct_time格式转成指定的字符串格式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>now = time.localtime()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>now</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">38</span>, tm_sec=<span class="number">28</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = time.localtime(time.time() - <span class="number">86400</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">40</span>, tm_sec=<span class="number">23</span>, tm_wday=<span class="number">1</span>, tm_yday=<span class="number">159</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,last)</span><br><span class="line"><span class="string">'2016-06-07 15:40:23'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,now)</span><br><span class="line"><span class="string">'2016-06-08 15:38:28'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>time.strptime 将自定义时间格式的字符串转换为struct_time格式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strptime(<span class="string">"2016-06-08"</span>,<span class="string">"%Y-%m-%d"</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">0</span>, tm_min=<span class="number">0</span>, tm_sec=<span class="number">0</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.strptime(<span class="string">"2016-06-08 15:50:44"</span>,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">15</span>, tm_min=<span class="number">50</span>, tm_sec=<span class="number">44</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>time.sleep 暂停时间，类似于shell的sleep()</p>
-</li>
-<li><p>其他</p>
-<ul>
-<li>时间格式：</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>格式</th>
-<th style="text-align:center">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>%a</td>
-<td style="text-align:center">显示简化星期名称</td>
-</tr>
-<tr>
-<td>%A</td>
-<td style="text-align:center">显示完整星期名称</td>
-</tr>
-<tr>
-<td>%b</td>
-<td style="text-align:center">显示简化月份名称</td>
-</tr>
-<tr>
-<td>%B</td>
-<td style="text-align:center">显示完整月份名称</td>
-</tr>
-<tr>
-<td>%c</td>
-<td style="text-align:center">本地相应的日期和时间表示</td>
-</tr>
-<tr>
-<td>%d</td>
-<td style="text-align:center">显示当月第几天</td>
-</tr>
-<tr>
-<td>%H</td>
-<td style="text-align:center">按24小时制显示小时</td>
-</tr>
-<tr>
-<td>%I</td>
-<td style="text-align:center">按12小时制显示小时</td>
-</tr>
-<tr>
-<td>%j</td>
-<td style="text-align:center">显示当年第几天</td>
-</tr>
-<tr>
-<td>%m</td>
-<td style="text-align:center">显示月份</td>
-</tr>
-<tr>
-<td>%M</td>
-<td style="text-align:center">显示分钟数）</td>
-</tr>
-<tr>
-<td>%p</td>
-<td style="text-align:center">本地am或者pm的相应符</td>
-</tr>
-<tr>
-<td>%S</td>
-<td style="text-align:center">显示秒数）</td>
-</tr>
-<tr>
-<td>%U</td>
-<td style="text-align:center">一年中的星期数</td>
-</tr>
-<tr>
-<td>%w</td>
-<td style="text-align:center">显示在星期中的第几天，默认从0开始表示周一</td>
-</tr>
-<tr>
-<td>%W</td>
-<td style="text-align:center">和%U基本相同</td>
-</tr>
-<tr>
-<td>%x</td>
-<td style="text-align:center">本地相应日期</td>
-</tr>
-<tr>
-<td>%X</td>
-<td style="text-align:center">本地相应时间</td>
-</tr>
-<tr>
-<td>%y</td>
-<td style="text-align:center">去掉世纪的年份（00 - 99）</td>
-</tr>
-<tr>
-<td>%Y</td>
-<td style="text-align:center">完整的年份</td>
-</tr>
-<tr>
-<td>%Z</td>
-<td style="text-align:center">时区的名字（如果不存在为空字符）</td>
-</tr>
-<tr>
-<td>%%</td>
-<td style="text-align:center">‘%’字符</td>
-</tr>
-<tr>
-<td>o</td>
-<td style="text-align:center">时间函数之间转换关系</td>
-</tr>
-</tbody>
-</table>
-<p> ￼</p>
-<h2 id="datetime"><a href="#datetime" class="headerlink" title="datetime"></a>datetime</h2><p>datime是time的升级版，可以对date(日期)、time(时间)、datetime（日期时间）等三种单独管理。主要是由下面四个类组成</p>
-<ul>
-<li><p>datetime.datetime常用函数（datetime.date datetime.time通用）</p>
-</li>
-<li><p>datetime.datetime.today() 默认返回当前日期和时间的对象，也可以自定义日期和时间</p>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>today = datetime.datetime.today()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(today)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = datetime.datetime(<span class="number">2016</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)  ＃注意此处表示日期只能是实际月份，不能带<span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">2016</span><span class="number">-05</span><span class="number">-08</span> <span class="number">11</span>:<span class="number">23</span>:<span class="number">55</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">last = datetime.datetime(<span class="number">2016</span>,<span class="number">05</span>,<span class="number">08</span>,<span class="number">11</span>,<span class="number">23</span>,<span class="number">55</span>)</span><br><span class="line">                    ^</span><br><span class="line">SyntaxError: invalid token</span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.datetime.now() 返回当前时间</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>datetime.datetime.now()</span><br><span class="line">datetime.datetime(<span class="number">2016</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">44</span>, <span class="number">29</span>, <span class="number">694398</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.strftime(format)  ＃自定义格式化时间</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>today.strftime(<span class="string">"%I:%M:%S %p %d/%m/%Y"</span>)</span><br><span class="line"> <span class="string">'04:34:08 PM 08/06/2016'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.datetime.timple() 将时间转换为struct_time 格式</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;today.timetuple()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2016</span>, tm_mon=<span class="number">6</span>, tm_mday=<span class="number">8</span>, tm_hour=<span class="number">16</span>, tm_min=<span class="number">34</span>, tm_sec=<span class="number">8</span>, tm_wday=<span class="number">2</span>, tm_yday=<span class="number">160</span>, tm_isdst=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.replace（）返回一个替换后的date对象</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;last = today.replace(<span class="number">1949</span>,<span class="number">10</span>,<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">1949</span><span class="number">-10</span><span class="number">-01</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last = today.replace(year=<span class="number">1919</span>,month=<span class="number">3</span>,day=<span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last)</span><br><span class="line"><span class="number">1919</span><span class="number">-03</span><span class="number">-02</span> <span class="number">16</span>:<span class="number">34</span>:<span class="number">08.163371</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.datetime.strptime  将字符串转换为日志格式对象</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">"2016-06-08 17:18:19"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = datetime.datetime.strptime(a,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">17</span>:<span class="number">18</span>:<span class="number">19</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(b)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">17</span>:<span class="number">18</span>:<span class="number">19</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(type(a))</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">print</span><span class="params">(type<span class="params">(b)</span>)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">datetime</span>.<span class="title">datetime</span>'&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>datetime.timedelta 时间运算<ul>
-<li>可用参数：days seconds microseconds milliseconds minutes hours weeks</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">today = datetime.datetime.now()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(today)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">16</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>yesterday = today - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(yesterday)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-07</span> <span class="number">16</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>last_hour = today - datetime.timedelta(hours=<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(last_hour)</span><br><span class="line"><span class="number">2016</span><span class="number">-06</span><span class="number">-08</span> <span class="number">15</span>:<span class="number">51</span>:<span class="number">31.698122</span></span><br></pre></td></tr></table></figure>
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/04/08/time和datetime模块/#more">more >></a>
+        
       
 
       
@@ -514,11 +339,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -526,11 +351,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">

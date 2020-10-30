@@ -166,36 +166,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><p>时间复杂度：$O(n^2)$<br><img src="/images/1526650653105c9q9t5q9.png?imageslim" alt="paste image"><br>从开始两个比较，将大值向后移动，直到吧最大值移到了最后的位置。再将第二大数移动到倒数第二个位置，直到完成。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">array = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    array=list.copy()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(array)-i<span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> array[j]&gt;array[j+<span class="number">1</span>]:</span><br><span class="line">                array[j+<span class="number">1</span>],array[j]=array[j],array[j+<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">print(bubble_sort(array))</span><br></pre></td></tr></table></figure></p>
-<h3 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h3><p>时间复杂度：$O(n^2)$<br><img src="/images/1526651186781qx8kk0oc.png?imageslim" alt="paste image"><br>将最小值移动到第一个位置，然后第二小值移动到第二个位置，直到最后。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">select_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    array=list.copy()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i,len(array)):</span><br><span class="line">            <span class="keyword">if</span> array[i]&gt;array[j]:</span><br><span class="line">                array[i],array[j]=array[j],array[i]</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">print(select_sort(array))</span><br></pre></td></tr></table></figure></p>
-<h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><p>时间复杂度：$O(n^2)$<br><img src="/images/15266515054520au94k4p.png?imageslim" alt="paste image"><br>将第一个与第二个比较，将小的放在前面，然后将第三放在对应有序的位置，直至最后都变有序。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inser_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    array=list.copy()</span><br><span class="line">    print(array)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> array[i]&lt;array[j]:</span><br><span class="line">                array[i],array[j]=array[j],array[i]</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">print(inser_sort(array))</span><br></pre></td></tr></table></figure></p>
-<h3 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="/images/1526694242004ao197dyn.png?imageslim" alt="paste image"><br>首先归并排序使用了二分法，归根到底的思想还是分而治之。拿到一个长数组，将其不停的分为左边和右边两份，然后以此递归分下去。然后再将她们按照两个有序数组的样子合并起来。<br><img src="/images/15266957258474xkl1upc.png?imageslim" alt="paste image"><br>这里显示了归并排序的第一步，将数组按照middle进行递归拆分，最后分到最细之后再将其使用对两个有序数组进行排序的方法对其进行排序。</p>
-<p>两个有序数组排序的方法则非常简单，同时对两个数组的第一个位置进行比大小，将小的放入一个空数组，然后被放入空数组的那个位置的指针往后 移一个，然后继续和另外一个数组的上一个位置进行比较，以此类推。到最后任何一个数组先出栈完，就将另外i一个数组里的所有元素追加到新数组后面。</p>
-<p>由于递归拆分的时间复杂度是logN 然而，进行两个有序数组排序的方法复杂度是N该算法的时间复杂度是N*logN 所以是NlogN。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    i=j=<span class="number">0</span></span><br><span class="line">    c=[]</span><br><span class="line">    <span class="keyword">while</span> i&lt;len(a) <span class="keyword">and</span> j&lt;len(b):</span><br><span class="line">        <span class="keyword">if</span> a[i]&lt;=b[j]:</span><br><span class="line">            c.append(a[i])</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> i==len(a):</span><br><span class="line">                c+=b[j:]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            c.append(b[j])</span><br><span class="line">            j+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> j==len(b):</span><br><span class="line">                c+=a[i:]</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line">        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(list)&lt;=<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> list</span><br><span class="line">    mid=int(len(list)/<span class="number">2</span>)</span><br><span class="line">    left=merge_sort(list[:mid])</span><br><span class="line">    right=merge_sort(list[mid:])</span><br><span class="line">    <span class="keyword">return</span> merge(left,right)</span><br><span class="line"></span><br><span class="line">array=[<span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br><span class="line">print(merge_sort(array))</span><br></pre></td></tr></table></figure>
-<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="/images/1526697530070bvq8x58w.png?imageslim" alt="paste image"></p>
-<ol>
-<li>选取一个数字作为基准，可选取末位数字</li>
-<li>将数列第一位开始，依次与此数字比较，如果小于此数，将小数交换到左边，最后达到小于基准数的在左边，大于基准数的在右边，分为两个数组</li>
-<li>分别对两个数组重复上述步骤<br><img src="/images/15266976047924jrijd0i.png?imageslim" alt="paste image"><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def quick_sort(list):</span><br><span class="line">    if len(list)&lt;=1:</span><br><span class="line">        return list</span><br><span class="line">    left=[]</span><br><span class="line">    right=[]</span><br><span class="line">    for i in list[1:]:</span><br><span class="line">        if i&lt;=list[0]:</span><br><span class="line">            left.append(i)</span><br><span class="line">        else:</span><br><span class="line">            right.append(i)</span><br><span class="line">    return quick_sort(left)+[list[0]]+quick_sort(right)</span><br><span class="line">quick_sort(array)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>可以用一行实现快速排序：<code>quick_sort = lambda array: array if len(array)&lt;=1 else quick_sort([item for item in array[1:] if item&lt;=array[0]]) + [array[0]] +quick_sort([item for item in array[1:] if item&gt;array[0]])</code></p>
-<p><strong>用栈实现非递归的快排程序</strong><br>需要考虑两个问题:<br>1）栈里边保存什么？<br>2）迭代结束的条件是什么？<br>栈里边保存的当然是需要迭代的函数参数，结束条件也是跟需要迭代的参数有关。对于快速排序来说，迭代的参数是数组的上边界low和下边界high，迭代结束的条件是low == high。</p>
-<p>由于通过切片传递列表会对列表进行复制，所以需要传递索引，传入原列表，这样在执行操作时就可以改变原始列表了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort_stack</span><span class="params">(list,l=None,r=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> l==<span class="keyword">None</span>:</span><br><span class="line">        l=<span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> r==<span class="keyword">None</span>:</span><br><span class="line">        r=len(list)<span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> l&gt;=r:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack=[(l,r)]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        left,right = stack.pop(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span> right-left&lt;=<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        x=list[left]</span><br><span class="line">        left_index=left+<span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(left+<span class="number">1</span>,right+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> list[i]&lt;x:</span><br><span class="line">                list[left_index],list[i]=list[i],list[left_index]</span><br><span class="line">                left_index+=<span class="number">1</span></span><br><span class="line">        list[left_index<span class="number">-1</span>],list[left]=list[left],list[left_index<span class="number">-1</span>]</span><br><span class="line">        <span class="keyword">if</span> left&lt;left_index<span class="number">-1</span>:</span><br><span class="line">            stack.insert(<span class="number">0</span>,(left,left_index<span class="number">-2</span>))</span><br><span class="line">        <span class="keyword">if</span> left_index+<span class="number">1</span>&lt;right:</span><br><span class="line">            stack.insert(<span class="number">0</span>,(left_index,right))</span><br><span class="line">        print(stack)</span><br><span class="line">        print(<span class="string">'list'</span>,list,list[left:left_index],list[left_index+<span class="number">1</span>:right+<span class="number">1</span>])</span><br><span class="line">array=[<span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br><span class="line">quick_sort_stack(array)</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure></p>
-<h3 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="/images/15267101496640wgoaq7w.png?imageslim" alt="paste image">  </p>
-<p><a href="https://www.cnblogs.com/chengxiao/p/6129630.html" target="_blank" rel="noopener">这篇文章讲解的比较清楚</a><br>建立大小为n的大根堆，堆顶元素是这个元素的最大值。将堆顶值与最后一个元素交换，然后将最大值脱离堆结构，放在数组的最后的位置。再将n-1的元素构成大根堆。直到元素全部有序。</p>
-<p>在这里首先要先解释一下什么是堆，堆栈是计算机的两种最基本的数据结构。堆的特点就是FIFO(first in first out)先进先出，这里的话我觉得可以理解成树的结构。堆在接收数据的时候先接收的数据会被先弹出。<br>栈的特性正好与堆相反，是属于FILO(first in/last out)先进后出的类型。栈处于一级缓存而堆处于二级缓存中。这个不是本文重点所以不做过多展开。<br><img src="/images/20160707112601875.gif" alt="堆排序"><br>堆可以分为大根堆和小根堆，这里用最大堆的情况来定义操作: </p>
-<ol>
-<li>最大堆调整(MAX_Heapify):将堆的末端子节点作调整，使得子节点永远小于父节点。这是核心步骤，在建堆和堆排序都会用到。比较i的根节点和与其所对应i的孩子节点的值。当i根节点的值比左孩子节点的值要小的时候，就把i根节点和左孩子节点所对应的值交换，当i根节点的值比右孩子的节点所对应的值要小的时候，就把i根节点和右孩子节点所对应的值交换。然后再调用堆调整这个过程，可见这是一个递归的过程。 </li>
-<li>建立最大堆(Build_Max_Heap):将堆所有数据重新排序。建堆的过程其实就是不断做最大堆调整的过程，从len/2出开始调整，一直比到第一个节点。 </li>
-<li>堆排序(HeapSort):移除位在第一个数据的根节点，并做最大堆调整的递归运算。堆排序是利用建堆和堆调整来进行的。首先先建堆，然后将堆的根节点选出与最后一个节点进行交换，然后将前面len-1个节点继续做堆调整的过程。直到将所有的节点取出，对于n个数我们只需要做n-1次操作。<br><a href="https://zh.wikipedia.org/zh/%E5%A0%86%E6%8E%92%E5%BA%8F#Python" target="_blank" rel="noopener">参考代码</a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap_adjust</span><span class="params">(list,start,end)</span>:</span></span><br><span class="line">   root=start</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">       child=<span class="number">2</span>*root+<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> child&gt;end:</span><br><span class="line">           <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> child+<span class="number">1</span>&lt;end <span class="keyword">and</span> list[child]&lt;list[child+<span class="number">1</span>]:</span><br><span class="line">           child+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> list[root]&lt;list[child]:</span><br><span class="line">           list[root],list[child]=list[child],list[root]</span><br><span class="line">            root=child</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">           <span class="keyword">break</span>      </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">   <span class="comment"># 创建最大堆</span></span><br><span class="line">    <span class="keyword">for</span> start <span class="keyword">in</span> range((len(list) - <span class="number">2</span>) // <span class="number">2</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">       heap_adjust(list,start, len(list) - <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 堆排序</span></span><br><span class="line">    <span class="keyword">for</span> end <span class="keyword">in</span> range(len(list) - <span class="number">1</span>, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">       list[<span class="number">0</span>], list[end] = list[end], list[<span class="number">0</span>]</span><br><span class="line">        heap_adjust(list,<span class="number">0</span>, end - <span class="number">1</span>)</span><br><span class="line">array=[<span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br><span class="line">heap_sort(array)</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h3><p>时间复杂度：$O(n·\log_ n)$<br>希尔排序是插入排序的一个调整，步长是可变的。<br><img src="/images/1526722476067snttsu9u.png?imageslim" alt="paste image"><br>首先看步长为3，查找如果小于前面的第3个数，则交换，然后再查找前面的第3个数，如果不小于则停止。<br><img src="/images/1526722455119oo5klc3p.png?imageslim" alt="paste image"><br>整个数组排序完成后，再用步长为2的排序，再用步长为1的排序。<br><a href="https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F#Python" target="_blank" rel="noopener">参考代码</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shell_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    n = len(list)</span><br><span class="line">    <span class="comment"># 初始步长</span></span><br><span class="line">    gap = n // <span class="number">2</span></span><br><span class="line">    <span class="keyword">while</span> gap &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(gap, n):</span><br><span class="line">            <span class="comment"># 每个步长进行插入排序</span></span><br><span class="line">            temp = list[i]</span><br><span class="line">            j = i</span><br><span class="line">            <span class="comment"># 插入排序</span></span><br><span class="line">            <span class="keyword">while</span> j &gt;= gap <span class="keyword">and</span> list[j - gap] &gt; temp:</span><br><span class="line">                list[j] = list[j - gap]</span><br><span class="line">                j -= gap</span><br><span class="line">            list[j] = temp</span><br><span class="line">        <span class="comment"># 得到新的步长</span></span><br><span class="line">        gap = gap // <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> list</span><br></pre></td></tr></table></figure></p>
-<h3 id="锦标赛排序"><a href="#锦标赛排序" class="headerlink" title="锦标赛排序"></a>锦标赛排序</h3><p>时间复杂度：$O(n·\log_ n)$<br><img src="/images/1526715354948mthyueis.png?imageslim" alt="paste image"></p>
-<h3 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h3><p>桶排序是一种思想，比较常规的是计数排序和基数排序。桶排序的速度非常之快，比其他排序算法快非常多，但是需要占用大量空间。<br><a href="http://code.py40.com/1766.html" target="_blank" rel="noopener">代码参考</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bucket</span><span class="params">(list)</span>:</span></span><br><span class="line">    bucket_list=[<span class="number">0</span>]*(max(list)-min(list)+<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> list:</span><br><span class="line">        bucket_list[i]+=<span class="number">1</span></span><br><span class="line">    ret=[]</span><br><span class="line">    <span class="keyword">for</span> i,val <span class="keyword">in</span> enumerate(bucket_list):</span><br><span class="line">        <span class="keyword">if</span> val:</span><br><span class="line">            ret+=[i <span class="keyword">for</span> j <span class="keyword">in</span> range(val)]</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">a =[<span class="number">12</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">56</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">0</span>]</span><br><span class="line">b = bucket(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure></p>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/18/排序和查找/#more">more >></a>
+        
       
 
       
@@ -279,89 +254,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><p>树是一种重要的非线性数据结构，主要的用途是用来提高查找效率，对于要重复查找的情况效果更佳，如二叉排序树、FP-树。另外可以用来提高编码效率，如哈弗曼树。一切具有层次关系的问题都可用树来描述。<br>树结构的特点是：</p>
-<ul>
-<li>它的每一个结点都可以有不止一个直接后继</li>
-<li>除根结点外的所有结点都有且只有一个直接前驱。<br>树的递归定义如下：</li>
-</ul>
-<ol>
-<li>至少有一个结点（称为根）</li>
-<li>其它是互不相交的子树</li>
-</ol>
-<h3 id="二叉树结构"><a href="#二叉树结构" class="headerlink" title="二叉树结构"></a>二叉树结构</h3><ul>
-<li>节点值</li>
-<li>左孩子</li>
-<li>右孩子<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span>:</span></span><br><span class="line">    <span class="comment"># 创建节点类，包含左右两个指针，一个节点</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,elem=None)</span>:</span></span><br><span class="line">        self.elem=elem</span><br><span class="line">        self.right=<span class="keyword">None</span></span><br><span class="line">        self.left=<span class="keyword">None</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="二叉树遍历"><a href="#二叉树遍历" class="headerlink" title="二叉树遍历"></a>二叉树遍历</h3><p><img src="/images/1526286772063isf9jqp4.png?imageslim" alt="paste image"><br><strong>先序遍历：</strong>1,2,4,5,3,6,7<br><strong>中序遍历：</strong>4,2,5,1,6,3,7<br><strong>后序遍历：</strong>4,5,2,6,7,3,1<br>还有：中右左、右中左、右左中三中不常见的遍历<br><strong>层序遍历：</strong>1,2,3,4,5,6,7<br>按层遍历二叉树实际上是宽度优先搜索的应用。</p>
-<p>使用递归实现二叉树的遍历：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">printTree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.root = Node()</span><br><span class="line">        self.myQueue = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, elem)</span>:</span>  <span class="comment"># 采用一个堆栈实现</span></span><br><span class="line">        node = Node(elem)</span><br><span class="line">        <span class="keyword">if</span> self.root.elem == <span class="keyword">None</span>:</span><br><span class="line">            self.root = node</span><br><span class="line">            self.myQueue.append(self.root)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cur = self.myQueue[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">if</span> cur.left == <span class="keyword">None</span>:</span><br><span class="line">                cur.left = node</span><br><span class="line">                self.myQueue.append(cur.left)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur.right = node</span><br><span class="line">                self.myQueue.append(cur.right)</span><br><span class="line">                self.myQueue.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pre_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#前序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br><span class="line">        self.pre_order(root.left)</span><br><span class="line">        self.pre_order(root.right)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mid_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#中序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.mid_order(root.left)</span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br><span class="line">        self.mid_order(root.right)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post_order</span><span class="params">(self, root)</span>:</span> <span class="comment">#后序遍历</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.post_order(root.left)</span><br><span class="line">        self.post_order(root.right)</span><br><span class="line">        print(root.elem, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
-<p>非递归实现二叉树的遍历：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pre_stack</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        node = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(node.elem, end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> node.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, node.right)</span><br><span class="line">        <span class="keyword">if</span> node.left:</span><br><span class="line">            stack.insert(<span class="number">0</span>, node.left)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mid_stack</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack = []</span><br><span class="line">    cur = root</span><br><span class="line">    <span class="keyword">while</span> stack <span class="keyword">or</span> cur:</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            stack.insert(<span class="number">0</span>, cur)</span><br><span class="line">            cur = cur.left</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line">        cur = cur.right</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_stack</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现方法一</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack1 = [root]</span><br><span class="line">    stack2 = []</span><br><span class="line">    <span class="keyword">while</span> stack1:</span><br><span class="line">        cur = stack1.pop()</span><br><span class="line">        stack2.insert(<span class="number">0</span>, cur)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack1.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack1.append(cur.right)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> stack2:</span><br><span class="line">        print(i.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_stack2</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现方法二</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    h = root  <span class="comment"># 最近一次弹出并打印的节点</span></span><br><span class="line">    c = <span class="keyword">None</span>  <span class="comment"># 当前stack的栈顶节点</span></span><br><span class="line">    stack = [root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        c = stack[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> c.left <span class="keyword">and</span> h != c.left <span class="keyword">and</span> h != c.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, c.left)</span><br><span class="line">        <span class="keyword">elif</span> c.right <span class="keyword">and</span> h != c.right:</span><br><span class="line">            stack.insert(<span class="number">0</span>, c.right)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            h = stack.pop(<span class="number">0</span>)</span><br><span class="line">            print(h.elem, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
-<p>递归和非递归的方法时间复杂度都是O(N)，N为二叉树节点数，额外空间复杂度为O(L)，L为二叉树的层数。</p>
-<p>实现二叉树的层序遍历：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    stack=[root]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur=stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem,end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">        <span class="keyword">if</span> cur.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">level_queue_enter</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 实现换行</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    last = root  <span class="comment"># 表示正在打印的当前行的最右节点</span></span><br><span class="line">    nlast = <span class="keyword">None</span>  <span class="comment"># 表示下一行的最右节点</span></span><br><span class="line">    stack = [last]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        cur = stack.pop(<span class="number">0</span>)</span><br><span class="line">        print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> cur.left:</span><br><span class="line">            stack.append(cur.left)</span><br><span class="line">            nlast = cur.left</span><br><span class="line">        <span class="keyword">if</span> nlast.right:</span><br><span class="line">            stack.append(cur.right)</span><br><span class="line">            nlast = cur.right</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> last == cur:</span><br><span class="line">            print()</span><br><span class="line">            last = nlast</span><br></pre></td></tr></table></figure>
-<h4 id="根据遍历顺序还原二叉树"><a href="#根据遍历顺序还原二叉树" class="headerlink" title="根据遍历顺序还原二叉树"></a>根据遍历顺序还原二叉树</h4><p>例如给定前序和中序的打印顺序，求后续遍历。<br>前序遍历有个特点，第一个肯定为根。然后根据根，在中序遍历可以区分出来左子树和右子树。递归的查找，就可以还原了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">permid_post</span><span class="params">(perstr, midstr)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> perstr <span class="keyword">or</span> <span class="keyword">not</span> midstr:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    val = perstr[<span class="number">0</span>]</span><br><span class="line">    node = Node(val)</span><br><span class="line">    index = midstr.find(val)</span><br><span class="line">    permid_post(perstr[<span class="number">1</span>:index+<span class="number">1</span>],midstr[:index])</span><br><span class="line">    permid_post(perstr[index+<span class="number">1</span>:],midstr[index+<span class="number">1</span>:])</span><br><span class="line">    print(node.elem,end=<span class="string">' '</span>)</span><br><span class="line">perstr = <span class="string">'GDAFEMHZ'</span></span><br><span class="line">midstr = <span class="string">'ADEFGHMZ'</span></span><br><span class="line">permid_post(perstr,midstr)</span><br></pre></td></tr></table></figure></p>
-<h3 id="二叉树序列化和反序列化"><a href="#二叉树序列化和反序列化" class="headerlink" title="二叉树序列化和反序列化"></a>二叉树序列化和反序列化</h3><p>有时我们需要用文件的形式将二叉树记录下来，下次要重构二叉树的时候只需将按照文件重新建立二叉树即可。这个过程叫做序列化过程，也叫持久化过程。<br>序列化方式：</p>
-<ul>
-<li>先序遍历序列化</li>
-<li>中序遍历序列化</li>
-<li>后序遍历序列化</li>
-<li>按层序列化</li>
-</ul>
-<p>先序遍历二叉树过程与中序后序相同，步骤如下：</p>
-<ul>
-<li>假设序列化结果为str，初始时str为空字符串</li>
-<li>先序遍历二叉树时如果遇到空节点，在str末尾加上“#！”</li>
-<li>如果遇到不为空的节点，假设节点值为3，就在str末尾增加‘3！’<br>先序遍历反序列化过程：</li>
-<li>按照！分割字符串</li>
-<li>按照先序遍历的顺序构建二叉树，遇到#设置为空节点</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Serialize</span><span class="params">(self, root)</span>:</span>  <span class="comment"># 把对象转换为字节序列的过程称为对象的序列化</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Per_order</span><span class="params">(root)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            result.append(<span class="string">'#!'</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        result.append(str(root.elem) + <span class="string">'!'</span>)</span><br><span class="line">        Per_order(root.left)</span><br><span class="line">        Per_order(root.right)</span><br><span class="line"></span><br><span class="line">    result = []</span><br><span class="line">    Per_order(root)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(result)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Deserialize2</span><span class="params">(self, s)</span>:</span>  <span class="comment"># 把字节序列恢复为对象的过程称为对象的反序列化</span></span><br><span class="line">    s = s.split(<span class="string">"!"</span>)</span><br><span class="line">    self.myroot=<span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(index)</span>:</span></span><br><span class="line">        index[<span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> index[<span class="number">0</span>] &gt;= len(s):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> s[index[<span class="number">0</span>]] == <span class="string">'#'</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        node = Node()</span><br><span class="line">        node.elem = s[index[<span class="number">0</span>]]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.myroot:</span><br><span class="line">            self.myroot = node</span><br><span class="line">        node.left = change(index)</span><br><span class="line">        node.right = change(index)</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">    index = [<span class="number">-1</span>]</span><br><span class="line">    change(index)</span><br><span class="line">    <span class="keyword">return</span> self.myroot</span><br></pre></td></tr></table></figure>
-<p>当然，用什么方法序列化，要用同样的方法反序列化才行。</p>
-<h3 id="二叉树的一些概念"><a href="#二叉树的一些概念" class="headerlink" title="二叉树的一些概念"></a>二叉树的一些概念</h3><h4 id="二叉的子树"><a href="#二叉的子树" class="headerlink" title="二叉的子树"></a>二叉的子树</h4><p>在二叉树中以任何一个节点为头部的整棵树称为二叉树的子树。<br><img src="/images/1526449053269984bqugc.png?imageslim" alt="paste image"><br>上图不是子树，因为不是整棵树。只是一个联通的子结构</p>
-<h4 id="平衡二叉树（AVL树）"><a href="#平衡二叉树（AVL树）" class="headerlink" title="平衡二叉树（AVL树）"></a>平衡二叉树（AVL树）</h4><ul>
-<li>空树是平衡二叉树</li>
-<li>一棵树不为空，并且其中所有子树都满足各自的左子树与有字数的高度差都不超过1。<br><img src="/images/15264502137521q7nmg1y.png?imageslim" alt="paste image"><br>这不是一颗平衡二叉树，以②为节点划分，左子树高度为2，右子树高度为0，高度差超过了1。</li>
-</ul>
-<p>判断一个树是否是平衡二叉树，采用递归的后续遍历：<br><img src="/images/1526449320079uu0a5qv0.png?imageslim" alt="paste image"></p>
-<ol>
-<li>首先判断左子树是否为平衡二叉树返回false，则结束。</li>
-<li>计算左子树最深到哪一层，LH</li>
-<li>判断右子树是否为平衡二叉树返回false，则结束。</li>
-<li>计算右子树最深到哪一层，RH</li>
-<li>判断LH和RH是否相等。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_balanced2</span><span class="params">(self, root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:<span class="comment">#空树是平衡二叉树</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span>,<span class="number">0</span></span><br><span class="line">    left_info=self.is_balanced(root.left)</span><br><span class="line">    right_info=self.is_balanced(root.right)</span><br><span class="line">    <span class="keyword">if</span> left_info[<span class="number">0</span>] <span class="keyword">and</span> right_info[<span class="number">0</span>]:</span><br><span class="line">        diff=left_info[<span class="number">1</span>]-right_info[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="number">-1</span>&lt;=diff&lt;=<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">False</span>,max(left_info[<span class="number">1</span>],right_info[<span class="number">1</span>])+<span class="number">1</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><strong>不平衡二叉树旋转</strong><br>首先旋转的二叉树是二叉查找树，讨论的是其平衡问题。这样很好的解决了二叉查找树退化成链表的问题。使得插入、查找删除的最好最坏时间复杂度都为O(logN)。<br>左左或者右右，可以使用单旋转：<br><img src="/images/1526456177997sm3ap9gg.png?imageslim" alt="paste image"></p>
-<p>左右或者右左，可以使用双旋转<br><img src="/images/1526456468138w779bb24.png?imageslim" alt="paste image"></p>
-<p><strong>平衡二叉树查找</strong><br><strong>平衡二叉树插入</strong><br><strong>平衡二叉树删除</strong> </p>
-<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>是满足以下条件的二叉树：</p>
-<ul>
-<li>左子树上所有节点值均小于根节点值</li>
-<li>右子树上所有节点值均不小于根节点值 </li>
-<li>左右子树也满足上述两个条件<br><img src="/images/1526202114625uqdqohku.png?imageslim" alt="paste image"></li>
-</ul>
-<p><strong>二叉查找树的查找过程</strong></p>
-<ul>
-<li>若当前节点cur的值小于p的值，查找cur的左子树</li>
-<li>若当前节点cur的值不小于p的值，查找cur的右子树</li>
-<li>递归上述过程，直到cur==p或者cur为空</li>
-</ul>
-<p><strong>二叉查找树的插入</strong></p>
-<p><strong>二叉查找树的删除</strong></p>
-<h4 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h4><p>除了最后一层的节点无任何子节点外，剩下的每一层节点都有两个子节点。</p>
-<pre><code>满二叉树层数为L，节点数为N，则$N=2^L-1$，$L=\log_2^{(N+1)}$
-</code></pre><h4 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h4><p>除了最后一层外，其他的每一层节点都是满的。最后一层慢了那就是满二叉树。最后一层不满，缺少的节点也全部集中在右边，那也是完全二叉树。<br><img src="/images/1526452010331fujrxunj.png?imageslim" alt="paste image"><img src="/images/1526452023806sp4w4qbd.png?imageslim" alt="paste image"><br>上面两个图均为完全二叉树。<br><img src="/images/1526452115869iru3yarm.png?imageslim" alt="paste image"><br>这就不是一个完全二叉树。</p>
-<p><strong>判断是否完全二叉树</strong></p>
-<ul>
-<li>采用按层遍历二叉树的方式，从每层左边向右边一次遍历所有节点。</li>
-<li>如果当前节点有右孩子，但没有左海子，直接返回False.</li>
-<li>如果当前节点不是左右孩子全有，那之后节点必须都为叶节点，否则返回False。</li>
-<li>遍历过程中如果不返回False，遍历结束后返回True。<h4 id="后继与前驱"><a href="#后继与前驱" class="headerlink" title="后继与前驱"></a>后继与前驱</h4><strong>后继节点：</strong>这个节点在中序遍历序列中的下一个节点。<br><strong>前驱结点：</strong>这个节点在中序遍历序列中的前一个节点。 </li>
-</ul>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/13/数据结构——树/#more">more >></a>
+        
       
 
       
@@ -445,25 +342,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h3><p>开辟一个足够大的空间H，数组的元素值作为自变量，通过某一个函数f，将元素值映射到hash空间的index索引处，这样通过f计算出索引，可以快速定位到元素的值，时间复杂度O(1)。基本思想就是用空间换时间。</p>
-<h3 id="Hash函数"><a href="#Hash函数" class="headerlink" title="Hash函数"></a>Hash函数</h3><p>哈希函数又叫散列函数，输入域可以是非常大的（无限）范围，但输出域是固定范围（所以不同输入可能返回相同输出）。Hash函数非常重要，一个好的Hash函数，能够将数据映射到“杂乱”的位置。</p>
-<ul>
-<li>dbj2</li>
-<li>sdbm</li>
-<li>MurmurHash</li>
-<li>MD5</li>
-<li>SHA1<h4 id="dbj2"><a href="#dbj2" class="headerlink" title="dbj2"></a>dbj2</h4>这个算法是Dan Bernstein在comp.lang.c提出的，这个算法的另一个版本是使用异或的方式：<br>$hash(i)=hash(i-1)*33^str[i]$<br>魔数33本身是个合数，但是它的表现比其他很多素数效果都好。这里表现好意思就是经过映射后，数组更为散列。<br>输入是字符串，输出时整数值。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(str)</span>:</span></span><br><span class="line">    hash=<span class="number">5381</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">        hash=hash*<span class="number">33</span>+ord(i)</span><br><span class="line">    <span class="keyword">return</span> hash</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="sdbm"><a href="#sdbm" class="headerlink" title="sdbm"></a>sdbm</h4><p>dbj2使用的是魔数33，我们也可以用65599，这样就是sdbm算法了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(str)</span>:</span></span><br><span class="line">    hash=<span class="number">0</span>  <span class="comment"># 随机给的初值种子</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">        hash=hash*<span class="number">65599</span>+ord(i)</span><br><span class="line">    <span class="keyword">return</span> hash</span><br></pre></td></tr></table></figure></p>
-<p>这个算法在实际中有很好的分布，这样造成的冲突概率大大降低。</p>
-<h3 id="Hash冲突"><a href="#Hash冲突" class="headerlink" title="Hash冲突"></a>Hash冲突</h3><p>当两个及以上的键分配到了哈希表同一个索引上时，则称这些键发成了冲突。<br>处理冲突的方法：  </p>
-<ul>
-<li>拉链法：冲突后在后面开辟新的空间，不用考虑二次哈希</li>
-<li>两次哈希</li>
-</ul>
-<p>下面是Python实现采用除余留数法的散列函数hash结构：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hash</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,size)</span>:</span></span><br><span class="line">        self.elem=[<span class="keyword">None</span>]*size</span><br><span class="line">        self.count=size</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hash</span><span class="params">(self,value)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> value%self.count</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insert_hash</span><span class="params">(self,key)</span>:</span></span><br><span class="line">        address=self.hash(key)</span><br><span class="line">        <span class="keyword">while</span> self.elem[address]!=<span class="keyword">None</span>:</span><br><span class="line">            address=(address+<span class="number">1</span>)%self.count</span><br><span class="line">        self.elem[address]=key</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search_hash</span><span class="params">(self,key)</span>:</span></span><br><span class="line">        star=address=self.hash(key)</span><br><span class="line">        <span class="keyword">while</span> self.elem[address]!=key:</span><br><span class="line">            address=(address+<span class="number">1</span>)%self.count</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> self.elem[address] <span class="keyword">or</span> address == star:  <span class="comment"># 说明没找到或者循环到了开始的位置</span></span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    list_a = [<span class="number">0</span>, <span class="number">12</span>, <span class="number">67</span>, <span class="number">56</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">37</span>, <span class="number">22</span>, <span class="number">29</span>, <span class="number">15</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">34</span>]</span><br><span class="line">    hash_table = Hash(len(list_a))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> list_a:</span><br><span class="line">        hash_table.insert_hash(i)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> hash_table.elem:</span><br><span class="line">        print((i, hash_table.elem.index(i)))</span><br><span class="line">    print(hash_table.search_hash(<span class="number">15</span>))</span><br><span class="line">    print(hash_table.search_hash(<span class="number">33</span>))</span><br></pre></td></tr></table></figure></p>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/12/数据结构——哈希/#more">more >></a>
+        
       
 
       
@@ -547,39 +430,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="字符串循环左移"><a href="#字符串循环左移" class="headerlink" title="字符串循环左移"></a>字符串循环左移</h3><p>例如‘abcdef’，左移两个字符串，变成‘cdefab’。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'abcdef'</span></span><br><span class="line">k=<span class="number">100</span>   <span class="comment"># 任意指定</span></span><br><span class="line">x=k%len(str)</span><br><span class="line">str1=str[<span class="number">0</span>:x]</span><br><span class="line">str2=str[x:]</span><br><span class="line">str3=str2+str1</span><br></pre></td></tr></table></figure></p>
-<p>如果有对空间的限制，这道题就需要通过逆序的方法了。过程如下：<br><img src="/images/pasted-26.png" alt="upload successful"></p>
-<h3 id="字符串全排列"><a href="#字符串全排列" class="headerlink" title="字符串全排列"></a>字符串全排列</h3><p>S=[0….N-1]，枚举S的全排列<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">str=<span class="string">'1234'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">swap</span><span class="params">(a,i,foo)</span>:</span></span><br><span class="line">    tmp=a[<span class="number">0</span>:i]+a[foo]</span><br><span class="line">    <span class="keyword">if</span> i!=len(a):</span><br><span class="line">        tmp+=a[i+<span class="number">1</span>:]</span><br><span class="line">    str=tmp[<span class="number">0</span>:foo]+a[i]</span><br><span class="line">    <span class="keyword">if</span> foo!=len(a):</span><br><span class="line">        str+=tmp[foo+<span class="number">1</span>:]</span><br><span class="line">    <span class="keyword">return</span> str</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Permutation</span><span class="params">(str,foo,to)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> foo==to:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,to):</span><br><span class="line">            print(str[i],end=<span class="string">''</span>)</span><br><span class="line">        print()</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(foo,to):</span><br><span class="line">        x = swap(str,i,foo)</span><br><span class="line">        Permutation(x,foo+<span class="number">1</span>,to)</span><br><span class="line">Permutation(str,<span class="number">0</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure></p>
-<h3 id="KMP"><a href="#KMP" class="headerlink" title="KMP"></a><a href="https://news.cnblogs.com/n/176771/" target="_blank" rel="noopener">KMP</a></h3><p>给定文本串text和模式串pattern，从文本串中找出模式串第一次出现的位置。<br>例如  甲：abbaabbaaba，乙：abbaaba。查找乙在甲什么位置。<br>假定文本串长度是N，模式串长度为M，普通模式<a href="http://www.cnblogs.com/dolphin0520/archive/2011/08/24/2151846.html" target="_blank" rel="noopener">匹配算法（BF）</a>时间复杂度：O(M*N)，空间复杂度O(1)。而KMP算法可以用闲心时间算法求解匹配字符串问题的方法，时间复杂度：O(M+N)，空间复杂度O(M)。<br>BF方法从两个字符串头开始，若遇到不匹配的字符，模式串回溯到开始位置，文本串回溯到头结点+1。然后继续匹配，如果模式串中字符两两不相等，那么这样会造成很多没必要的匹配过程。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">'abbaabbaaba'</span></span><br><span class="line">str2 = <span class="string">'abbaaba'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BF</span><span class="params">(str1,str2)</span>:</span></span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i &lt;len(str1):</span><br><span class="line">        j=<span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> j &lt;len(str2) <span class="keyword">and</span> str1[i]==str2[j]:</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">            j+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> j==len(str2):</span><br><span class="line">            print(<span class="string">'success'</span>)</span><br><span class="line">            <span class="keyword">return</span> i-len(str2)</span><br><span class="line">        i=i-j+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure></p>
-<p><img src="/images/1526032977782d9b8gt3o.png?imageslim" alt="paste image"><br>KMP方法的思路是，尽量减少指针回溯，当出现不匹配字符时，前六个字符已经知道了，如果模式串不回溯到开始位置，而是移动到后面的匹配的位置，这样就提高了效率。<br>怎么做到这一点呢？可以针对搜索词，算出一张《部分匹配表》（Partial Match Table）。<br><img src="/images/1526033744135rjttlw64.png?imageslim" alt="paste image"></p>
-<p><img src="/images/1526032977782d9b8gt3o.png?imageslim" alt="paste image"><br>已知空格与D不匹配时，可以根据公式：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">移动位数 = 已匹配的字符数 - 对应的部分匹配值</span><br></pre></td></tr></table></figure></p>
-<p>计算得出文本串最后一个字符与模式串部分匹配值为2，已匹配的字符为6个，所以模式串要后移6-2=4位。<br><img src="/images/1526033355329r4g8a62r.png?imageslim" alt="paste image"><br>此时再判断C与空格不匹配，这时部分匹配值为0，移动位移数为2，也就从头匹配了。<br>然后继续比较，直到完全匹配，或者文本串结尾。</p>
-<p>然后就是部分匹配值的算法，首先要了解两个概念：”前缀”和”后缀”。 “前缀”指除了最后一个字符以外，一个字符串的全部头部组合；”后缀”指除了第一个字符以外，一个字符串的全部尾部组合。”部分匹配值”就是”前缀”和”后缀”的最长的共有元素的长度。以”ABCDABD”为例，</p>
-<ul>
-<li>“A”的前缀和后缀都为空集，共有元素的长度为0；</li>
-<li>“AB”的前缀为[A]，后缀为[B]，共有元素的长度为0；</li>
-<li>“ABC”的前缀为[A, AB]，后缀为[BC, C]，共有元素的长度0；</li>
-<li>“ABCD”的前缀为[A, AB, ABC]，后缀为[BCD, CD, D]，共有元素的长度为0；</li>
-<li>“ABCDA”的前缀为[A, AB, ABC, ABCD]，后缀为[BCDA, CDA, DA, A]，共有元素为”A”，长度为1；</li>
-<li>“ABCDAB”的前缀为[A, AB, ABC, ABCD, ABCDA]，后缀为[BCDAB, CDAB, DAB, AB, B]，共有元素为”AB”，长度为2；</li>
-<li>“ABCDABD”的前缀为[A, AB, ABC, ABCD, ABCDA, ABCDAB]，后缀为[BCDABD, CDABD, DABD, ABD, BD, D]，共有元素的长度为0。</li>
-</ul>
-<p>“部分匹配”的实质是，有时候，字符串头部和尾部会有重复。比如，”ABCDAB”之中有两个”AB”，那么它的”部分匹配值”就是2（”AB”的长度）。搜索词移动的时候，第一个”AB”向后移动 4 位（字符串长度-部分匹配值），就可以来到第二个”AB”的位置。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">'abbaabbaaba'</span></span><br><span class="line">str2 = <span class="string">'abbaaba'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#返回索引</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_index</span><span class="params">(str,i)</span>:</span></span><br><span class="line">    j=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> str[j]==str[i-j]:</span><br><span class="line">        j+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> j</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">KMP</span><span class="params">(str1,str2)</span>:</span></span><br><span class="line">    i,j=<span class="number">0</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i &lt;len(str1):</span><br><span class="line">        j=next_index(str2,j)</span><br><span class="line">        <span class="keyword">while</span> j &lt;len(str2) <span class="keyword">and</span> str1[i]==str2[j]:</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">            j+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> j==len(str2):</span><br><span class="line">            print(<span class="string">'success'</span>)</span><br><span class="line">            <span class="keyword">return</span> i-len(str2)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">print(KMP(str1,str2))</span><br></pre></td></tr></table></figure></p>
-<p>BF算法循环了14次，KMP循环11次，不算计算next_index的次数的话，减少了迭代次数。如果第一字符跟后面都不同，则KMP算法next总返回开始。</p>
-<h3 id="Manacher算法"><a href="#Manacher算法" class="headerlink" title="Manacher算法"></a>Manacher算法</h3><p><a href="https://segmentfault.com/a/1190000003914228" target="_blank" rel="noopener">最长回文子串问题</a>：给定一个字符串，求它的最长回文子串长度。<br>对于最长回文子串问题，最简单粗暴的办法是：找到字符串的所有子串，遍历每一个子串以验证它们是否为回文串。一个子串由子串的起点和终点确定，因此对于一个长度为n的字符串，共有n^2个子串。这些子串的平均长度大约是n/2，因此这个解法的时间复杂度是O(n^3)。<br>希望能提高算法的效率。Manacher正是针对这些问题改进算法。</p>
-<ol>
-<li>解决长度奇偶性带来的对称轴位置问题<br>Manacher算法首先对字符串做一个预处理，在所有的空隙位置(包括首尾)插入同样的符号，要求这个符号是不会在原串中出现的。这样会使得所有的串都是奇数长度的。以插入#号为例：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aba  ———&gt;  #a#b#a#</span><br><span class="line">abba ———&gt;  #a#b#b#a#</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>插入的是同样的符号，且符号不存在于原串，因此子串的回文性不受影响，原来是回文的串，插完之后还是回文的，原来不是回文的，依然不会是回文。</p>
-<ol start="2">
-<li>解决重复访问的问题<br>我们把一个回文串中最左或最右位置的字符与其对称轴的距离称为回文半径。Manacher定义了一个回文半径数组RL，用RL[i]表示以第i个字符为对称轴的回文串的回文半径。我们一般对字符串从左往右处理，因此这里定义RL[i]为第i个字符为对称轴的回文串的最右一个字符与字符i的距离。对于上面插入分隔符之后的两个串，可以得到RL数组：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">char:    # a # b # a #</span><br><span class="line"> RL :    1 2 1 4 1 2 1</span><br><span class="line">RL-1:    0 1 0 3 0 1 0</span><br><span class="line">  i :    0 1 2 3 4 5 6</span><br><span class="line">char:    # a # b # b # a #</span><br><span class="line"> RL :    1 2 1 2 5 2 1 2 1</span><br><span class="line">RL-1:    0 1 0 1 4 1 0 1 0</span><br><span class="line">  i :    0 1 2 3 4 5 6 7 8</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>上面我们还求了一下RL[i]-1。通过观察可以发现，RL[i]-1的值，正是在原本那个没有插入过分隔符的串中，以位置i为对称轴的最长回文串的长度。那么只要我们求出了RL数组，就能得到最长回文子串的长度。<br>于是问题变成了，怎样高效地求的RL数组。基本思路是利用回文串的对称性，扩展回文串。<br>我们再引入一个辅助变量MaxRight，表示当前访问到的所有回文子串，所能触及的最右一个字符的位置。另外还要记录下MaxRight对应的回文串的对称轴所在的位置，记为pos，它们的位置关系如下。<br><img src="/images/1526040211815q9okvyr6.png?imageslim" alt="paste image"><br>我们从左往右地访问字符串来求RL，假设当前访问到的位置为i，即要求RL[i]，在对应上图，i必然是在po右边的(obviously)。但我们更关注的是，i是在MaxRight的左边还是右边。我们分情况来讨论。<br>1）当i在MaxRight的左边<br>情况1)可以用下图来刻画：<br><img src="/images/1526042921144inzh65zt.png?imageslim" alt="paste image"><br>我们知道，图中两个红色块之间（包括红色块）的串是回文的；并且以i为对称轴的回文串，是与红色块间的回文串有所重叠的。我们找到i关于pos的对称位置j，这个j对应的RL[j]我们是已经算过的。根据回文串的对称性，以i为对称轴的回文串和以j为对称轴的回文串，有一部分是相同的。这里又有两种细分的情况。<br>以j为对称轴的回文串比较短，短到像下图这样。<br><img src="/images/1526042933581cjh9tqgn.png?imageslim" alt="paste image"><br>这时我们知道RL[i]至少不会小于RL[j]，并且已经知道了部分的以i为中心的回文串，于是可以令RL[i]=RL[j]。但是以i为对称轴的回文串可能实际上更长，因此我们试着以i为对称轴，继续往左右两边扩展，直到左右两边字符不同，或者到达边界。<br>以j为对称轴的回文串很长，这么长：<br><img src="/images/15260429479493wv8ybrc.png?imageslim" alt="paste image"><br>这时，我们只能确定，两条蓝线之间的部分（即不超过MaxRight的部分）是回文的，于是从这个长度开始，尝试以i为中心向左右两边扩展，，直到左右两边字符不同，或者到达边界。<br>不论以上哪种情况，之后都要尝试更新MaxRight和pos，因为有可能得到更大的MaxRight。<br>具体操作如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">step 1: 令RL[i]=min(RL[2*pos-i], MaxRight-i)</span><br><span class="line">step 2: 以i为中心扩展回文串，直到左右两边字符不同，或者到达边界。</span><br><span class="line">step 3: 更新MaxRight和pos</span><br></pre></td></tr></table></figure></p>
-<p>2）当i在MaxRight的右边<br><img src="/images/1526042956122emfn81n7.png?imageslim" alt="paste image"><br>遇到这种情况，说明以i为对称轴的回文串还没有任何一个部分被访问过，于是只能从i的左右两边开始尝试扩展了，当左右两边字符不同，或者到达字符串边界时停止。然后更新MaxRight和pos。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">manacher</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="comment">#预处理</span></span><br><span class="line">    s1=<span class="string">'#'</span>+<span class="string">'#'</span>.join(s)+<span class="string">'#'</span></span><br><span class="line">    p=[<span class="number">0</span>]*len(s1) <span class="comment"># 回文半径列表</span></span><br><span class="line">    mx=<span class="number">0</span> <span class="comment"># 当前索引回文串最远的索引值</span></span><br><span class="line">    id=<span class="number">0</span> <span class="comment"># 当前指向探测最远的索引</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(p)):</span><br><span class="line">        <span class="keyword">if</span> mx&gt;i:</span><br><span class="line">            p[i]=min(p[<span class="number">2</span>*id-i],mx-i) <span class="comment"># 两种情况，取最小的哪一种，利用已知条件确定p[i]的值</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            p[i]=<span class="number">1</span>  <span class="comment"># 无法从已知条件找到，先赋值为1</span></span><br><span class="line">        <span class="keyword">while</span> (i+p[i])&lt;len(s1) <span class="keyword">and</span> s1[i+p[i]]==s1[i-p[i]] :</span><br><span class="line">            p[i]+=<span class="number">1</span>  <span class="comment"># 更新p[i]，向外探索回文的范围</span></span><br><span class="line">        <span class="keyword">if</span> mx&lt;i+p[i]: <span class="comment">#更新mx和id</span></span><br><span class="line">            mx=i+p[i]</span><br><span class="line">            id=i</span><br><span class="line">    <span class="keyword">return</span> max(p)<span class="number">-1</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="BM算法"><a href="#BM算法" class="headerlink" title="BM算法"></a>BM算法</h3><p>KMP在实际中并不是很快，BM算法相比较效率会更高一些，而且算法也更巧妙。<br>具体方法：坏字符原则、好后缀。</p>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/11/字符串算法/#more">more >></a>
+        
       
 
       
@@ -663,30 +518,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="5、堆"><a href="#5、堆" class="headerlink" title="5、堆"></a>5、堆</h2><h6 id="什么是堆"><a href="#什么是堆" class="headerlink" title="什么是堆"></a>什么是堆</h6><p>一种特殊的队列，队列中元素出栈的顺序是按照元素的优先权大小，而不是元素入队的先后顺序。</p>
-<p><img src="/images/pasted-0.png" alt="heap"></p>
-<h6 id="堆的特性："><a href="#堆的特性：" class="headerlink" title="堆的特性："></a>堆的特性：</h6><ul>
-<li>必须是完全二叉树</li>
-<li>用数组实现</li>
-<li>任一结点的值是其子树所有结点的最大值或最小值<ul>
-<li>最大值时，称为“最大堆”，也称大顶堆；</li>
-<li>最小值时，称为“最小堆”，也称小顶堆。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/pasted-1.png" alt="最大堆"></p>
-<p><img src="/images/pasted-2.png" alt="最小堆"><br>可以看到，对于堆（Heap）这种数据结构，从根节点到任意结点路径上所有的结点都是有序的。</p>
-<h6 id="堆的基本操作"><a href="#堆的基本操作" class="headerlink" title="堆的基本操作"></a>堆的基本操作</h6><p>堆是一棵完全二叉树，高度为O（lg n），其基本操作至多与树的高度成正比。在介绍堆的基本操作之前，先介绍几个基本术语：</p>
-<pre><code>A：用于表示堆的数组，下标从1开始，一直到n
-PARENT(t)：节点t的父节点，即floor(t/2)
-RIGHT(t)：节点t的左孩子节点，即:2*t
-LEFT(t)：节点t的右孩子节点，即:2*t+1
-HEAP_SIZE(A)：堆A当前的元素数目
-</code></pre><p>保持堆的性质 Heapify(A,n,t)</p>
-<pre><code>该操作主要用于维持堆的基本性质。假定以RIGHT(t)和LEFT(t)为根的子树都已经是堆，然后调整以t为根的子树，使之成为堆。
-</code></pre><p>建堆 BuildHeap(A,n)</p>
-<pre><code>操作主要是将数组A转化成一个大顶堆。思想是，先找到堆的最后一个非叶子节点（即为第n/2个节点），然后从该节点开始，从后往前逐个调整每个子树，使之称为堆，最终整个数组便是一个堆。子数组A[(n/2)+1..n]中的元素都是树中的叶子，因此都可以看作是只含有一个元素的堆。
-</code></pre>
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/07/数据结构——基本线性数据结构——堆/#more">more >></a>
+        
       
 
       
@@ -750,126 +586,6 @@ HEAP_SIZE(A)：堆A当前的元素数目
 
 
   
-    <article id="post-数据结构——链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/07/数据结构——链表/">数据结构——链表</a>
-    </h1>
-  
-
-        
-        <a href="/2018/02/07/数据结构——链表/" class="archive-article-date">
-  	<time datetime="2018-02-07T12:34:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h3 id="什么是链表"><a href="#什么是链表" class="headerlink" title="什么是链表"></a>什么是链表</h3><p>链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)。由于不必须按顺序存储，链表在插入的时候可以达到O(1)的复杂度，比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要O(n)的时间，而顺序表相应的时间复杂度分别是O(logn)和O(1)。<br>链表的分类：</p>
-<ul>
-<li>按照连接方向分类<ul>
-<li>单链表</li>
-<li>双链表</li>
-</ul>
-</li>
-<li>按照有环和无环<ul>
-<li>普通链表</li>
-<li>循环链表</li>
-</ul>
-</li>
-</ul>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>使用链表结构可以克服数组链表需要预先知道数据大小的缺点，链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。</p>
-<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><ul>
-<li>init():初始化</li>
-<li>insert(): 插入</li>
-<li>trave(): 遍历</li>
-<li>delete(): 删除</li>
-<li>find(): 查找</li>
-</ul>
-<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">link</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,val)</span>:</span></span><br><span class="line">        self.elem=val</span><br><span class="line">        self.next=<span class="keyword">None</span></span><br></pre></td></tr></table></figure>
-<h2 id="常见操作"><a href="#常见操作" class="headerlink" title="常见操作"></a>常见操作</h2><ol>
-<li>给定一个整数num，如何在节点值有序的环形链表中插入一个节点值为num的节点，并且保证这个环形单链表依然有序。</li>
-<li>给定一个链表中的节点node，但是不给定整个链表的头结点。如何在链表中删除node。要求时间复杂度为O(1)。</li>
-<li>给定一个链表的头节点head，在给定一个数num，把链表调整成节点值小于num的节点都在链表的左边，等于num的放在中间，大于num放在右边。</li>
-<li>给定两个有序链表头结点head1和head2，打印公共部分。<br><img src="/images/pasted-25.png" alt="upload successful"></li>
-<li>给定一个单链表的头节点head，实现一个吊证单链表的函数，使得每k个节点之间逆序，如果最后不够k个节点一组，则不调整最后几个节点。<br><img src="/images/1526460109134k2s3tag1.png?imageslim" alt="paste image"></li>
-<li>给定单链表的头节点head，链表中每个节点保存一个整数，再给定一个值val，把所有等于val的节点删掉。</li>
-<li>判断链表是否是回文的。</li>
-<li>一个链表结构中，每个节点不仅含有一条指向下一个节点的next指针，同时含有一条rand指针，指向任意一个节点。复制这种含有rand指针节点的链表。<br><img src="/images/1526460604747l3tqxivj.png?imageslim" alt="paste image"></li>
-<li>判断单链表是否有环。有环返回进入的第一个节点。无环返回空。保证时间复杂度为O(N)，空间复杂度为O(1)。<br><img src="/images/15264607548471fkwegu1.png?imageslim" alt="paste image"></li>
-<li>判断无环单链表是否相交。相交返回第一个相交节点，否则返回空。保证时间复杂度为O(N+M)，空间复杂度为O(1)。<br><img src="/images/1526460879877rdkos969.png?imageslim" alt="paste image"></li>
-<li>判断有环单链表是否相交。相交返回第一个相交节点，否则返回空。保证时间复杂度为O(N+M)，空间复杂度为O(1)。</li>
-<li>给定两个单链表头节点head1和head2，判断两个链表是否相交。相交返回第一个相交节点。否则返回空。</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/02/07/数据结构——链表/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-数据结构——基本线性数据结构——队列" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -890,10 +606,11 @@ HEAP_SIZE(A)：堆A当前的元素数目
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="3、队列"><a href="#3、队列" class="headerlink" title="3、队列"></a>3、队列</h2><h6 id="什么是队列"><a href="#什么是队列" class="headerlink" title="什么是队列"></a>什么是队列</h6><p>和堆栈类似，唯一的区别是队列只能在队头进行出队操作，所以队列是是先进先出（FIFO, First-In-First-Out）的线性表</p>
-<h6 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h6><p>先入先出,后入后出<br>除尾节点外,每个节点有一个后继<br>（可选）除头节点外,每个节点有一个前驱</p>
-<h6 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h6><p>push（）:入队<br>pop（）：出队</p>
-
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/07/数据结构——基本线性数据结构——队列/#more">more >></a>
+        
       
 
       
@@ -957,6 +674,94 @@ HEAP_SIZE(A)：堆A当前的元素数目
 
 
   
+    <article id="post-数据结构——链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/07/数据结构——链表/">数据结构——链表</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/07/数据结构——链表/" class="archive-article-date">
+  	<time datetime="2018-02-07T12:34:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/07/数据结构——链表/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/07/数据结构——链表/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-数据结构——基本线性数据结构——堆栈" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -977,20 +782,11 @@ HEAP_SIZE(A)：堆A当前的元素数目
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="2、堆栈"><a href="#2、堆栈" class="headerlink" title="2、堆栈"></a>2、堆栈</h2><h6 id="什么是堆栈"><a href="#什么是堆栈" class="headerlink" title="什么是堆栈"></a>什么是堆栈</h6><p>堆栈（英语：stack），也可直接称栈，在计算机科学中，是一种特殊的串列形式的数据结构，它的特殊之处在于只能允许在链接串列或阵列的一端（称为堆叠顶端指标，英语：top）进行加入资料（英语：push）和输出资料（英语：pop）的运算。另外堆叠也可以用一维阵列或连结串列的形式来完成。堆叠的另外一个相对的操作方式称为伫列。</p>
-<p>由于堆叠数据结构只允许在一端进行操作，因而按照后进先出（LIFO, Last In First Out）的原理运作。</p>
-<p><img src="/images/pasted-3.png" alt="upload successful"></p>
-<h6 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h6><ul>
-<li>先入后出，后入先出。</li>
-<li>除头尾节点之外，每个元素有一个前驱，一个后继。</li>
-</ul>
-<h6 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h6><p>从原理可知，对堆栈(栈)可以进行的操作有:</p>
-<ul>
-<li>top():获取堆栈顶端对象</li>
-<li>push():向栈里添加一个对象</li>
-<li>pop():从栈里推出一个对象</li>
-</ul>
-<h6 id="堆栈的实现"><a href="#堆栈的实现" class="headerlink" title="堆栈的实现"></a>堆栈的实现</h6>
+        <blockquote>
+</blockquote>
+        
+          <a class="article-more-a" href="/2018/02/07/数据结构——基本线性数据结构——堆栈/#more">more >></a>
+        
       
 
       
@@ -1163,11 +959,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color2">web服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1175,11 +971,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">
