@@ -331,27 +331,22 @@
   
 
   
-  
-       <div id="gitalk-container"></div>
-       <div id="gitalk-container" style="padding: 0px 30px 0px 30px;"></div> 
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-<script type="text/javascript">
-
-if(true){
-	var gitalk = new Gitalk({
-  	clientID: '2882efc9f89b5a30a7d5',
-  	clientSecret: '6cebc283ae01ae929b069ac0699b54febf249eaa',
-  	repo: 'hero576.github.io',
-  	owner: 'hero576',
-  	admin: ['[&#39;hero576&#39;]'],
-  	id: 'Fri Mar 30 2018 10:42:00 GMT+0800',
-  	distractionFreeMode: 'true'
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: decodeURI(window.location.pathname),
+  owner: 'hero576',
+  repo: 'hero576.github.io',
+  oauth: {
+    client_id: '2882efc9f89b5a30a7d5',
+    client_secret: '6cebc283ae01ae929b069ac0699b54febf249eaa',
+  },
 })
-gitalk.render('gitalk-container') 
-}
+gitment.render('gitment-ctn')
 </script>
+  
   
 
 
@@ -468,11 +463,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">MongoDB</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -480,11 +475,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数据结构与算法</a>
+                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
+                <a href="javascript:void(0)" class="js-tag color3">数据结构与算法</a>
               </li>
              
               <li class="article-tag-list-item">
