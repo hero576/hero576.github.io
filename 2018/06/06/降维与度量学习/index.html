@@ -16,7 +16,7 @@
 <meta property="og:url" content="http://guoming576.cn/2018/06/06/降维与度量学习/index.html">
 <meta property="og:site_name" content="hero576的博客">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-10-30T12:08:06.242Z">
+<meta property="og:updated_time" content="2020-11-18T08:06:03.539Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="降维与度量学习">
   
@@ -37,9 +37,6 @@
 
   
 
-  
-    
- 	  <script src="/lib/clickLove.js"></script>
   
   
 
@@ -106,18 +103,6 @@
 					
 				
 			</div>
-		
-			
-			
-			
-			
-			<div>
-				<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="240" height="86" src="//music.163.com/outchain/player?type=2&id=1334445174&auto=0&height=66"></iframe>
-			</div>
-			
-				
-				<p style="font-size: 12px;">这似乎是首纯音乐，请尽情的欣赏它吧！<p>
-			
 		
 		</nav>
 	</header>		
@@ -239,7 +224,7 @@
 <li>线性降维方法：基于线性变换来进行降维的方法。</li>
 </ul>
 <h2 id="主成分分析（PCA）"><a href="#主成分分析（PCA）" class="headerlink" title="主成分分析（PCA）"></a>主成分分析（PCA）</h2><p> 以二维特征为例，两个特征之间可能存在线性关系的（例如这两个特征分别是运动的时速和秒速度），这样就造成了第二维信息是冗余的。PCA的目标是为了发现这种特征之间的线性关系，检测出这些线性关系，并且去除这线性关系。</p>
-<p>定义两个特征之间的协方差：<br>$$σ<em>{jk}=\frac{1}{n-1}\sum</em>{i=1}^n(x_{ij}-\overlinex_j)(x_{ik}-\overlinex_k)$$</p>
+<p>定义两个特征之间的协方差：<br>$$σ<em>{jk}=\frac{1}{n-1}\sum</em>{i=1}^n(x_{ij}-\overline x_j)(x_{ik}-\overline x_k)$$</p>
 <p>多个特征之间的协方差矩阵：<br>$$\sum = \frac{1}{n-1}((X-\overline{x})^T(X-\overline{x}))$$<br>where $\overline{x}=\frac{1}{n}\sum_{k=1}^n x_i$</p>
 <p>根据协方差矩阵，求出特征值、特征向量，找到对应特征值较大的k个特征向量组合成为<strong>变换矩阵</strong>，说明这k个特征值在整个特征空间是比较重要的。通过矩阵乘法，我们就把原样本空间压缩了。</p>
 <h2 id="SVD"><a href="#SVD" class="headerlink" title="SVD"></a>SVD</h2>
@@ -460,7 +445,7 @@
 		toc_hide_index: false,
 		root: "/",
 		innerArchive: true,
-		showTags: true
+		showTags: false
 	}
 </script>
 
@@ -703,13 +688,6 @@
 
   
   
-<script type="text/javascript" src="/plugins/activate-power-mode/activate-power-mode.js"></script>
-<script>
-  POWERMODE.colorful = true; // make power mode colorful
-  POWERMODE.shake = false; // turn off shake
-  document.body.addEventListener('input', POWERMODE);
-</script>
-
   
   <!-- <script async type="text/javascript" size="90" alpha="0.2" zIndex="0" src="/plugins/ribbon.js/ribbon.min.js"></script> -->
   
