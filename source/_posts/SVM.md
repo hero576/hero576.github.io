@@ -24,7 +24,7 @@ $$r=\frac{|w^Tx+b|}{||w||}$$
 |w^Tx+b|<=-1,y_i=-1
 \end{cases}
 距离超平面最近的几个样本点使得上式等号成立，称作“支持向量”。两个异类支持向量到超平面的距离之和称为“间隔”，$γ=\frac{2}{||w||}$。所有位于最大边界上的点称作支持向量。撑起了边界的宽度，其中$||w||$是向量的范数（norm）：
-$$\if W = {w_1,w_2,....w_n}then\sqrt{W·W}=\sqrt{w_1^2,w_2^2,....w_n^2}$$
+$$if W = {w_1,w_2,....w_n}then\sqrt{W·W}=\sqrt{w_1^2,w_2^2,....w_n^2}$$
 ![upload successful](/images/pasted-27.png)
 距离是x和x’在w上的投影：
 ![upload successful](/images/pasted-28.png)
